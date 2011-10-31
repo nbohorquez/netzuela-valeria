@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Comunes</name>
+    </assembly>
+    <members>
+        <member name="T:Valeria.Comunes.Constantes">
+            <summary>
+            Define constantes empleadas por todas las capas de Valeria
+            </summary>    
+        </member>
+        <member name="T:Valeria.Comunes.Constantes.SGBDR">
+            <summary>
+            SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
+            </summary>
+        </member>
+        <member name="T:Valeria.Comunes.Constantes.MetodosDeConexion">
+            <summary>
+            Métodos de conexión
+            </summary>        
+        </member>
+        <member name="T:Valeria.Comunes.Constantes.Credenciales">
+            <summary>
+            Credenciales
+            </summary>
+        </member>
+        <member name="T:Valeria.Comunes.Constantes.NivelDeNodo">
+            <summary>
+            Credenciales
+            </summary>
+        </member>
+        <member name="T:Valeria.Comunes.ColeccionesObservables">
+            <summary>
+            Contiene funciones adicionales para los tipos ObservableCollection
+            </summary>
+        </member>
+        <member name="T:Valeria.Comunes.DatosDeConexion">
+            <summary>
+            Esta clase se usa en todas partes. Lo que en verdad quiero hacer (y todavia no se como) son 
+            2 clases: una que implemente INotifyPropertyChanged (para ser usada en la capa de logica y 
+            presentacion) y otra que no (para usarse en la capa de datos). Seria muy facil simplemente 
+            hacer dos clases distintas pero es mucho mas elegante que una derive de la otra. ¿Tendeis?
+            </summary>
+        </member>
+        <member name="M:Valeria.Comunes.DatosDeConexion.OnPropertyChanged(System.String)">
+            <summary>
+            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
+            </summary>
+            <param name="info">Nombre de la propiedad modificada.</param>
+        </member>
+        <member name="E:Valeria.Comunes.DatosDeConexion.PropertyChanged">
+            <summary>
+            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
+            </summary>
+        </member>
+    </members>
+</doc>

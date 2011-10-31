@@ -1,0 +1,8 @@
+D:\Netzuela\3230_Valeria\Valeria\Datos\bin\Debug\Datos.dll
+D:\Netzuela\3230_Valeria\Valeria\Datos\bin\Debug\Datos.pdb
+D:\Netzuela\3230_Valeria\Valeria\Datos\bin\Debug\Comunes.dll
+D:\Netzuela\3230_Valeria\Valeria\Datos\bin\Debug\Comunes.pdb
+D:\Netzuela\3230_Valeria\Valeria\Datos\obj\Debug\ResolveAssemblyReference.cache
+D:\Netzuela\3230_Valeria\Valeria\Datos\obj\Debug\Datos.dll
+D:\Netzuela\3230_Valeria\Valeria\Datos\obj\Debug\Datos.pdb
+D:\Netzuela\3230_Valeria\Valeria\Datos\bin\Debug\DatosDocumentacion.xml

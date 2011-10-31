@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpKI>
+
+  <HelpKINode Title="AgregarHijo method" Url="html/3c34c2af-89d7-45ef-f000-d8fb84eaac41.htm" />
+  <HelpKINode Title="AgregarMapa method" Url="html/fa2fb5ab-26a7-ba7d-e444-69665009f0ed.htm" />
+  <HelpKINode Title="Asociar method" Url="html/05625954-750e-bf4a-7bc2-5892f614b495.htm" />
+  <HelpKINode Title="BarraDeEstado class" Url="html/ad97cc44-26af-4f8e-5f22-b87b54a58f98.htm" />
+  <HelpKINode Title="BarraDeEstado class" Url="html/e4a70f4d-eb6a-bbcf-0e8b-6e8f13ce3ec1.htm" />
+  <HelpKINode Title="BarraDeEstado class">
+    <HelpKINode Title="about BarraDeEstado class" Url="html/e4a70f4d-eb6a-bbcf-0e8b-6e8f13ce3ec1.htm" />
+    <HelpKINode Title="all members" Url="html/ad97cc44-26af-4f8e-5f22-b87b54a58f98.htm" />
+    <HelpKINode Title="constructor" Url="html/a9a7a560-1a39-c300-c0d9-c799d36d262c.htm" />
+    <HelpKINode Title="events" Url="html/3f1781ae-67e3-040d-b0ec-44597c934e57.htm" />
+    <HelpKINode Title="methods" Url="html/495e7311-480c-8c02-602b-9a9c5e9b49f4.htm" />
+    <HelpKINode Title="properties" Url="html/66880af3-7b08-b715-790f-9e732e1db405.htm" />
+  </HelpKINode>
+  <HelpKINode Title="BarraDeEstado.BarraDeEstado constructor" Url="html/a9a7a560-1a39-c300-c0d9-c799d36d262c.htm" />
+  <HelpKINode Title="BarraDeEstado.EstadoConexion property" Url="html/d55b4e18-b8bd-fb4a-228c-479590c2da93.htm" />
+  <HelpKINode Title="BarraDeEstado.OnPropertyChanged method" Url="html/c700095e-6269-6108-e57d-b8f17741cd66.htm" />
+  <HelpKINode Title="BarraDeEstado.PropertyChanged event" Url="html/4e750fe5-b9ea-3ba2-d844-fb6b5d9a24d1.htm" />
+  <HelpKINode Title="BD field" Url="html/fbe15c78-e7d2-9ff9-5bd6-76e7a5009de9.htm" />
+  <HelpKINode Title="BuscarNodo method" Url="html/b2b14c6c-e04a-095f-f6d7-033d5845a603.htm" />
+  <HelpKINode Title="ColumnaDestino property" Url="html/7a2fc870-cc7d-05a1-335c-7181d147bc28.htm" />
+  <HelpKINode Title="ColumnaOrigen property" Url="html/87dde4d6-6b01-9e12-7f32-0f2379eed7fe.htm" />
+  <HelpKINode Title="Conectar method" Url="html/cf1d680c-1f20-c0a2-64d3-6f13b41da890.htm" />
+  <HelpKINode Title="Conexion class" Url="html/01a6c8df-bc98-f77a-7c99-287cf4e71f7a.htm" />
+  <HelpKINode Title="Conexion class" Url="html/3f7a956f-7e15-89f3-25d2-daf7c7846546.htm" />
+  <HelpKINode Title="Conexion class">
+    <HelpKINode Title="about Conexion class" Url="html/01a6c8df-bc98-f77a-7c99-287cf4e71f7a.htm" />
+    <HelpKINode Title="all members" Url="html/3f7a956f-7e15-89f3-25d2-daf7c7846546.htm" />
+    <HelpKINode Title="constructor" Url="html/fc992a32-21e7-cf01-5e8c-bc0f20ef7ee0.htm" />
+    <HelpKINode Title="events" Url="html/9f948691-7303-87b8-ed92-3ce73432fdc3.htm" />
+    <HelpKINode Title="fields" Url="html/11c3be99-3c3d-c19c-c101-da1212249d62.htm" />
+    <HelpKINode Title="methods" Url="html/f36d45ef-8682-b82f-29d9-acc1d1de934d.htm" />
+    <HelpKINode Title="properties" Url="html/a9fe69c0-f4f2-db6a-b7f3-e2253d929eb1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Conexion.BD field" Url="html/fbe15c78-e7d2-9ff9-5bd6-76e7a5009de9.htm" />
+  <HelpKINode Title="Conexion.Conectar method" Url="html/cf1d680c-1f20-c0a2-64d3-6f13b41da890.htm" />
+  <HelpKINode Title="Conexion.Conexion constructor" Url="html/fc992a32-21e7-cf01-5e8c-bc0f20ef7ee0.htm" />
+  <HelpKINode Title="Conexion.Datos property" Url="html/4bfeaa03-74a3-5367-2886-b4e9f663c5e3.htm" />
+  <HelpKINode Title="Conexion.Desconectar method" Url="html/5fa31cfb-fefd-bd3b-ffbe-e366c2281baf.htm" />
+  <HelpKINode Title="Conexion.DetectarServidoresLocales method" Url="html/4a7a6711-7167-f88a-7c28-6f208c63ff96.htm" />
+  <HelpKINode Title="Conexion.OnPropertyChanged method" Url="html/d57a3ba7-5d2d-40d8-9f32-2af4c0f22901.htm" />
+  <HelpKINode Title="Conexion.PropertyChanged event" Url="html/48e6396e-9071-f3d3-35f1-74c78c868cf1.htm" />
+  <HelpKINode Title="Datos property" Url="html/4bfeaa03-74a3-5367-2886-b4e9f663c5e3.htm" />
+  <HelpKINode Title="Desasociar method" Url="html/6e7bdb0d-a083-6c93-05c2-3e79886d10fc.htm" />
+  <HelpKINode Title="Desconectar method" Url="html/5fa31cfb-fefd-bd3b-ffbe-e366c2281baf.htm" />
+  <HelpKINode Title="DetectarServidoresLocales method" Url="html/4a7a6711-7167-f88a-7c28-6f208c63ff96.htm" />
+  <HelpKINode Title="EstadoConexion property" Url="html/d55b4e18-b8bd-fb4a-228c-479590c2da93.htm" />
+  <HelpKINode Title="Expandido field" Url="html/7864bb82-8458-9215-aec7-579f2795f75b.htm" />
+  <HelpKINode Title="Expandir method" Url="html/d816f910-8409-c0be-f4ce-d7045703a327.htm" />
+  <HelpKINode Title="ExpandirTodo method" Url="html/05547155-beef-c561-bf29-845166259092.htm" />
+  <HelpKINode Title="Explorador class" Url="html/2f500a61-1a0c-6bf8-e8c3-b1731b6cfb96.htm" />
+  <HelpKINode Title="Explorador class" Url="html/c5ac6c2c-dda0-9d62-3f9e-5b8c9899e67c.htm" />
+  <HelpKINode Title="Explorador class">
+    <HelpKINode Title="about Explorador class" Url="html/c5ac6c2c-dda0-9d62-3f9e-5b8c9899e67c.htm" />
+    <HelpKINode Title="all members" Url="html/2f500a61-1a0c-6bf8-e8c3-b1731b6cfb96.htm" />
+    <HelpKINode Title="constructor" Url="html/70ff86cf-bf94-2896-17de-427308025722.htm" />
+    <HelpKINode Title="events" Url="html/90e2787b-d773-9016-4300-d3f14e3c21e7.htm" />
+    <HelpKINode Title="fields" Url="html/4372b6c7-594f-1714-b3d7-5e8aae8706be.htm" />
+    <HelpKINode Title="methods" Url="html/e73d809a-1d5d-4087-f9b6-95b7001a5de9.htm" />
+    <HelpKINode Title="properties" Url="html/679c50a5-1e87-e3bf-3a3d-cd12ef2fb1d1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Explorador field" Url="html/73593467-c058-52a2-bd62-a3b40e4c3d04.htm" />
+  <HelpKINode Title="Explorador.Expandir method" Url="html/d816f910-8409-c0be-f4ce-d7045703a327.htm" />
+  <HelpKINode Title="Explorador.ExpandirTodo method" Url="html/05547155-beef-c561-bf29-845166259092.htm" />
+  <HelpKINode Title="Explorador.Explorador constructor" Url="html/70ff86cf-bf94-2896-17de-427308025722.htm" />
+  <HelpKINode Title="Explorador.NodoActual property" Url="html/adb54af6-095c-f260-fa2d-5d711f6f1412.htm" />
+  <HelpKINode Title="Explorador.Nodos property" Url="html/7bbf379d-8439-66e4-9ccf-c58165917e18.htm" />
+  <HelpKINode Title="Explorador.NodoTablaActual field" Url="html/711d4799-bee8-8466-3944-ee80000a37db.htm" />
+  <HelpKINode Title="Explorador.ObtenerNodosCache method" Url="html/e1496d9b-b364-0b15-73e8-aaacd47fe8a6.htm" />
+  <HelpKINode Title="Explorador.ObtenerTabla method" Url="html/5d0641ab-631a-dafb-eee7-977a8b33294c.htm" />
+  <HelpKINode Title="Explorador.ObtenerTablasCache method" Url="html/a276d27e-2f0c-d83c-5272-cc3e57eb0d51.htm" />
+  <HelpKINode Title="Explorador.OnPropertyChanged method" Url="html/3ab4a88b-0751-7467-7c8b-5107932dfad2.htm" />
+  <HelpKINode Title="Explorador.PropertyChanged event" Url="html/a18d2a78-b012-b3ff-6ece-3a30e9904e59.htm" />
+  <HelpKINode Title="Explorador.TablaActual property" Url="html/c7cd9657-3187-2d33-3df6-3dd03af76ac5.htm" />
+  <HelpKINode Title="Hijos property" Url="html/164d7eee-607a-1857-9424-b1a37eeac416.htm" />
+  <HelpKINode Title="ListarHijos method" Url="html/a30fd586-5455-7015-82d6-3d71257ebd67.htm" />
+  <HelpKINode Title="MapaColumna field" Url="html/6e4fd038-923d-44f0-7645-76f470abfab3.htm" />
+  <HelpKINode Title="MapasColumnas property" Url="html/6d84c108-1f52-7b16-066d-066b187f7db3.htm" />
+  <HelpKINode Title="MapaTabla field" Url="html/089bb3a5-6d3a-f9d0-fa67-92097b15a4b9.htm" />
+  <HelpKINode Title="MapeoDeColumnas class" Url="html/c5a4f3b6-168c-1fd1-c6d8-10abce6f9c81.htm" />
+  <HelpKINode Title="MapeoDeColumnas class" Url="html/e5b6e267-6827-a23a-fbf8-0af5fc372b77.htm" />
+  <HelpKINode Title="MapeoDeColumnas class">
+    <HelpKINode Title="about MapeoDeColumnas class" Url="html/c5a4f3b6-168c-1fd1-c6d8-10abce6f9c81.htm" />
+    <HelpKINode Title="all members" Url="html/e5b6e267-6827-a23a-fbf8-0af5fc372b77.htm" />
+    <HelpKINode Title="constructor" Url="html/ddbac775-6397-0de6-a27b-411205975213.htm" />
+    <HelpKINode Title="fields" Url="html/a31413e1-f4ce-95ce-bebe-0452e2f4cdb5.htm" />
+    <HelpKINode Title="methods" Url="html/a57aceeb-de13-0165-98cc-efe3718750ef.htm" />
+    <HelpKINode Title="properties" Url="html/94f763a3-d4db-2141-c75a-d0ae3bb975e9.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MapeoDeColumnas.Asociar method" Url="html/05625954-750e-bf4a-7bc2-5892f614b495.htm" />
+  <HelpKINode Title="MapeoDeColumnas.ColumnaDestino property" Url="html/7a2fc870-cc7d-05a1-335c-7181d147bc28.htm" />
+  <HelpKINode Title="MapeoDeColumnas.ColumnaOrigen property" Url="html/87dde4d6-6b01-9e12-7f32-0f2379eed7fe.htm" />
+  <HelpKINode Title="MapeoDeColumnas.Desasociar method" Url="html/6e7bdb0d-a083-6c93-05c2-3e79886d10fc.htm" />
+  <HelpKINode Title="MapeoDeColumnas.MapaTabla field" Url="html/089bb3a5-6d3a-f9d0-fa67-92097b15a4b9.htm" />
+  <HelpKINode Title="MapeoDeColumnas.MapeoDeColumnas constructor" Url="html/ddbac775-6397-0de6-a27b-411205975213.htm" />
+  <HelpKINode Title="MapeoDeTablas class" Url="html/1d35685b-3d25-08f1-a6a2-0f71135781a0.htm" />
+  <HelpKINode Title="MapeoDeTablas class" Url="html/790e841a-7e3a-198b-4b0b-9489a75ebc68.htm" />
+  <HelpKINode Title="MapeoDeTablas class">
+    <HelpKINode Title="about MapeoDeTablas class" Url="html/1d35685b-3d25-08f1-a6a2-0f71135781a0.htm" />
+    <HelpKINode Title="all members" Url="html/790e841a-7e3a-198b-4b0b-9489a75ebc68.htm" />
+    <HelpKINode Title="constructor" Url="html/cf3e6d86-b608-4c88-efb2-4ba73aa1607b.htm" />
+    <HelpKINode Title="methods" Url="html/60dae501-ce29-dc0b-07ee-9ab8d8fec1ab.htm" />
+    <HelpKINode Title="properties" Url="html/d52e416b-07bc-228b-5cb4-aae7ca640bff.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MapeoDeTablas.AgregarMapa method" Url="html/fa2fb5ab-26a7-ba7d-e444-69665009f0ed.htm" />
+  <HelpKINode Title="MapeoDeTablas.MapasColumnas property" Url="html/6d84c108-1f52-7b16-066d-066b187f7db3.htm" />
+  <HelpKINode Title="MapeoDeTablas.MapeoDeTablas constructor" Url="html/cf3e6d86-b608-4c88-efb2-4ba73aa1607b.htm" />
+  <HelpKINode Title="MapeoDeTablas.NodoEsLegal method" Url="html/cb6b1d1c-1df4-5244-ba55-ca3779148509.htm" />
+  <HelpKINode Title="MapeoDeTablas.Tabla property" Url="html/7951591f-4b54-a346-a6ee-3e47aca43916.htm" />
+  <HelpKINode Title="MapeoDeTablas.TablaMapeada method" Url="html/d24b6de0-1f5d-966a-cfd5-14842f8912b7.htm" />
+  <HelpKINode Title="Nivel field" Url="html/3812b042-f78e-f249-acc9-3faa7b38dde6.htm" />
+  <HelpKINode Title="Nodo class" Url="html/360bd639-50aa-638c-076b-0edfe9fb02ad.htm" />
+  <HelpKINode Title="Nodo class" Url="html/6bf3a19e-e92c-aa37-cd3c-35b8403e1369.htm" />
+  <HelpKINode Title="Nodo class">
+    <HelpKINode Title="about Nodo class" Url="html/6bf3a19e-e92c-aa37-cd3c-35b8403e1369.htm" />
+    <HelpKINode Title="all members" Url="html/360bd639-50aa-638c-076b-0edfe9fb02ad.htm" />
+    <HelpKINode Title="constructor" Url="html/13afdc99-55b9-443a-60b5-5232c9c7dcf5.htm" />
+    <HelpKINode Title="fields" Url="html/6a83afe7-dd69-1244-a328-d85bea71ef99.htm" />
+    <HelpKINode Title="methods" Url="html/4e48e51c-3e82-aed0-d53f-efaac1783d97.htm" />
+    <HelpKINode Title="properties" Url="html/f7d5eea0-f7ee-aa5d-48ee-be61f100748d.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Nodo.AgregarHijo method" Url="html/3c34c2af-89d7-45ef-f000-d8fb84eaac41.htm" />
+  <HelpKINode Title="Nodo.BuscarNodo method" Url="html/b2b14c6c-e04a-095f-f6d7-033d5845a603.htm" />
+  <HelpKINode Title="Nodo.Expandido field" Url="html/7864bb82-8458-9215-aec7-579f2795f75b.htm" />
+  <HelpKINode Title="Nodo.Explorador field" Url="html/73593467-c058-52a2-bd62-a3b40e4c3d04.htm" />
+  <HelpKINode Title="Nodo.Hijos property" Url="html/164d7eee-607a-1857-9424-b1a37eeac416.htm" />
+  <HelpKINode Title="Nodo.ListarHijos method" Url="html/a30fd586-5455-7015-82d6-3d71257ebd67.htm" />
+  <HelpKINode Title="Nodo.MapaColumna field" Url="html/6e4fd038-923d-44f0-7645-76f470abfab3.htm" />
+  <HelpKINode Title="Nodo.Nivel field" Url="html/3812b042-f78e-f249-acc9-3faa7b38dde6.htm" />
+  <HelpKINode Title="Nodo.Nodo constructor" Url="html/13afdc99-55b9-443a-60b5-5232c9c7dcf5.htm" />
+  <HelpKINode Title="Nodo.Nombre property" Url="html/463bf305-6303-7059-4de8-e9d5f37c6800.htm" />
+  <HelpKINode Title="Nodo.Padre field" Url="html/1a0b8e6f-fce2-3489-d06b-6f52621ea985.htm" />
+  <HelpKINode Title="Nodo.RutaCompleta method" Url="html/a6370cf2-1bd0-357c-d414-bd9ae09dcfe8.htm" />
+  <HelpKINode Title="NodoActual property" Url="html/adb54af6-095c-f260-fa2d-5d711f6f1412.htm" />
+  <HelpKINode Title="NodoEsLegal method" Url="html/cb6b1d1c-1df4-5244-ba55-ca3779148509.htm" />
+  <HelpKINode Title="Nodos property" Url="html/7bbf379d-8439-66e4-9ccf-c58165917e18.htm" />
+  <HelpKINode Title="NodoTablaActual field" Url="html/711d4799-bee8-8466-3944-ee80000a37db.htm" />
+  <HelpKINode Title="Nombre property" Url="html/463bf305-6303-7059-4de8-e9d5f37c6800.htm" />
+  <HelpKINode Title="ObtenerNodosCache method" Url="html/e1496d9b-b364-0b15-73e8-aaacd47fe8a6.htm" />
+  <HelpKINode Title="ObtenerTabla method" Url="html/5d0641ab-631a-dafb-eee7-977a8b33294c.htm" />
+  <HelpKINode Title="ObtenerTablasCache method" Url="html/a276d27e-2f0c-d83c-5272-cc3e57eb0d51.htm" />
+  <HelpKINode Title="OnPropertyChanged method" Url="html/3ab4a88b-0751-7467-7c8b-5107932dfad2.htm" />
+  <HelpKINode Title="OnPropertyChanged method" Url="html/c700095e-6269-6108-e57d-b8f17741cd66.htm" />
+  <HelpKINode Title="OnPropertyChanged method" Url="html/d57a3ba7-5d2d-40d8-9f32-2af4c0f22901.htm" />
+  <HelpKINode Title="Padre field" Url="html/1a0b8e6f-fce2-3489-d06b-6f52621ea985.htm" />
+  <HelpKINode Title="PropertyChanged event" Url="html/48e6396e-9071-f3d3-35f1-74c78c868cf1.htm" />
+  <HelpKINode Title="PropertyChanged event" Url="html/4e750fe5-b9ea-3ba2-d844-fb6b5d9a24d1.htm" />
+  <HelpKINode Title="PropertyChanged event" Url="html/a18d2a78-b012-b3ff-6ece-3a30e9904e59.htm" />
+  <HelpKINode Title="RutaCompleta method" Url="html/a6370cf2-1bd0-357c-d414-bd9ae09dcfe8.htm" />
+  <HelpKINode Title="Tabla property" Url="html/7951591f-4b54-a346-a6ee-3e47aca43916.htm" />
+  <HelpKINode Title="TablaActual property" Url="html/c7cd9657-3187-2d33-3df6-3dd03af76ac5.htm" />
+  <HelpKINode Title="TablaMapeada method" Url="html/d24b6de0-1f5d-966a-cfd5-14842f8912b7.htm" />
+  <HelpKINode Title="Valeria.Logica namespace" Url="html/52b52edc-66cf-7487-e4a2-17529363e8ef.htm" />
+  <HelpKINode Title="Valeria.Logica.BarraDeEstado class" Url="html/ad97cc44-26af-4f8e-5f22-b87b54a58f98.htm" />
+  <HelpKINode Title="Valeria.Logica.BarraDeEstado class" Url="html/e4a70f4d-eb6a-bbcf-0e8b-6e8f13ce3ec1.htm" />
+  <HelpKINode Title="Valeria.Logica.Conexion class" Url="html/01a6c8df-bc98-f77a-7c99-287cf4e71f7a.htm" />
+  <HelpKINode Title="Valeria.Logica.Conexion class" Url="html/3f7a956f-7e15-89f3-25d2-daf7c7846546.htm" />
+  <HelpKINode Title="Valeria.Logica.Explorador class" Url="html/2f500a61-1a0c-6bf8-e8c3-b1731b6cfb96.htm" />
+  <HelpKINode Title="Valeria.Logica.Explorador class" Url="html/c5ac6c2c-dda0-9d62-3f9e-5b8c9899e67c.htm" />
+  <HelpKINode Title="Valeria.Logica.MapeoDeColumnas class" Url="html/c5a4f3b6-168c-1fd1-c6d8-10abce6f9c81.htm" />
+  <HelpKINode Title="Valeria.Logica.MapeoDeColumnas class" Url="html/e5b6e267-6827-a23a-fbf8-0af5fc372b77.htm" />
+  <HelpKINode Title="Valeria.Logica.MapeoDeTablas class" Url="html/1d35685b-3d25-08f1-a6a2-0f71135781a0.htm" />
+  <HelpKINode Title="Valeria.Logica.MapeoDeTablas class" Url="html/790e841a-7e3a-198b-4b0b-9489a75ebc68.htm" />
+  <HelpKINode Title="Valeria.Logica.Nodo class" Url="html/360bd639-50aa-638c-076b-0edfe9fb02ad.htm" />
+  <HelpKINode Title="Valeria.Logica.Nodo class" Url="html/6bf3a19e-e92c-aa37-cd3c-35b8403e1369.htm" />
+</HelpKI>

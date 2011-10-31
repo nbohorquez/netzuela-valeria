@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Datos</name>
+    </assembly>
+    <members>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos">
+            <summary>
+            Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
+            a las bases de datos.
+            </summary>    
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorPredeterminado">
+            <summary>
+            Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.StringSegura">
+            <summary>
+            Contiene funciones adicionales para los tipos SecureString. Este codigo fue tomado de la pagina: 
+            http://blogs.msdn.com/b/fpintos/archive/2009/06/12/how-to-properly-convert-securestring-to-string.aspx
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.StringSegura.ConvertirAUnsecureString(System.Security.SecureString)">
+            <summary>
+            
+            </summary>
+            <param name="StringSegura"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.StringSegura.ConvertirASecureString(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="StringNoSegura"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Oracle">
+            <summary>
+            Implementa las funciones de acceso a las bases de datos Oracle
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.MySQL">
+            <summary>
+            Implementa las funciones de acceso a las bases de datos MySQL
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorLocal">
+            <summary>
+            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
+            </summary>    
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Netzuela">
+            <summary>
+            Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
+            <summary>
+            Implementa las funciones de acceso a las bases de datos SQLServer
+            </summary>
+        </member>
+    </members>
+</doc>

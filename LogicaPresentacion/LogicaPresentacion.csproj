@@ -65,6 +65,10 @@
       <Project>{9EFCF5AD-5A96-4726-8385-807552BA1497}</Project>
       <Name>Comunes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Datos\Datos.csproj">
+      <Project>{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}</Project>
+      <Name>Datos</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AutentificacionView.xaml">

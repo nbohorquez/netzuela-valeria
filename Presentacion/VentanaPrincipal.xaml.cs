@@ -67,7 +67,8 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
         private void btn_Detectar_Clic(object sender, RoutedEventArgs e)
         {
-            VentanaDetectarServidoresLocales Servidores = new VentanaDetectarServidoresLocales(ref Local);
+            ObservableCollection<ServidorLocal> ServidoresDetectados = Conexion.DetectarServidoresLocales().ConvertirAObservableCollection();
+            VentanaDetectarServidoresLocales Servidores = new VentanaDetectarServidoresLocales(ServidoresDetectados);
             Servidores.ShowDialog();
         }
 

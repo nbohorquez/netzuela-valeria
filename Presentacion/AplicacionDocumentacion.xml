@@ -79,11 +79,11 @@
             VentanaDetectarServidoresLocales
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Presentacion.VentanaDetectarServidoresLocales.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Conexion@)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Presentacion.VentanaDetectarServidoresLocales.#ctor(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.Datos.ServidorLocal})">
             <summary>
             
             </summary>
-            <param name="Conexion"></param>
+            <param name="ServidoresDetectados"></param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Presentacion.VentanaDetectarServidoresLocales.InitializeComponent">
             <summary>

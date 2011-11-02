@@ -8,6 +8,8 @@ using System.Security;
 using System.Windows.Input;
 using Zuliaworks.Netzuela.Valeria.Comunes;
 
+using System.Windows;
+
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     /// <summary>

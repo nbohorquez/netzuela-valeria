@@ -20,17 +20,9 @@
             y asi poder atarse (to bind) a ella desde el ViewModel.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView">
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.DetectarServidoresLocalesViewModel">
             <summary>
-            Lógica de interacción para AutentificacionView.xaml
-            </summary>
-            <summary>
-            AutentificacionView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView.InitializeComponent">
-            <summary>
-            InitializeComponent
+            
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.DetectarServidoresLocalesView">
@@ -42,6 +34,19 @@
             </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.DetectarServidoresLocalesView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView">
+            <summary>
+            Lógica de interacción para AutentificacionView.xaml
+            </summary>
+            <summary>
+            AutentificacionView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>

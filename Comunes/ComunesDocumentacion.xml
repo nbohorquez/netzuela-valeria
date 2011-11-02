@@ -70,16 +70,5 @@
             hacer dos clases distintas pero es mucho mas elegante que una derive de la otra. ¿Tendeis?
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion.OnPropertyChanged(System.String)">
-            <summary>
-            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-            </summary>
-            <param name="info">Nombre de la propiedad modificada.</param>
-        </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion.PropertyChanged">
-            <summary>
-            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-            </summary>
-        </member>
     </members>
 </doc>

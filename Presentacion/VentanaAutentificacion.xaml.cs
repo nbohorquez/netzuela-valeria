@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;
+
 namespace Zuliaworks.Netzuela.Valeria.Presentacion
 {
     /// <summary>
@@ -33,6 +35,9 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         public VentanaAutentificacion()
         {
             InitializeComponent();
+
+            var ViewModel = new AutentificacionViewModel();
+            this.DataContext = ViewModel;
         }
 
         #endregion
@@ -51,18 +56,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
         #region Funciones
 
-        private void btn_Acceder_Clic(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void tcl_Enter_Presionado(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                this.Close();
-            }
-        }
+        // ...
 
         #endregion
 

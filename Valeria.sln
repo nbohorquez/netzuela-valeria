@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentacion", "Presentacio
 		{9EFCF5AD-5A96-4726-8385-807552BA1497} = {9EFCF5AD-5A96-4726-8385-807552BA1497}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicaPresentacion", "LogicaPresentacion\LogicaPresentacion.csproj", "{39A2598C-EEE2-4C32-84E5-A7277586C9BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,16 @@ Global
 		{EBF3A791-8989-42B4-A4C0-7621206765D8}.Release|Mixed Platforms.Build.0 = Release|x86
 		{EBF3A791-8989-42B4-A4C0-7621206765D8}.Release|x86.ActiveCfg = Release|x86
 		{EBF3A791-8989-42B4-A4C0-7621206765D8}.Release|x86.Build.0 = Release|x86
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

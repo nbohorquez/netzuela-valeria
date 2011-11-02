@@ -75,7 +75,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         {
             VentanaAutentificacion Credenciales = new VentanaAutentificacion();
             Credenciales.ShowDialog();
-
+            /*
             try
             {
                 Local.Conectar(Credenciales.txt_Usuario.Text.ConvertirASecureString(), Credenciales.pwd_Contasena.SecurePassword);
@@ -137,7 +137,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n" + ex.InnerException);
-            }
+            }*/
         }
 
         private void btn_Desconectar_Clic(object sender, RoutedEventArgs e)

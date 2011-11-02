@@ -34,6 +34,34 @@
             Contiene funciones adicionales para los tipos ObservableCollection
             </summary>
         </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.ColeccionesObservables.ConvertirAObservableCollection``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="Enumerable"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.StringSegura">
+            <summary>
+            Contiene funciones adicionales para los tipos SecureString. Este codigo fue tomado de la pagina: 
+            http://blogs.msdn.com/b/fpintos/archive/2009/06/12/how-to-properly-convert-securestring-to-string.aspx
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.StringSegura.ConvertirAUnsecureString(System.Security.SecureString)">
+            <summary>
+            
+            </summary>
+            <param name="StringSegura"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.StringSegura.ConvertirASecureString(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="StringNoSegura"></param>
+            <returns></returns>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion">
             <summary>
             Esta clase se usa en todas partes. Lo que en verdad quiero hacer (y todavia no se como) son 

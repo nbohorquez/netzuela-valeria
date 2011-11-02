@@ -5,6 +5,8 @@ using System.Text;
 
 using System.Collections.ObjectModel;           // ObservableCollection
 using System.ComponentModel;                    // INotifyPropertyChanged
+using System.Runtime.InteropServices;           // unsafe
+using System.Security;                          // SecureString
 
 namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
@@ -66,12 +68,82 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
     /// </summary>
     public static class ColeccionesObservables
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Enumerable"></param>
+        /// <returns></returns>
         public static ObservableCollection<T> ConvertirAObservableCollection<T>(this IEnumerable<T> Enumerable)
         {
             var c = new ObservableCollection<T>();
             foreach (var e in Enumerable)
                 c.Add(e);
             return c;
+        }
+    }
+
+    /// <summary>
+    /// Contiene funciones adicionales para los tipos SecureString. Este codigo fue tomado de la pagina: 
+    /// http://blogs.msdn.com/b/fpintos/archive/2009/06/12/how-to-properly-convert-securestring-to-string.aspx
+    /// </summary>
+    public static class StringSegura
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="StringSegura"></param>
+        /// <returns></returns>
+        public static string ConvertirAUnsecureString(this SecureString StringSegura)
+        {
+            if (StringSegura == null)
+                throw new ArgumentNullException("StringSegura");
+
+            IntPtr StringNoSegura = IntPtr.Zero;
+
+            try
+            {
+                StringNoSegura = Marshal.SecureStringToGlobalAllocUnicode(StringSegura);
+                return Marshal.PtrToStringUni(StringNoSegura);
+            }
+            finally
+            {
+                Marshal.ZeroFreeGlobalAllocUnicode(StringNoSegura);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="StringNoSegura"></param>
+        /// <returns></returns>
+        public static SecureString ConvertirASecureString(this string StringNoSegura)
+        {
+            if (StringNoSegura == null)
+                throw new ArgumentNullException("StringNoSegura");
+
+            /*
+             * Uso de la instruccion fixed
+             * ============================
+             * 
+             * La instrucción fixed evita que el recolector de elementos no utilizados "reubique" una 
+             * variable móvil. La instrucción fixed solo se permite en un contexto no seguro. Fixed 
+             * también se puede utilizar para crear búferes de tamaño fijo.
+             * (http://msdn.microsoft.com/es-es/library/f58wzh21%28v=VS.100%29.aspx)
+             * 
+             * Para habilitar la compilación de codigo no seguro, vaya a Proyecto->Propiedades->Generar y 
+             * marque la casilla "Permitir codigo no seguro".
+             */
+
+            unsafe
+            {
+                fixed (char* Apuntador = StringNoSegura)
+                {
+                    var StringSegura = new SecureString(Apuntador, StringNoSegura.Length);
+                    StringSegura.MakeReadOnly();
+                    return StringSegura;
+                }
+            }
         }
     }
 

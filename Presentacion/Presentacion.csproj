@@ -65,6 +65,9 @@
     <Reference Include="Logica">
       <HintPath>..\Logica\bin\Release\Logica.dll</HintPath>
     </Reference>
+    <Reference Include="MvvmFoundation.Wpf">
+      <HintPath>..\MvvmFoundation\MvvmFoundation.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -156,6 +159,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogicaPresentacion\LogicaPresentacion.csproj">
+      <Project>{39A2598C-EEE2-4C32-84E5-A7277586C9BD}</Project>
+      <Name>LogicaPresentacion</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

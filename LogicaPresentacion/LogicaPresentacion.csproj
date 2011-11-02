@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}</ProjectGuid>
+    <ProjectGuid>{39A2598C-EEE2-4C32-84E5-A7277586C9BD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zuliaworks.Netzuela.Valeria.Logica</RootNamespace>
-    <AssemblyName>Logica</AssemblyName>
+    <RootNamespace>Zuliaworks.Netzuela.Valeria.LogicaPresentacion</RootNamespace>
+    <AssemblyName>LogicaPresentacion</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>LogicaDocumentacion.xml</DocumentationFile>
+    <DocumentationFile>LogicaPresentacionDocumentacion.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,35 +30,44 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>LogicaDocumentacion.xml</DocumentationFile>
+    <DocumentationFile>LogicaPresentacionDocumentacion.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Comunes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Datos\bin\Release\Comunes.dll</HintPath>
+    <Reference Include="MvvmFoundation.Wpf">
+      <HintPath>..\MvvmFoundation\MvvmFoundation.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Datos, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Datos\bin\Release\Datos.dll</HintPath>
-    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BarraDeEstado.cs" />
-    <Compile Include="Conexion.cs" />
-    <Compile Include="Explorador.cs" />
-    <Compile Include="MapeoDeColumnas.cs" />
-    <Compile Include="MapeoDeTablas.cs" />
-    <Compile Include="Nodo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recursos.cs" />
+    <Compile Include="ViewModels\AutentificacionViewModel.cs" />
+    <Compile Include="Views\AutentificacionView.xaml.cs">
+      <DependentUpon>AutentificacionView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Comunes\Comunes.csproj">
+      <Project>{9EFCF5AD-5A96-4726-8385-807552BA1497}</Project>
+      <Name>Comunes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\AutentificacionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

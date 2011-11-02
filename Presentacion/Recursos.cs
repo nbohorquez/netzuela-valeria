@@ -31,45 +31,6 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
     }
 
     /*
-     * Las siguiente clases se utilizan para mostrar contenido por defecto cuando no hay nada 
-     * seleccionado en un ComboBox. El valor devuelto controla la propiedad "Visibility" de un 
-     * TextBox. Ver el codigo local VentanaDetectarServidoresLocales.xaml y la explicacion de 
-     * la pagina:
-     * 
-     * http://stackoverflow.com/questions/1426050/how-to-display-default-text-select-team-in-combo-box-on-pageload-in-wpf
-     */
-
-    public class TextoPorDefectoEnComboBox1 : IValueConverter
-    {
-        public object Convert(object Valor, Type TipoObjetivo, object Parametro, CultureInfo Cultura)
-        {
-            return Valor == null ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public object ConvertBack(object Valor, Type TipoObjetivo, object Parametro, CultureInfo Cultura)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class TextoPorDefectoEnComboBox2 : IMultiValueConverter
-    {
-        public object Convert(object[] Valor, Type TipoObjetivo, object Parametro, CultureInfo Cultura)
-        {
-            if (Valor[0] != null)
-            {
-                return Valor[1] == null ? Visibility.Visible : Visibility.Collapsed;
-            }
-            return Visibility.Collapsed;
-        }
-
-        public object[] ConvertBack(object Valor, Type[] TipoObjetivo, object Parametro, CultureInfo Cultura)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    /*
      * Este convertidor lo uso para transformar ConnectionState a palabras
      */
 

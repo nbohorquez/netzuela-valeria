@@ -4,6 +4,22 @@
         <name>LogicaPresentacion</name>
     </assembly>
     <members>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.AutentificacionViewModel">
+            <summary>
+            Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.DialogCloser">
+            <summary>
+            Este clase se emplea para cerrar los dialogos desde los ViewModel.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.BindablePasswordBox">
+            <summary>
+            Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
+            y asi poder atarse (to bind) a ella desde el ViewModel.
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView">
             <summary>
             Lógica de interacción para AutentificacionView.xaml
@@ -17,9 +33,17 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.DialogCloser">
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.DetectarServidoresLocalesView">
             <summary>
-            Este clase se emplea para cerrar los dialogos desde los ViewModel.
+            Lógica de interacción para DetectarServidoresLocalesView.xaml
+            </summary>
+            <summary>
+            DetectarServidoresLocalesView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.DetectarServidoresLocalesView.InitializeComponent">
+            <summary>
+            InitializeComponent
             </summary>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">

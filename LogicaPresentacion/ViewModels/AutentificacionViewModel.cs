@@ -10,6 +10,9 @@ using Zuliaworks.Netzuela.Valeria.Comunes;
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    /// <summary>
+    /// Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
+    /// </summary>
     public class AutentificacionViewModel : ObservableObject
     {
         #region Variables

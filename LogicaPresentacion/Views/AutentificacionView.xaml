@@ -3,10 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Local="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion"
-             xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels"             
+             xmlns:lp="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion"
              mc:Ignorable="d">
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -19,11 +18,21 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0">Usuario:</Label>
-        <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,10,0" Text="{Binding Path=Usuario, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,10,0" Text="{Binding Path=Usuario, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="False">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding Path=AccederOrden}"/>
+            </TextBox.InputBindings>
+        </TextBox>
         
         <Label Grid.Row="1" Grid.Column="0">Contraseña:</Label>
-        <Local:BindablePasswordBox Grid.Row="1" Grid.Column="1" Margin="0,0,10,0" SecurePassword="{Binding Path=Contrasena, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+        
+        <lp:BindablePasswordBox Grid.Row="1" Grid.Column="1" Margin="0,0,10,0" SecurePassword="{Binding Path=Contrasena, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
+            <lp:BindablePasswordBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding Path=AccederOrden}"/>
+            </lp:BindablePasswordBox.InputBindings>
+        </lp:BindablePasswordBox>
 
-        <Button Grid.Row="2" Grid.ColumnSpan="2" Margin="10" Command="{Binding Path=AccederOrden, Mode=OneTime}">Acceder</Button>
+        <Button Grid.Row="2" Grid.ColumnSpan="2" Margin="10" Command="{Binding Path=AccederOrden, Mode=OneTime}" Content="Acceder"/>
     </Grid>
 </UserControl>

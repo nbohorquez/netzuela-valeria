@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-using System.Security;
-using System.Windows.Controls;
+using System.Security;                          // SecureString
+using System.Windows.Controls;                  // DependencyProperty y otros demonios...
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 {
@@ -37,6 +37,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         }
     }
 
+    /// <summary>
+    /// Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
+    /// y asi poder atarse (to bind) a ella desde el ViewModel.
+    /// </summary>
     public class BindablePasswordBox : Decorator
     {
         // Este codigo fue tomado de http://stackoverflow.com/questions/1097235/passwordbox-with-mvvm

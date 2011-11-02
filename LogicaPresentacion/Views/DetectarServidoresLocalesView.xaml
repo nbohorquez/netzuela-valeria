@@ -1,24 +1,23 @@
-﻿<Window x:Class="Zuliaworks.Netzuela.Valeria.Presentacion.VentanaDetectarServidoresLocales"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:lp="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion;assembly=LogicaPresentacion"
-        xmlns:views="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views;assembly=LogicaPresentacion"
-        lp:DialogCloser.DialogResult="{Binding Path=CerrarView}"
-        Title="DetectarServidoresLocales" Height="180" Width="300"
-        WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
-    
-    <views:DetectarServidoresLocalesView/>
-    <!--<Window.Resources>
-        <Local:TextoPorDefectoEnComboBox1 x:Key="TextoPorDefectoEnComboBox1"/>
-        <Local:TextoPorDefectoEnComboBox2 x:Key="TextoPorDefectoEnComboBox2"/>
+﻿<UserControl x:Class="Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.DetectarServidoresLocalesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:views="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <views:TextoPorDefectoEnComboBox1 x:Key="TextoPorDefectoEnComboBox1"/>
+        <views:TextoPorDefectoEnComboBox2 x:Key="TextoPorDefectoEnComboBox2"/>
 
         <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="IsHitTestVisible" Value="False"/>
         </Style>
-    </Window.Resources>
-    
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -32,16 +31,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0">Servidor:</Label>
+        <Label Grid.Row="0" Grid.Column="0" Content="Servidor:"/>
         <ComboBox Grid.Row="0" Grid.Column="1" Name="cmb_Servidor"
-                  ItemsSource="{Binding}"
+                  ItemsSource="{Binding Path=.}"
                   SelectedValuePath="Nombre"
                   DisplayMemberPath="Nombre"/>
         <TextBlock Grid.Row="0" Grid.Column="1"
                    Visibility="{Binding SelectedItem, ElementName=cmb_Servidor, Converter={StaticResource TextoPorDefectoEnComboBox1}}"
                    Text="Seleccione el servidor"/>
 
-        <Label Grid.Row="1" Grid.Column="0">Instancia:</Label>
+        <Label Grid.Row="1" Grid.Column="0" Content="Instancia:"/>
         <ComboBox Grid.Row="1" Grid.Column="1" Name="cmb_Instancia"
                   DataContext="{Binding ElementName=cmb_Servidor, Path=SelectedItem}"
                   ItemsSource="{Binding Path=Instancias}"
@@ -58,7 +57,7 @@
             </TextBlock.Visibility>
         </TextBlock>
 
-        <Label Grid.Row="2" Grid.Column="0">Método de conexión:</Label>
+        <Label Grid.Row="2" Grid.Column="0" Content="Método de conexión:"/>
         <ComboBox Grid.Row="2" Grid.Column="1" Name="cmb_MetodoDeConexion"
                   DataContext="{Binding ElementName=cmb_Instancia, Path=SelectedItem}"
                   ItemsSource="{Binding Path=Metodos}"
@@ -75,7 +74,7 @@
             </TextBlock.Visibility>
         </TextBlock>
 
-        <Label Grid.Row="3" Grid.Column="0">Argumento de conexión:</Label>
+        <Label Grid.Row="3" Grid.Column="0" Content="Argumento de conexión:"/>
         <ComboBox Grid.Row="3" Grid.Column="1" Name="cmb_ArgumentoDeConexion"
                   DataContext="{Binding ElementName=cmb_MetodoDeConexion, Path=SelectedItem}"
                   ItemsSource="{Binding Path=Valores}"/>
@@ -90,6 +89,6 @@
             </TextBlock.Visibility>
         </TextBlock>
 
-        <Button Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="Auto" Height="Auto" Padding="10,2,10,2" Margin="0,10,0,10" Click="btn_Aceptar_Clic">Aceptar</Button>
-    </Grid>-->
-</Window>
+        <Button Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="Auto" Height="Auto" Padding="10,2,10,2" Margin="0,10,0,10" Content="Aceptar"/>
+    </Grid>
+</UserControl>

@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;           // ObservableCollection
 using Zuliaworks.Netzuela.Valeria.Comunes;      // ConvertirAObservableCollection
 using Zuliaworks.Netzuela.Valeria.Datos;        // ServidorLocal
 using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;
 
 namespace Zuliaworks.Netzuela.Valeria.Presentacion
 {
@@ -40,10 +41,16 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         {
             InitializeComponent();
 
+            // Establezco el DataContext aqui porque necesito acceder a "CerrarView" desde la ventana.
+            var ViewModel = new DetectarServidoresLocalesViewModel();
+            this.DataContext = ViewModel;
+
+            /*
             this.Conexion = Conexion;
             this.ServidoresDetectados = Conexion.DetectarServidoresLocales().ConvertirAObservableCollection();
 
             cmb_Servidor.ItemsSource = this.ServidoresDetectados;
+             */
         }
 
         #endregion

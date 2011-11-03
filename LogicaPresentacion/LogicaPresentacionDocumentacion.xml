@@ -4,6 +4,12 @@
         <name>LogicaPresentacion</name>
     </assembly>
     <members>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.PasswordBoxVinculable">
+            <summary>
+            Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
+            y asi poder vincularse (to bind) a ella desde el ViewModel.
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.AutentificacionViewModel">
             <summary>
             Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
@@ -45,21 +51,28 @@
             Este clase se emplea para cerrar los dialogos desde los ViewModel.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.PasswordBoxVinculable">
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView">
             <summary>
-            Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
-            y asi poder vincularse (to bind) a ella desde el ViewModel.
+            Lógica de interacción para ConexionLocalView.xaml
+            </summary>
+            <summary>
+            ConexionLocalView
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocal">
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView.InitializeComponent">
             <summary>
-            Lógica de interacción para ConexionLocal.xaml
-            </summary>
-            <summary>
-            ConexionLocal
+            InitializeComponent
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocal.InitializeComponent">
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView">
+            <summary>
+            Lógica de interacción para ExploradorView.xaml
+            </summary>
+            <summary>
+            ExploradorView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>

@@ -213,7 +213,8 @@
 
                         <!-- Que molleja de feo este "Canvas" aqui... Es una solucion poco elegante pero funciona :$ -->
                         <Canvas Grid.Column="0" Width="1" Height="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-                            <views:ConexionLocal Canvas.Left="-150" Canvas.Bottom="-12" Width="140"/>
+                            <GroupBox Name="grp_ConexionLocal" Header="Conexión local" Canvas.Left="-155" Canvas.Bottom="-12" Width="140" Style="{StaticResource est_Agrupador}" DataContext="{Binding}">
+                                <views:ConexionLocalView/>
                             <!--<GroupBox Name="grp_ConexionLocal" Header="Conexión local" Canvas.Left="-155" Canvas.Bottom="-12" Width="140" Style="{StaticResource est_Agrupador}" DataContext="{Binding}">
                                 <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" DataContext="{Binding Path=Datos}">
                                     <StackPanel Style="{StaticResource est_PilaSeleccionServidorBD}">
@@ -239,8 +240,8 @@
                                     <Button Margin="0,30,0,0" Click="btn_Detectar_Clic">Detectar</Button>
                                     <Button Click="btn_Conectar_Clic">Conectar</Button>
                                     <Button Click="btn_Desconectar_Clic">Desconectar</Button>
-                                </StackPanel>
-                            </GroupBox>-->
+                                </StackPanel>-->
+                            </GroupBox>
                         </Canvas>
                     </Grid>
                 </DockPanel>

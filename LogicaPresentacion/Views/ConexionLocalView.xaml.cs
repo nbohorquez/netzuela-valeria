@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
 {
     /// <summary>
-    /// Lógica de interacción para ConexionLocal.xaml
+    /// Lógica de interacción para ConexionLocalView.xaml
     /// </summary>
-    public partial class ConexionLocal : UserControl
+    public partial class ConexionLocalView : UserControl
     {
-        public ConexionLocal()
+        public ConexionLocalView()
         {
             InitializeComponent();
         }

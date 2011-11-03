@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Zuliaworks.Netzuela.Valeria.Presentacion"
         xmlns:logica="clr-namespace:Zuliaworks.Netzuela.Valeria.Logica;assembly=Logica"
-        Title="Netzuela - Monitor de tienda" 
-        Height="600" MinHeight="480" 
+        xmlns:views="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views;assembly=LogicaPresentacion"
+        Title="Netzuela - Monitor de tienda"
+        Height="600" MinHeight="480"
         Width="800" MinWidth="640">
     
     <Window.Resources>
@@ -20,7 +21,7 @@
             <Setter Property="FontSize" Value="30"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
-        
+
         <Style x:Key="est_Agrupador" TargetType="GroupBox">
             <Setter Property="Height" Value="Auto"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -28,7 +29,7 @@
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Width" Value="Auto"/>
         </Style>
-
+        
         <Style x:Key="est_BarraDeEstado" TargetType="StatusBar">
             <Setter Property="Height" Value="Auto"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -59,7 +60,7 @@
             <Setter Property="SelectionUnit" Value="Cell"/>
         </Style>
 
-        <Style x:Key="est_PilaSeleccionServidorBD" TargetType="StackPanel">
+        <!--<Style x:Key="est_PilaSeleccionServidorBD" TargetType="StackPanel">
             <Setter Property="Orientation" Value="Vertical"/>
             <Style.Resources>
                 <Style TargetType="Label">
@@ -71,7 +72,7 @@
                     <Setter Property="Width" Value="Auto"/>
                 </Style>                
             </Style.Resources>
-        </Style>
+        </Style>-->
     </Window.Resources>
 
     <Grid>
@@ -212,7 +213,8 @@
 
                         <!-- Que molleja de feo este "Canvas" aqui... Es una solucion poco elegante pero funciona :$ -->
                         <Canvas Grid.Column="0" Width="1" Height="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-                            <GroupBox Name="grp_ConexionLocal" Header="Conexión local" Canvas.Left="-155" Canvas.Bottom="-12" Width="140" Style="{StaticResource est_Agrupador}" DataContext="{Binding}">
+                            <views:ConexionLocal Canvas.Left="-150" Canvas.Bottom="-12" Width="140"/>
+                            <!--<GroupBox Name="grp_ConexionLocal" Header="Conexión local" Canvas.Left="-155" Canvas.Bottom="-12" Width="140" Style="{StaticResource est_Agrupador}" DataContext="{Binding}">
                                 <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" DataContext="{Binding Path=Datos}">
                                     <StackPanel Style="{StaticResource est_PilaSeleccionServidorBD}">
                                         <Label>Anfitrión</Label>
@@ -234,14 +236,14 @@
                                         <Label>Arg. de conexión</Label>
                                         <TextBox Name="txt_txt_ArgumentoDeConexion" Text="{Binding Path=ArgumentoDeConexion, Mode=TwoWay}"/>
                                     </StackPanel>
-                                    <Button Margin="0,30,0,0"  Click="btn_Detectar_Clic">Detectar</Button>
+                                    <Button Margin="0,30,0,0" Click="btn_Detectar_Clic">Detectar</Button>
                                     <Button Click="btn_Conectar_Clic">Conectar</Button>
                                     <Button Click="btn_Desconectar_Clic">Desconectar</Button>
                                 </StackPanel>
-                            </GroupBox>
+                            </GroupBox>-->
                         </Canvas>
                     </Grid>
-                </DockPanel>                
+                </DockPanel>
             </TabItem>
             
             <TabItem Header="Sincronización de datos" Name="tab_Sincronizacion">

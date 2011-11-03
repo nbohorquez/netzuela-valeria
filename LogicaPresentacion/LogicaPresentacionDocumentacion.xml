@@ -51,6 +51,19 @@
             y asi poder vincularse (to bind) a ella desde el ViewModel.
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocal">
+            <summary>
+            Lógica de interacción para ConexionLocal.xaml
+            </summary>
+            <summary>
+            ConexionLocal
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocal.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
             <summary>
             GeneratedInternalTypeHelper

@@ -45,8 +45,8 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
             LocalARemota = new List<MapeoDeTablas>();
             Barra = new BarraDeEstado();
             
-            grp_ConexionLocal.DataContext = Local;
-            bar_BarraDeEstado.DataContext = Barra;
+            //grp_ConexionLocal.DataContext = Local;
+            //bar_BarraDeEstado.DataContext = Barra;
         }
 
         #endregion

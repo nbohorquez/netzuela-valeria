@@ -26,8 +26,8 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
     public partial class VentanaDetectarServidoresLocales : Window
     {
         #region Variables
-        
-        private Conexion Conexion;
+
+        // ...
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
         #region Propiedades
 
-        public ObservableCollection<ServidorLocal> ServidoresDetectados { get; set; }
+        // ...
 
         #endregion
 
@@ -76,6 +76,6 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
         // ...
 
-        #endregion        
+        #endregion
     }
 }

@@ -33,8 +33,9 @@
     <DocumentationFile>LogicaPresentacionDocumentacion.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MvvmFoundation.Wpf">
-      <HintPath>..\MvvmFoundation\MvvmFoundation.Wpf.dll</HintPath>
+    <Reference Include="MvvmFoundation.Wpf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bibliotecas\MvvmFoundation\MvvmFoundation.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

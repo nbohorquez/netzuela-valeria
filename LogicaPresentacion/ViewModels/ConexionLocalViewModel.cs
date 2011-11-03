@@ -7,6 +7,8 @@ using MvvmFoundation.Wpf;                       // RelayCommand
 using System.Windows.Input;                     // ICommand
 using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
 
+using System.Windows;
+
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     public class ConexionLocalViewModel
@@ -23,6 +25,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ConexionLocalViewModel()
         {
+            Autentificacion = null;
+            Servidores = null;
+            Datos = new DatosDeConexion();
+            _DetectarOrden = null;
+            _ConectarOrden = null;
+            _DesconectarOrden = null;
         }
 
         #endregion
@@ -30,6 +38,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Propiedades
 
         public DatosDeConexion Datos { get; set; }
+        public AutentificacionViewModel Autentificacion { get; set; }
+        public DetectarServidoresLocalesViewModel Servidores { get; set; }
+
+        public ICommand DetectarOrden
+        {
+            get { return _DetectarOrden ?? (_DetectarOrden = new RelayCommand(this.DetectarClic)); }
+        }
+
+        public ICommand ConectarOrden
+        {
+            get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.ConectarClic)); }
+        }
+
+        public ICommand DesconectarOrden
+        {
+            get { return _DesconectarOrden ?? (_DesconectarOrden = new RelayCommand(this.DesconectarClic)); }
+        }
 
         #endregion
 
@@ -41,19 +66,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Funciones
 
-        public ICommand DetectarOrden
+        private void DetectarClic()
         {
-            get { }
+            
         }
 
-        public ICommand ConectarOrden
+        private void ConectarClic()
         {
-            get { }
         }
 
-        public ICommand DesconectarOrden
+        private void DesconectarClic()
         {
-            get { }
         }
 
         #endregion

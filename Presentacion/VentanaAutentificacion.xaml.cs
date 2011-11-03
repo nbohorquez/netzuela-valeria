@@ -22,7 +22,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
     public partial class VentanaAutentificacion : Window
     {
         #region Variables
-        
+
         // ...
 
         #endregion

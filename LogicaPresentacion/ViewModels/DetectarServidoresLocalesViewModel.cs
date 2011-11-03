@@ -9,8 +9,6 @@ using System.Windows.Input;                     // ICommand
 using Zuliaworks.Netzuela.Valeria.Datos;        // ServidorLocal
 using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
 
-using System.Windows;
-
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     /// <summary>
@@ -54,6 +52,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
+        public ICommand SeleccionarOrden
+        {
+            get { return _SeleccionarOrden ?? (_SeleccionarOrden = new RelayCommand(() => this.CerrarView = true)); }
+        }
+
         #endregion
 
         #region Eventos
@@ -64,10 +67,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Funciones
 
-        public ICommand SeleccionarOrden
-        {
-            get { return _SeleccionarOrden ?? (_SeleccionarOrden = new RelayCommand(() => this.CerrarView = true)); }
-        }
+        // ...
 
         #endregion
 

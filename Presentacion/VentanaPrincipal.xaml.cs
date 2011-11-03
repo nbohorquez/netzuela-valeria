@@ -12,11 +12,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using System.Collections.ObjectModel;    // ObservableCollection
-using System.Data;                       // DataTable
-using Zuliaworks.Netzuela.Valeria.Comunes;                   // DatosDeConexion, Constantes
-using Zuliaworks.Netzuela.Valeria.Datos;                     // ServidorLocal
-using Zuliaworks.Netzuela.Valeria.Logica;                    // Conexion, ColeccionDeNodos, TablaDeDatos, BarraDeEstado
+//using Microsoft.Practices.Unity;                                    // IUnityContainer
+using System.Collections.ObjectModel;                               // ObservableCollection
+using System.Data;                                                  // DataTable
+using Zuliaworks.Netzuela.Valeria.Comunes;                          // DatosDeConexion, Constantes
+using Zuliaworks.Netzuela.Valeria.Datos;                            // ServidorLocal
+using Zuliaworks.Netzuela.Valeria.Logica;                           // Conexion, ColeccionDeNodos, TablaDeDatos, BarraDeEstado
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;
 
 namespace Zuliaworks.Netzuela.Valeria.Presentacion
 {
@@ -32,6 +34,8 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         private Explorador ArbolLocal, ArbolRemoto;
         private List<MapeoDeTablas> LocalARemota;
 
+        //private readonly IUnityContainer _Contenedor;
+
         #endregion
 
         #region Constructores
@@ -44,7 +48,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
             Remota = new Conexion(new DatosDeConexion() { Servidor = Constantes.SGBDR.NETZUELA, Instancia = "Isla Providencia" });
             LocalARemota = new List<MapeoDeTablas>();
             Barra = new BarraDeEstado();
-            
+
             //grp_ConexionLocal.DataContext = Local;
             //bar_BarraDeEstado.DataContext = Barra;
         }
@@ -231,9 +235,34 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         #endregion
 
         #region Implementaciones de interfaces
+        /*
+        void IVentana.Close()
+        {
+            this.Close();
+        }
 
-        // ...
+        bool? IVentana.ShowDialog()
+        {
+            return this.ShowDialog();
+        }
 
+        void IVentana.SetOwner(object window)
+        {
+            this.Owner = window as Window;
+        }
+
+        bool? IVentana.DialogResult
+        {
+            get
+            {
+                return this.DialogResult;
+            }
+            set
+            {
+                this.DialogResult = value;
+            }
+        }
+        */
         #endregion
 
         #region Tipos anidados

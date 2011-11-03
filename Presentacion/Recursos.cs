@@ -96,7 +96,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
             {
                 Resultado += ColDst == null ? "" : "->" + ColDst.Nombre;
             }
-        
+
             return Resultado;
         }
 

@@ -6,6 +6,7 @@
         lp:DialogCloser.DialogResult="{Binding Path=CerrarView}"
         Title="DetectarServidoresLocales" Height="180" Width="300"
         WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner">
-    
+
     <views:DetectarServidoresLocalesView/>
 </Window>
+

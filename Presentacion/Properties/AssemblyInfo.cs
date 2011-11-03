@@ -8,11 +8,11 @@ using System.Windows;
 // conjunto de atributos. Cambie estos atributos para modificar la información
 // asociada con un ensamblado.
 [assembly: AssemblyTitle("Valeria")]
-[assembly: AssemblyDescription("Aplicación de monitoreo de tiendas de Netzuela.com")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Zuliaworks C.A.")]
-[assembly: AssemblyProduct("Aplicacion")]
-[assembly: AssemblyCopyright("Copyright © Zuliaworks C.A. 2011")]
+[assembly: AssemblyProduct("Netzuela")]
+[assembly: AssemblyCopyright("Copyright © jarcob 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

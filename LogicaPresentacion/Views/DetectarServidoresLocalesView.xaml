@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:views="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views"
+             xmlns:Views="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views"
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <views:TextoPorDefectoEnComboBox1 x:Key="TextoPorDefectoEnComboBox1"/>
-        <views:TextoPorDefectoEnComboBox2 x:Key="TextoPorDefectoEnComboBox2"/>
+        <Views:TextoPorDefectoEnComboBox1 x:Key="TextoPorDefectoEnComboBox1"/>
+        <Views:TextoPorDefectoEnComboBox2 x:Key="TextoPorDefectoEnComboBox2"/>
 
         <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Left"/>

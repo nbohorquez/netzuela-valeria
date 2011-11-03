@@ -2,9 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Views="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views"
+             xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels"
              mc:Ignorable="d">
 
+    <UserControl.DataContext>
+        <ViewModels:ConexionLocalViewModel/>
+    </UserControl.DataContext>
+    
     <UserControl.Resources>
         <Style x:Key="est_PilaSeleccionServidor" TargetType="StackPanel">
             <Setter Property="Orientation" Value="Vertical"/>
@@ -22,27 +28,32 @@
     </UserControl.Resources>
 
     <Grid>
-        <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch" DataContext="{Binding Path=Datos}">
+        <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch">
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Anfitrión</Label>
-                <TextBox Name="txt_Anfitrion" Text="{Binding Path=Anfitrion, Mode=TwoWay}"/>
+                <TextBox Name="txt_Anfitrion" Text="{Binding Path=Datos.Anfitrion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+            
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Servidor</Label>
-                <TextBox Name="txt_Servidor" Text="{Binding Path=Servidor, Mode=TwoWay}"/>
+                <TextBox Name="txt_Servidor" Text="{Binding Path=Datos.Servidor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+            
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Instancia</Label>
-                <TextBox Name="txt_Instancia" Text="{Binding Path=Instancia, Mode=TwoWay}"/>
+                <TextBox Name="txt_Instancia" Text="{Binding Path=Datos.Instancia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+            
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Método de conexión</Label>
-                <TextBox Name="txt_MetodoDeConexion" Text="{Binding Path=MetodoDeConexion, Mode=TwoWay}"/>
+                <TextBox Name="txt_MetodoDeConexion" Text="{Binding Path=Datos.MetodoDeConexion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+            
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Arg. de conexión</Label>
-                <TextBox Name="txt_txt_ArgumentoDeConexion" Text="{Binding Path=ArgumentoDeConexion, Mode=TwoWay}"/>
+                <TextBox Name="txt_ArgumentoDeConexion" Text="{Binding Path=Datos.ArgumentoDeConexion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+            
             <Button Margin="0,30,0,0" Content="Detectar" Command="{Binding Path=DetectarOrden, Mode=OneTime}"/>
             <Button Content="Conectar" Command="{Binding Path=ConectarOrden, Mode=OneTime}"/>
             <Button Content="Desconectar" Command="{Binding Path=DesconectarOrden, Mode=OneTime}"/>

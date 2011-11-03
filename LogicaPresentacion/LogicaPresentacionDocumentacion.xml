@@ -51,19 +51,6 @@
             Este clase se emplea para cerrar los dialogos desde los ViewModel.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView">
-            <summary>
-            Lógica de interacción para ConexionLocalView.xaml
-            </summary>
-            <summary>
-            ConexionLocalView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView">
             <summary>
             Lógica de interacción para ExploradorView.xaml
@@ -73,6 +60,19 @@
             </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView">
+            <summary>
+            Lógica de interacción para ConexionLocalView.xaml
+            </summary>
+            <summary>
+            ConexionLocalView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>

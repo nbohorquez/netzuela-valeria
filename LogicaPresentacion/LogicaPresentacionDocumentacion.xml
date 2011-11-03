@@ -9,17 +9,6 @@
             Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.DialogCloser">
-            <summary>
-            Este clase se emplea para cerrar los dialogos desde los ViewModel.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.BindablePasswordBox">
-            <summary>
-            Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
-            y asi poder atarse (to bind) a ella desde el ViewModel.
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.DetectarServidoresLocalesViewModel">
             <summary>
             
@@ -49,6 +38,17 @@
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView.InitializeComponent">
             <summary>
             InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.DialogCloser">
+            <summary>
+            Este clase se emplea para cerrar los dialogos desde los ViewModel.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.PasswordBoxVinculable">
+            <summary>
+            Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
+            y asi poder vincularse (to bind) a ella desde el ViewModel.
             </summary>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">

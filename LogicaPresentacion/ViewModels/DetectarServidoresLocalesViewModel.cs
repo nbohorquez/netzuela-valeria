@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MvvmFoundation.Wpf;                       // 
+using MvvmFoundation.Wpf;                       // ObservableObject
 using System.Collections.ObjectModel;           // ObservableCollection
 using System.Windows.Input;                     // ICommand
 using Zuliaworks.Netzuela.Valeria.Datos;        // ServidorLocal

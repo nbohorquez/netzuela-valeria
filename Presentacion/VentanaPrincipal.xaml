@@ -1,17 +1,17 @@
 ﻿<Window x:Class="Zuliaworks.Netzuela.Valeria.Presentacion.VentanaPrincipal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Local="clr-namespace:Zuliaworks.Netzuela.Valeria.Presentacion"
-        xmlns:Logica="clr-namespace:Zuliaworks.Netzuela.Valeria.Logica;assembly=Logica"
+        xmlns:local="clr-namespace:Zuliaworks.Netzuela.Valeria.Presentacion"
+        xmlns:logica="clr-namespace:Zuliaworks.Netzuela.Valeria.Logica;assembly=Logica"
         Title="Netzuela - Monitor de tienda" 
         Height="600" MinHeight="480" 
         Width="800" MinWidth="640">
     
     <Window.Resources>
-        <Local:EstadoDeConexionBarraDeEstado x:Key="EstadoDeConexionBarraDeEstado"/>
-        <Local:DeclaracionRutaDeNodo x:Key="DeclaracionRutaDeNodo"/>
-        <Local:SeleccionarTodaLaColumna x:Key="SeleccionarTodaLaColumna"/>
-        <Local:ColumnaAsociada x:Key="ColumnaAsociada"/>
+        <local:EstadoDeConexionBarraDeEstado x:Key="EstadoDeConexionBarraDeEstado"/>
+        <local:DeclaracionRutaDeNodo x:Key="DeclaracionRutaDeNodo"/>
+        <local:SeleccionarTodaLaColumna x:Key="SeleccionarTodaLaColumna"/>
+        <local:ColumnaAsociada x:Key="ColumnaAsociada"/>
         
         <Style x:Key="est_Titulo" TargetType="Label">
             <Setter Property="Margin" Value="20,0,0,0"/>
@@ -128,7 +128,7 @@
                                 
                                 <TreeView Grid.Column="0" Name="trv_ExploradorLocal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" DataContext="{Binding}" ItemsSource="{Binding Path=Nodos}">
                                     <TreeView.Resources>
-                                        <HierarchicalDataTemplate DataType="{x:Type Logica:Nodo}" ItemsSource="{Binding Path=Hijos}">
+                                        <HierarchicalDataTemplate DataType="{x:Type logica:Nodo}" ItemsSource="{Binding Path=Hijos}">
                                             <TreeViewItem Name="tvi_ItemLocal" DataContext="{Binding Path=.}" Expanded="tvi_Item_Expandir" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton">
                                                 <TreeViewItem.Header>
                                                     <StackPanel Orientation="Horizontal">
@@ -175,7 +175,7 @@
 
                                 <TreeView Grid.Column="0" Name="trv_ExploradorRemoto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" DataContext="{Binding}" ItemsSource="{Binding Path=Nodos}">
                                     <TreeView.Resources>
-                                        <HierarchicalDataTemplate DataType="{x:Type Logica:Nodo}" ItemsSource="{Binding Path=Hijos}">
+                                        <HierarchicalDataTemplate DataType="{x:Type logica:Nodo}" ItemsSource="{Binding Path=Hijos}">
                                             <TreeViewItem Name="tvi_ItemRemoto" DataContext="{Binding Path=.}" Expanded="tvi_Item_Expandir" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton">
                                                 <TreeViewItem.Header>
                                                     <StackPanel Orientation="Horizontal">

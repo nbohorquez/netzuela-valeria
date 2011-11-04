@@ -58,14 +58,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="VentanaAutentificacion.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="VentanaDetectarServidoresLocales.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="VentanaPrincipal.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -75,12 +67,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Recursos.cs" />
-    <Compile Include="VentanaAutentificacion.xaml.cs">
-      <DependentUpon>VentanaAutentificacion.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="VentanaDetectarServidoresLocales.xaml.cs">
-      <DependentUpon>VentanaDetectarServidoresLocales.xaml</DependentUpon>
-    </Compile>
     <Compile Include="VentanaPrincipal.xaml.cs">
       <DependentUpon>VentanaPrincipal.xaml</DependentUpon>
       <SubType>Code</SubType>

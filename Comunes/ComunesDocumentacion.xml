@@ -4,6 +4,33 @@
         <name>Comunes</name>
     </assembly>
     <members>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion">
+            <summary>
+            Esta clase se usa en todas partes. Lo que en verdad quiero hacer (y todavia no se como) son 
+            2 clases: una que implemente INotifyPropertyChanged (para ser usada en la capa de logica y 
+            presentacion) y otra que no (para usarse en la capa de datos). Seria muy facil simplemente 
+            hacer dos clases distintas pero es mucho mas elegante que una derive de la otra. ¿Tendeis?
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones">
+            <summary>
+            Contiene funciones adicionales para los tipos SecureString.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones.ConvertirAUnsecureString(System.Security.SecureString)">
+            <summary>
+            
+            </summary>
+            <param name="StringSegura"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones.ConvertirASecureString(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="StringNoSegura"></param>
+            <returns></returns>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes">
             <summary>
             Define constantes empleadas por todas las capas de Valeria
@@ -41,33 +68,6 @@
             <typeparam name="T">Tipo de IEnumerable</typeparam>
             <param name="Enumerable">Coleccion de objetos</param>
             <returns>ObservableColeccion de objetos tipo T</returns>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones">
-            <summary>
-            Contiene funciones adicionales para los tipos SecureString.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones.ConvertirAUnsecureString(System.Security.SecureString)">
-            <summary>
-            
-            </summary>
-            <param name="StringSegura"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones.ConvertirASecureString(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="StringNoSegura"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion">
-            <summary>
-            Esta clase se usa en todas partes. Lo que en verdad quiero hacer (y todavia no se como) son 
-            2 clases: una que implemente INotifyPropertyChanged (para ser usada en la capa de logica y 
-            presentacion) y otra que no (para usarse en la capa de datos). Seria muy facil simplemente 
-            hacer dos clases distintas pero es mucho mas elegante que una derive de la otra. ¿Tendeis?
-            </summary>
         </member>
     </members>
 </doc>

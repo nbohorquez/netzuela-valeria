@@ -70,17 +70,17 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         #region Funciones
 
         private void btn_Detectar_Clic(object sender, RoutedEventArgs e)
-        {
+        {/*
             ObservableCollection<ServidorLocal> ServidoresDetectados = Conexion.DetectarServidoresLocales().ConvertirAObservableCollection();
             VentanaDetectarServidoresLocales Servidores = new VentanaDetectarServidoresLocales(ServidoresDetectados);
-            Servidores.ShowDialog();
+            Servidores.ShowDialog();*/
         }
 
         private void btn_Conectar_Clic(object sender, RoutedEventArgs e)
-        {
+        {/*
             VentanaAutentificacion Credenciales = new VentanaAutentificacion();
             Credenciales.ShowDialog();
-            /*
+            
             try
             {
                 Local.Conectar(Credenciales.txt_Usuario.Text.ConvertirASecureString(), Credenciales.pwd_Contasena.SecurePassword);

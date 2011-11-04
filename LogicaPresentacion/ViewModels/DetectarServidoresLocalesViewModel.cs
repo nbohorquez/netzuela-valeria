@@ -19,18 +19,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Variables
 
         private RelayCommand _SeleccionarOrden;
-        private bool? _CerrarView;
+        private bool _MostrarView;
 
         #endregion
 
         #region Constructores
 
-        public DetectarServidoresLocalesViewModel(ObservableCollection<ServidorLocal> ServidoresDetectados)
+        public DetectarServidoresLocalesViewModel(DatosDeConexion Datos)
         {
-            this.ServidoresDetectados = ServidoresDetectados;
-            this._SeleccionarOrden = null;
-            this.Datos = new DatosDeConexion();
-            this._CerrarView = null;
+            this.ServidoresDetectados = new ObservableCollection<ServidorLocal>();
+            this.MostrarView = true;
+            this.Datos = Datos;
         }
 
         #endregion
@@ -39,22 +38,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ObservableCollection<ServidorLocal> ServidoresDetectados { get; private set; }
         public DatosDeConexion Datos { get; set; }
-        public bool? CerrarView
+        public bool MostrarView
         {
-            get { return _CerrarView; }
+            get { return _MostrarView; }
             private set
             {
-                if (value != _CerrarView)
+                if (value != _MostrarView)
                 {
-                    _CerrarView = value;
-                    base.RaisePropertyChanged("CerrarView");
+                    _MostrarView = value;
+                    base.RaisePropertyChanged("MostrarView");
                 }
             }
         }
 
         public ICommand SeleccionarOrden
         {
-            get { return _SeleccionarOrden ?? (_SeleccionarOrden = new RelayCommand(() => this.CerrarView = true)); }
+            get { return _SeleccionarOrden ?? (_SeleccionarOrden = new RelayCommand(() => this.MostrarView = false)); }
         }
 
         #endregion

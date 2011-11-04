@@ -42,7 +42,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
             InitializeComponent();
 
             // Establezco el DataContext aqui porque necesito acceder a "CerrarView" desde la ventana.
-            var ViewModel = new DetectarServidoresLocalesViewModel(ServidoresDetectados);
+            var ViewModel = new DetectarServidoresLocalesViewModel();
             this.DataContext = ViewModel;
         }
 

@@ -93,6 +93,6 @@
             </TextBlock.Visibility>
         </TextBlock>
 
-        <Button Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="Auto" Height="Auto" Padding="10,2,10,2" Margin="0,10,0,10" Command="{Binding Path=SeleccionarOrden, Mode=OneTime}" Content="Aceptar"/>
+        <Button Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="Auto" Height="Auto" Padding="10,2,10,2" Margin="0,10,0,10" Command="{Binding Path=SeleccionarOrden, Mode=OneTime}" Content="Seleccionar"/>
     </Grid>
 </UserControl>

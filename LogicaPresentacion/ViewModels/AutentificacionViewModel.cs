@@ -21,7 +21,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private RelayCommand _AccederOrden;
         private SecureString _Usuario;
-        private bool? _CerrarView;
+        private bool _MostrarView;
 
         #endregion
 
@@ -29,9 +29,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public AutentificacionViewModel()
         {
-            _Usuario = string.Empty.ConvertirASecureString();
-            _AccederOrden = null;
-            _CerrarView = null;
+            Usuario = string.Empty;
+            MostrarView = true;
         }
 
         #endregion
@@ -49,23 +48,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
 
         public SecureString Contrasena { get; set; }
-
-        public bool? CerrarView 
+        public bool MostrarView 
         {
-            get { return _CerrarView; }
+            get { return _MostrarView; }
             private set
             {
-                if (value != _CerrarView)
+                if (value != _MostrarView)
                 {
-                    _CerrarView = value;
-                    base.RaisePropertyChanged("CerrarView");
+                    _MostrarView = value;
+                    RaisePropertyChanged("MostrarView");
                 }
             }
         }
 
         public ICommand AccederOrden
         {
-            get { return _AccederOrden ?? (_AccederOrden = new RelayCommand(() => this.CerrarView = true)); }
+            get { return _AccederOrden ?? (_AccederOrden = new RelayCommand(() => this.MostrarView = false)); }
         }
 
         #endregion

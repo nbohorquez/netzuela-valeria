@@ -11,26 +11,6 @@
             bases de datos.
             </summary>
         </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Nodo.Expandido">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Nodo.Nivel">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Nodo.Padre">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Nodo.Explorador">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor">
             <summary>
             
@@ -77,54 +57,6 @@
             
             </summary>
             <param name="Hijo"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.BuscarNodo(System.String,System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
-            <summary>
-            
-            </summary>
-            <param name="Nombre"></param>
-            <param name="Lista"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.RutaCompleta(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Nodo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.ListarHijos(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Nodo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.RegistrarCambioEnPropiedad(System.String)">
-            <summary>
-            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-            </summary>
-            <param name="info">Nombre de la propiedad modificada.</param>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Nodo.Hijos">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Nodo.Nombre">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Nodo.MapaColumna">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.Nodo.PropertyChanged">
-            <summary>
-            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-            </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Conexion">
             <summary>
@@ -429,6 +361,28 @@
             <summary>
             Evento que se activa cuando una propiedad de esta clase ha sido modificada.
             </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.BuscarNodo(System.String,System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
+            <summary>
+            
+            </summary>
+            <param name="Nombre"></param>
+            <param name="Lista"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.RutaCompleta(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="Nodo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.ListarHijos(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="Nodo"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

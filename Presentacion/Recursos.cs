@@ -115,7 +115,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         public object Convert(object Valor, Type TipoObjetivo, object Parametro, CultureInfo Cultura)
         {
             Nodo Nodo = (Nodo)Valor;
-            return Nodo.RutaCompleta(Nodo);
+            return Nodo.RutaCompleta();
         }
 
         public object ConvertBack(object Valor, Type TipoObjetivo, object Parametro, CultureInfo Cultura)

@@ -150,24 +150,6 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
             Local.Desconectar();
         }
 
-        private void tvi_Item_Expandir(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem Item = e.OriginalSource as TreeViewItem;
-            if (Item == null)
-                return;
-
-            Item.IsExpanded = false;
-
-            Nodo ItemNodo = Item.DataContext as Nodo;
-            if (ItemNodo == null)
-                return;
-
-            TreeView TV = ArbolVisual.BusquedaHaciaArriba<TreeView>(Item as DependencyObject) as TreeView;
-            Explorador Arbol = TV.DataContext as Explorador;
-
-            Arbol.Expandir(ItemNodo);
-        }
-
         private void btn_Asociar_Clic(object sender, RoutedEventArgs e)
         {
             MapeoDeColumnas MapCol = ArbolRemoto.NodoActual.MapaColumna;
@@ -192,44 +174,6 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
                 MapeoDeTablas MapTbl = MapCol.MapaTabla;
                 ArbolRemoto.TablaActual = MapTbl.TablaMapeada();
             }
-        }
-
-        private void tvi_Item_ClicBotonIzqRaton(object sender, MouseButtonEventArgs e)
-        {
-            TreeViewItem Item = ArbolVisual.BusquedaHaciaArriba<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
-
-            if (Item != null)
-                Item.IsExpanded = true;
-        }
-
-        private void tvi_Item_MouseEncima(object sender, MouseEventArgs e)
-        {
-            TreeViewItem Item = ArbolVisual.BusquedaHaciaArriba<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
-
-            if (Item != null)
-                Item.FontStyle = System.Windows.FontStyles.Italic;
-        }
-
-        private void tvi_Item_MouseAfuera(object sender, MouseEventArgs e)
-        {
-            TreeViewItem Item = ArbolVisual.BusquedaHaciaArriba<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
-
-            if (Item != null)
-                Item.FontStyle = System.Windows.FontStyles.Normal;
-        }
-
-        private void dgr_Tablas_ClicBotonIzqRaton(object sender, MouseButtonEventArgs e)
-        {
-            DataGridCell Celda = ArbolVisual.BusquedaHaciaArriba<DataGridCell>(e.OriginalSource as DependencyObject) as DataGridCell;
-
-            if (Celda == null)
-                return;
-
-            DataGrid Grilla = ArbolVisual.BusquedaHaciaArriba<DataGrid>(Celda as DependencyObject) as DataGrid;
-
-            // Hacemos que Arbol.NodoActual sea la columna seleccionada
-            Explorador Arbol = Grilla.DataContext as Explorador;
-            Arbol.NodoActual = Nodo.BuscarNodo(Celda.Column.Header as string, Arbol.NodoTablaActual.Hijos);
         }
 
         #endregion

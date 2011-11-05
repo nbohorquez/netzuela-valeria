@@ -77,6 +77,22 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ArbolVisual">
+            <summary>
+            Contiene funciones para los objetos de un arbol visual
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.SeleccionarTodaLaColumna">
+            <summary>
+            Este convertidor sirve para seleccionar toda la columna especificada por NodoActual
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ColumnaAsociada">
+            <summary>
+            Este convertidor lo empleo para mostrar en pantalla qué columna destino esta asociado a cuál 
+            columna origen
+            </summary>
+        </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
             <summary>
             GeneratedInternalTypeHelper

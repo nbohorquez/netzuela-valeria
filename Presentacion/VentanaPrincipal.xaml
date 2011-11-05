@@ -11,8 +11,7 @@
     <Window.Resources>
         <Local:EstadoDeConexionBarraDeEstado x:Key="EstadoDeConexionBarraDeEstado"/>
         <Local:DeclaracionRutaDeNodo x:Key="DeclaracionRutaDeNodo"/>
-        <Local:SeleccionarTodaLaColumna x:Key="SeleccionarTodaLaColumna"/>
-        <Local:ColumnaAsociada x:Key="ColumnaAsociada"/>
+        
 
         <Style x:Key="est_Titulo" TargetType="Label">
             <Setter Property="Margin" Value="20,0,0,0"/>
@@ -51,13 +50,6 @@
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="Margin" Value="0,12"/>
             <Setter Property="Width" Value="3"/>
-        </Style>
-
-        <Style x:Key="est_Tabla" TargetType="DataGrid">
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="IsReadOnly" Value="True"/>
-            <Setter Property="SelectionMode" Value="Extended"/>
-            <Setter Property="SelectionUnit" Value="Cell"/>
         </Style>
     </Window.Resources>
 
@@ -106,6 +98,9 @@
                         </Grid.ColumnDefinitions>
 
                         <GroupBox Grid.Column="0" Header="Explorador local" Name="grp_ExploradorLocal" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
+                            <Views:ExploradorView/>
+                            <!--<Views:ExploradorView  DataContext="ExploradorLocal"/>-->
+                            <!--
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -147,12 +142,15 @@
                                         </MultiBinding>
                                     </DataGrid.CurrentCell>
                                 </DataGrid>
-                            </Grid>
+                            </Grid>-->
                         </GroupBox>
 
                         <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
 
                         <GroupBox Grid.Column="2" Name="grp_ExploradorRemoto" Header="Explorador remoto" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
+                            <Views:ExploradorView/>
+                            <!--<Views:ExploradorView DataContext="ExploradorRemoto"/>-->
+                            <!--
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -194,7 +192,7 @@
                                         </MultiBinding>
                                     </DataGrid.CurrentCell>
                                 </DataGrid>
-                            </Grid>
+                            </Grid>-->
                         </GroupBox>
 
                         <!-- Que molleja de feo este "Canvas" aqui... Es una solucion poco elegante pero funciona :$ -->

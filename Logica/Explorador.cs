@@ -281,7 +281,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 else
                 {
                     Temp = BD.MostrarTabla(Tabla.Padre.Nombre, Tabla.Nombre);
-                    Temp.TableName = Nodo.RutaCompleta(Tabla);
+                    Temp.TableName = Tabla.RutaCompleta();
 
                     Tabla.Hijos.Clear();
                     foreach (DataColumn Columna in Temp.Columns)

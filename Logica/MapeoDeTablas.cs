@@ -103,8 +103,8 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     {
                         if (Mapa.ColumnaOrigen.Nombre == Nodo.Nombre)
                         {
-                            string RutaNodoNuevo = Nodo.RutaCompleta(Nodo);
-                            string RutaNodoViejo = Nodo.RutaCompleta(Mapa.ColumnaOrigen);
+                            string RutaNodoNuevo = Nodo.RutaCompleta();
+                            string RutaNodoViejo = Mapa.ColumnaOrigen.RutaCompleta();
 
                             if (RutaNodoNuevo == RutaNodoViejo)
                             {

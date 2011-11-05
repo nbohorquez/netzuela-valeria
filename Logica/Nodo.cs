@@ -13,31 +13,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     /// en forma de árbol. Se usa para representar la organizacion interna de las 
     /// bases de datos.
     /// </summary>
-    public class Nodo : INotifyPropertyChanged
+    public class Nodo
     {
         #region Variables
 
-        private MapeoDeColumnas _MapaColumna;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool Expandido;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Nivel;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Nodo Padre;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Explorador Explorador;
+        // ...
 
         #endregion
 
@@ -141,31 +121,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         #region Propiedades
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ObservableCollection<Nodo> Hijos { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public string Nombre { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public MapeoDeColumnas MapaColumna 
-        {
-            get { return _MapaColumna; }
-            set
-            {
-                if (value != _MapaColumna)
-                {
-                    _MapaColumna = value;
-                    RegistrarCambioEnPropiedad("MapaColumna");
-                }
-            }
-        }
+        public MapeoDeColumnas MapaColumna { get; set; }
+        public bool Expandido { get; set; }
+        public int Nivel { get; set; }
+        public Nodo Padre { get; set; }
+        public Explorador Explorador { get; set; }
 
         #endregion
 
@@ -190,92 +152,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             this.Hijos.Add(Hijo);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Nombre"></param>
-        /// <param name="Lista"></param>
-        /// <returns></returns>
-        public static Nodo BuscarNodo(string Nombre, ObservableCollection<Nodo> Lista)
-        {
-            Nodo Resultado = new Nodo();
-
-            foreach (Nodo n in Lista)
-            {
-                if (n.Nombre == Nombre)
-                {
-                    Resultado = n;
-                    break;
-                }
-            }
-
-            return Resultado;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Nodo"></param>
-        /// <returns></returns>
-        public static string RutaCompleta(Nodo Nodo)
-        {
-            List<string> Ruta = new List<string>();
-
-            while (Nodo != null)
-            {
-                Ruta.Add(Nodo.Nombre);
-                Nodo = Nodo.Padre;
-            }
-
-            string Resultado = "";
-
-            for (int i = Ruta.Count; i > 0; i--)
-            {
-                Resultado += Ruta[i - 1] + "\\";
-            }
-
-            return Resultado;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="Nodo"></param>
-        /// <returns></returns>
-        public static string[] ListarHijos(Nodo Nodo)
-        {
-            List<string> Resultado = new List<string>();
-
-            foreach (Nodo Hijo in Nodo.Hijos)
-            {
-                Resultado.Add(Hijo.Nombre);
-            }
-
-            return Resultado.ToArray();
-        }
-
         #endregion
 
         #region Implementaciones de interfaces
 
-        /// <summary>
-        /// Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-        /// </summary>
-        /// <param name="info">Nombre de la propiedad modificada.</param>
-        protected virtual void RegistrarCambioEnPropiedad(string info)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
-        }
-
-
+        // ...
 
         #endregion
 

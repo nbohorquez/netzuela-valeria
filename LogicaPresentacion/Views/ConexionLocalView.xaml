@@ -59,17 +59,17 @@
             <Button Content="Desconectar" Command="{Binding Path=DesconectarOrden, Mode=OneTime}"/>
         </StackPanel>
 
-        <Popup Height="150" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarAutentificacionView}">
+        <Popup Height="150" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarAutentificacionView}" StaysOpen="False" Placement="Top">
             <Grid Background="White">
-                <GroupBox Header="Autentificación">
+                <GroupBox Header="Autentificación" Margin="5">
                     <Views:AutentificacionView DataContext="{Binding Path=Autentificacion}"/>
                 </GroupBox>
             </Grid>
         </Popup>
 
-        <Popup Height="180" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarDetectarServidoresLocalesView}">
+        <Popup Height="180" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarDetectarServidoresLocalesView}" StaysOpen="False" Placement="Top">
             <Grid Background="White">
-                <GroupBox Header="Servidores detectados">
+                <GroupBox Header="Servidores detectados" Margin="5">
                     <Views:DetectarServidoresLocalesView DataContext="{Binding Path=Servidores}"/>
                 </GroupBox>
             </Grid>

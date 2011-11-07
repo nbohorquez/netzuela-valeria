@@ -15,6 +15,12 @@
             Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
             </summary>
         </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.AutentificacionViewModel.UsuarioString">
+            <summary>
+            Esta propiedad es una fachada. Solo sirve para tomar el string desde el View y 
+            convertirlo inmediatamente a SecureString en Usuario. No se puede leer
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.DetectarServidoresLocalesViewModel">
             <summary>
             
@@ -33,6 +39,11 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionLocalViewModel">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView">
             <summary>
             Lógica de interacción para AutentificacionView.xaml
@@ -44,11 +55,6 @@
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView.InitializeComponent">
             <summary>
             InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.DialogCloser">
-            <summary>
-            Este clase se emplea para cerrar los dialogos desde los ViewModel.
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView">
@@ -91,6 +97,49 @@
             <summary>
             Este convertidor lo empleo para mostrar en pantalla qué columna destino esta asociado a cuál 
             columna origen
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView">
+            <summary>
+            Lógica de interacción para BarraDeEstadoView.xaml
+            </summary>
+            <summary>
+            BarraDeEstadoView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel">
+            <summary>
+             La función de esta clase es mantener un registro actualizado del estado de la aplicación.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel.#ctor">
+            <summary>
+            Crea una barra de estado vacía.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel.EstadoConexion">
+            <summary>
+            Indica el estado de la conexión en el formato establecido en <see cref="T:System.Data.ConnectionState"/>
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.EstadoDeConexion">
+            <summary>
+            Este convertidor lo uso para transformar ConnectionState a palabras
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionRemotaViewModel">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">

@@ -4,13 +4,19 @@ using System.Linq;
 using System.Text;
 
 using MvvmFoundation.Wpf;                       // RelayCommand, ObservableObject
+using System.Data;                              // DataTable, ConnectionState
+using System.Security;                          // SecureString
+using System.Windows;                           // MessageBox
 using System.Windows.Input;                     // ICommand
 using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
-
-using System.Windows;
+using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
+using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ConexionLocalViewModel : ObservableObject
     {
         #region Variables
@@ -23,26 +29,51 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private PropertyObserver<AutentificacionViewModel> _ObservadorAutentificacion;
         private PropertyObserver<DetectarServidoresLocalesViewModel> _ObservadorServidores;
         private AutentificacionViewModel _Autentificacion;
-        private DetectarServidoresLocalesViewModel _Servidores;
+        private DetectarServidoresLocalesViewModel _ServidoresDetectados;
+        private SecureString _Usuario;
+        private SecureString _Contrasena;
+        private Conexion _Local;
 
         #endregion
 
-        #region Contructor
+        #region Contructores
 
         public ConexionLocalViewModel()
         {
-            Datos = new DatosDeConexion();
+            _Local = new Conexion();
         }
 
         #endregion
 
         #region Propiedades
 
-        public DatosDeConexion Datos { get; set; }
+        public IBaseDeDatos BD 
+        {
+            get { return _Local.BD; }
+        }
+
+        public ConnectionState Estado
+        { 
+            get { return BD.Estado; }
+        }
+
+        public DatosDeConexion Datos
+        {
+            get { return _Local.Datos; }
+            set
+            {
+                if (value != _Local.Datos)
+                {
+                    _Local.Datos = value;
+                    RaisePropertyChanged("Datos");
+                }
+            }
+        }
+        
         public AutentificacionViewModel Autentificacion
         {
             get { return _Autentificacion; }
-            set
+            private set
             {
                 if (value != _Autentificacion)
                 {
@@ -52,15 +83,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        public DetectarServidoresLocalesViewModel Servidores
+        public DetectarServidoresLocalesViewModel ServidoresDetectados
         {
-            get { return _Servidores; }
+            get { return _ServidoresDetectados; }
             set
             {
-                if (value != _Servidores)
+                if (value != _ServidoresDetectados)
                 {
-                    _Servidores = value;
-                    RaisePropertyChanged("Servidores");
+                    _ServidoresDetectados = value;
+                    RaisePropertyChanged("ServidoresDetectados");
                 }
             }
         }
@@ -103,7 +134,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ICommand DesconectarOrden
         {
-            get { return _DesconectarOrden ?? (_DesconectarOrden = new RelayCommand(this.DesconectarClic)); }
+            get { return _DesconectarOrden ?? (_DesconectarOrden = new RelayCommand(this.Desconectar)); }
         }
 
         #endregion
@@ -118,9 +149,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void AbrirDetectarServidoresLocalesView()
         {
-            Servidores = new DetectarServidoresLocalesViewModel(this.Datos);
+            ServidoresDetectados = new DetectarServidoresLocalesViewModel();
 
-            _ObservadorServidores = new PropertyObserver<DetectarServidoresLocalesViewModel>(this.Servidores)
+            _ObservadorServidores = new PropertyObserver<DetectarServidoresLocalesViewModel>(this.ServidoresDetectados)
                 .RegisterHandler(n => n.MostrarView, this.CerrarDetectarServidoresLocalesView);
 
             MostrarDetectarServidoresLocalesView = true;
@@ -131,6 +162,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (ServidoresVM.MostrarView == false)
             {
                 this.MostrarDetectarServidoresLocalesView = false;
+                this.Datos = ServidoresVM.Datos;
             }
         }
 
@@ -149,11 +181,34 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (AutentificacionVM.MostrarView == false)
             {
                 this.MostrarAutentificacionView = false;
+                this._Usuario = AutentificacionVM.Usuario;
+                this._Contrasena = AutentificacionVM.Contrasena;
+                Conectar();
             }
         }
 
-        private void DesconectarClic()
+        private void Conectar()
         {
+            try
+            {
+                _Local.ResolverDatosDeConexion();
+                BD.EnCambioDeEstado = new StateChangeEventHandler(EnCambioDeEstado);
+                _Local.Conectar(_Usuario, _Contrasena);                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Desconectar()
+        {
+            _Local.Desconectar();
+        }
+
+        private void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
+        {
+            RaisePropertyChanged("Estado");
         }
 
         #endregion

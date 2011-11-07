@@ -4,12 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Views="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views"
-             xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels"
              mc:Ignorable="d">
-
-    <UserControl.DataContext>
-        <ViewModels:ConexionLocalViewModel/>
-    </UserControl.DataContext>
     
     <UserControl.Resources>
         <Style x:Key="est_PilaSeleccionServidor" TargetType="StackPanel">
@@ -62,7 +57,7 @@
         <Popup Height="150" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarAutentificacionView}" StaysOpen="False" Placement="Top">
             <Grid Background="White">
                 <GroupBox Header="Autentificación" Margin="5">
-                    <Views:AutentificacionView DataContext="{Binding Path=Autentificacion}"/>
+                    <Views:AutentificacionView x:Name="view_Autentificacion" DataContext="{Binding Path=Autentificacion}" DataContextChanged="AutentificacionView_DataContextChanged"/>
                 </GroupBox>
             </Grid>
         </Popup>
@@ -70,7 +65,7 @@
         <Popup Height="180" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarDetectarServidoresLocalesView}" StaysOpen="False" Placement="Top">
             <Grid Background="White">
                 <GroupBox Header="Servidores detectados" Margin="5">
-                    <Views:DetectarServidoresLocalesView DataContext="{Binding Path=Servidores}"/>
+                    <Views:DetectarServidoresLocalesView DataContext="{Binding Path=ServidoresDetectados}"/>
                 </GroupBox>
             </Grid>
         </Popup>

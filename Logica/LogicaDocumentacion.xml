@@ -61,14 +61,7 @@
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Conexion">
             <summary>
             Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
-            de forma transparente para el programador. Implementa la interfaz 
-            <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> para hacer visibles algunas de sus propiedades 
-            a la capa de presentación.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Conexion.BD">
-            <summary>
-            Proveedor de datos creado a partir de las especificaciones de conexión.
+            de forma transparente para el programador.
             </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.#ctor">
@@ -94,25 +87,14 @@
             Cierra la conexión con el servidor.
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.DetectarServidoresLocales">
-            <summary>
-            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.RegistrarCambioEnPropiedad(System.String)">
-            <summary>
-            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-            </summary>
-            <param name="info">Nombre de la propiedad modificada.</param>
-        </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Datos">
             <summary>
             Parámetros de la conexión con el servidor actual.
             </summary>
         </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.Conexion.PropertyChanged">
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.BD">
             <summary>
-            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
+            Proveedor de datos creado a partir de las especificaciones de conexión.
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Explorador">
@@ -272,34 +254,6 @@
             
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado">
-            <summary>
-             La función de esta clase es mantener un registro actualizado del estado de la aplicación.
-             Implementa la interfaz <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> para hacer visibles algunas 
-             de sus propiedades a la capa de presentación.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.#ctor">
-            <summary>
-            Crea una barra de estado vacía.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.RegistrarCambioEnPropiedad(System.String)">
-            <summary>
-            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-            </summary>
-            <param name="info">Nombre de la propiedad modificada.</param>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.EstadoConexion">
-            <summary>
-            Indica el estado de la conexión en el formato establecido en <see cref="T:System.Data.ConnectionState"/>
-            </summary>
-        </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.PropertyChanged">
-            <summary>
-            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas">
             <summary>
             Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
@@ -383,6 +337,11 @@
             </summary>
             <param name="Nodo"></param>
             <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
+            <summary>
+            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
+            </summary>
         </member>
     </members>
 </doc>

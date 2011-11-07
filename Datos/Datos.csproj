@@ -60,12 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseDeDatos.cs" />
+    <Compile Include="IBaseDeDatos.cs" />
     <Compile Include="MySQL.cs" />
     <Compile Include="Netzuela.cs" />
     <Compile Include="Oracle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServidorLocal.cs" />
+    <Compile Include="AnfitrionLocal.cs" />
     <Compile Include="ServidorPredeterminado.cs" />
     <Compile Include="SQLServer.cs" />
   </ItemGroup>

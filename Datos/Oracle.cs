@@ -69,6 +69,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             get { return ConnectionState.Closed; }
         }
 
+        StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
+        {
+            set { throw new NotImplementedException(); }
+        }
+
         void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena) { }
 
         void IBaseDeDatos.Desconectar() { }

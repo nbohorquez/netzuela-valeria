@@ -21,8 +21,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Variables
 
-        public DatosDeConexion Servidor;
-        private MySqlConnection Conexion;
+        private MySqlConnection _Conexion;
 
         #endregion
 
@@ -31,13 +30,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public MySQL(DatosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
+            _Conexion = new MySqlConnection();
         }
 
         #endregion
 
         #region Propiedades
 
-        // ...
+        public DatosDeConexion Servidor { get; set; }
 
         #endregion
 
@@ -58,13 +58,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         private void Conectar(SecureString RutaDeAcceso)
         {
-            if (Conexion != null)
-                Conexion.Close();
+            if (_Conexion != null)
+                _Conexion.Close();
 
             try
             {
-                Conexion = new MySqlConnection(RutaDeAcceso.ConvertirAUnsecureString());
-                Conexion.Open();
+                _Conexion.ConnectionString = RutaDeAcceso.ConvertirAUnsecureString();
+                //_Conexion = new MySqlConnection(RutaDeAcceso.ConvertirAUnsecureString());
+                _Conexion.Open();
             }
             catch (MySqlException ex)
             {
@@ -76,17 +77,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                         throw new Exception("Usuario/clave inválido, intente nuevamente", ex);
                     default:
                         throw new Exception("Error en la conexion", ex);
-                    /*
-                    case 0:
-                        MessageBox.Show("No se puede conectar al servidor. Contacte al administrador");
-                        break;
-                    case 1045:
-                        MessageBox.Show("Usuario/clave inválido, intente nuevamente");
-                        break;
-                    default:
-                        MessageBox.Show("Error en la conexion: " + ex.Number + ex.Message + ex.InnerException);
-                        break;
-                     */ 
                 }
             }
         }
@@ -98,7 +88,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             try
             {
-                MySqlCommand Orden = new MySqlCommand(SQL, Conexion);
+                MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
 
                 Lector = Orden.ExecuteReader();
                 while (Lector.Read())
@@ -446,7 +436,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         ConnectionState IBaseDeDatos.Estado
         {
-            get { return Conexion.State; }
+            get { return _Conexion.State; }
+        }
+
+        StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
+        {
+            set
+            {
+                _Conexion.StateChange += value;
+            }
         }
 
         void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena)
@@ -456,8 +454,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         void IBaseDeDatos.Desconectar()
         {
-            if (Conexion != null)
-                Conexion.Close();
+            if (_Conexion != null)
+                _Conexion.Close();
         }
 
         string[] IBaseDeDatos.ListarBasesDeDatos()
@@ -471,7 +469,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             try
             {
-                Conexion.ChangeDatabase(BaseDeDatos);
+                _Conexion.ChangeDatabase(BaseDeDatos);
                 Resultado = Listar(OrdenesComunes.LISTAR_TABLAS);
             }
             catch (Exception ex)
@@ -492,10 +490,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 MySqlDataAdapter Adaptador;
                 MySqlCommandBuilder CreadorDeOrden;
 
-                if (Conexion.Database != BaseDeDatos)
-                    Conexion.ChangeDatabase(BaseDeDatos);
+                if (_Conexion.Database != BaseDeDatos)
+                    _Conexion.ChangeDatabase(BaseDeDatos);
 
-                Adaptador = new MySqlDataAdapter(OrdenesComunes.MOSTRAR_TODO + Tabla, Conexion);
+                Adaptador = new MySqlDataAdapter(OrdenesComunes.MOSTRAR_TODO + Tabla, _Conexion);
                 CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
 
                 Adaptador.Fill(Datos);
@@ -520,6 +518,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             public const string MOSTRAR_TODO = "SELECT * FROM ";
         }
 
-        #endregion
+        #endregion        
     }
 }

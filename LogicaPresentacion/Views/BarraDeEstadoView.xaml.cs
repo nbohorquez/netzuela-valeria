@@ -12,24 +12,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Zuliaworks.Netzuela.Valeria.Comunes;
-
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
 {
     /// <summary>
-    /// Lógica de interacción para ConexionLocalView.xaml
+    /// Lógica de interacción para BarraDeEstadoView.xaml
     /// </summary>
-    public partial class ConexionLocalView : UserControl
+    public partial class BarraDeEstadoView : UserControl
     {
-        public ConexionLocalView()
+        public BarraDeEstadoView()
         {
             InitializeComponent();
-        }
-
-        private void AutentificacionView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            view_Autentificacion.txt_Usuario.Text = string.Empty;
-            ((PasswordBox)view_Autentificacion.pwd_Contrasena.Child).Password = string.Empty;
         }
     }
 }

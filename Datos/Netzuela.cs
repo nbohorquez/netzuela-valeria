@@ -100,6 +100,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             get { return Estado; }
         }
 
+        StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
+        {
+            set { throw new NotImplementedException(); }
+        }
+
         void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena) 
         {
             Estado = ConnectionState.Open;

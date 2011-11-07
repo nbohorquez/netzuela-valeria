@@ -18,6 +18,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #region Propiedades
 
         ConnectionState Estado { get; }
+        StateChangeEventHandler EnCambioDeEstado { set; }
 
         #endregion
 

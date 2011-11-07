@@ -18,9 +18,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     public class SQLServer : IBaseDeDatos
     {
         #region Variables
-
-        public DatosDeConexion Servidor;
-        private SqlConnection Conexion;
+                
+        private SqlConnection _Conexion;
 
         #endregion
 
@@ -29,13 +28,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public SQLServer(DatosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
+            _Conexion = new SqlConnection();
         }
 
         #endregion
 
         #region Propiedades
 
-        // ...
+        public DatosDeConexion Servidor { get; set; }
 
         #endregion
 
@@ -214,7 +214,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         ConnectionState IBaseDeDatos.Estado
         {
-            get { return Conexion.State; }
+            get { return _Conexion.State; }
+        }
+
+        StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
+        {
+            set { _Conexion.StateChange += value; }
         }
 
         void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena) { }

@@ -32,7 +32,7 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
 
         #endregion
 
-        #region  Propiedades
+        #region Propiedades
 
         public string Anfitrion { get; set; }
         public string Servidor { get; set; }

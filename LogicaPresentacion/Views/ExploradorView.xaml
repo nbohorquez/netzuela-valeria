@@ -69,3 +69,46 @@
         </DataGrid>
     </Grid>
 </UserControl>
+
+    <!--<Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <TreeView Grid.Column="0" Name="trv_ExploradorRemoto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" DataContext="{Binding}" ItemsSource="{Binding Path=Nodos}">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type Logica:Nodo}" ItemsSource="{Binding Path=Hijos}">
+                    <TreeViewItem Name="tvi_ItemRemoto" DataContext="{Binding Path=.}" Expanded="tvi_Item_Expandir" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=Nombre}"/>
+                                <TextBlock DataContext="{Binding Path=MapaColumna}">
+                                    <TextBlock.Text>
+                                        <MultiBinding Converter="{StaticResource ColumnaAsociada}">
+                                            <Binding ElementName="tvi_ItemRemoto"
+                                                        Path="DataContext"/>
+                                            <Binding Path="ColumnaOrigen"/>
+                                            <Binding Path="ColumnaDestino"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+
+        <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
+
+        <DataGrid Name="dgr_TablaRemota" Grid.Column="2" Style="{StaticResource est_Tabla}" DataContext="{Binding}" ItemsSource="{Binding Path=TablaActual.DefaultView}" MouseLeftButtonUp="dgr_Tablas_ClicBotonIzqRaton">
+            <DataGrid.CurrentCell>
+                <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
+                    <Binding Path="NodoActual"/>
+                    <Binding RelativeSource="{x:Static RelativeSource.Self}"/>
+                </MultiBinding>
+            </DataGrid.CurrentCell>
+        </DataGrid>
+    </Grid>-->

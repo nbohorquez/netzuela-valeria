@@ -6,8 +6,8 @@ using System.Text;
 using MvvmFoundation.Wpf;                       // ObservableObject
 using System.Collections.ObjectModel;           // ObservableCollection
 using System.Windows.Input;                     // ICommand
-using Zuliaworks.Netzuela.Valeria.Datos;        // ServidorLocal
-using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
+using Zuliaworks.Netzuela.Valeria.Comunes;      // ServidorLocal, DatosDeConexion
+using Zuliaworks.Netzuela.Valeria.Logica;       // ExponerAnfitrionLocal
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -25,11 +25,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Constructores
 
-        public DetectarServidoresLocalesViewModel(DatosDeConexion Datos)
+        public DetectarServidoresLocalesViewModel()
         {
-            this.ServidoresDetectados = new ObservableCollection<ServidorLocal>();
+            this.ServidoresDetectados = ExponerAnfitrionLocal.DetectarServidoresLocales().ConvertirAObservableCollection();
             this.MostrarView = true;
-            this.Datos = Datos;
+            this.Datos = new DatosDeConexion();
+
+            // Ya se jodio el chamo, ahora se conecta con el localhost a juro
+            this.Datos.Anfitrion = "localhost";
         }
 
         #endregion

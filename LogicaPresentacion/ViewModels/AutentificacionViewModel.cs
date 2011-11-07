@@ -20,7 +20,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Variables
 
         private RelayCommand _AccederOrden;
-        private SecureString _Usuario;
         private bool _MostrarView;
 
         #endregion
@@ -29,7 +28,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public AutentificacionViewModel()
         {
-            Usuario = string.Empty;
             MostrarView = true;
         }
 
@@ -37,17 +35,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Propiedades
 
-        public string Usuario 
+        public SecureString Usuario { get; set; }
+        public SecureString Contrasena { get; set; }
+
+        /// <summary>
+        /// Esta propiedad es una fachada. Solo sirve para tomar el string desde el View y 
+        /// convertirlo inmediatamente a SecureString en Usuario. No se puede leer
+        /// </summary>
+        public string UsuarioString
         {
-            get { return _Usuario.ConvertirAUnsecureString(); }
             set
             {
                 SecureString Valor = value.ConvertirASecureString();
-                _Usuario = Valor;
+                Usuario = Valor;
             }
         }
-
-        public SecureString Contrasena { get; set; }
+                
         public bool MostrarView 
         {
             get { return _MostrarView; }

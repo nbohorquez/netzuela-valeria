@@ -18,16 +18,14 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0">Usuario:</Label>
-
-        <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,10,0" Text="{Binding Path=Usuario, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="False">
+        <TextBox x:Name="txt_Usuario" Grid.Row="0" Grid.Column="1" Margin="0,0,10,0" Text="{Binding Path=UsuarioString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="False">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding Path=AccederOrden, Mode=OneTime}"/>
             </TextBox.InputBindings>
         </TextBox>
         
         <Label Grid.Row="1" Grid.Column="0">Contraseña:</Label>
-
-        <LP:PasswordBoxVinculable Grid.Row="1" Grid.Column="1" Margin="0,0,10,0" SecurePassword="{Binding Path=Contrasena, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
+        <LP:PasswordBoxVinculable x:Name="pwd_Contrasena" Grid.Row="1" Grid.Column="1" Margin="0,0,10,0" SecurePassword="{Binding Path=Contrasena, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
             <LP:PasswordBoxVinculable.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding Path=AccederOrden, Mode=OneTime}"/>
             </LP:PasswordBoxVinculable.InputBindings>

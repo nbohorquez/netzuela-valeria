@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Zuliaworks.Netzuela.Valeria.Datos
+namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
     /// <summary>
     /// Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
@@ -38,16 +38,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Funciones
 
-        public static List<ServidorLocal> DetectarTodos()
-        {
-            List<ServidorLocal> Servidores = new List<ServidorLocal>();
-
-            Servidores.Add(SQLServer.DetectarServidor());
-            Servidores.Add(Oracle.DetectarServidor());
-            Servidores.Add(MySQL.DetectarServidor());
-
-            return Servidores;
-        }
+        // ...
 
         #endregion
 

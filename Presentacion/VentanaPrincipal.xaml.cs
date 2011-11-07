@@ -12,13 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-//using Microsoft.Practices.Unity;                                    // IUnityContainer
-using System.Collections.ObjectModel;                               // ObservableCollection
-using System.Data;                                                  // DataTable
 using Zuliaworks.Netzuela.Valeria.Comunes;                          // DatosDeConexion, Constantes
 using Zuliaworks.Netzuela.Valeria.Datos;                            // ServidorLocal
 using Zuliaworks.Netzuela.Valeria.Logica;                           // Conexion, ColeccionDeNodos, TablaDeDatos, BarraDeEstado
-using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;
 
 namespace Zuliaworks.Netzuela.Valeria.Presentacion
 {
@@ -29,12 +25,8 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
     {
         #region Variables
 
-        private BarraDeEstado Barra;
-        private Conexion Local, Remota;
         private Explorador ArbolLocal, ArbolRemoto;
         private List<MapeoDeTablas> LocalARemota;
-
-        //private readonly IUnityContainer _Contenedor;
 
         #endregion
 
@@ -44,10 +36,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         {
             InitializeComponent();
 
-            Local = new Conexion();
-            Remota = new Conexion(new DatosDeConexion() { Servidor = Constantes.SGBDR.NETZUELA, Instancia = "Isla Providencia" });
             LocalARemota = new List<MapeoDeTablas>();
-            Barra = new BarraDeEstado();
 
             //grp_ConexionLocal.DataContext = Local;
             //bar_BarraDeEstado.DataContext = Barra;
@@ -69,18 +58,8 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
         #region Funciones
 
-        private void btn_Detectar_Clic(object sender, RoutedEventArgs e)
-        {/*
-            ObservableCollection<ServidorLocal> ServidoresDetectados = Conexion.DetectarServidoresLocales().ConvertirAObservableCollection();
-            VentanaDetectarServidoresLocales Servidores = new VentanaDetectarServidoresLocales(ServidoresDetectados);
-            Servidores.ShowDialog();*/
-        }
-
         private void btn_Conectar_Clic(object sender, RoutedEventArgs e)
         {/*
-            VentanaAutentificacion Credenciales = new VentanaAutentificacion();
-            Credenciales.ShowDialog();
-            
             try
             {
                 Local.Conectar(Credenciales.txt_Usuario.Text.ConvertirASecureString(), Credenciales.pwd_Contasena.SecurePassword);
@@ -145,11 +124,6 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
             }*/
         }
 
-        private void btn_Desconectar_Clic(object sender, RoutedEventArgs e)
-        {
-            Local.Desconectar();
-        }
-
         private void btn_Asociar_Clic(object sender, RoutedEventArgs e)
         {
             MapeoDeColumnas MapCol = ArbolRemoto.NodoActual.MapaColumna;
@@ -179,34 +153,9 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         #endregion
 
         #region Implementaciones de interfaces
-        /*
-        void IVentana.Close()
-        {
-            this.Close();
-        }
+        
+        // ...
 
-        bool? IVentana.ShowDialog()
-        {
-            return this.ShowDialog();
-        }
-
-        void IVentana.SetOwner(object window)
-        {
-            this.Owner = window as Window;
-        }
-
-        bool? IVentana.DialogResult
-        {
-            get
-            {
-                return this.DialogResult;
-            }
-            set
-            {
-                this.DialogResult = value;
-            }
-        }
-        */
         #endregion
 
         #region Tipos anidados

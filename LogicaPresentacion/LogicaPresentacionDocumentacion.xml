@@ -69,6 +69,34 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.TextoPorDefectoEnComboBox1">
+            <summary>
+            La siguiente clase se utiliza para mostrar contenido por defecto cuando no hay nada 
+            seleccionado en un ComboBox. El valor devuelto controla la propiedad "Visibility" de 
+            un TextBox. Ver el codigo local y la explicacion de la pagina:
+            
+            http://stackoverflow.com/questions/1426050/how-to-display-default-text-select-team-in-combo-box-on-pageload-in-wpf
+            
+            Estas clases no estan anidadas a DetectarServidoresLocalesView (que seria lo ideal) 
+            por la siguiente razon:
+            
+            http://stackoverflow.com/questions/4269896/creating-an-instance-of-a-nested-class-in-xaml
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.TextoPorDefectoEnComboBox2">
+            <summary>
+            La siguiente clase se utiliza para mostrar contenido por defecto cuando no hay nada 
+            seleccionado en un ComboBox. El valor devuelto controla la propiedad "Visibility" de 
+            un TextBox. Ver el codigo local y la explicacion de la pagina:
+            
+            http://stackoverflow.com/questions/1426050/how-to-display-default-text-select-team-in-combo-box-on-pageload-in-wpf
+            
+            Estas clases no estan anidadas a DetectarServidoresLocalesView (que seria lo ideal) 
+            por la siguiente razon:
+            
+            http://stackoverflow.com/questions/4269896/creating-an-instance-of-a-nested-class-in-xaml
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel">
             <summary>
             Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
@@ -91,7 +119,8 @@
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel">
             <summary>
-            
+            Esta clase se emplea para acceder a los datos de una fuente cuya estructura 
+            sea un árbol de nodos.
             </summary>
         </member>
         <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._CacheDeTablas">
@@ -185,6 +214,11 @@
         <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual">
             <summary>
             Indica el nodo actual seleccionado.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.RutaNodoActual">
+            <summary>
+            Este string indica la ruta completa del nodo actual seleccionado.
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionLocalViewModel">

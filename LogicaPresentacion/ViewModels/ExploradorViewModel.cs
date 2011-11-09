@@ -14,7 +14,8 @@ using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     /// <summary>
-    /// 
+    /// Esta clase se emplea para acceder a los datos de una fuente cuya estructura 
+    /// sea un árbol de nodos.
     /// </summary>
     public class ExploradorViewModel : ObservableObject
     {
@@ -53,6 +54,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
             this.NodoActual = new NodoViewModel();
             this.NodoTablaActual = new NodoViewModel();
+            this.RutaNodoActual = string.Empty;
             this._BD = null;
         }
 
@@ -72,6 +74,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
             this.NodoActual = Nodos[0];
             this.NodoTablaActual = new NodoViewModel();
+            this.RutaNodoActual = string.Empty;
             this._BD = BD;
         }
 
@@ -115,10 +118,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 if (value != _NodoActual)
                 {
                     _NodoActual = value;
+                    RutaNodoActual = _NodoActual.RutaCompleta();
+                    RaisePropertyChanged("RutaNodoActual");
                     RaisePropertyChanged("NodoActual");
                 }
             }
         }
+
+        /// <summary>
+        /// Este string indica la ruta completa del nodo actual seleccionado.
+        /// </summary>
+        public string RutaNodoActual { get; private set; }
 
         /// <summary>
         /// Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="NodoActual"/>).
@@ -126,6 +136,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public NodoViewModel NodoTablaActual;
 
         #endregion        
+
+        #region Eventos
+
+        // ...
+
+        #endregion
 
         #region Funciones
 

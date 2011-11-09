@@ -22,31 +22,69 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public static bool ExisteEnRepositorio(this Nodo Nodo)
         {
+            if (Nodo == null)
+            {
+                throw new ArgumentNullException("Nodo");
+            }
+
             return Repositorio.ContainsKey(Nodo);
         }
 
-        public static bool ExisteEnRepositorio(this NodoViewModel NodoVidewModel)
+        public static bool ExisteEnRepositorio(this NodoViewModel NodoVM)
         {
-            return Repositorio.ContainsValue(NodoVidewModel);
+            if (NodoVM == null)
+            {
+                throw new ArgumentNullException("NodoVM");
+            }
+
+            return Repositorio.ContainsValue(NodoVM);
         }
 
-        public static void AgregarARepositorio(this Nodo Nodo, NodoViewModel NodoViewModel)
+        public static void AgregarARepositorio(this Nodo Nodo, NodoViewModel NodoVM)
         {
-            Repositorio.Add(Nodo, NodoViewModel);
+            if (Nodo == null)
+            {
+                throw new ArgumentNullException("Nodo");
+            }
+            else if (NodoVM == null)
+            {
+                throw new ArgumentNullException("NodoVM");
+            }
+
+            Repositorio.Add(Nodo, NodoVM);
         }
 
         public static bool QuitarDeRepositorio(this Nodo Nodo)
         {
+            if (Nodo == null)
+            {
+                throw new ArgumentNullException("Nodo");
+            }
+
             return Repositorio.Remove(Nodo);
         }
 
         public static NodoViewModel BuscarEnRepositorio(this Nodo Nodo)
         {
+            if (Nodo == null)
+            {
+                throw new ArgumentNullException("Nodo");
+            }
+
             return Repositorio[Nodo];
         }
 
         public static NodoViewModel BuscarNodo(string Nombre, ObservableCollection<NodoViewModel> Lista)
         {
+            if (Nombre == null)
+            {
+                throw new ArgumentNullException("Nombre");
+            }
+            else if (Lista == null)
+            {
+                throw new ArgumentNullException("Lista");
+            }
+
             NodoViewModel Resultado = new NodoViewModel();
 
             foreach (NodoViewModel n in Lista)
@@ -63,6 +101,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public static string RutaCompleta(this NodoViewModel Nodo)
         {
+            if (Nodo == null)
+            {
+                throw new ArgumentNullException("Nodo");
+            }
+
             List<string> Ruta = new List<string>();
 
             while (Nodo != null)
@@ -83,6 +126,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public static string[] ListarHijos(this NodoViewModel Nodo)
         {
+            if (Nodo == null)
+            {
+                throw new ArgumentNullException("Nodo");
+            }
+
             List<string> Resultado = new List<string>();
 
             foreach (NodoViewModel Hijo in Nodo.Hijos)

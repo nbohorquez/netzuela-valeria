@@ -147,6 +147,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 if (_Padre == null)
                 {
+                    if (_Nodo.Padre == null)
+                    {
+                        return null;
+                    }
+
                     // Actualizamos este NodoViewModel para que refleje la estructura en Nodo
                     _Padre = _Nodo.Padre.ExisteEnRepositorio() ? _Nodo.Padre.BuscarEnRepositorio() : new NodoViewModel(_Nodo.Padre);
                     
@@ -189,6 +194,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 if (_Hijos == null)
                 {
+                    if (_Nodo.Hijos == null)
+                    {
+                        return null;
+                    }
+
                     // Actualizamos este NodoViewModel para que refleje la estructura en Nodo
                     _Hijos = new ObservableCollection<NodoViewModel>();
 

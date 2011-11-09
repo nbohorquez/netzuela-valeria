@@ -12,7 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Zuliaworks.Netzuela.Valeria.Logica;        // Nodo, Explorador ¡¡BORRAR!!
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;    // ExploradorViewModel
+using Zuliaworks.Netzuela.Valeria.Logica;                           // Nodo, Explorador ¡¡BORRAR!!
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
 {
@@ -40,12 +41,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
 
             Item.IsExpanded = false;
 
-            Nodo ItemNodo = Item.DataContext as Nodo;
+            NodoViewModel ItemNodo = Item.DataContext as NodoViewModel;
             if (ItemNodo == null)
                 return;
 
             TreeView TV = ArbolVisual.BusquedaHaciaArriba<TreeView>(Item as DependencyObject) as TreeView;
-            Explorador Arbol = TV.DataContext as Explorador;
+            ExploradorViewModel Arbol = TV.DataContext as ExploradorViewModel;
 
             Arbol.Expandir(ItemNodo);
         }
@@ -84,8 +85,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
             DataGrid Grilla = ArbolVisual.BusquedaHaciaArriba<DataGrid>(Celda as DependencyObject) as DataGrid;
 
             // Hacemos que Arbol.NodoActual sea la columna seleccionada
-            Explorador Arbol = Grilla.DataContext as Explorador;
-            Arbol.NodoActual = NodoExtensiones.BuscarNodo(Celda.Column.Header as string, Arbol.NodoTablaActual.Hijos);
+            ExploradorViewModel Arbol = Grilla.DataContext as ExploradorViewModel;
+            Arbol.NodoActual = NodoViewModelExtensiones.BuscarNodo(Celda.Column.Header as string, Arbol.NodoTablaActual.Hijos);
         }
 
         #endregion

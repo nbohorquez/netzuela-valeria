@@ -65,6 +65,8 @@
     <Compile Include="ViewModels\DetectarServidoresLocalesViewModel.cs" />
     <Compile Include="ViewModels\ExploradorViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NodoViewModel.cs" />
+    <Compile Include="ViewModels\NodoViewModelExtensiones.cs" />
     <Compile Include="Views\AutentificacionView.xaml.cs">
       <DependentUpon>AutentificacionView.xaml</DependentUpon>
     </Compile>

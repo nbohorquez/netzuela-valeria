@@ -65,11 +65,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
         {
-            if (BD.Estado == ConnectionState.Open)
-            {
-                MessageBox.Show("Conexion remota exitosa");
-            }
-
             RaisePropertyChanged("Estado");
         }
 

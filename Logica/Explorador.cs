@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Data;                          // DataTable
-using System.Collections.ObjectModel;       // ObservableCollection
-using System.ComponentModel;                // INotifyPropertyChanged
-using Zuliaworks.Netzuela.Valeria.Datos;                        // BaseDeDatos
-using Zuliaworks.Netzuela.Valeria.Comunes;                      // Constantes
+using System.Data;                              // DataTable
+using System.Collections.ObjectModel;           // ObservableCollection
+using System.ComponentModel;                    // INotifyPropertyChanged
+using Zuliaworks.Netzuela.Valeria.Datos;        // BaseDeDatos
+using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
 
 namespace Zuliaworks.Netzuela.Valeria.Logica
 {

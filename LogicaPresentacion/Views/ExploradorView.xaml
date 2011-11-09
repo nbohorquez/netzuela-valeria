@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Local="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion"
              xmlns:Logica="clr-namespace:Zuliaworks.Netzuela.Valeria.Logica;assembly=Logica"
+             xmlns:Local="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion"
+             xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels"             
              mc:Ignorable="d">
     
     <UserControl.Resources>
@@ -35,7 +36,7 @@
 
         <TreeView Grid.Column="0" Name="trv_ExploradorLocal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=Nodos}">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type Logica:Nodo}" ItemsSource="{Binding Path=Hijos}">
+                <HierarchicalDataTemplate DataType="{x:Type ViewModels:NodoViewModel}" ItemsSource="{Binding Path=Hijos}">
                     <TreeViewItem Name="tvi_Item" Expanded="tvi_Item_Expandir" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton">
                         <TreeViewItem.Header>
                             <StackPanel Orientation="Horizontal">

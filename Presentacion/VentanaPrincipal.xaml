@@ -94,13 +94,13 @@
                         </Grid.ColumnDefinitions>
 
                         <GroupBox Grid.Column="0" Header="Explorador local" Name="grp_ExploradorLocal" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
-                            <Views:ExploradorView DataContext="ExploradorLocal"/>
+                            <Views:ExploradorView DataContext="{Binding Path=ExploradorLocal}"/>
                         </GroupBox>
 
                         <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
 
                         <GroupBox Grid.Column="2" Name="grp_ExploradorRemoto" Header="Explorador remoto" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
-                            <Views:ExploradorView DataContext="ExploradorRemoto"/>
+                            <Views:ExploradorView DataContext="{Binding Path=ExploradorRemoto}"/>
                         </GroupBox>
 
                         <!-- Que molleja de feo este "Canvas" aqui... Es una solucion poco elegante pero funciona :$ -->

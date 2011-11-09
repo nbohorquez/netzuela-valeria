@@ -31,6 +31,11 @@
             <param name="StringNoSegura"></param>
             <returns></returns>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ServidorLocal">
+            <summary>
+            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
+            </summary>    
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes">
             <summary>
             Define constantes empleadas por todas las capas de Valeria
@@ -68,11 +73,6 @@
             <typeparam name="T">Tipo de IEnumerable</typeparam>
             <param name="Enumerable">Coleccion de objetos</param>
             <returns>ObservableColeccion de objetos tipo T</returns>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ServidorLocal">
-            <summary>
-            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
-            </summary>    
         </member>
     </members>
 </doc>

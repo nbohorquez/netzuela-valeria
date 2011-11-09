@@ -21,8 +21,12 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         public static ObservableCollection<T> ConvertirAObservableCollection<T>(this IEnumerable<T> Enumerable)
         {
             var c = new ObservableCollection<T>();
+
             foreach (var e in Enumerable)
+            {
                 c.Add(e);
+            }
+
             return c;
         }
     }

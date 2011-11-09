@@ -151,7 +151,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// 
         /// </summary>
         /// <returns></returns>
-        public DataTable TablaMapeada()
+        /*public DataTable TablaMapeada()
         {
             DataTable TempTablaMapeada = new DataTable();
 
@@ -183,7 +183,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             }
 
             return TempTablaMapeada;
-        }
+        }*/
 
         #endregion
 

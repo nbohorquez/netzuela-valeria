@@ -102,6 +102,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             try
             {
+                if (BD == null)
+                {
+                    ResolverDatosDeConexion();
+                }
                 BD.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)

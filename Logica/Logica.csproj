@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conexion.cs" />
-    <Compile Include="Explorador.cs" />
     <Compile Include="MapeoDeColumnas.cs" />
     <Compile Include="MapeoDeTablas.cs" />
     <Compile Include="Nodo.cs" />

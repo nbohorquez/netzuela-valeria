@@ -28,12 +28,12 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public Nodo()
         {
-            this.Expandido = false;
+            //this.Expandido = false;
             this.Nombre = null;
             this.Nivel = -1;
             this.Padre = null;
             this.Hijos = new ObservableCollection<Nodo>();
-            this.Explorador = null;
+            //this.Explorador = null;
             this.MapaColumna = null;
         }
 
@@ -43,12 +43,12 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Nombre"></param>
         public Nodo(string Nombre)
         {
-            this.Expandido = false;
+            //this.Expandido = false;
             this.Nombre = Nombre;
             this.Nivel = -1;
             this.Padre = null;
             this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
-            this.Explorador = null;
+            //this.Explorador = null;
             this.MapaColumna = null;
         }
 
@@ -59,12 +59,12 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Nivel"></param>
         public Nodo(string Nombre, int Nivel)
         {
-            this.Expandido = false;
+            //this.Expandido = false;
             this.Nombre = Nombre;
             this.Nivel = Nivel;
             this.Padre = null;
             this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
-            this.Explorador = null;
+            //this.Explorador = null;
             this.MapaColumna = null;
         }
 
@@ -75,7 +75,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Padre"></param>
         public Nodo(string Nombre, Nodo Padre)
         {
-            this.Expandido = false;
+            //this.Expandido = false;
             this.Nombre = Nombre;
             this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
             this.MapaColumna = null;
@@ -90,11 +90,16 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Hijos"></param>
         public Nodo(string Nombre, Nodo Padre, ObservableCollection<Nodo> Hijos)
         {
-            this.Expandido = true;
+            //this.Expandido = true;
             this.Nombre = Nombre;
-            this.Hijos = Hijos;
             this.MapaColumna = null;
             Padre.AgregarHijo(this);
+            this.Hijos = new ObservableCollection<Nodo>();
+
+            foreach (Nodo n in this.Hijos)
+            {
+                this.AgregarHijo(n);
+            }
         }
 
         /// <summary>
@@ -105,7 +110,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Hijos"></param>
         public Nodo(string Nombre, Nodo Padre, string[] Hijos)
         {
-            this.Expandido = true;
+            //this.Expandido = true;
             this.Nombre = Nombre;
             Padre.Hijos.Add(this);
             this.Hijos = new ObservableCollection<Nodo>();
@@ -121,13 +126,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         #region Propiedades
 
-        public ObservableCollection<Nodo> Hijos { get; set; }
         public string Nombre { get; set; }
-        public MapeoDeColumnas MapaColumna { get; set; }
-        public bool Expandido { get; set; }
         public int Nivel { get; set; }
         public Nodo Padre { get; set; }
-        public Explorador Explorador { get; set; }
+        public ObservableCollection<Nodo> Hijos { get; set; }
+        public MapeoDeColumnas MapaColumna { get; set; }
+        //public bool Expandido { get; set; }
+        //public Explorador Explorador { get; set; }
 
         #endregion
 
@@ -147,7 +152,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             Hijo.Padre = this;
             Hijo.Nivel = this.Nivel + 1;
-            Hijo.Explorador = this.Explorador;
+            //Hijo.Explorador = this.Explorador;
 
             this.Hijos.Add(Hijo);
         }

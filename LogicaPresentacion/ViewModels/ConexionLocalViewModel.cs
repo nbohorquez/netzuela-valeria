@@ -47,7 +47,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Propiedades
 
-        public IBaseDeDatos BD 
+        public IBaseDeDatos BD
         {
             get { return _Local.BD; }
         }

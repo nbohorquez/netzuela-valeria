@@ -4,6 +4,11 @@
         <name>LogicaPresentacion</name>
     </assembly>
     <members>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.EstadoDeConexion">
+            <summary>
+            Este convertidor lo uso para transformar ConnectionState a palabras
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.PasswordBoxVinculable">
             <summary>
             Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
@@ -19,6 +24,31 @@
             <summary>
             Esta propiedad es una fachada. Solo sirve para tomar el string desde el View y 
             convertirlo inmediatamente a SecureString en Usuario. No se puede leer
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel">
+            <summary>
+             La función de esta clase es mantener un registro actualizado del estado de la aplicación.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel.#ctor">
+            <summary>
+            Crea una barra de estado vacía.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel.EstadoConexion">
+            <summary>
+            Indica el estado de la conexión en el formato establecido en <see cref="T:System.Data.ConnectionState"/>
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ArbolVisual">
+            <summary>
+            Contiene funciones para los objetos de un arbol visual
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.DetectarServidoresLocalesViewModel">
@@ -39,6 +69,124 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel">
+            <summary>
+            Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
+            y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
+            la consistencia de esta clase.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView">
+            <summary>
+            Lógica de interacción para BarraDeEstadoView.xaml
+            </summary>
+            <summary>
+            BarraDeEstadoView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._CacheDeTablas">
+            <summary>
+            Es la caché de tablas del explorador.
+            </summary>
+        </member>
+        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._BD">
+            <summary>
+            Es el proveedor de datos del explorador.
+            </summary>
+        </member>
+        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._NodoActual">
+            <summary>
+            Indica el nodo actual seleccionado.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor">
+            <summary>
+            Construye un explorador vacio.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel},Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos)">
+            <summary>
+            Construye un explorador con determinado arbol de nodos y proveedor de datos.
+            </summary>
+            <param name="Nodos">Árbol de nodos a emplear. Si se trata de un explorador de carga
+            de nodos por demanda (lazy loading), el árbol pasado como parámetro por lo general 
+            sólo contiene el nodo inicial.</param>
+            <param name="BD">Proveedor de datos. A través de este se obtiene la data y metadata 
+            de los nodos del árbol.</param>
+        </member>
+        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoTablaActual">
+            <summary>
+            Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual"/>).
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirTodo">
+            <summary>
+            Expande todos los nodos del árbol de nodos <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Nodos"/> de este explorador.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirTodo(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel})">
+            <summary>
+            Expande todos los nodos del árbol de nodos especificado.
+            </summary>
+            <param name="Nodos">Arbol a expandir.</param>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="Nodos"/> es una referencia 
+            nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Expandir(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
+            <summary>
+            Obtiene el contenido del nodo especificado desde el proveedor de datos.
+            </summary>
+            <param name="Item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
+            especificados en <see cref="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes.NivelDeNodo"/>.</param>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="Item"/> es una referencia 
+            nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTabla(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
+            <summary>
+            Lee la tabla especificada desde el proveedor de datos.
+            </summary>
+            <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
+            <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
+            nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTablasCache">
+            <summary>
+            Devuelve las tablas presentes en la caché de tablas.
+            </summary>
+            <returns>Lista de las tablas guardadas en la caché.</returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerNodosCache">
+            <summary>
+            Devuelve los nodos asociados a las tablas de la caché de tablas.
+            </summary>
+            <returns>Lista de los nodos de tablas guardados en la caché.</returns>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Nodos">
+            <summary>
+            Representa la colección de nodos que conforman el arbol de datos.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.TablaActual">
+            <summary>
+            Lee o escribe la cache de tablas en la entrada especificada por <see cref="!:_NodoTablaActual"/>.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual">
+            <summary>
+            Indica el nodo actual seleccionado.
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionLocalViewModel">
             <summary>
             
@@ -55,6 +203,22 @@
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView.InitializeComponent">
             <summary>
             InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.SeleccionarTodaLaColumna">
+            <summary>
+            Este convertidor sirve para seleccionar toda la columna especificada por NodoActual
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionRemotaViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ColumnaAsociada">
+            <summary>
+            Este convertidor lo empleo para mostrar en pantalla qué columna destino esta asociado a cuál 
+            columna origen
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView">
@@ -83,63 +247,9 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ArbolVisual">
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModelExtensiones">
             <summary>
-            Contiene funciones para los objetos de un arbol visual
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.SeleccionarTodaLaColumna">
-            <summary>
-            Este convertidor sirve para seleccionar toda la columna especificada por NodoActual
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ColumnaAsociada">
-            <summary>
-            Este convertidor lo empleo para mostrar en pantalla qué columna destino esta asociado a cuál 
-            columna origen
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView">
-            <summary>
-            Lógica de interacción para BarraDeEstadoView.xaml
-            </summary>
-            <summary>
-            BarraDeEstadoView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel">
-            <summary>
-             La función de esta clase es mantener un registro actualizado del estado de la aplicación.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel.#ctor">
-            <summary>
-            Crea una barra de estado vacía.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel.EstadoConexion">
-            <summary>
-            Indica el estado de la conexión en el formato establecido en <see cref="T:System.Data.ConnectionState"/>
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.EstadoDeConexion">
-            <summary>
-            Este convertidor lo uso para transformar ConnectionState a palabras
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionRemotaViewModel">
-            <summary>
-            
+            Esta clase lleva el repositorio de todos los Nodo's que tienen un NodoViewModel asociado
             </summary>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">

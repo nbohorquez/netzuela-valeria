@@ -97,117 +97,6 @@
             Proveedor de datos creado a partir de las especificaciones de conexión.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Explorador">
-            <summary>
-            Esta clase se emplea para acceder a los datos de una fuente cuya estructura 
-            sea de tipo árbol de nodos. Implementa la interfaz <see cref="T:System.ComponentModel.INotifyPropertyChanged"/>
-            para hacer visibles algunas de sus propiedades a la capa de presentación.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Explorador.NodoTablaActual">
-            <summary>
-            Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="P:Zuliaworks.Netzuela.Valeria.Logica.Explorador.NodoActual"/>).
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Explorador.Tablas">
-            <summary>
-            Es la caché de tablas del explorador.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Explorador.BD">
-            <summary>
-            Es el proveedor de datos del explorador.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Explorador._NodoActual">
-            <summary>
-            Indica el nodo actual seleccionado.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Explorador.#ctor">
-            <summary>
-            Construye un explorador vacio.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Explorador.#ctor(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.Logica.Nodo},Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos)">
-            <summary>
-            Construye un explorador con determinado arbol de nodos y proveedor de datos.
-            </summary>
-            <param name="Nodos">Árbol de nodos a emplear. Si se trata de un explorador de carga
-            de nodos por demanda (lazy loading), el árbol pasado como parámetro por lo general 
-            sólo contiene el nodo inicial.</param>
-            <param name="BD">Proveedor de datos. A través de este se obtiene la data y metadata 
-            de los nodos del árbol.</param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Explorador.ExpandirTodo">
-            <summary>
-            Expande todos los nodos del árbol de nodos <see cref="P:Zuliaworks.Netzuela.Valeria.Logica.Explorador.Nodos"/> de este explorador.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Explorador.ExpandirTodo(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
-            <summary>
-            Expande todos los nodos del árbol de nodos especificado.
-            </summary>
-            <param name="Nodos">Arbol a expandir.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Nodos"/> es una referencia 
-            nula.</exception>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Explorador.Expandir(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            Obtiene el contenido del nodo especificado desde el proveedor de datos.
-            </summary>
-            <param name="Item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
-            especificados en <see cref="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes.NivelDeNodo"/>.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Item"/> es una referencia 
-            nula.</exception>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Explorador.ObtenerTabla(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            Lee la tabla especificada desde el proveedor de datos.
-            </summary>
-            <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
-            <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
-            nula.</exception>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Explorador.ObtenerTablasCache">
-            <summary>
-            Devuelve las tablas presentes en la caché de tablas.
-            </summary>
-            <returns>Lista de las tablas guardadas en la caché.</returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Explorador.ObtenerNodosCache">
-            <summary>
-            Devuelve los nodos asociados a las tablas de la caché de tablas.
-            </summary>
-            <returns>Lista de los nodos de tablas guardados en la caché.</returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Explorador.RegistrarCambioEnPropiedad(System.String)">
-            <summary>
-            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-            </summary>
-            <param name="info">Nombre de la propiedad modificada.</param>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Explorador.TablaActual">
-            <summary>
-            Lee o escribe la cache de tablas en la entrada especificada por <see cref="F:Zuliaworks.Netzuela.Valeria.Logica.Explorador.NodoTablaActual"/>.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Explorador.NodoActual">
-            <summary>
-            Indica el nodo actual seleccionado.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Explorador.Nodos">
-            <summary>
-            Representa la colección de nodos que conforman el arbol de datos.
-            </summary>
-        </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.Explorador.PropertyChanged">
-            <summary>
-            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas">
             <summary>
             
@@ -238,12 +127,6 @@
             <param name="MapaDeColumna"></param>
             <returns></returns>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.TablaMapeada">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.MapasColumnas">
             <summary>
             
@@ -253,6 +136,33 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
+            <summary>
+            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.BuscarNodo(System.String,System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
+            <summary>
+            
+            </summary>
+            <param name="Nombre"></param>
+            <param name="Lista"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.RutaCompleta(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="Nodo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.ListarHijos(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="Nodo"></param>
+            <returns></returns>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas">
             <summary>
@@ -314,33 +224,6 @@
         <member name="E:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.PropertyChanged">
             <summary>
             Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.BuscarNodo(System.String,System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
-            <summary>
-            
-            </summary>
-            <param name="Nombre"></param>
-            <param name="Lista"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.RutaCompleta(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Nodo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.ListarHijos(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Nodo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
-            <summary>
-            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
             </summary>
         </member>
     </members>

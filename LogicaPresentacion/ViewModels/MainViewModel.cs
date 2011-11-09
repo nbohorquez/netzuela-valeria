@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using MvvmFoundation.Wpf;                           // PropertyObserver<>
+using System.Collections.ObjectModel;               // ObservableCollection
 using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion, Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;           // Conexion
 
@@ -14,10 +15,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     /// <summary>
     /// 
     /// </summary>
-    public class MainViewModel
+    public class MainViewModel : ObservableObject
     {
         #region Variables
 
+        private ExploradorViewModel _ExploradorLocal;
+        private ExploradorViewModel _ExploradorRemoto;
         private readonly PropertyObserver<ConexionLocalViewModel> _ObservadorConexionLocal;
         private readonly PropertyObserver<ConexionRemotaViewModel> _ObservadorConexionRemota;
 
@@ -46,8 +49,32 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ConexionRemotaViewModel ConexionRemota { get; private set; }
         public ConexionLocalViewModel ConexionLocal { get; private set; }
-        public ExploradorViewModel ExploradorLocal { get; set; }
-        public ExploradorViewModel ExploradorRemoto { get; set; }
+
+        public ExploradorViewModel ExploradorLocal 
+        {
+            get { return _ExploradorLocal; }
+            private set
+            {
+                if (value != _ExploradorLocal)
+                {
+                    _ExploradorLocal = value;
+                    RaisePropertyChanged("ExploradorLocal");
+                }
+            }
+        }
+
+        public ExploradorViewModel ExploradorRemoto
+        {
+            get { return _ExploradorRemoto; }
+            private set
+            {
+                if (value != _ExploradorRemoto)
+                {
+                    _ExploradorRemoto = value;
+                    RaisePropertyChanged("ExploradorRemoto");
+                }
+            }
+        }
 
         #endregion
 
@@ -61,30 +88,29 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void ConexionLocalActiva(ConexionLocalViewModel Conexion)
         {
-            MessageBox.Show("AJA");
-            /*
-            if (ConexionLocal.Estado == System.Data.ConnectionState.Open)
+            if (Conexion.Estado == System.Data.ConnectionState.Open)
             {
-                ObservableCollection<Nodo> NodosLocales = new ObservableCollection<Nodo>()
+                ObservableCollection<NodoViewModel> NodosLocales = new ObservableCollection<NodoViewModel>()
                 {
-                    new Nodo(Local.Datos.Servidor + "(" + Local.Datos.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
+                    new NodoViewModel(Conexion.Datos.Servidor + "(" + Conexion.Datos.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
                 };
 
-                ArbolLocal = new Explorador(NodosLocales, Local.BD);
+                ExploradorLocal = new ExploradorViewModel(NodosLocales, Conexion.BD);
+                //ArbolLocal = new Explorador(NodosLocales, Local.BD);
 
-                trv_ExploradorLocal.DataContext = ArbolLocal;
-                txt_ElementoLocal.DataContext = ArbolLocal;
-                dgr_TablaLocal.DataContext = ArbolLocal;
-            }*/
+                //trv_ExploradorLocal.DataContext = ArbolLocal;
+                //txt_ElementoLocal.DataContext = ArbolLocal;
+                //dgr_TablaLocal.DataContext = ArbolLocal;
+            }
         }
 
         private void ConexionRemotaActiva(ConexionRemotaViewModel Conexion)
         {/*
-            if (Remota.BD.Estado == ConnectionState.Open)
+            if (Conexion.Estado == System.Data.ConnectionState.Open)
             {
-                ObservableCollection<Nodo> NodosRemotos = new ObservableCollection<Nodo>()
+                ObservableCollection<NodoViewModel> NodosRemotos = new ObservableCollection<NodoViewModel>()
                 {
-                    new Nodo(Remota.Datos.Servidor + "(" + Remota.Datos.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
+                    new NodoViewModel(Conexion.Datos.Servidor + "(" + Conexion.Datos.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
                 };
 
                 ArbolRemoto = new Explorador(NodosRemotos, Remota.BD);

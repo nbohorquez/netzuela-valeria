@@ -25,7 +25,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
     {
         #region Variables
 
-        private Explorador ArbolLocal, ArbolRemoto;
+        //private Explorador ArbolLocal, ArbolRemoto;
         private List<MapeoDeTablas> LocalARemota;
 
         #endregion
@@ -125,7 +125,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         }
 
         private void btn_Asociar_Clic(object sender, RoutedEventArgs e)
-        {
+        {/*
             MapeoDeColumnas MapCol = ArbolRemoto.NodoActual.MapaColumna;
 
             if (MapCol != null)
@@ -134,12 +134,12 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
                 MapeoDeTablas MapTbl = MapCol.MapaTabla;
                 ArbolRemoto.TablaActual = MapTbl.TablaMapeada();
-            }
+            }*/
         }
 
         private void btn_Desasociar_Clic(object sender, RoutedEventArgs e)
         {
-            MapeoDeColumnas MapCol = ArbolRemoto.NodoActual.MapaColumna;
+      /*      MapeoDeColumnas MapCol = ArbolRemoto.NodoActual.MapaColumna;
 
             if (MapCol != null)
             {
@@ -147,7 +147,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
                 MapeoDeTablas MapTbl = MapCol.MapaTabla;
                 ArbolRemoto.TablaActual = MapTbl.TablaMapeada();
-            }
+            }*/
         }
 
         #endregion

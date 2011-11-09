@@ -20,6 +20,11 @@
             Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.AnfitrionLocal">
+            <summary>
+            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
+            </summary>    
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
             <summary>
             Implementa las funciones de acceso a las bases de datos SQLServer
@@ -34,11 +39,6 @@
             <summary>
             Implementa las funciones de acceso a las bases de datos MySQL
             </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.AnfitrionLocal">
-            <summary>
-            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
-            </summary>    
         </member>
     </members>
 </doc>

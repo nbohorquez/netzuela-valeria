@@ -187,13 +187,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void Conectar()
+        private void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
+        {
+            RaisePropertyChanged("Estado");
+        }
+
+        public void Conectar()
         {
             try
             {
                 _Local.ResolverDatosDeConexion();
                 BD.EnCambioDeEstado = new StateChangeEventHandler(EnCambioDeEstado);
-                _Local.Conectar(_Usuario, _Contrasena);                
+                _Local.Conectar(_Usuario, _Contrasena);
             }
             catch (Exception ex)
             {
@@ -201,14 +206,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void Desconectar()
+        public void Desconectar()
         {
             _Local.Desconectar();
-        }
-
-        private void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
-        {
-            RaisePropertyChanged("Estado");
         }
 
         #endregion

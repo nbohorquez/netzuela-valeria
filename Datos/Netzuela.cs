@@ -17,10 +17,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #region Variables
 
         // ¡Temporal!
-        private List<Nodito> ServidorRemoto;
-        ConnectionState Estado;
-        public DatosDeConexion Servidor;
-
+        private List<Nodito> _ServidorRemoto;
+        private ConnectionState _Estado;
+        
         #endregion
 
         #region Constructores
@@ -28,9 +27,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public Netzuela(DatosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
-            
+            _Estado = ConnectionState.Closed;
+
             // Me invento una base de datos ficticia
-            ServidorRemoto = new List<Nodito>()
+            _ServidorRemoto = new List<Nodito>()
             {
                 new Nodito() 
                 { 
@@ -77,13 +77,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Propiedades
 
-        // ...
+        public DatosDeConexion Servidor { get; set; }
 
         #endregion
 
         #region Eventos
 
-        // ...
+        public event StateChangeEventHandler Cambio;
 
         #endregion
 
@@ -95,41 +95,51 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Implementaciones de interfaces
 
-        ConnectionState IBaseDeDatos.Estado
+        // ConnectionState IBaseDeDatos.Estado
+        public ConnectionState Estado
         {
-            get { return Estado; }
+            get { return _Estado; }
+            private set
+            {
+                if(value != _Estado)
+                {
+                    ConnectionState Anterior = _Estado;
+                    _Estado = value;
+                    Cambio(this, new StateChangeEventArgs(Anterior, _Estado));
+                }
+            }
         }
 
-        StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
+        public StateChangeEventHandler EnCambioDeEstado
         {
-            set { throw new NotImplementedException(); }
+            set { Cambio += value; }
         }
 
-        void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena) 
+        public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
             Estado = ConnectionState.Open;
         }
 
-        void IBaseDeDatos.Desconectar() 
+        public void Desconectar() 
         {
             Estado = ConnectionState.Closed;
         }
 
-        string[] IBaseDeDatos.ListarBasesDeDatos()
+        public string[] ListarBasesDeDatos()
         {
             List<string> Resultado = new List<string>();
 
-            foreach (Nodito N in ServidorRemoto[0].Hijos)
+            foreach (Nodito N in _ServidorRemoto[0].Hijos)
                 Resultado.Add(N.Nombre);
 
             return Resultado.ToArray();
         }
 
-        string[] IBaseDeDatos.ListarTablas(string BaseDeDatos)
+        public string[] ListarTablas(string BaseDeDatos)
         {
             List<string> Resultado = new List<string>();
 
-            Nodito BD = Nodito.BuscarNodo(BaseDeDatos, ServidorRemoto[0].Hijos);
+            Nodito BD = Nodito.BuscarNodo(BaseDeDatos, _ServidorRemoto[0].Hijos);
 
             foreach (Nodito N in BD.Hijos)
                 Resultado.Add(N.Nombre);
@@ -137,12 +147,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado.ToArray();
         }
 
-        DataTable IBaseDeDatos.MostrarTabla(string BaseDeDatos, string Tabla)
+        public DataTable MostrarTabla(string BaseDeDatos, string Tabla)
         {
             
             DataTable Tbl = new DataTable();
 
-            Nodito BD = Nodito.BuscarNodo(BaseDeDatos, ServidorRemoto[0].Hijos);
+            Nodito BD = Nodito.BuscarNodo(BaseDeDatos, _ServidorRemoto[0].Hijos);
             Nodito T = Nodito.BuscarNodo(Tabla, BD.Hijos);
 
             foreach (Nodito N in T.Hijos)
@@ -177,6 +187,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                 return Resultado;
             }
+        }
+
+        private class CambioDeEstado
+        {
+            //public event StateChangeEventHandler Cambio;
+            public delegate void StateChangeEventHandler (object Remitente, StateChangeEventArgs Argumentos);
+
+            public CambioDeEstado() { }
         }
 
         #endregion

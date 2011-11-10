@@ -6,6 +6,7 @@ using System.Text;
 using MvvmFoundation.Wpf;                       // ObservableObject
 using System.Collections.ObjectModel;           // ObservableCollection
 using System.Data;                              // DataTable
+using System.Windows;                           // MessageBox
 using System.Windows.Input;                     // ICommand
 using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
 using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
@@ -21,29 +22,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        /// <summary>
-        /// Es la caché de tablas del explorador.
-        /// </summary>
         private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
-
-        /// <summary>
-        /// Es el proveedor de datos del explorador.
-        /// </summary>
         private IBaseDeDatos _BD;
-
-        /// <summary>
-        /// Indica el nodo actual seleccionado.
-        /// </summary>
         private NodoViewModel _NodoActual;
-
-        /// <summary>
-        /// Expande el nodo especificado
-        /// </summary>
         private RelayCommand<NodoViewModel> _ExpandirOrden;
-
-        /// <summary>
-        /// Establece NodoActual
-        /// </summary>
         private RelayCommand<string> _EstablecerNodoActualOrden;
 
         #endregion
@@ -139,12 +121,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="NodoActual"/>).
         /// </summary>
         public NodoViewModel NodoTablaActual { get; private set; }
-
+        
+        /// <summary>
+        /// Expande el nodo especificado
+        /// </summary>
         public ICommand ExpandirOrden
         {
             get { return _ExpandirOrden ?? (_ExpandirOrden = new RelayCommand<NodoViewModel>(Nodo => this.Expandir(Nodo))); }
         }
-
+        
+        /// <summary>
+        /// Establece NodoActual
+        /// </summary>
         public ICommand EstablecerNodoActualOrden
         {
             get { return _EstablecerNodoActualOrden ?? (_EstablecerNodoActualOrden = new RelayCommand<string>(Nombre => this.EstablecerNodoActual(Nombre))); }
@@ -234,17 +222,24 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             Item.Expandido = true;
 
-            string[] BasesDeDatos = _BD.ListarBasesDeDatos();
-
-            if (BasesDeDatos != null)
+            try
             {
-                Item.Hijos.Clear();
-                foreach (string BdD in BasesDeDatos)
+                string[] BasesDeDatos = _BD.ListarBasesDeDatos();
+
+                if (BasesDeDatos != null)
                 {
-                    NodoViewModel Nodo = new NodoViewModel(BdD);
-                    Item.AgregarHijo(Nodo);
+                    Item.Hijos.Clear();
+                    foreach (string BdD in BasesDeDatos)
+                    {
+                        NodoViewModel Nodo = new NodoViewModel(BdD);
+                        Item.AgregarHijo(Nodo);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al listar las bases de datos");
+            }            
         }
 
         private void ExpandirBaseDeDatos(NodoViewModel Item)
@@ -254,16 +249,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             Item.Expandido = true;
 
-            string[] Tablas = _BD.ListarTablas(Item.Nombre);
-
-            if (Tablas != null)
+            try
             {
-                Item.Hijos.Clear();
-                foreach (string Tabla in Tablas)
+                string[] Tablas = _BD.ListarTablas(Item.Nombre);
+
+                if (Tablas != null)
                 {
-                    NodoViewModel Nodo = new NodoViewModel(Tabla);
-                    Item.AgregarHijo(Nodo);
+                    Item.Hijos.Clear();
+                    foreach (string Tabla in Tablas)
+                    {
+                        NodoViewModel Nodo = new NodoViewModel(Tabla);
+                        Item.AgregarHijo(Nodo);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al listar las tablas");
             }
         }
 
@@ -307,25 +309,32 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             DataTable Temp = null;
 
-            if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
+            try
             {
-                if (_CacheDeTablas.ContainsKey(Tabla))
+                if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
                 {
-                    Temp = _CacheDeTablas[Tabla];
-                }
-                else
-                {
-                    Temp = _BD.MostrarTabla(Tabla.Padre.Nombre, Tabla.Nombre);
-                    Temp.TableName = Tabla.RutaCompleta();
-
-                    Tabla.Hijos.Clear();
-                    foreach (DataColumn Columna in Temp.Columns)
+                    if (_CacheDeTablas.ContainsKey(Tabla))
                     {
-                        NodoViewModel N = new NodoViewModel(Columna.ColumnName);
-                        N.Hijos.Clear();
-                        Tabla.AgregarHijo(N);
+                        Temp = _CacheDeTablas[Tabla];
+                    }
+                    else
+                    {
+                        Temp = _BD.MostrarTabla(Tabla.Padre.Nombre, Tabla.Nombre);
+                        Temp.TableName = Tabla.RutaCompleta();
+
+                        Tabla.Hijos.Clear();
+                        foreach (DataColumn Columna in Temp.Columns)
+                        {
+                            NodoViewModel N = new NodoViewModel(Columna.ColumnName);
+                            N.Hijos.Clear();
+                            Tabla.AgregarHijo(N);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar la tabla");
             }
 
             return Temp;

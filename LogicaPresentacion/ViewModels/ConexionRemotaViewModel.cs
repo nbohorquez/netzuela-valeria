@@ -33,16 +33,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ConexionRemotaViewModel()
         {
             _Remota = new Conexion(new DatosDeConexion() { Servidor = Constantes.SGBDR.NETZUELA, Instancia = "Isla Providencia" });
-
-            try
-            {
-                BD.EnCambioDeEstado = new StateChangeEventHandler(EnCambioDeEstado);
-                _Remota.Conectar(null, null);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
-            }
         }
 
         #endregion
@@ -59,6 +49,19 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             get { return BD.Estado; }
         }
 
+        public DatosDeConexion Datos
+        {
+            get { return _Remota.Datos; }
+            set
+            {
+                if (value != _Remota.Datos)
+                {
+                    _Remota.Datos = value;
+                    RaisePropertyChanged("Datos");
+                }
+            }
+        }
+
         #endregion
 
         #region Funciones
@@ -66,6 +69,24 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
         {
             RaisePropertyChanged("Estado");
+        }
+
+        public void Conectar()
+        {
+            try
+            {
+                BD.EnCambioDeEstado = new StateChangeEventHandler(EnCambioDeEstado);
+                _Remota.Conectar(null, null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
+            }
+        }
+
+        public void Desconectar()
+        {
+            _Remota.Desconectar();
         }
 
         #endregion

@@ -117,35 +117,15 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModelExtensiones">
+            <summary>
+            Esta clase lleva el repositorio de todos los Nodo's que tienen un NodoViewModel asociado
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel">
             <summary>
             Esta clase se emplea para acceder a los datos de una fuente cuya estructura 
             sea un árbol de nodos.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._CacheDeTablas">
-            <summary>
-            Es la caché de tablas del explorador.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._BD">
-            <summary>
-            Es el proveedor de datos del explorador.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._NodoActual">
-            <summary>
-            Indica el nodo actual seleccionado.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._ExpandirOrden">
-            <summary>
-            Expande el nodo especificado
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._EstablecerNodoActualOrden">
-            <summary>
-            Establece NodoActual
             </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor">
@@ -231,6 +211,16 @@
             Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual"/>).
             </summary>
         </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirOrden">
+            <summary>
+            Expande el nodo especificado
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.EstablecerNodoActualOrden">
+            <summary>
+            Establece NodoActual
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionLocalViewModel">
             <summary>
             
@@ -289,11 +279,6 @@
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView.InitializeComponent">
             <summary>
             InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModelExtensiones">
-            <summary>
-            Esta clase lleva el repositorio de todos los Nodo's que tienen un NodoViewModel asociado
             </summary>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">

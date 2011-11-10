@@ -40,7 +40,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
 
             ExploradorLocal = new ExploradorViewModel();
-            ExploradorRemoto = new ExploradorViewModel();
+            //ExploradorRemoto = new ExploradorViewModel();
+            ConexionRemota.Conectar();
         }
 
         #endregion
@@ -100,7 +101,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
 
         private void ConexionRemotaActiva(ConexionRemotaViewModel Conexion)
-        {/*
+        {
             if (Conexion.Estado == System.Data.ConnectionState.Open)
             {
                 ObservableCollection<NodoViewModel> NodosRemotos = new ObservableCollection<NodoViewModel>()
@@ -108,26 +109,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     new NodoViewModel(Conexion.Datos.Servidor + "(" + Conexion.Datos.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
                 };
 
-                ArbolRemoto = new Explorador(NodosRemotos, Remota.BD);
+                ExploradorRemoto = new ExploradorViewModel(NodosRemotos, Conexion.BD);
 
                 // Leemos todas las tablas de todas las bases de datos del servidor remoto
-                ArbolRemoto.ExpandirTodo();
+                ExploradorRemoto.ExpandirTodo();
 
                 // Obtenemos todos los nodos que son indice de tablas en la cache
-                List<Nodo> NodosCache = ArbolRemoto.ObtenerNodosCache();
+                List<NodoViewModel> NodosCache = ExploradorRemoto.ObtenerNodosCache();
 
-                foreach (Nodo Tabla in NodosCache)
+          /*      foreach (Nodo Tabla in NodosCache)
                 {
                     // Creamos un MapeoDeTablas por cada Tabla listada en el servidor remoto
                     // Luego se agregaran MapeoDeColumnas a estos MapeoDeTablas.
                     MapeoDeTablas MapTab = new MapeoDeTablas(Tabla);
                     LocalARemota.Add(MapTab);
-                }
-
-                trv_ExploradorRemoto.DataContext = ArbolRemoto;
-                txt_ElementoRemoto.DataContext = ArbolRemoto;
-                dgr_TablaRemota.DataContext = ArbolRemoto;
-            }*/
+                }*/
+            }
         }
 
         #endregion

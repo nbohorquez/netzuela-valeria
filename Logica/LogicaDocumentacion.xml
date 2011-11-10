@@ -171,11 +171,6 @@
             empleada por <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas"/> como unidad básica de mapeo.
             </summary>
         </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.MapaTabla">
-            <summary>
-            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas"/> asociada a esta clase.
-            </summary>
-        </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor">
             <summary>
             Crea un mapeo de columnas vacío.
@@ -219,6 +214,11 @@
         <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaDestino">
             <summary>
             
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.MapaTabla">
+            <summary>
+            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas"/> asociada a esta clase.
             </summary>
         </member>
         <member name="E:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.PropertyChanged">

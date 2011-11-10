@@ -42,8 +42,9 @@
                                   ACB:CommandBehavior.Event="Expanded"
                                   ACB:CommandBehavior.Command="{Binding Path=Explorador.ExpandirOrden}"
                                   ACB:CommandBehavior.CommandParameter="{Binding Path=.}">
-                        <!-- Para una explicacion acerca de ACB (Attached Command Behavior) ver la direccion:
-                        http://marlongrech.wordpress.com/2008/12/13/attachedcommandbehavior-v2-aka-acb/ 
+                        <!-- 
+                        Para una explicacion acerca de la biblioteca empleada (Attached Command Behavior) ver 
+                        la direccion: http://marlongrech.wordpress.com/2008/12/13/attachedcommandbehavior-v2-aka-acb/ 
                         -->
                         <TreeViewItem.Header>
                             <StackPanel Orientation="Horizontal">

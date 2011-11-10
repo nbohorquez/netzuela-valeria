@@ -62,6 +62,41 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
+        public string EstadoString
+        {
+            get
+            {
+                string Resultado;
+
+                switch (Estado)
+                {
+                    case ConnectionState.Broken:
+                        Resultado = "Rota";
+                        break;
+                    case ConnectionState.Closed:
+                        Resultado = "Cerrada";
+                        break;
+                    case ConnectionState.Connecting:
+                        Resultado = "Conectando...";
+                        break;
+                    case ConnectionState.Executing:
+                        Resultado = "Ejecutando";
+                        break;
+                    case ConnectionState.Fetching:
+                        Resultado = "Recibiendo";
+                        break;
+                    case ConnectionState.Open:
+                        Resultado = "Establecida";
+                        break;
+                    default:
+                        Resultado = "Indeterminada";
+                        break;
+                }
+
+                return Resultado;
+            }
+        }
+
         #endregion
 
         #region Funciones
@@ -69,6 +104,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
         {
             RaisePropertyChanged("Estado");
+            RaisePropertyChanged("EstadoString");
         }
 
         public void Conectar()

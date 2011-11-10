@@ -17,10 +17,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     {
         #region Variables
 
-        /// <summary>
-        /// Instancia de <see cref="MapeoDeTablas"/> asociada a esta clase.
-        /// </summary>
-        public MapeoDeTablas MapaTabla;
         private Nodo _ColumnaDestino;
         private Nodo _ColumnaOrigen;
 
@@ -136,6 +132,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 }
             }
         }
+
+        /// <summary>
+        /// Instancia de <see cref="MapeoDeTablas"/> asociada a esta clase.
+        /// </summary>
+        public MapeoDeTablas MapaTabla { get; set; }
 
         #endregion
 

@@ -31,21 +31,6 @@
             
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel">
-            <summary>
-             La función de esta clase es mantener un registro actualizado del estado de la aplicación.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel.#ctor">
-            <summary>
-            Crea una barra de estado vacía.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.BarraDeEstadoViewModel.EstadoConexion">
-            <summary>
-            Indica el estado de la conexión en el formato establecido en <see cref="T:System.Data.ConnectionState"/>
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ArbolVisual">
             <summary>
             Contiene funciones para los objetos de un arbol visual

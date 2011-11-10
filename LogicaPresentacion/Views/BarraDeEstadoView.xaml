@@ -3,17 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Local="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion"
-             xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels"
              mc:Ignorable="d">
     
-    <UserControl.DataContext>
-        <ViewModels:BarraDeEstadoViewModel/>
-    </UserControl.DataContext>
-    
     <UserControl.Resources>
-        <Local:EstadoDeConexion x:Key="EstadoDeConexion"/>
-        
         <Style x:Key="est_BarraDeEstado" TargetType="StatusBar">
             <Setter Property="Height" Value="Auto"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -23,7 +15,36 @@
     </UserControl.Resources>
 
     <Grid>
-        <StatusBar Name="bar_BarraDeEstado" Grid.Column="0" Grid.Row="4" Style="{StaticResource est_BarraDeEstado}" DataContext="{Binding}">
+        <StatusBar Name="bar_BarraDeEstado" Grid.Column="0" Grid.Row="4" Style="{StaticResource est_BarraDeEstado}">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column="0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Conexión local: "/>
+                    <TextBlock Text="{Binding Path=ConexionLocal.EstadoString}"/>
+                </StackPanel>
+            </StatusBarItem>
+            <Separator Grid.Column="0" Height="Auto" HorizontalAlignment="Right"/>
+            <StatusBarItem Grid.Column="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Conexión remota: "/>
+                    <TextBlock Text="{Binding Path=ConexionRemota.EstadoString}"/>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+    
+    <!--
+    <Grid>
+        <StatusBar Name="bar_BarraDeEstado" Grid.Column="0" Grid.Row="4" Style="{StaticResource est_BarraDeEstado}">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -52,5 +73,5 @@
                 <TextBlock>Go!</TextBlock>
             </StatusBarItem>
         </StatusBar>
-    </Grid>
+    </Grid>-->
 </UserControl>

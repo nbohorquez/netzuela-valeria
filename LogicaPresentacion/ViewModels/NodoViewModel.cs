@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 
 using MvvmFoundation.Wpf;                       // ObservableObject
-using System.Collections.ObjectModel;               // ObservableCollection
-using Zuliaworks.Netzuela.Valeria.Logica;           // Nodo
+using System.Collections.ObjectModel;           // ObservableCollection
+using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {

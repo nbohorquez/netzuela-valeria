@@ -32,6 +32,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         public Conexion()
         {
             this.Datos = new DatosDeConexion();
+            this.BD = new ServidorPredeterminado(this.Datos);
         }
 
         /// <summary>

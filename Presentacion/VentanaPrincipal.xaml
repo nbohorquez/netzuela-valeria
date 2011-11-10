@@ -145,7 +145,6 @@
             </TabItem>
         </TabControl>
 
-        <Views:BarraDeEstadoView Grid.Column="0" Grid.Row="4"/>
-        <!--<Views:BarraDeEstadoView Grid.Column="0" Grid.Row="4" DataContext="{Binding Path=BarraDeEstado}"/>-->
+        <Views:BarraDeEstadoView Grid.Column="0" Grid.Row="4" DataContext="{Binding Path=.}"/>
     </Grid>
 </Window>

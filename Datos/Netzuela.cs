@@ -189,14 +189,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
         }
 
-        private class CambioDeEstado
-        {
-            //public event StateChangeEventHandler Cambio;
-            public delegate void StateChangeEventHandler (object Remitente, StateChangeEventArgs Argumentos);
-
-            public CambioDeEstado() { }
-        }
-
         #endregion
     }
 }

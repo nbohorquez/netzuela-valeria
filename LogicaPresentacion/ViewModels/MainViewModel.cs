@@ -39,8 +39,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             _ObservadorConexionRemota = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
 
-            ExploradorLocal = new ExploradorViewModel();
-            //ExploradorRemoto = new ExploradorViewModel();
             ConexionRemota.Conectar();
         }
 

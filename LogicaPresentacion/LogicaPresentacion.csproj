@@ -62,7 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleccionarTodaLaColumna.cs" />
     <Compile Include="ViewModels\AutentificacionViewModel.cs" />
-    <Compile Include="ViewModels\BarraDeEstadoViewModel.cs" />
     <Compile Include="ViewModels\ConexionLocalViewModel.cs" />
     <Compile Include="ViewModels\ConexionRemotaViewModel.cs" />
     <Compile Include="ViewModels\DetectarServidoresLocalesViewModel.cs" />

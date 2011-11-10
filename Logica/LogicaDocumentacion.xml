@@ -4,50 +4,123 @@
         <name>Logica</name>
     </assembly>
     <members>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas">
+            <summary>
+            Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
+            de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
+            empleada por <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas"/> como unidad básica de mapeo.
+            </summary>
+        </member>
+        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.MapaTabla">
+            <summary>
+            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas"/> asociada a esta clase.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor">
+            <summary>
+            Crea un mapeo de columnas vacío.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            Crea un mapeo de columnas especificando sólo la columna destino.
+            </summary>
+            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            Crea un mapeo de columnas especificando la columna de orígen y la de destino.
+            </summary>
+            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
+            <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.Asociar(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="ColumnaOrigen"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.Desasociar">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.#ctor">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.RegistrarCambioEnPropiedad(System.String)">
+            <summary>
+            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
+            </summary>
+            <param name="info">Nombre de la propiedad modificada.</param>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaOrigen">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Tabla"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Nodo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas)">
-            <summary>
-            
-            </summary>
-            <param name="MapaDeColumna"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.TablaMapeada">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.MapasColumnas">
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaDestino">
             <summary>
             
             </summary>
         </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.Tabla">
+        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.PropertyChanged">
             <summary>
-            
+            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Conexion">
+            <summary>
+            Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
+            de forma transparente para el programador. Implementa la interfaz 
+            <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> para hacer visibles algunas de sus propiedades 
+            a la capa de presentación.
+            </summary>
+        </member>
+        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Conexion.BD">
+            <summary>
+            Proveedor de datos creado a partir de las especificaciones de conexión.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.#ctor">
+            <summary>
+            Crea una conexión vacía.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.#ctor(Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion)">
+            <summary>
+            Crea una conexión con el servidor especificado.
+            </summary>
+            <param name="Datos">Datos de configuración de la conexión con el servidor.</param>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="Datos"/> es una referencia 
+            nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
+            <summary>
+            Abre la conexión con el servidor especificado en <see cref="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Datos"/>.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Desconectar">
+            <summary>
+            Cierra la conexión con el servidor.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.DetectarServidoresLocales">
+            <summary>
+            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.RegistrarCambioEnPropiedad(System.String)">
+            <summary>
+            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
+            </summary>
+            <param name="info">Nombre de la propiedad modificada.</param>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Datos">
+            <summary>
+            Parámetros de la conexión con el servidor actual.
+            </summary>
+        </member>
+        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.Conexion.PropertyChanged">
+            <summary>
+            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Explorador">
@@ -157,91 +230,6 @@
             </summary>
         </member>
         <member name="E:Zuliaworks.Netzuela.Valeria.Logica.Explorador.PropertyChanged">
-            <summary>
-            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Conexion">
-            <summary>
-            Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
-            de forma transparente para el programador. Implementa la interfaz 
-            <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> para hacer visibles algunas de sus propiedades 
-            a la capa de presentación.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.Conexion.BD">
-            <summary>
-            Proveedor de datos creado a partir de las especificaciones de conexión.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.#ctor">
-            <summary>
-            Crea una conexión vacía.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.#ctor(Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion)">
-            <summary>
-            Crea una conexión con el servidor especificado.
-            </summary>
-            <param name="Datos">Datos de configuración de la conexión con el servidor.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Datos"/> es una referencia 
-            nula.</exception>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
-            <summary>
-            Abre la conexión con el servidor especificado en <see cref="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Datos"/>.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Desconectar">
-            <summary>
-            Cierra la conexión con el servidor.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.DetectarServidoresLocales">
-            <summary>
-            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.RegistrarCambioEnPropiedad(System.String)">
-            <summary>
-            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-            </summary>
-            <param name="info">Nombre de la propiedad modificada.</param>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Datos">
-            <summary>
-            Parámetros de la conexión con el servidor actual.
-            </summary>
-        </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.Conexion.PropertyChanged">
-            <summary>
-            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado">
-            <summary>
-             La función de esta clase es mantener un registro actualizado del estado de la aplicación.
-             Implementa la interfaz <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> para hacer visibles algunas 
-             de sus propiedades a la capa de presentación.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.#ctor">
-            <summary>
-            Crea una barra de estado vacía.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.RegistrarCambioEnPropiedad(System.String)">
-            <summary>
-            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-            </summary>
-            <param name="info">Nombre de la propiedad modificada.</param>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.EstadoConexion">
-            <summary>
-            Indica el estado de la conexión en el formato establecido en <see cref="T:System.Data.ConnectionState"/>
-            </summary>
-        </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.PropertyChanged">
             <summary>
             Evento que se activa cuando una propiedad de esta clase ha sido modificada.
             </summary>
@@ -368,64 +356,76 @@
             Evento que se activa cuando una propiedad de esta clase ha sido modificada.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas">
-            <summary>
-            Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
-            de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
-            empleada por <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas"/> como unidad básica de mapeo.
-            </summary>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.MapaTabla">
-            <summary>
-            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas"/> asociada a esta clase.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor">
-            <summary>
-            Crea un mapeo de columnas vacío.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            Crea un mapeo de columnas especificando sólo la columna destino.
-            </summary>
-            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            Crea un mapeo de columnas especificando la columna de orígen y la de destino.
-            </summary>
-            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
-            <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.Asociar(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="ColumnaOrigen"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.Desasociar">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.RegistrarCambioEnPropiedad(System.String)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="Tabla"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="Nodo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas)">
+            <summary>
+            
+            </summary>
+            <param name="MapaDeColumna"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.TablaMapeada">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.MapasColumnas">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeTablas.Tabla">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado">
+            <summary>
+             La función de esta clase es mantener un registro actualizado del estado de la aplicación.
+             Implementa la interfaz <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> para hacer visibles algunas 
+             de sus propiedades a la capa de presentación.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.#ctor">
+            <summary>
+            Crea una barra de estado vacía.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.RegistrarCambioEnPropiedad(System.String)">
             <summary>
             Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
             </summary>
             <param name="info">Nombre de la propiedad modificada.</param>
         </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaOrigen">
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.EstadoConexion">
             <summary>
-            
+            Indica el estado de la conexión en el formato establecido en <see cref="T:System.Data.ConnectionState"/>
             </summary>
         </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaDestino">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.PropertyChanged">
+        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.BarraDeEstado.PropertyChanged">
             <summary>
             Evento que se activa cuando una propiedad de esta clase ha sido modificada.
             </summary>

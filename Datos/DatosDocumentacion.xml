@@ -4,16 +4,10 @@
         <name>Datos</name>
     </assembly>
     <members>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorLocal">
             <summary>
-            Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
-            a las bases de datos.
+            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
             </summary>    
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorPredeterminado">
-            <summary>
-            Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.
-            </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.StringSegura">
             <summary>
@@ -40,24 +34,30 @@
             Implementa las funciones de acceso a las bases de datos Oracle
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos">
+            <summary>
+            Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
+            a las bases de datos.
+            </summary>    
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.MySQL">
             <summary>
             Implementa las funciones de acceso a las bases de datos MySQL
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorLocal">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorPredeterminado">
             <summary>
-            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
-            </summary>    
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Netzuela">
-            <summary>
-            Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
+            Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
             <summary>
             Implementa las funciones de acceso a las bases de datos SQLServer
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Netzuela">
+            <summary>
+            Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
             </summary>
         </member>
     </members>

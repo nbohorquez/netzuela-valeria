@@ -96,11 +96,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 };
 
                 ExploradorLocal = new ExploradorViewModel(NodosLocales, Conexion.BD);
-                //ArbolLocal = new Explorador(NodosLocales, Local.BD);
-
-                //trv_ExploradorLocal.DataContext = ArbolLocal;
-                //txt_ElementoLocal.DataContext = ArbolLocal;
-                //dgr_TablaLocal.DataContext = ArbolLocal;
             }
         }
 

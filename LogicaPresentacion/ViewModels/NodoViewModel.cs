@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using MvvmFoundation.Wpf;                       // ObservableObject
 using System.Collections.ObjectModel;               // ObservableCollection
 using Zuliaworks.Netzuela.Valeria.Logica;           // Nodo
 
@@ -148,17 +149,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 if (_Padre == null)
                 {
                     if (_Nodo.Padre == null)
-                    {
                         return null;
-                    }
 
                     // Actualizamos este NodoViewModel para que refleje la estructura en Nodo
                     _Padre = _Nodo.Padre.ExisteEnRepositorio() ? _Nodo.Padre.BuscarEnRepositorio() : new NodoViewModel(_Nodo.Padre);
                     
                     if (!_Padre.Hijos.Contains(this))
-                    {
                         _Padre.Hijos.Add(this);
-                    }
 
                     this.Explorador = _Padre.Explorador;
                 }
@@ -172,17 +169,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     _Padre = value;
 
                     if (!_Padre.Hijos.Contains(this))
-                    {
                         _Padre.Hijos.Add(this);
-                    }
 
                     this.Explorador = _Padre.Explorador;
 
                     // Actualizamos Nodo para que refleje la estructura de NodoViewModel
                     if (!_Padre._Nodo.Hijos.Contains(this._Nodo))
-                    {
                         _Padre._Nodo.AgregarHijo(this._Nodo);
-                    }
                 }
             }
         }
@@ -195,9 +188,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 if (_Hijos == null)
                 {
                     if (_Nodo.Hijos == null)
-                    {
                         return null;
-                    }
 
                     // Actualizamos este NodoViewModel para que refleje la estructura en Nodo
                     _Hijos = new ObservableCollection<NodoViewModel>();

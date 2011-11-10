@@ -37,9 +37,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private NodoViewModel _NodoActual;
 
         /// <summary>
-        /// Esta orden 
+        /// Expande el nodo especificado
         /// </summary>
-        private RelayCommand _ExpandirNodo;    
+        private RelayCommand<NodoViewModel> _ExpandirOrden;
 
         #endregion
 
@@ -88,7 +88,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ObservableCollection<NodoViewModel> Nodos { get; private set; }
 
         /// <summary>
-        /// Lee o escribe la cache de tablas en la entrada especificada por <see cref="_NodoTablaActual"/>.
+        /// Lee o escribe la cache de tablas en la entrada especificada por <see cref="NodoTablaActual"/>.
         /// </summary>
         public DataTable TablaActual
         {
@@ -135,9 +135,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// </summary>
         public NodoViewModel NodoTablaActual { get; private set; }
 
-        public ICommand ExpandirNodo
+        public ICommand ExpandirOrden
         {
-            get { return _ExpandirNodo ?? (_ExpandirNodo = new RelayCommand(this.)); }
+            get { return _ExpandirOrden ?? (_ExpandirOrden = new RelayCommand<NodoViewModel>(Nodo => this.Expandir(Nodo))); }
         }
 
         #endregion

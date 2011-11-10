@@ -40,8 +40,11 @@
                 <HierarchicalDataTemplate DataType="{x:Type ViewModels:NodoViewModel}" ItemsSource="{Binding Path=Hijos}">
                     <TreeViewItem Name="tvi_Item" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton"
                                   ACB:CommandBehavior.Event="Expanded"
-                                  ACB:CommandBehavior.Command="{Binding Path=}">
-                        <!--Expanded="tvi_Item_Expandir"-->
+                                  ACB:CommandBehavior.Command="{Binding Path=Explorador.ExpandirOrden}"
+                                  ACB:CommandBehavior.CommandParameter="{Binding Path=.}">
+                        <!-- Para una explicacion acerca de ACB (Attached Command Behavior) ver la direccion:
+                        http://marlongrech.wordpress.com/2008/12/13/attachedcommandbehavior-v2-aka-acb/ 
+                        -->
                         <TreeViewItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Path=Nombre}"/>
@@ -67,7 +70,7 @@
         <DataGrid Name="dgr_TablaLocal" Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView}" MouseLeftButtonUp="dgr_Tablas_ClicBotonIzqRaton">
             <DataGrid.CurrentCell>
                 <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
-                    <Binding Path="NodoActual"/>
+                    <Binding Path="NodoActual.Nombre"/>
                     <Binding RelativeSource="{x:Static RelativeSource.Self}"/>
                 </MultiBinding>
             </DataGrid.CurrentCell>

@@ -138,6 +138,11 @@
             Indica el nodo actual seleccionado.
             </summary>
         </member>
+        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._ExpandirOrden">
+            <summary>
+            Expande el nodo especificado
+            </summary>
+        </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor">
             <summary>
             Construye un explorador vacio.
@@ -152,11 +157,6 @@
             sólo contiene el nodo inicial.</param>
             <param name="BD">Proveedor de datos. A través de este se obtiene la data y metadata 
             de los nodos del árbol.</param>
-        </member>
-        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoTablaActual">
-            <summary>
-            Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual"/>).
-            </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirTodo">
             <summary>
@@ -208,7 +208,7 @@
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.TablaActual">
             <summary>
-            Lee o escribe la cache de tablas en la entrada especificada por <see cref="!:_NodoTablaActual"/>.
+            Lee o escribe la cache de tablas en la entrada especificada por <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoTablaActual"/>.
             </summary>
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual">
@@ -219,6 +219,11 @@
         <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.RutaNodoActual">
             <summary>
             Este string indica la ruta completa del nodo actual seleccionado.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoTablaActual">
+            <summary>
+            Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual"/>).
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionLocalViewModel">

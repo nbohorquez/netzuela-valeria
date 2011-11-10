@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Globalization;                     // Culture
-using System.Windows.Controls;                  // DataGrid
-using System.Windows.Data;                      // IMultiValueConverter
-using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
+using System.Globalization;                                         // Culture
+using System.Windows.Controls;                                      // DataGrid
+using System.Windows.Data;                                          // IMultiValueConverter
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;    // NodoViewModel
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 {
@@ -17,13 +17,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
     {
         public object Convert(object[] Valor, Type TipoObjetivo, object Parametro, CultureInfo Cultura)
         {
-            Nodo NodoActual = Valor[0] as Nodo;
+            string NombreNodoActual = Valor[0] as string;
             DataGrid Grilla = Valor[1] as DataGrid;
             int Columna = -1;
 
             for (int i = 0; i < Grilla.Columns.Count; i++)
             {
-                if (NodoActual.Nombre == Grilla.Columns[i].Header as string)
+                if (NombreNodoActual == Grilla.Columns[i].Header as string)
                 {
                     Columna = i;
                     break;

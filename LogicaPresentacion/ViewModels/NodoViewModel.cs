@@ -140,8 +140,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             get { return _Nodo.Nivel; }
             set { _Nodo.Nivel = value; }
         }
-        
-        // ESTO TIENE QUE PROBARSE
+       
         public NodoViewModel Padre 
         {
             get
@@ -180,7 +179,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        // ESTO TIENE QUE PROBARSE
         public ObservableCollection<NodoViewModel> Hijos 
         {
             get
@@ -223,7 +221,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        // ESTO TIENE QUE CAMBIARSE
+        // PROBABLEMENTE ESTO TIENE QUE CAMBIARSE
         public MapeoDeColumnas MapaColumna
         {
             get { return _Nodo.MapaColumna; }

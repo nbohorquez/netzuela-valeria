@@ -61,20 +61,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
                 Item.FontStyle = System.Windows.FontStyles.Normal;
         }
 
-        private void dgr_Tablas_ClicBotonIzqRaton(object sender, MouseButtonEventArgs e)
-        {
-            DataGridCell Celda = ArbolVisual.BusquedaHaciaArriba<DataGridCell>(e.OriginalSource as DependencyObject) as DataGridCell;
-
-            if (Celda == null)
-                return;
-
-            DataGrid Grilla = ArbolVisual.BusquedaHaciaArriba<DataGrid>(Celda as DependencyObject) as DataGrid;
-
-            // Hacemos que Arbol.NodoActual sea la columna seleccionada
-            ExploradorViewModel Arbol = Grilla.DataContext as ExploradorViewModel;
-            Arbol.NodoActual = NodoViewModelExtensiones.BuscarNodo(Celda.Column.Header as string, Arbol.NodoTablaActual.Hijos);
-        }
-
         #endregion
     }
 }

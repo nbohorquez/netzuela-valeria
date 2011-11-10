@@ -143,6 +143,11 @@
             Expande el nodo especificado
             </summary>
         </member>
+        <member name="F:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel._EstablecerNodoActualOrden">
+            <summary>
+            Establece NodoActual
+            </summary>
+        </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor">
             <summary>
             Construye un explorador vacio.

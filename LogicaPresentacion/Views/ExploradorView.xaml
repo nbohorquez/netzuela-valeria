@@ -67,7 +67,10 @@
 
         <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
 
-        <DataGrid Name="dgr_TablaLocal" Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView}" MouseLeftButtonUp="dgr_Tablas_ClicBotonIzqRaton">
+        <DataGrid Name="dgr_TablaLocal" Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView}" 
+                  ACB:CommandBehavior.Event="MouseLeftButtonUp"
+                  ACB:CommandBehavior.Command="{Binding Path=EstablecerNodoActualOrden}"
+                  ACB:CommandBehavior.CommandParameter="{Binding ElementName=dgr_TablaLocal, Path=CurrentCell.Column.Header}">
             <DataGrid.CurrentCell>
                 <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
                     <Binding Path="NodoActual.Nombre"/>

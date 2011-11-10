@@ -41,6 +41,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// </summary>
         private RelayCommand<NodoViewModel> _ExpandirOrden;
 
+        /// <summary>
+        /// Establece NodoActual
+        /// </summary>
+        private RelayCommand<string> _EstablecerNodoActualOrden;
+
         #endregion
 
         #region Constructores
@@ -140,6 +145,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             get { return _ExpandirOrden ?? (_ExpandirOrden = new RelayCommand<NodoViewModel>(Nodo => this.Expandir(Nodo))); }
         }
 
+        public ICommand EstablecerNodoActualOrden
+        {
+            get { return _EstablecerNodoActualOrden ?? (_EstablecerNodoActualOrden = new RelayCommand<string>(Nombre => this.EstablecerNodoActual(Nombre))); }
+        }
+
         #endregion
 
         #region Eventos
@@ -149,6 +159,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #endregion
 
         #region Funciones
+        
+        private void EstablecerNodoActual(string Nombre)
+        {
+            this.NodoActual = (Nombre == null) ? this.NodoActual : NodoViewModelExtensiones.BuscarNodo(Nombre, NodoTablaActual.Hijos);
+        }
 
         /// <summary>
         /// Expande todos los nodos del árbol de nodos <see cref="Nodos"/> de este explorador.
@@ -261,7 +276,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Tabla != null)
             {
                 /* 
-                 * nTablaActual esta atado a TablaActual: el primero es el indice dentro del 
+                 * NodoTablaActual esta atado a TablaActual: el primero es el indice dentro del 
                  * diccionario Tablas para ubicar el segundo.
                  */
 

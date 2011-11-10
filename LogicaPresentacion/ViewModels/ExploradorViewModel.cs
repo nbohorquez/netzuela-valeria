@@ -6,10 +6,10 @@ using System.Text;
 using MvvmFoundation.Wpf;                       // ObservableObject
 using System.Collections.ObjectModel;           // ObservableCollection
 using System.Data;                              // DataTable
+using System.Windows.Input;                     // ICommand
 using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
 using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
 using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
-
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -37,9 +37,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private NodoViewModel _NodoActual;
 
         /// <summary>
-        /// Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="NodoActual"/>).
+        /// Esta orden 
         /// </summary>
-        //private NodoViewModel _NodoTablaActual;        
+        private RelayCommand _ExpandirNodo;    
 
         #endregion
 
@@ -133,9 +133,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// <summary>
         /// Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="NodoActual"/>).
         /// </summary>
-        public NodoViewModel NodoTablaActual;
+        public NodoViewModel NodoTablaActual { get; private set; }
 
-        #endregion        
+        public ICommand ExpandirNodo
+        {
+            get { return _ExpandirNodo ?? (_ExpandirNodo = new RelayCommand(this.)); }
+        }
+
+        #endregion
 
         #region Eventos
 
@@ -342,6 +347,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             }
         }
+
+        #endregion
+
+        #region Implementaciones de interfaces
+
+        // ...
+
+        #endregion
+
+        #region Tipos anidados
+
+        // ...
 
         #endregion
     }

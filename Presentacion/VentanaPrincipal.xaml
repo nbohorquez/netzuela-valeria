@@ -77,12 +77,10 @@
 
                         <Label Grid.Column="0" Margin="10,0">Elemento local</Label>
                         <TextBox Name="txt_ElementoLocal" IsReadOnly="True" Grid.Column="1" Text="{Binding Path=ExploradorLocal.RutaNodoActual, Mode=OneWay}"/>
-                        <!--<TextBox Name="txt_ElementoLocal" IsReadOnly="True" Grid.Column="1" DataContext="{Binding}" Text="{Binding Path=NodoActual, Converter={StaticResource DeclaracionRutaDeNodo}}"/>-->
-
+                        
                         <Label Grid.Column="2" Margin="10,0">Elemento remoto</Label>
                         <TextBox Name="txt_ElementoRemoto" IsReadOnly="True" Grid.Column="3" Text="{Binding Path=ExploradorRemoto.RutaNodoActual, Mode=OneWay}"/>
-                        <!--<TextBox Name="txt_ElementoRemoto" IsReadOnly="True" Grid.Column="3" DataContext="{Binding}" Text="{Binding Path=NodoActual, Converter={StaticResource DeclaracionRutaDeNodo}}"/>-->
-
+                        
                         <Button Grid.Column="4" HorizontalAlignment="Center" Width="70" Padding="0,2" Margin="20,0,5,0" Click="btn_Asociar_Clic">Asociar</Button>
                         <Button Grid.Column="5" HorizontalAlignment="Center" Width="70" Padding="0,2" Margin="5,0,20,0" Click="btn_Desasociar_Clic">Desasociar</Button>
                     </Grid>

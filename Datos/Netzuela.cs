@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Data;                      // ConnectionState, DataTable
-using System.Security;                  // SecureString
-using Zuliaworks.Netzuela.Valeria.Comunes;                  // DatosDeConexion
+using System.Data;                              // ConnectionState, DataTable
+using System.Security;                          // SecureString
+using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
 
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {

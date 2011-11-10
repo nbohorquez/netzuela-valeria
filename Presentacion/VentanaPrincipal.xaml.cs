@@ -25,7 +25,6 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
     {
         #region Variables
 
-        //private Explorador ArbolLocal, ArbolRemoto;
         private List<MapeoDeTablas> LocalARemota;
 
         #endregion
@@ -37,9 +36,6 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
             InitializeComponent();
 
             LocalARemota = new List<MapeoDeTablas>();
-
-            //grp_ConexionLocal.DataContext = Local;
-            //bar_BarraDeEstado.DataContext = Barra;
         }
 
         #endregion
@@ -57,72 +53,6 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         #endregion
 
         #region Funciones
-
-        private void btn_Conectar_Clic(object sender, RoutedEventArgs e)
-        {/*
-            try
-            {
-                Local.Conectar(Credenciales.txt_Usuario.Text.ConvertirASecureString(), Credenciales.pwd_Contasena.SecurePassword);
-
-                // "Pegamos" el estado de la conexion a la barra de estado
-                Barra.EstadoConexion = Local.BD.Estado;
-
-                if (Local.BD.Estado == ConnectionState.Open)
-                {
-                    ObservableCollection<Nodo> NodosLocales = new ObservableCollection<Nodo>()
-                    {
-                        new Nodo(Local.Datos.Servidor + "(" + Local.Datos.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
-                    };
-
-                    ArbolLocal = new Explorador(NodosLocales, Local.BD);
-
-                    trv_ExploradorLocal.DataContext = ArbolLocal;
-                    txt_ElementoLocal.DataContext = ArbolLocal;
-                    dgr_TablaLocal.DataContext = ArbolLocal;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
-            }
-
-            try
-            {
-                Remota.Conectar(null, null);
-
-                if (Remota.BD.Estado == ConnectionState.Open)
-                {
-                    ObservableCollection<Nodo> NodosRemotos = new ObservableCollection<Nodo>()
-                    {
-                        new Nodo(Remota.Datos.Servidor + "(" + Remota.Datos.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
-                    };
-
-                    ArbolRemoto = new Explorador(NodosRemotos, Remota.BD);
-
-                    // Leemos todas las tablas de todas las bases de datos del servidor remoto
-                    ArbolRemoto.ExpandirTodo();
-
-                    // Obtenemos todos los nodos que son indice de tablas en la cache
-                    List<Nodo> NodosCache = ArbolRemoto.ObtenerNodosCache();
-
-                    foreach (Nodo Tabla in NodosCache)
-                    {
-                        // Creamos un MapeoDeTablas por cada Tabla listada en el servidor remoto
-                        // Luego se agregaran MapeoDeColumnas a estos MapeoDeTablas.
-                        MapeoDeTablas MapTab = new MapeoDeTablas(Tabla);
-                        LocalARemota.Add(MapTab);
-                    }
-
-                    trv_ExploradorRemoto.DataContext = ArbolRemoto;
-                    txt_ElementoRemoto.DataContext = ArbolRemoto;
-                    dgr_TablaRemota.DataContext = ArbolRemoto;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
-            }*/
-        }
 
         private void btn_Asociar_Clic(object sender, RoutedEventArgs e)
         {/*

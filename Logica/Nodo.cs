@@ -28,12 +28,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public Nodo()
         {
-            //this.Expandido = false;
             this.Nombre = null;
             this.Nivel = -1;
             this.Padre = null;
             this.Hijos = new ObservableCollection<Nodo>();
-            //this.Explorador = null;
             this.MapaColumna = null;
         }
 
@@ -43,12 +41,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Nombre"></param>
         public Nodo(string Nombre)
         {
-            //this.Expandido = false;
             this.Nombre = Nombre;
             this.Nivel = -1;
             this.Padre = null;
             this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
-            //this.Explorador = null;
             this.MapaColumna = null;
         }
 
@@ -59,12 +55,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Nivel"></param>
         public Nodo(string Nombre, int Nivel)
         {
-            //this.Expandido = false;
             this.Nombre = Nombre;
             this.Nivel = Nivel;
             this.Padre = null;
             this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
-            //this.Explorador = null;
             this.MapaColumna = null;
         }
 
@@ -75,7 +69,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Padre"></param>
         public Nodo(string Nombre, Nodo Padre)
         {
-            //this.Expandido = false;
             this.Nombre = Nombre;
             this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
             this.MapaColumna = null;
@@ -90,7 +83,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Hijos"></param>
         public Nodo(string Nombre, Nodo Padre, ObservableCollection<Nodo> Hijos)
         {
-            //this.Expandido = true;
             this.Nombre = Nombre;
             this.MapaColumna = null;
             Padre.AgregarHijo(this);
@@ -131,8 +123,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         public Nodo Padre { get; set; }
         public ObservableCollection<Nodo> Hijos { get; set; }
         public MapeoDeColumnas MapaColumna { get; set; }
-        //public bool Expandido { get; set; }
-        //public Explorador Explorador { get; set; }
 
         #endregion
 
@@ -152,7 +142,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             Hijo.Padre = this;
             Hijo.Nivel = this.Nivel + 1;
-            //Hijo.Explorador = this.Explorador;
 
             this.Hijos.Add(Hijo);
         }

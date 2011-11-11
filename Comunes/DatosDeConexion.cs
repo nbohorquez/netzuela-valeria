@@ -13,12 +13,6 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
     /// </summary>
     public class DatosDeConexion
     {
-        #region Variables
-
-        // ...
-
-        #endregion
-
         #region Constructores
 
         public DatosDeConexion() 
@@ -39,30 +33,6 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         public string Instancia { get; set; }
         public string MetodoDeConexion { get; set; }
         public string ArgumentoDeConexion { get; set; }
-
-        #endregion
-
-        #region Eventos
-
-        // ...
-
-        #endregion
-
-        #region Funciones o métodos
-
-        // ...
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...        
 
         #endregion
     }

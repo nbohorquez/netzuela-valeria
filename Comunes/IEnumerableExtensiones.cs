@@ -23,9 +23,7 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
             var c = new ObservableCollection<T>();
 
             foreach (var e in Enumerable)
-            {
                 c.Add(e);
-            }
 
             return c;
         }

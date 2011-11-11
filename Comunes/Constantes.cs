@@ -10,6 +10,8 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
     /// </summary>    
     public static class Constantes
     {
+        #region Tipos anidados
+
         /// <summary>
         /// SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
         /// </summary>
@@ -56,5 +58,7 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
             public const int TABLA = 2;
             public const int COLUMNA = 3;
         }
+
+        #endregion
     }
 }

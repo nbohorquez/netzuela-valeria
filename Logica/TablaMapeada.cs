@@ -6,18 +6,17 @@ using System.Text;
 using System.Collections.ObjectModel;           // ObservableCollection
 using System.Data;                              // ConnectionState, DataTable
 using System.Collections;
-using Zuliaworks.Netzuela.Valeria.Comunes;                          // Constantes
+using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
 
 namespace Zuliaworks.Netzuela.Valeria.Logica
 {
     /// <summary>
     /// 
     /// </summary>
-    public class MapeoDeTablas
+    public class TablaMapeada
     {
         #region Variables
 
-        private List<MapeoDeColumnas> _MapasColumnas;
         private Nodo _Tabla;
 
         #endregion
@@ -27,9 +26,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// 
         /// </summary>
-        public MapeoDeTablas()
+        public TablaMapeada()
         {
-            _MapasColumnas = new List<MapeoDeColumnas>();
+            MapasColumnas = new List<MapeoDeColumnas>();
             Tabla = new Nodo();
         }
 
@@ -37,10 +36,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// 
         /// </summary>
         /// <param name="Tabla"></param>
-        public MapeoDeTablas(Nodo Tabla)
+        public TablaMapeada(Nodo Tabla)
         {
             this.Tabla = Tabla;
-            this._MapasColumnas = new List<MapeoDeColumnas>();
+            this.MapasColumnas = new List<MapeoDeColumnas>();
 
             foreach (Nodo Columna in this.Tabla.Hijos)
             {
@@ -56,10 +55,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// 
         /// </summary>
-        public List<MapeoDeColumnas> MapasColumnas 
-        {
-            get { return _MapasColumnas; }
-        }
+        public List<MapeoDeColumnas> MapasColumnas { get; private set; }
 
         /// <summary>
         /// 
@@ -67,19 +63,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         public Nodo Tabla
         {
             get { return _Tabla; }
-            set
+            private set
             {
                 Nodo Nuevo = value as Nodo;
                 if (Nuevo.Nivel == Constantes.NivelDeNodo.TABLA && Nuevo != _Tabla)
                     _Tabla = Nuevo;
             }
         }
-
-        #endregion
-
-        #region Eventos
-
-        // ...
 
         #endregion
 
@@ -137,7 +127,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             if (NodoEsLegal(MapaDeColumna.ColumnaDestino) && NodoEsLegal(MapaDeColumna.ColumnaOrigen))
             {
-                MapaDeColumna.MapaTabla = this;
+                MapaDeColumna.Tabla = this;
                 MapasColumnas.Add(MapaDeColumna);
                 return true;
             }
@@ -184,18 +174,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
             return TempTablaMapeada;
         }*/
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

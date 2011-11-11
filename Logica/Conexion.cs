@@ -18,12 +18,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     /// </summary>
     public class Conexion
     {
-        #region Variables
-
-        // ...        
-
-        #endregion
-
         #region Constructores
 
         /// <summary>
@@ -63,12 +57,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// Proveedor de datos creado a partir de las especificaciones de conexión.
         /// </summary>
         public IBaseDeDatos BD { get; private set; }
-
-        #endregion
-
-        #region Eventos
-
-        // ...
 
         #endregion
 
@@ -123,18 +111,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             if (BD != null)
                 BD.Desconectar();
         }
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

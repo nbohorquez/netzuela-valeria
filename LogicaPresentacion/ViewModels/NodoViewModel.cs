@@ -240,6 +240,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             Nodo.Padre = this;
         }
 
+        public TablaMapeada CrearTablaMapeada()
+        {
+            return new TablaMapeada(this._Nodo);
+        }
+
+        public void Asociar(
+
         #endregion
     }
 }

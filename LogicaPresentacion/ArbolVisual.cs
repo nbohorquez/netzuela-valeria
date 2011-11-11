@@ -13,6 +13,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
     /// </summary>
     public static class ArbolVisual
     {
+        #region Funciones
+
         /*
          * Codigo tomado de:
          * http://stackoverflow.com/questions/592373/select-treeview-node-on-right-click-before-displaying-contextmenu
@@ -25,5 +27,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
             return Origen;
         }
+
+        #endregion
     }
 }

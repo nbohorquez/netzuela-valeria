@@ -15,12 +15,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     /// </summary>
     public class Nodo
     {
-        #region Variables
-
-        // ...
-
-        #endregion
-
         #region Constructores
 
         /// <summary>
@@ -126,12 +120,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         #endregion
 
-        #region Eventos
-
-        // ...
-
-        #endregion
-
         #region Funciones
 
         /// <summary>
@@ -145,18 +133,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
             this.Hijos.Add(Hijo);
         }
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Conexion.cs" />
     <Compile Include="MapeoDeColumnas.cs" />
-    <Compile Include="MapeoDeTablas.cs" />
+    <Compile Include="TablaMapeada.cs" />
     <Compile Include="Nodo.cs" />
     <Compile Include="NodoExtensiones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

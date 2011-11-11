@@ -4,11 +4,6 @@
         <name>LogicaPresentacion</name>
     </assembly>
     <members>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.EstadoDeConexion">
-            <summary>
-            Este convertidor lo uso para transformar ConnectionState a palabras
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.PasswordBoxVinculable">
             <summary>
             Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 

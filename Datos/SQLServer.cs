@@ -39,12 +39,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #endregion
 
-        #region Eventos
-
-        // ...
-
-        #endregion
-
         #region Funciones
 
         public static ServidorLocal DetectarServidor()
@@ -242,12 +236,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             return new DataTable();
         }
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

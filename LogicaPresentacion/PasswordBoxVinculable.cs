@@ -16,14 +16,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
     public class PasswordBoxVinculable : Decorator
     {
         // Este codigo fue tomado de http://stackoverflow.com/questions/1097235/passwordbox-with-mvvm
+
+        #region Variables
+
         public static readonly DependencyProperty SecurePasswordPropiedad =
             DependencyProperty.Register("SecurePassword", typeof(SecureString), typeof(PasswordBoxVinculable));
 
-        public SecureString SecurePassword
-        {
-            get { return (SecureString)GetValue(SecurePasswordPropiedad); }
-            set { SetValue(SecurePasswordPropiedad, value); }
-        }
+        #endregion
+
+        #region Constructores
 
         public PasswordBoxVinculable()
         {
@@ -31,9 +32,25 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
             ((PasswordBox)Child).PasswordChanged += PasswordBoxVinculable_PasswordChanged;
         }
 
+        #endregion
+
+        #region Propiedades
+
+        public SecureString SecurePassword
+        {
+            get { return (SecureString)GetValue(SecurePasswordPropiedad); }
+            set { SetValue(SecurePasswordPropiedad, value); }
+        }
+
+        #endregion
+
+        #region Funciones
+
         void PasswordBoxVinculable_PasswordChanged(object sender, RoutedEventArgs e)
         {
             SecurePassword = ((PasswordBox)Child).SecurePassword;
         }
+
+        #endregion
     }
 }

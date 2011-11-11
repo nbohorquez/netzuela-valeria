@@ -140,12 +140,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #endregion
 
-        #region Eventos
-
-        // ...
-
-        #endregion
-
         #region Funciones
         
         private void EstablecerNodoActual(string Nombre)
@@ -371,18 +365,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             }
         }
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

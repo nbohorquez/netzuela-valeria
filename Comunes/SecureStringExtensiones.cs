@@ -13,6 +13,8 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
     /// </summary>
     public static class SecureStringExtensiones
     {
+        #region Funciones
+
         /*
          * Este codigo fue tomado de la pagina: 
          * http://blogs.msdn.com/b/fpintos/archive/2009/06/12/how-to-properly-convert-securestring-to-string.aspx
@@ -74,5 +76,7 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
                 }
             }
         }
-    }
+
+        #endregion
+    }        
 }

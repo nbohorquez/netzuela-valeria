@@ -174,12 +174,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #endregion
 
-        #region Eventos
-
-        // ...
-
-        #endregion
-
         #region Funciones
 
         private void AbrirDetectarServidoresLocalesView()
@@ -246,18 +240,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             _Local.Desconectar();
         }
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

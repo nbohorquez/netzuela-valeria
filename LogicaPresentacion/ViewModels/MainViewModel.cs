@@ -48,6 +48,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ConexionRemotaViewModel ConexionRemota { get; private set; }
         public ConexionLocalViewModel ConexionLocal { get; private set; }
+        public SincronizacionViewModel LocalARemota { get; private set; }
 
         public ExploradorViewModel ExploradorLocal 
         {
@@ -74,12 +75,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             }
         }
-
-        #endregion
-
-        #region Eventos
-
-        // ...
 
         #endregion
 
@@ -115,27 +110,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 // Obtenemos todos los nodos que son indice de tablas en la cache
                 List<NodoViewModel> NodosCache = ExploradorRemoto.ObtenerNodosCache();
 
-          /*      foreach (Nodo Tabla in NodosCache)
-                {
-                    // Creamos un MapeoDeTablas por cada Tabla listada en el servidor remoto
-                    // Luego se agregaran MapeoDeColumnas a estos MapeoDeTablas.
-                    MapeoDeTablas MapTab = new MapeoDeTablas(Tabla);
-                    LocalARemota.Add(MapTab);
-                }*/
+                LocalARemota = new SincronizacionViewModel(NodosCache);
             }
         }
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

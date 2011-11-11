@@ -15,6 +15,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
     /// </summary>
     public class SeleccionarTodaLaColumna : IMultiValueConverter
     {
+        #region Funciones
+
         public object Convert(object[] Valor, Type TipoObjetivo, object Parametro, CultureInfo Cultura)
         {
             string NombreNodoActual = Valor[0] as string;
@@ -48,5 +50,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

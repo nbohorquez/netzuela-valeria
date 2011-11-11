@@ -87,12 +87,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #endregion
 
-        #region Funciones
-
-        // ...
-
-        #endregion
-
         #region Implementaciones de interfaces
 
         // ConnectionState IBaseDeDatos.Estado

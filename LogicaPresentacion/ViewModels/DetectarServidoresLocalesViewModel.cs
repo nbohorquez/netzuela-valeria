@@ -31,7 +31,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this.MostrarView = true;
             this.Datos = new DatosDeConexion();
 
-            // Ya se jodio el chamo, ahora se conecta con el localhost a juro
+            // Ya se jodio el chamo, ahora se conecta con el localhost a juro :)
             this.Datos.Anfitrion = "localhost";
         }
 
@@ -58,30 +58,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             get { return _SeleccionarOrden ?? (_SeleccionarOrden = new RelayCommand(() => this.MostrarView = false)); }
         }
-
-        #endregion
-
-        #region Eventos
-
-        // ...
-
-        #endregion
-
-        #region Funciones
-
-        // ...
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

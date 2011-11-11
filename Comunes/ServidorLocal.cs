@@ -10,12 +10,6 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
     /// </summary>    
     public class ServidorLocal
     {
-        #region Variables
-
-        // ...
-
-        #endregion
-
         #region Constructores
 
         public ServidorLocal() { }
@@ -27,24 +21,6 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         // Un servidor puede crear muchas instancias de si mismo
         public string Nombre { get; set; }
         public List<Instancia> Instancias { get; set; }
-
-        #endregion
-
-        #region Eventos
-
-        // ...
-
-        #endregion
-
-        #region Funciones
-
-        // ...
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
 
         #endregion
 

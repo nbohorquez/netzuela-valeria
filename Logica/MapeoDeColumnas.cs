@@ -11,7 +11,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     /// <summary>
     /// Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
     /// de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
-    /// empleada por <see cref="MapeoDeTablas"/> como unidad básica de mapeo.
+    /// empleada por <see cref="TablaMapeada"/> como unidad básica de mapeo.
     /// </summary>
     public class MapeoDeColumnas : INotifyPropertyChanged
     {
@@ -27,12 +27,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// Crea un mapeo de columnas vacío.
         /// </summary>
-        public MapeoDeColumnas()
-        {
-            this.MapaTabla = null;
-            this.ColumnaDestino = null;
-            this.ColumnaOrigen = null;
-        }
+        public MapeoDeColumnas() { }
 
         /// <summary>
         /// Crea un mapeo de columnas especificando sólo la columna destino.
@@ -40,9 +35,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
         public MapeoDeColumnas(Nodo ColumnaDestino)
         {
-            this.MapaTabla = null;
             this.ColumnaDestino = ColumnaDestino;
-            this.ColumnaOrigen = null;            
         }
 
         /// <summary>
@@ -52,7 +45,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
         public MapeoDeColumnas(Nodo ColumnaDestino, Nodo ColumnaOrigen)
         {
-            this.MapaTabla = null;
             this.ColumnaDestino = ColumnaDestino;
             this.ColumnaOrigen = ColumnaOrigen;
         }
@@ -78,9 +70,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 }
                 else if (Nueva.Nivel == Constantes.NivelDeNodo.COLUMNA && Nueva != ColumnaDestino && Nueva != _ColumnaOrigen)
                 {
-                    if (MapaTabla != null)
+                    if (Tabla != null)
                     {
-                        if (MapaTabla.NodoEsLegal(Nueva))
+                        if (Tabla.NodoEsLegal(Nueva))
                         {
                             Nueva.MapaColumna = this;
                             _ColumnaOrigen = Nueva;
@@ -114,9 +106,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 }
                 else if (Nueva.Nivel == Constantes.NivelDeNodo.COLUMNA && Nueva != ColumnaOrigen && Nueva != _ColumnaDestino)
                 {
-                    if (MapaTabla != null)
+                    if (Tabla != null)
                     {
-                        if (MapaTabla.NodoEsLegal(Nueva))
+                        if (Tabla.NodoEsLegal(Nueva))
                         {
                             Nueva.MapaColumna = this;
                             _ColumnaDestino = Nueva;
@@ -134,15 +126,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         }
 
         /// <summary>
-        /// Instancia de <see cref="MapeoDeTablas"/> asociada a esta clase.
+        /// Instancia de <see cref="TablaMapeada"/> asociada a esta clase.
         /// </summary>
-        public MapeoDeTablas MapaTabla { get; set; }
-
-        #endregion
-
-        #region Eventos
-
-        // ...
+        public TablaMapeada Tabla { get; set; }
 
         #endregion
 
@@ -189,12 +175,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
         }
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

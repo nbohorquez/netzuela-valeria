@@ -15,6 +15,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
     /// </summary>
     public class ColumnaAsociada : IMultiValueConverter
     {
+        #region Funciones
+
         public object Convert(object[] Valor, Type TipoObjetivo, object Parametro, CultureInfo Cultura)
         {
             Nodo Nodo = Valor[0] as Nodo;
@@ -39,5 +41,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

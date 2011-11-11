@@ -41,12 +41,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #endregion
 
-        #region Eventos
-
-        // ...
-
-        #endregion
-
         #region Funciones
 
         /*

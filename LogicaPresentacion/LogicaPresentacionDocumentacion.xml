@@ -229,12 +229,6 @@
             
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ColumnaAsociada">
-            <summary>
-            Este convertidor lo empleo para mostrar en pantalla qué columna destino esta asociado a cuál 
-            columna origen
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView">
             <summary>
             Lógica de interacción para ExploradorView.xaml
@@ -259,6 +253,11 @@
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView.InitializeComponent">
             <summary>
             InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">

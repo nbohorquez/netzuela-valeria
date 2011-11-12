@@ -52,6 +52,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         private void Conectar(SecureString RutaDeAcceso)
         {
+            if (RutaDeAcceso == null)
+                throw new ArgumentNullException("RutaDeAcceso");
+
             if (_Conexion != null)
                 _Conexion.Close();
 
@@ -77,6 +80,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         private string[] Listar(string SQL)
         {
+            if (SQL == null)
+                throw new ArgumentNullException("SQL");
+
             MySqlDataReader Lector = null;
             List<string> Resultado = new List<string>();
 
@@ -92,7 +98,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
             catch (Exception ex)
             {
-                throw new Exception("No se pudo obtener la lista de elementos", ex);
+                throw new Exception("No se pudo obtener la lista de elementos desde la base de datos", ex);
                 //MessageBox.Show("No se pudo obtener la lista de elementos: " + ex.Message + ex.InnerException);
             }
             finally
@@ -193,6 +199,19 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * 
              * Contraseña asociada al usuario.
              */
+
+            if(Seleccion == null)
+            {
+                throw new ArgumentNullException("Seleccion");
+            }
+            else if(Usuario == null)
+            {
+                throw new ArgumentNullException("Usuario");
+            }
+            else if (Contrasena == null)
+            {
+                throw new ArgumentNullException("Contrasena");
+            }
 
             List<string> RutaDeConexion = new List<string>();
 
@@ -435,10 +454,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
         {
-            set
-            {
-                _Conexion.StateChange += value;
-            }
+            set { _Conexion.StateChange += value; }
         }
 
         void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena)

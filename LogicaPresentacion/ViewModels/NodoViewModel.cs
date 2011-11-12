@@ -14,7 +14,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     /// y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
     /// la consistencia de esta clase.
     /// </summary>
-    public class NodoViewModel
+    public class NodoViewModel : ObservableObject
     {
         #region Variables
 
@@ -135,6 +135,28 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             set { _Nodo.Nombre = value; }
         }
 
+        public string NombreParaMostrar
+        {
+            get
+            {
+                string Resultado = this.Nombre;
+
+                if (this.MapaColumna != null)
+                {
+                    if (this._Nodo == this.MapaColumna.ColumnaDestino)
+                    {
+                        Resultado += (this.MapaColumna.ColumnaOrigen == null) ? "" : "<-" + this.MapaColumna.ColumnaOrigen.Nombre;
+                    }
+                    else if (this._Nodo == this.MapaColumna.ColumnaOrigen)
+                    {
+                        Resultado += (this.MapaColumna.ColumnaDestino == null) ? "" : "->" + this.MapaColumna.ColumnaDestino.Nombre;
+                    }
+                }
+
+                return Resultado;
+            }
+        }
+
         public int Nivel
         {
             get { return _Nodo.Nivel; }
@@ -221,7 +243,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        // PROBABLEMENTE ESTO TIENE QUE CAMBIARSE
         public MapeoDeColumnas MapaColumna
         {
             get { return _Nodo.MapaColumna; }
@@ -235,17 +256,69 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Funciones
 
+        private void EnCambioDeColumnas(object Remitente, CambioEnColumnasArgumentos Argumentos)
+        {
+            RaisePropertyChanged("NombreParaMostrar");
+        }
+
         public void AgregarHijo(NodoViewModel Nodo)
         {
+            if (Nodo == null)
+                throw new ArgumentNullException("Nodo");
+
             Nodo.Padre = this;
         }
 
         public TablaMapeada CrearTablaMapeada()
         {
-            return new TablaMapeada(this._Nodo);
+            TablaMapeada T = new TablaMapeada(this._Nodo);
+
+            foreach (NodoViewModel Hijo in this.Hijos)
+            {
+                /*
+                 * Quiero ser notificado cuando ocurra una cambio en ColumnaOrigen o 
+                 * ColumnaDestino del MapeoDeColumnas asociado a este NodoViewModel.
+                 */
+                Hijo.MapaColumna.CambioEnColumnas += Hijo.EnCambioDeColumnas;
+            }
+
+            return T;
         }
 
-        public void Asociar(
+        public void AsociarseCon(NodoViewModel NodoOrigen)
+        {
+            if (NodoOrigen == null)
+                throw new ArgumentNullException("NodoOrigen");
+
+            try
+            {
+                /*
+                 * El nuevo nodo tambien quiere saber cuándo ocurre un cambio en las columnas 
+                 * mapeadas
+                 */
+                this.MapaColumna.CambioEnColumnas += NodoOrigen.EnCambioDeColumnas;
+                this.MapaColumna.Asociar(NodoOrigen._Nodo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo completar la asociación de nodos", ex);
+            }
+        }
+
+        public void Desasociarse()
+        {
+            try
+            {
+                NodoViewModel NodoOrigen = this.MapaColumna.ColumnaOrigen.BuscarEnRepositorio();
+
+                this.MapaColumna.Desasociar();
+                this.MapaColumna.CambioEnColumnas -= NodoOrigen.EnCambioDeColumnas;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo completar la desasociación de nodos", ex);
+            }
+        }
 
         #endregion
     }

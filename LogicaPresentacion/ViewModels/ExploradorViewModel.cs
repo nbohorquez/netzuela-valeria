@@ -80,7 +80,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public DataTable TablaActual
         {
             get { return _CacheDeTablas.ContainsKey(NodoTablaActual) ? _CacheDeTablas[NodoTablaActual] : null; }
-            private set
+            set
             {
                 if (_CacheDeTablas.ContainsKey(NodoTablaActual))
                 {

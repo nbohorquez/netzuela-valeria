@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 
 using System.Collections.ObjectModel;           // ObservableCollection
-using System.Data;                              // ConnectionState, DataTable
 using System.Collections;
 using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
 
@@ -38,6 +37,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Tabla"></param>
         public TablaMapeada(Nodo Tabla)
         {
+            if (Tabla == null)
+                throw new ArgumentNullException("Tabla");
+
             this.Tabla = Tabla;
             this.MapasColumnas = new List<MapeoDeColumnas>();
 
@@ -125,10 +127,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <returns></returns>
         public bool AgregarMapa(MapeoDeColumnas MapaDeColumna)
         {
+            if (MapaDeColumna == null)
+                throw new ArgumentNullException("MapaDeColumna");
+
             if (NodoEsLegal(MapaDeColumna.ColumnaDestino) && NodoEsLegal(MapaDeColumna.ColumnaOrigen))
             {
-                MapaDeColumna.Tabla = this;
-                MapasColumnas.Add(MapaDeColumna);
+                MapaDeColumna.TablaPadre = this;
+                this.MapasColumnas.Add(MapaDeColumna);
                 return true;
             }
             else
@@ -136,44 +141,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 return false;
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        /*public DataTable TablaMapeada()
-        {
-            DataTable TempTablaMapeada = new DataTable();
-
-            foreach (MapeoDeColumnas MapaCol in MapasColumnas)
-            {
-                DataColumn TablaColSinTipo = new DataColumn(MapaCol.ColumnaDestino.Nombre);
-                TempTablaMapeada.Columns.Add(TablaColSinTipo);
-
-                if (MapaCol.ColumnaOrigen != null)
-                {
-                    DataTable Temp = MapaCol.ColumnaOrigen.Explorador.ObtenerTabla(MapaCol.ColumnaOrigen.Padre);
-                    DataColumn TempCol = Temp.Columns[MapaCol.ColumnaOrigen.Nombre];
-
-                    TempTablaMapeada.Columns.Remove(MapaCol.ColumnaDestino.Nombre);
-
-                    DataColumn TablaColConTipo = new DataColumn(MapaCol.ColumnaDestino.Nombre, TempCol.DataType);
-                    TempTablaMapeada.Columns.Add(TablaColConTipo);
-
-                    while (TempTablaMapeada.Rows.Count < Temp.Rows.Count)
-                    {
-                        TempTablaMapeada.Rows.Add(TempTablaMapeada.NewRow());
-                    }
-
-                    for (int i = 0; i < Temp.Rows.Count; i++)
-                    {
-                        TempTablaMapeada.Rows[i][TablaColConTipo.ColumnName] = Temp.Rows[i][TempCol.ColumnName];
-                    }
-                }
-            }
-
-            return TempTablaMapeada;
-        }*/
 
         #endregion
     }

@@ -160,12 +160,6 @@
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.RegistrarCambioEnPropiedad(System.String)">
-            <summary>
-            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-            </summary>
-            <param name="info">Nombre de la propiedad modificada.</param>
-        </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaOrigen">
             <summary>
             
@@ -176,14 +170,9 @@
             
             </summary>
         </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.MapaTabla">
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.TablaPadre">
             <summary>
             Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada"/> asociada a esta clase.
-            </summary>
-        </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.PropertyChanged">
-            <summary>
-            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada">

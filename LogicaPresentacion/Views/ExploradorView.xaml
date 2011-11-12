@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Logica="clr-namespace:Zuliaworks.Netzuela.Valeria.Logica;assembly=Logica"
              xmlns:Local="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion"
              xmlns:ACB="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
              xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels"             
@@ -11,7 +10,6 @@
     
     <UserControl.Resources>
         <Local:SeleccionarTodaLaColumna x:Key="SeleccionarTodaLaColumna"/>
-        <Local:ColumnaAsociada x:Key="ColumnaAsociada"/>
 
         <Style x:Key="est_Tabla" TargetType="DataGrid">
             <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -47,19 +45,7 @@
                         la direccion: http://marlongrech.wordpress.com/2008/12/13/attachedcommandbehavior-v2-aka-acb/ 
                         -->
                         <TreeViewItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Path=Nombre}"/>
-                                <TextBlock DataContext="{Binding Path=MapaColumna}">
-                                    <TextBlock.Text>
-                                        <MultiBinding Converter="{StaticResource ColumnaAsociada}">
-                                            <Binding ElementName="tvi_Item"
-                                                        Path="DataContext"/>
-                                            <Binding Path="ColumnaOrigen"/>
-                                            <Binding Path="ColumnaDestino"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </StackPanel>
+                            <TextBlock Text="{Binding Path=NombreParaMostrar}"/>
                         </TreeViewItem.Header>
                     </TreeViewItem>
                 </HierarchicalDataTemplate>

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.ComponentModel;        // INotifyPropertyChanged
-using Zuliaworks.Netzuela.Valeria.Comunes;              // Constantes
+using System.ComponentModel;                    // INotifyPropertyChanged
+using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
 
 namespace Zuliaworks.Netzuela.Valeria.Logica
 {
@@ -13,12 +13,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     /// de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
     /// empleada por <see cref="TablaMapeada"/> como unidad básica de mapeo.
     /// </summary>
-    public class MapeoDeColumnas : INotifyPropertyChanged
+    public class MapeoDeColumnas
     {
         #region Variables
 
         private Nodo _ColumnaDestino;
         private Nodo _ColumnaOrigen;
+        public delegate void CambioEnColumnasEvento(object Remitente, CambioEnColumnasArgumentos Argumentos); 
 
         #endregion
 
@@ -59,31 +60,38 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         public Nodo ColumnaOrigen
         {
             get { return _ColumnaOrigen; }
-            set
+            private set
             {
-                Nodo Nueva = value as Nodo;
+                Nodo ValorNuevo = value;
+                Nodo ValorAnterior = _ColumnaOrigen;
 
-                if (Nueva == null)
+                if (ValorNuevo == null)
                 {
-                    _ColumnaOrigen = null;
-                    RegistrarCambioEnPropiedad("ColumnaOrigen");
+                    _ColumnaOrigen = ValorNuevo;
+
+                    if(CambioEnColumnas != null)
+                        CambioEnColumnas(this, new CambioEnColumnasArgumentos("Origen", ValorAnterior, ValorNuevo));
                 }
-                else if (Nueva.Nivel == Constantes.NivelDeNodo.COLUMNA && Nueva != ColumnaDestino && Nueva != _ColumnaOrigen)
+                else if (ValorNuevo.Nivel == Constantes.NivelDeNodo.COLUMNA && ValorNuevo != ColumnaDestino && ValorNuevo != _ColumnaOrigen)
                 {
-                    if (Tabla != null)
+                    if (TablaPadre != null)
                     {
-                        if (Tabla.NodoEsLegal(Nueva))
+                        if (TablaPadre.NodoEsLegal(ValorNuevo))
                         {
-                            Nueva.MapaColumna = this;
-                            _ColumnaOrigen = Nueva;
-                            RegistrarCambioEnPropiedad("ColumnaOrigen");
+                            ValorNuevo.MapaColumna = this;
+                            _ColumnaOrigen = ValorNuevo;
+
+                            if (CambioEnColumnas != null)
+                                CambioEnColumnas(this, new CambioEnColumnasArgumentos("Origen", ValorAnterior, ValorNuevo));
                         }
                     }
                     else
                     {
-                        Nueva.MapaColumna = this;
-                        _ColumnaOrigen = Nueva;
-                        RegistrarCambioEnPropiedad("ColumnaOrigen");
+                        ValorNuevo.MapaColumna = this;
+                        _ColumnaOrigen = ValorNuevo;
+
+                        if (CambioEnColumnas != null)
+                            CambioEnColumnas(this, new CambioEnColumnasArgumentos("Origen", ValorAnterior, ValorNuevo));
                     }
                 }
             }
@@ -95,31 +103,38 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         public Nodo ColumnaDestino
         {
             get { return _ColumnaDestino; }
-            set
+            private set
             {
-                Nodo Nueva = value as Nodo;
+                Nodo ValorNuevo = value;
+                Nodo ValorAnterior = _ColumnaDestino;
 
-                if (Nueva == null)
+                if (ValorNuevo == null)
                 {
-                    _ColumnaDestino = null;
-                    RegistrarCambioEnPropiedad("ColumnaDestino");
+                    _ColumnaDestino = ValorNuevo;
+
+                    if(CambioEnColumnas != null)
+                        CambioEnColumnas(this, new CambioEnColumnasArgumentos("Destino", ValorAnterior, ValorNuevo));
                 }
-                else if (Nueva.Nivel == Constantes.NivelDeNodo.COLUMNA && Nueva != ColumnaOrigen && Nueva != _ColumnaDestino)
+                else if (ValorNuevo.Nivel == Constantes.NivelDeNodo.COLUMNA && ValorNuevo != ColumnaOrigen && ValorNuevo != _ColumnaDestino)
                 {
-                    if (Tabla != null)
+                    if (TablaPadre != null)
                     {
-                        if (Tabla.NodoEsLegal(Nueva))
+                        if (TablaPadre.NodoEsLegal(ValorNuevo))
                         {
-                            Nueva.MapaColumna = this;
-                            _ColumnaDestino = Nueva;
-                            RegistrarCambioEnPropiedad("ColumnaDestino");
+                            ValorNuevo.MapaColumna = this;
+                            _ColumnaDestino = ValorNuevo;
+
+                            if (CambioEnColumnas != null)
+                                CambioEnColumnas(this, new CambioEnColumnasArgumentos("Destino", ValorAnterior, ValorNuevo));
                         }
                     }
                     else
                     {
-                        Nueva.MapaColumna = this;
-                        _ColumnaDestino = Nueva;
-                        RegistrarCambioEnPropiedad("ColumnaDestino");
+                        ValorNuevo.MapaColumna = this;
+                        _ColumnaDestino = ValorNuevo;
+
+                        if (CambioEnColumnas != null)
+                            CambioEnColumnas(this, new CambioEnColumnasArgumentos("Destino", ValorAnterior, ValorNuevo));
                     }                 
                 }
             }
@@ -128,7 +143,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// Instancia de <see cref="TablaMapeada"/> asociada a esta clase.
         /// </summary>
-        public TablaMapeada Tabla { get; set; }
+        public TablaMapeada TablaPadre { get; set; }
+
+        #endregion
+
+        #region Eventos
+
+        public event CambioEnColumnasEvento CambioEnColumnas;
 
         #endregion
 
@@ -152,27 +173,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             {
                 this.ColumnaOrigen.MapaColumna = null;
                 this.ColumnaOrigen = null;
-            }
-        }
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        /// <summary>
-        /// Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-        /// </summary>
-        /// <param name="info">Nombre de la propiedad modificada.</param>
-        protected virtual void RegistrarCambioEnPropiedad(string info)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
         }
 

@@ -88,8 +88,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #endregion
 
         #region Implementaciones de interfaces
-
-        // ConnectionState IBaseDeDatos.Estado
+        
         public ConnectionState Estado
         {
             get { return _Estado; }
@@ -111,6 +110,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
+            this.
             Estado = ConnectionState.Open;
         }
 

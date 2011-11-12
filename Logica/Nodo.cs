@@ -38,7 +38,8 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             this.Nombre = Nombre;
             this.Nivel = -1;
             this.Padre = null;
-            this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
+            //this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
+            this.Hijos = new ObservableCollection<Nodo>();
             this.MapaColumna = null;
         }
 
@@ -52,7 +53,8 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             this.Nombre = Nombre;
             this.Nivel = Nivel;
             this.Padre = null;
-            this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
+            //this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
+            this.Hijos = new ObservableCollection<Nodo>();
             this.MapaColumna = null;
         }
 
@@ -63,8 +65,12 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Padre"></param>
         public Nodo(string Nombre, Nodo Padre)
         {
+            if (Padre == null)
+                throw new ArgumentNullException("Padre");
+
             this.Nombre = Nombre;
-            this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
+            //this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
+            this.Hijos = new ObservableCollection<Nodo>();
             this.MapaColumna = null;
             Padre.AgregarHijo(this);
         }
@@ -77,12 +83,15 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Hijos"></param>
         public Nodo(string Nombre, Nodo Padre, ObservableCollection<Nodo> Hijos)
         {
+            if (Padre == null)
+                throw new ArgumentNullException("Padre");
+
             this.Nombre = Nombre;
             this.MapaColumna = null;
             Padre.AgregarHijo(this);
             this.Hijos = new ObservableCollection<Nodo>();
 
-            foreach (Nodo n in this.Hijos)
+            foreach (Nodo n in Hijos)
             {
                 this.AgregarHijo(n);
             }
@@ -96,6 +105,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Hijos"></param>
         public Nodo(string Nombre, Nodo Padre, string[] Hijos)
         {
+            if (Padre == null)
+                throw new ArgumentNullException("Padre");
+            
             //this.Expandido = true;
             this.Nombre = Nombre;
             Padre.Hijos.Add(this);
@@ -128,6 +140,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Hijo"></param>
         public void AgregarHijo(Nodo Hijo)
         {
+            if (Hijo == null)
+                throw new ArgumentNullException("Hijo");
+
             Hijo.Padre = this;
             Hijo.Nivel = this.Nivel + 1;
 

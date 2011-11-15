@@ -49,6 +49,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             // La parte de NodoViewModel
             this.Expandido = false;
             this.Explorador = null;
+            //this.Hijos = new ObservableCollection<NodoViewModel>() { new NodoViewModel() };
 
             // Agregamos el par (Nodo, NodoViewModel) al repositorio
             _Nodo.AgregarARepositorio(this);
@@ -62,6 +63,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             // La parte de NodoViewModel
             this.Expandido = false;
             this.Explorador = null;
+            //this.Hijos = new ObservableCollection<NodoViewModel>() { new NodoViewModel() };
 
             // Agregamos el par (Nodo, NodoViewModel) al repositorio 
             _Nodo.AgregarARepositorio(this);
@@ -74,6 +76,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             // La parte de NodoViewModel
             this.Padre = Padre;
+            //this.Hijos = new ObservableCollection<NodoViewModel>() { new NodoViewModel() };
             this.Expandido = false;
             this.Explorador = Padre.Explorador;
 
@@ -88,6 +91,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             // La parte de NodoViewModel
             this.Padre = Padre;
+            //this.Hijos = new ObservableCollection<NodoViewModel>() { new NodoViewModel() };
             this.Expandido = true;
             this.Explorador = Padre.Explorador;
 

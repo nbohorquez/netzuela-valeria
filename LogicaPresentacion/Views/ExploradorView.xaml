@@ -43,7 +43,7 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
-            <TreeView Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=Nodos}">
+            <TreeView Name="trv_Arbol" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=Nodos}">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type ViewModels:NodoViewModel}" ItemsSource="{Binding Path=Hijos}">
                         <TreeViewItem Name="tvi_Item" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton"
@@ -64,10 +64,10 @@
 
             <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
 
-            <DataGrid Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView}" 
+            <DataGrid Name="dgr_Tabla" Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView}" 
                       ACB:CommandBehavior.Event="MouseLeftButtonUp"
                       ACB:CommandBehavior.Command="{Binding Path=EstablecerNodoActualOrden}"
-                      ACB:CommandBehavior.CommandParameter="{Binding ElementName=dgr_TablaLocal, Path=CurrentCell.Column.Header}">
+                      ACB:CommandBehavior.CommandParameter="{Binding ElementName=dgr_Tabla, Path=CurrentCell.Column.Header}">
                 <DataGrid.CurrentCell>
                     <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
                         <Binding Path="NodoActual.Nombre"/>

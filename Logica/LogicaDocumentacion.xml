@@ -124,6 +124,46 @@
             <param name="Nodo"></param>
             <returns></returns>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="Tabla"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="Nodo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas)">
+            <summary>
+            
+            </summary>
+            <param name="MapaDeColumna"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.MapasColumnas">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.Tabla">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas">
             <summary>
             Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
@@ -173,46 +213,6 @@
         <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.TablaPadre">
             <summary>
             Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada"/> asociada a esta clase.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Tabla"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Nodo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas)">
-            <summary>
-            
-            </summary>
-            <param name="MapaDeColumna"></param>
-            <returns></returns>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.MapasColumnas">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.Tabla">
-            <summary>
-            
             </summary>
         </member>
     </members>

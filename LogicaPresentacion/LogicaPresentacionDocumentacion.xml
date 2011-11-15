@@ -224,6 +224,11 @@
             Este convertidor sirve para seleccionar toda la columna especificada por NodoActual
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionRemotaViewModel">
             <summary>
             
@@ -253,11 +258,6 @@
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView.InitializeComponent">
             <summary>
             InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel">
-            <summary>
-            
             </summary>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">

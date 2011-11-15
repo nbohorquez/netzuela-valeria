@@ -59,6 +59,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public List<MapeoDeColumnas> MapasColumnas { get; private set; }
 
+        public string Nombre
+        {
+            get { return Tabla.Nombre; }
+        }
+
         /// <summary>
         /// 
         /// </summary>

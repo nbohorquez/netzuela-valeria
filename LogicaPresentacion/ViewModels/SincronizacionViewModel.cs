@@ -19,8 +19,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Variables
 
         private List<TablaMapeada> _Tablas;
+        private DataSet _TablasAEnviar;
+        private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
         private RelayCommand<object[]> _AsociarOrden;
         private RelayCommand<object> _DesasociarOrden;
+        private RelayCommand _ListoOrden;
 
         #endregion
 
@@ -29,11 +32,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public SincronizacionViewModel()
         {
             _Tablas = new List<TablaMapeada>();
+            _TablasAEnviar = new DataSet();
+            _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
         }
 
         public SincronizacionViewModel(List<NodoViewModel> Nodos)
         {
             _Tablas = new List<TablaMapeada>();
+            _TablasAEnviar = new DataSet();
+            _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
 
             foreach (NodoViewModel Nodo in Nodos)
             {
@@ -61,19 +68,26 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             get { return _DesasociarOrden ?? (_DesasociarOrden = new RelayCommand<object>(param => this.Desasociar(param))); }
         }
 
+        public ICommand ListoOrden
+        {
+            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(this.Listo)); }
+        }
+
         #endregion
 
         #region Funciones
 
         private void Asociar(object[] Argumento)
         {
-            var NodoLocalActual = (NodoViewModel)Argumento[0];
-            var NodoRemotoActual = (NodoViewModel)Argumento[1];
-
             try
             {
+                var NodoLocalActual = (NodoViewModel)Argumento[0];
+                var NodoRemotoActual = (NodoViewModel)Argumento[1];
+
                 NodoRemotoActual.AsociarseCon(NodoLocalActual);
                 NodoRemotoActual.Explorador.TablaActual = CrearTabla(NodoRemotoActual.MapaColumna.TablaPadre);
+
+                _CacheDeTablas[NodoRemotoActual.Padre] = NodoRemotoActual.Explorador.TablaActual;
             }
             catch (Exception ex)
             {
@@ -83,16 +97,31 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void Desasociar(object Argumento)
         {
-            NodoViewModel NodoRemotoActual = Argumento as NodoViewModel;
-
             try
             {
+                NodoViewModel NodoRemotoActual = Argumento as NodoViewModel;
+
                 NodoRemotoActual.Desasociarse();
                 NodoRemotoActual.Explorador.TablaActual = CrearTabla(NodoRemotoActual.MapaColumna.TablaPadre);
+
+                _CacheDeTablas[NodoRemotoActual.Padre] = NodoRemotoActual.Explorador.TablaActual;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Listo()
+        {
+            if (_CacheDeTablas.Count > 0)
+            {
+                foreach (DataTable T in _CacheDeTablas.Values)
+                {
+                    _TablasAEnviar.Tables.Add(T);
+                }
+
+                _TablasAEnviar.WriteXml("Millijigui.xml");
             }
         }
 
@@ -107,7 +136,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private DataTable CrearTabla(TablaMapeada Tabla)
         {
-            DataTable TempTablaMapeada = new DataTable();
+            if (Tabla == null)
+                throw new ArgumentNullException("Tabla");
+
+            DataTable TempTablaMapeada = new DataTable(Tabla.Nombre);
 
             foreach (MapeoDeColumnas MapaCol in Tabla.MapasColumnas)
             {
@@ -116,7 +148,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 if (MapaCol.ColumnaOrigen != null)
                 {
-                    //DataTable Temp = MapaCol.ColumnaOrigen.Explorador.ObtenerTabla(MapaCol.ColumnaOrigen.Padre);
                     NodoViewModel NodoCol = MapaCol.ColumnaOrigen.BuscarEnRepositorio();
                     DataTable Temp = NodoCol.Explorador.ObtenerTabla(NodoCol.Padre);
                     DataColumn TempCol = Temp.Columns[MapaCol.ColumnaOrigen.Nombre];

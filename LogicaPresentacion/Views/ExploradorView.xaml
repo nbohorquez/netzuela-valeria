@@ -25,88 +25,56 @@
             <Setter Property="Width" Value="3"/>
         </Style>
     </UserControl.Resources>
-    
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
 
-        <TreeView Grid.Column="0" Name="trv_ExploradorLocal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=Nodos}">
-            <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type ViewModels:NodoViewModel}" ItemsSource="{Binding Path=Hijos}">
-                    <TreeViewItem Name="tvi_Item" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton"
-                                  ACB:CommandBehavior.Event="Expanded"
-                                  ACB:CommandBehavior.Command="{Binding Path=Explorador.ExpandirOrden}"
-                                  ACB:CommandBehavior.CommandParameter="{Binding Path=.}">
-                        <!-- 
-                        Para una explicacion acerca de la biblioteca empleada (Attached Command Behavior) ver 
-                        la direccion: http://marlongrech.wordpress.com/2008/12/13/attachedcommandbehavior-v2-aka-acb/ 
-                        -->
-                        <TreeViewItem.Header>
-                            <TextBlock Text="{Binding Path=NombreParaMostrar}"/>
-                        </TreeViewItem.Header>
-                    </TreeViewItem>
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>
-        </TreeView>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Margin="0,2,0,2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
+            <Label Grid.Column="0" Content="Dirección"/>
+            <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding Path=RutaNodoActual, Mode=OneWay}"/>
+        </Grid>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
 
-        <DataGrid Name="dgr_TablaLocal" Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView}" 
-                  ACB:CommandBehavior.Event="MouseLeftButtonUp"
-                  ACB:CommandBehavior.Command="{Binding Path=EstablecerNodoActualOrden}"
-                  ACB:CommandBehavior.CommandParameter="{Binding ElementName=dgr_TablaLocal, Path=CurrentCell.Column.Header}">
-            <DataGrid.CurrentCell>
-                <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
-                    <Binding Path="NodoActual.Nombre"/>
-                    <Binding RelativeSource="{x:Static RelativeSource.Self}"/>
-                </MultiBinding>
-            </DataGrid.CurrentCell>
-        </DataGrid>
-    </Grid>
+            <TreeView Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=Nodos}">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type ViewModels:NodoViewModel}" ItemsSource="{Binding Path=Hijos}">
+                        <TreeViewItem Name="tvi_Item" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton"
+                                      ACB:CommandBehavior.Event="Expanded"
+                                      ACB:CommandBehavior.Command="{Binding Path=Explorador.ExpandirOrden}"
+                                      ACB:CommandBehavior.CommandParameter="{Binding Path=.}">
+                            <!-- 
+                            Para una explicacion acerca de la biblioteca empleada (Attached Command Behavior) ver 
+                            la direccion: http://marlongrech.wordpress.com/2008/12/13/attachedcommandbehavior-v2-aka-acb/ 
+                            -->
+                            <TreeViewItem.Header>
+                                <TextBlock Text="{Binding Path=NombreParaMostrar}"/>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+
+            <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
+
+            <DataGrid Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView}" 
+                      ACB:CommandBehavior.Event="MouseLeftButtonUp"
+                      ACB:CommandBehavior.Command="{Binding Path=EstablecerNodoActualOrden}"
+                      ACB:CommandBehavior.CommandParameter="{Binding ElementName=dgr_TablaLocal, Path=CurrentCell.Column.Header}">
+                <DataGrid.CurrentCell>
+                    <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
+                        <Binding Path="NodoActual.Nombre"/>
+                        <Binding RelativeSource="{x:Static RelativeSource.Self}"/>
+                    </MultiBinding>
+                </DataGrid.CurrentCell>
+            </DataGrid>
+        </Grid>
+    </DockPanel>
 </UserControl>
-
-    <!--<Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
-
-        <TreeView Grid.Column="0" Name="trv_ExploradorRemoto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" DataContext="{Binding}" ItemsSource="{Binding Path=Nodos}">
-            <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type Logica:Nodo}" ItemsSource="{Binding Path=Hijos}">
-                    <TreeViewItem Name="tvi_ItemRemoto" DataContext="{Binding Path=.}" Expanded="tvi_Item_Expandir" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton">
-                        <TreeViewItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Path=Nombre}"/>
-                                <TextBlock DataContext="{Binding Path=MapaColumna}">
-                                    <TextBlock.Text>
-                                        <MultiBinding Converter="{StaticResource ColumnaAsociada}">
-                                            <Binding ElementName="tvi_ItemRemoto"
-                                                        Path="DataContext"/>
-                                            <Binding Path="ColumnaOrigen"/>
-                                            <Binding Path="ColumnaDestino"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </StackPanel>
-                        </TreeViewItem.Header>
-                    </TreeViewItem>
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>
-        </TreeView>
-
-        <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
-
-        <DataGrid Name="dgr_TablaRemota" Grid.Column="2" Style="{StaticResource est_Tabla}" DataContext="{Binding}" ItemsSource="{Binding Path=TablaActual.DefaultView}" MouseLeftButtonUp="dgr_Tablas_ClicBotonIzqRaton">
-            <DataGrid.CurrentCell>
-                <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
-                    <Binding Path="NodoActual"/>
-                    <Binding RelativeSource="{x:Static RelativeSource.Self}"/>
-                </MultiBinding>
-            </DataGrid.CurrentCell>
-        </DataGrid>
-    </Grid>-->

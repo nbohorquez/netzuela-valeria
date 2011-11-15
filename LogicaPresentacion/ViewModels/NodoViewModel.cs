@@ -74,7 +74,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             // La parte de NodoViewModel
             this.Padre = Padre;
-            //Padre.Hijos.Add(this);
             this.Expandido = false;
             this.Explorador = Padre.Explorador;
 
@@ -89,7 +88,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             // La parte de NodoViewModel
             this.Padre = Padre;
-            //Padre.Hijos.Add(this);
             this.Expandido = true;
             this.Explorador = Padre.Explorador;
 

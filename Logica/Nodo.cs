@@ -38,7 +38,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             this.Nombre = Nombre;
             this.Nivel = -1;
             this.Padre = null;
-            //this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
             this.Hijos = new ObservableCollection<Nodo>();
             this.MapaColumna = null;
         }
@@ -53,7 +52,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             this.Nombre = Nombre;
             this.Nivel = Nivel;
             this.Padre = null;
-            //this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
             this.Hijos = new ObservableCollection<Nodo>();
             this.MapaColumna = null;
         }
@@ -69,7 +67,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 throw new ArgumentNullException("Padre");
 
             this.Nombre = Nombre;
-            //this.Hijos = new ObservableCollection<Nodo>() { new Nodo() };
             this.Hijos = new ObservableCollection<Nodo>();
             this.MapaColumna = null;
             Padre.AgregarHijo(this);
@@ -108,7 +105,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             if (Padre == null)
                 throw new ArgumentNullException("Padre");
             
-            //this.Expandido = true;
             this.Nombre = Nombre;
             Padre.Hijos.Add(this);
             this.Hijos = new ObservableCollection<Nodo>();

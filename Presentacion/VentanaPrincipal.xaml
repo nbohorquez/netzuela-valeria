@@ -30,7 +30,7 @@
         <Style x:Key="est_Agrupador" TargetType="GroupBox">
             <Setter Property="Height" Value="Auto"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="6"/>
+            <Setter Property="Margin" Value="3,1"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Width" Value="Auto"/>
         </Style>
@@ -69,61 +69,52 @@
 
         <TabControl Grid.Column="0" Grid.Row="1" Style="{StaticResource est_Archivador}">
             <TabItem Header="Conexión base de datos" Name="tab_ConexionBD">
-                <DockPanel>
-                    <Grid DockPanel.Dock="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" Margin="10,0">Elemento local</Label>
-                        <TextBox Name="txt_ElementoLocal" IsReadOnly="True" Grid.Column="1" Text="{Binding Path=ExploradorLocal.RutaNodoActual, Mode=OneWay}"/>
-                        
-                        <Label Grid.Column="2" Margin="10,0">Elemento remoto</Label>
-                        <TextBox Name="txt_ElementoRemoto" IsReadOnly="True" Grid.Column="3" Text="{Binding Path=ExploradorRemoto.RutaNodoActual, Mode=OneWay}"/>
+                    <GroupBox Grid.Column="0" Name="grp_ExploradorLocal" Header="Explorador local" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
+                        <Views:ExploradorView DataContext="{Binding Path=ExploradorLocal}"/>
+                    </GroupBox>
 
-                        <Button Grid.Column="4" HorizontalAlignment="Center" Width="70" Padding="0,2" Margin="20,0,5,0" Content="Asociar"
-                                Command="{Binding Path=LocalARemota.AsociarOrden}">
-                            <Button.CommandParameter>
-                                <MultiBinding Converter="{StaticResource DosArgumentosAUno}">
-                                    <Binding Path="ExploradorLocal.NodoActual"/>
-                                    <Binding Path="ExploradorRemoto.NodoActual"/>
-                                </MultiBinding>
-                            </Button.CommandParameter>
-                        </Button>
-                        <Button Grid.Column="5" HorizontalAlignment="Center" Width="70" Padding="0,2" Margin="5,0,20,0" Content="Desasociar"
-                                Command="{Binding Path=LocalARemota.DesasociarOrden}"
-                                CommandParameter="{Binding Path=ExploradorRemoto.NodoActual}"/>
-                    </Grid>
-                    <Grid DockPanel.Dock="Bottom">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
 
-                        <GroupBox Grid.Column="0" Header="Explorador local" Name="grp_ExploradorLocal" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
-                            <Views:ExploradorView DataContext="{Binding Path=ExploradorLocal}"/>
+                    <GroupBox Grid.Column="2" Name="grp_ExploradorRemoto" Header="Explorador remoto" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
+                        <Views:ExploradorView DataContext="{Binding Path=ExploradorRemoto}"/>
+                    </GroupBox>
+
+                    <GroupBox Grid.Column="3" Name="grp_Sincronizacion" Header="Sincronización" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
+                        <StackPanel Orientation="Vertical">
+                            <Button HorizontalAlignment="Center" Width="70" Height="Auto" Padding="0,2" Margin="0,1" Content="Asociar"
+                                    Command="{Binding Path=LocalARemota.AsociarOrden}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource DosArgumentosAUno}">
+                                        <Binding Path="ExploradorLocal.NodoActual"/>
+                                        <Binding Path="ExploradorRemoto.NodoActual"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
+                            
+                            <Button HorizontalAlignment="Center" Width="70" Height="Auto" Padding="0,2" Margin="0,1" Content="Desasociar"
+                                    Command="{Binding Path=LocalARemota.DesasociarOrden}"
+                                    CommandParameter="{Binding Path=ExploradorRemoto.NodoActual}"/>
+                            
+                            <Button HorizontalAlignment="Center" Width="70" Height="Auto" Padding="0,2" Margin="0,1" Content="Listo"
+                                    Command="{Binding Path=LocalARemota.ListoOrden}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Que molleja de feo este "Canvas" aqui... Es una solucion poco elegante pero funciona :$ -->
+                    <Canvas Grid.Column="0" Width="1" Height="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                        <GroupBox Name="grp_ConexionLocal" Header="Conexión local" Canvas.Left="-155" Canvas.Bottom="-1" Width="140" Style="{StaticResource est_Agrupador}">
+                            <Views:ConexionLocalView DataContext="{Binding Path=ConexionLocal}"/>
                         </GroupBox>
-
-                        <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
-
-                        <GroupBox Grid.Column="2" Name="grp_ExploradorRemoto" Header="Explorador remoto" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
-                            <Views:ExploradorView DataContext="{Binding Path=ExploradorRemoto}"/>
-                        </GroupBox>
-
-                        <!-- Que molleja de feo este "Canvas" aqui... Es una solucion poco elegante pero funciona :$ -->
-                        <Canvas Grid.Column="0" Width="1" Height="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-                            <GroupBox Name="grp_ConexionLocal" Header="Conexión local" Canvas.Left="-155" Canvas.Bottom="-12" Width="140" Style="{StaticResource est_Agrupador}">
-                                <Views:ConexionLocalView DataContext="{Binding Path=ConexionLocal}"/>
-                            </GroupBox>
-                        </Canvas>
-                    </Grid>
-                </DockPanel>
+                    </Canvas>
+                </Grid>
             </TabItem>
 
             <TabItem Header="Sincronización de datos" Name="tab_Sincronizacion">

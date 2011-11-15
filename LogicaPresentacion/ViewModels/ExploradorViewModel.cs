@@ -3,42 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Data;                              // DataTable
+using MvvmFoundation.Wpf;                       // ObservableObject
 using System.Collections.ObjectModel;           // ObservableCollection
-using System.ComponentModel;                    // INotifyPropertyChanged
-using Zuliaworks.Netzuela.Valeria.Datos;        // BaseDeDatos
+using System.Data;                              // DataTable
+using System.Windows;                           // MessageBox
+using System.Windows.Input;                     // ICommand
 using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
+using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
+using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
 
-namespace Zuliaworks.Netzuela.Valeria.Logica
+namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     /// <summary>
     /// Esta clase se emplea para acceder a los datos de una fuente cuya estructura 
-    /// sea de tipo árbol de nodos. Implementa la interfaz <see cref="INotifyPropertyChanged"/>
-    /// para hacer visibles algunas de sus propiedades a la capa de presentación.
+    /// sea un árbol de nodos.
     /// </summary>
-    public class Explorador : INotifyPropertyChanged
+    public class ExploradorViewModel : ObservableObject
     {
         #region Variables
 
-        /// <summary>
-        /// Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="NodoActual"/>).
-        /// </summary>
-        public Nodo NodoTablaActual;
-
-        /// <summary>
-        /// Es la caché de tablas del explorador.
-        /// </summary>
-        private Dictionary<Nodo, DataTable> Tablas;
-
-        /// <summary>
-        /// Es el proveedor de datos del explorador.
-        /// </summary>
-        private IBaseDeDatos BD;
-
-        /// <summary>
-        /// Indica el nodo actual seleccionado.
-        /// </summary>
-        private Nodo _NodoActual;
+        private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
+        private IBaseDeDatos _BD;
+        private NodoViewModel _NodoActual;
+        private RelayCommand<NodoViewModel> _ExpandirOrden;
+        private RelayCommand<string> _EstablecerNodoActualOrden;
 
         #endregion
 
@@ -47,13 +35,14 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// Construye un explorador vacio.
         /// </summary>
-        public Explorador()
+        public ExploradorViewModel()
         {
-            this.Nodos = new ObservableCollection<Nodo>();
-            this.Tablas = new Dictionary<Nodo, DataTable>();
-            this.NodoActual = new Nodo();
-            this.NodoTablaActual = new Nodo();
-            this.BD = null;
+            this.Nodos = new ObservableCollection<NodoViewModel>();
+            this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
+            this.NodoActual = new NodoViewModel();
+            this.NodoTablaActual = new NodoViewModel();
+            this.RutaNodoActual = string.Empty;
+            this._BD = null;
         }
 
         /// <summary>
@@ -64,15 +53,16 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// sólo contiene el nodo inicial.</param>
         /// <param name="BD">Proveedor de datos. A través de este se obtiene la data y metadata 
         /// de los nodos del árbol.</param>
-        public Explorador(ObservableCollection<Nodo> Nodos, IBaseDeDatos BD)
+        public ExploradorViewModel(ObservableCollection<NodoViewModel> Nodos, IBaseDeDatos BD)
         {
             this.Nodos = Nodos;
             AsignarExplorador(this.Nodos, this);
 
-            this.Tablas = new Dictionary<Nodo, DataTable>();
+            this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
             this.NodoActual = Nodos[0];
-            this.NodoTablaActual = new Nodo();
-            this.BD = BD;
+            this.NodoTablaActual = new NodoViewModel();
+            this.RutaNodoActual = string.Empty;
+            this._BD = BD;
         }
 
         #endregion
@@ -80,29 +70,34 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         #region Propiedades
 
         /// <summary>
+        /// Representa la colección de nodos que conforman el arbol de datos.
+        /// </summary>
+        public ObservableCollection<NodoViewModel> Nodos { get; private set; }
+
+        /// <summary>
         /// Lee o escribe la cache de tablas en la entrada especificada por <see cref="NodoTablaActual"/>.
         /// </summary>
         public DataTable TablaActual
         {
-            get { return Tablas.ContainsKey(NodoTablaActual) ? Tablas[NodoTablaActual] : null; }
+            get { return _CacheDeTablas.ContainsKey(NodoTablaActual) ? _CacheDeTablas[NodoTablaActual] : null; }
             set
             {
-                if (Tablas.ContainsKey(NodoTablaActual))
+                if (_CacheDeTablas.ContainsKey(NodoTablaActual))
                 {
-                    if (Tablas[NodoTablaActual] != value)
-                        Tablas[NodoTablaActual] = value;
+                    if (_CacheDeTablas[NodoTablaActual] != value)
+                        _CacheDeTablas[NodoTablaActual] = value;
                 }
                 else
-                    Tablas.Add(NodoTablaActual, value);
+                    _CacheDeTablas.Add(NodoTablaActual, value);
 
-                RegistrarCambioEnPropiedad("TablaActual");
+                RaisePropertyChanged("TablaActual");
             }
         }
 
         /// <summary>
         /// Indica el nodo actual seleccionado.
         /// </summary>
-        public Nodo NodoActual
+        public NodoViewModel NodoActual
         {
             get { return _NodoActual; }
             set
@@ -110,25 +105,47 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 if (value != _NodoActual)
                 {
                     _NodoActual = value;
-                    RegistrarCambioEnPropiedad("NodoActual");
+                    RutaNodoActual = _NodoActual.RutaCompleta();
+                    RaisePropertyChanged("RutaNodoActual");
+                    RaisePropertyChanged("NodoActual");
                 }
             }
         }
 
         /// <summary>
-        /// Representa la colección de nodos que conforman el arbol de datos.
+        /// Este string indica la ruta completa del nodo actual seleccionado.
         /// </summary>
-        public ObservableCollection<Nodo> Nodos { get; set; }
+        public string RutaNodoActual { get; private set; }
 
-        #endregion
-
-        #region Eventos
-
-        // ...
+        /// <summary>
+        /// Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="NodoActual"/>).
+        /// </summary>
+        public NodoViewModel NodoTablaActual { get; private set; }
+        
+        /// <summary>
+        /// Expande el nodo especificado
+        /// </summary>
+        public ICommand ExpandirOrden
+        {
+            get { return _ExpandirOrden ?? (_ExpandirOrden = new RelayCommand<NodoViewModel>(Nodo => this.Expandir(Nodo))); }
+        }
+        
+        /// <summary>
+        /// Establece NodoActual
+        /// </summary>
+        public ICommand EstablecerNodoActualOrden
+        {
+            get { return _EstablecerNodoActualOrden ?? (_EstablecerNodoActualOrden = new RelayCommand<string>(Nombre => this.EstablecerNodoActual(Nombre))); }
+        }
 
         #endregion
 
         #region Funciones
+        
+        private void EstablecerNodoActual(string Nombre)
+        {
+            this.NodoActual = (Nombre == null) ? this.NodoActual : NodoViewModelExtensiones.BuscarNodo(Nombre, NodoTablaActual.Hijos);
+        }
 
         /// <summary>
         /// Expande todos los nodos del árbol de nodos <see cref="Nodos"/> de este explorador.
@@ -144,7 +161,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <param name="Nodos">Arbol a expandir.</param>
         /// <exception cref="ArgumentNullException">Si <paramref name="Nodos"/> es una referencia 
         /// nula.</exception>
-        public void ExpandirTodo(ObservableCollection<Nodo> Nodos)
+        public void ExpandirTodo(ObservableCollection<NodoViewModel> Nodos)
         {
             if (Nodos == null)
                 throw new ArgumentNullException("Nodos");
@@ -166,7 +183,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// especificados en <see cref="Constantes.NivelDeNodo"/>.</param>
         /// <exception cref="ArgumentNullException">Si <paramref name="Item"/> es una referencia 
         /// nula.</exception>
-        public void Expandir(Nodo Item)
+        public void Expandir(NodoViewModel Item)
         {
             if (Item == null)
                 throw new ArgumentNullException("Item");
@@ -192,47 +209,61 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             NodoActual = Item;
         }
 
-        private void ExpandirServidor(Nodo Item)
+        private void ExpandirServidor(NodoViewModel Item)
         {
             if (Item.Expandido == true)
                 return;
 
             Item.Expandido = true;
 
-            string[] BasesDeDatos = BD.ListarBasesDeDatos();
-
-            if (BasesDeDatos != null)
+            try
             {
-                Item.Hijos.Clear();
-                foreach (string BdD in BasesDeDatos)
+                string[] BasesDeDatos = _BD.ListarBasesDeDatos();
+
+                if (BasesDeDatos != null)
                 {
-                    Nodo Nodo = new Nodo(BdD);
-                    Item.AgregarHijo(Nodo);
-                }                
-            }                        
+                    Item.Hijos.Clear();
+                    foreach (string BdD in BasesDeDatos)
+                    {
+                        NodoViewModel Nodo = new NodoViewModel(BdD);
+                        Item.AgregarHijo(Nodo);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al listar las bases de datos");
+            }            
         }
 
-        private void ExpandirBaseDeDatos(Nodo Item)
+        private void ExpandirBaseDeDatos(NodoViewModel Item)
         {
             if (Item.Expandido == true)
                 return;
 
             Item.Expandido = true;
 
-            string[] Tablas = BD.ListarTablas(Item.Nombre);
-
-            if (Tablas != null)
+            try
             {
-                Item.Hijos.Clear();
-                foreach (string Tabla in Tablas)
+                string[] Tablas = _BD.ListarTablas(Item.Nombre);
+
+                if (Tablas != null)
                 {
-                    Nodo Nodo = new Nodo(Tabla);
-                    Item.AgregarHijo(Nodo);
+                    Item.Hijos.Clear();
+                    foreach (string Tabla in Tablas)
+                    {
+                        NodoViewModel Nodo = new NodoViewModel(Tabla);
+                        Item.AgregarHijo(Nodo);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al listar las tablas");
             }
         }
 
-        private void ExpandirTabla(Nodo Item)
+        private void ExpandirTabla(NodoViewModel Item)
         {
             Item.Expandido = true;
 
@@ -241,20 +272,20 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             if (Tabla != null)
             {
                 /* 
-                 * nTablaActual esta atado a TablaActual: el primero es el indice dentro del 
+                 * NodoTablaActual esta atado a TablaActual: el primero es el indice dentro del 
                  * diccionario Tablas para ubicar el segundo.
                  */
 
                 NodoTablaActual = Item;
                 TablaActual = Tabla;
-            }            
+            }
         }
 
-        private void ExpandirColumna(Nodo Item)
+        private void ExpandirColumna(NodoViewModel Item)
         {
             Item.Expandido = true;
 
-            Nodo Padre = Item.Padre;
+            NodoViewModel Padre = Item.Padre;
             ExpandirTabla(Padre);
         }
 
@@ -265,32 +296,39 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
         /// <exception cref="ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
         /// nula.</exception>
-        public DataTable ObtenerTabla(Nodo Tabla)
+        public DataTable ObtenerTabla(NodoViewModel Tabla)
         {
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
 
             DataTable Temp = null;
 
-            if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
+            try
             {
-                if (Tablas.ContainsKey(Tabla))
+                if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
                 {
-                    Temp = Tablas[Tabla];
-                }
-                else
-                {
-                    Temp = BD.MostrarTabla(Tabla.Padre.Nombre, Tabla.Nombre);
-                    Temp.TableName = Tabla.RutaCompleta();
-
-                    Tabla.Hijos.Clear();
-                    foreach (DataColumn Columna in Temp.Columns)
+                    if (_CacheDeTablas.ContainsKey(Tabla))
                     {
-                        Nodo N = new Nodo(Columna.ColumnName);
-                        N.Hijos.Clear();
-                        Tabla.AgregarHijo(N);
+                        Temp = _CacheDeTablas[Tabla];
+                    }
+                    else
+                    {
+                        Temp = _BD.MostrarTabla(Tabla.Padre.Nombre, Tabla.Nombre);
+                        Temp.TableName = Tabla.RutaCompleta();
+
+                        Tabla.Hijos.Clear();
+                        foreach (DataColumn Columna in Temp.Columns)
+                        {
+                            NodoViewModel N = new NodoViewModel(Columna.ColumnName);
+                            N.Hijos.Clear();
+                            Tabla.AgregarHijo(N);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar la tabla");
             }
 
             return Temp;
@@ -302,21 +340,23 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <returns>Lista de las tablas guardadas en la caché.</returns>
         public List<DataTable> ObtenerTablasCache()
         {
-            return Tablas.Values.ToList();
+            return _CacheDeTablas.Values.ToList();
         }
 
         /// <summary>
         /// Devuelve los nodos asociados a las tablas de la caché de tablas.
         /// </summary>
         /// <returns>Lista de los nodos de tablas guardados en la caché.</returns>
-        public List<Nodo> ObtenerNodosCache()
+        public List<NodoViewModel> ObtenerNodosCache()
         {
-            return Tablas.Keys.ToList();
+            return _CacheDeTablas.Keys.ToList();
         }
 
-        private void AsignarExplorador(ObservableCollection<Nodo> Nodos, Explorador Arbol)
+        private void AsignarExplorador(ObservableCollection<NodoViewModel> Nodos, ExploradorViewModel Arbol)
         {
-            foreach (Nodo Nodo in Nodos)
+            NodoViewModel Nodito = new NodoViewModel();
+
+            foreach (NodoViewModel Nodo in Nodos)
             {
                 Nodo.Explorador = this;
                 if (Nodo.Hijos.Count > 0)
@@ -325,33 +365,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 }
             }
         }
-
-        #endregion
-        
-        #region Implementaciones de interfaces
-
-        /// <summary>
-        /// Evento que se activa cuando una propiedad de esta clase ha sido modificada.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
-        /// </summary>
-        /// <param name="info">Nombre de la propiedad modificada.</param>
-        protected virtual void RegistrarCambioEnPropiedad(string info)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
-        }
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

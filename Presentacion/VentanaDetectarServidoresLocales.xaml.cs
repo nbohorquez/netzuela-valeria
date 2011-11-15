@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;           // ObservableCollection
 using Zuliaworks.Netzuela.Valeria.Comunes;      // ConvertirAObservableCollection
 using Zuliaworks.Netzuela.Valeria.Datos;        // ServidorLocal
 using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;
 
 namespace Zuliaworks.Netzuela.Valeria.Presentacion
 {
@@ -25,8 +26,8 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
     public partial class VentanaDetectarServidoresLocales : Window
     {
         #region Variables
-        
-        private Conexion Conexion;
+
+        // ...
 
         #endregion
 
@@ -35,22 +36,21 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Conexion"></param>
-        public VentanaDetectarServidoresLocales(ref Conexion Conexion)
+        /// <param name="ServidoresDetectados"></param>
+        public VentanaDetectarServidoresLocales(ObservableCollection<ServidorLocal> ServidoresDetectados)
         {
             InitializeComponent();
 
-            this.Conexion = Conexion;
-            this.ServidoresDetectados = Conexion.DetectarServidoresLocales().ConvertirAObservableCollection();
-
-            cmb_Servidor.ItemsSource = this.ServidoresDetectados;
+            // Establezco el DataContext aqui porque necesito acceder a "CerrarView" desde la ventana.
+            var ViewModel = new DetectarServidoresLocalesViewModel();
+            this.DataContext = ViewModel;
         }
 
         #endregion
 
         #region Propiedades
 
-        public ObservableCollection<ServidorLocal> ServidoresDetectados { get; set; }
+        // ...
 
         #endregion
 
@@ -62,16 +62,7 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
         #region Funciones
 
-        private void btn_Aceptar_Clic(object sender, RoutedEventArgs e)
-        {
-            Conexion.Datos.Anfitrion = "localhost";
-            Conexion.Datos.Servidor = cmb_Servidor.SelectedValue != null ? cmb_Servidor.SelectedValue.ToString() : "";
-            Conexion.Datos.Instancia = cmb_Instancia.SelectedValue != null ? cmb_Instancia.SelectedValue.ToString() : "";
-            Conexion.Datos.MetodoDeConexion = cmb_MetodoDeConexion.SelectedValue != null ? cmb_MetodoDeConexion.SelectedValue.ToString() : "";
-            Conexion.Datos.ArgumentoDeConexion = cmb_ArgumentoDeConexion.SelectedValue != null ? cmb_ArgumentoDeConexion.SelectedValue.ToString() : "";
-
-            this.Close();
-        }
+        // ...
 
         #endregion
 
@@ -85,6 +76,6 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
         // ...
 
-        #endregion        
+        #endregion
     }
 }

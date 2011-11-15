@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using System.Data;
-using System.Security;          // SecureString
+using System.Security;                              // SecureString
 using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
 
 namespace Zuliaworks.Netzuela.Valeria.Datos
@@ -16,7 +16,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Variables
 
-        public DatosDeConexion Servidor;
+        private ConnectionState _Estado;
 
         #endregion
 
@@ -31,13 +31,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Propiedades
 
-        // ...
-
-        #endregion
-
-        #region Eventos
-
-        // ...
+        public DatosDeConexion Servidor { get; set; }
 
         #endregion
 
@@ -69,6 +63,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             get { return ConnectionState.Closed; }
         }
 
+        StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
+        {
+            set { throw new NotImplementedException(); }
+        }
+
         void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena) { }
 
         void IBaseDeDatos.Desconectar() { }
@@ -89,12 +88,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             return new DataTable();
         }
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

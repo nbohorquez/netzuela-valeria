@@ -6,14 +6,20 @@ using System.Text;
 using System.Runtime.InteropServices;           // unsafe
 using System.Security;                          // SecureString
 
-namespace Zuliaworks.Netzuela.Valeria.Datos
+namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
     /// <summary>
-    /// Contiene funciones adicionales para los tipos SecureString. Este codigo fue tomado de la pagina: 
-    /// http://blogs.msdn.com/b/fpintos/archive/2009/06/12/how-to-properly-convert-securestring-to-string.aspx
+    /// Contiene funciones adicionales para los tipos SecureString.
     /// </summary>
-    public static class StringSegura
+    public static class SecureStringExtensiones
     {
+        #region Funciones
+
+        /*
+         * Este codigo fue tomado de la pagina: 
+         * http://blogs.msdn.com/b/fpintos/archive/2009/06/12/how-to-properly-convert-securestring-to-string.aspx
+         */
+    
         /// <summary>
         /// 
         /// </summary>
@@ -70,5 +76,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 }
             }
         }
-    }
+
+        #endregion
+    }        
 }

@@ -29,10 +29,23 @@
             Credenciales
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ColeccionesObservables">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ServidorLocal">
             <summary>
-            Contiene funciones adicionales para los tipos ObservableCollection
+            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
+            </summary>    
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.IEnumerableExtensiones">
+            <summary>
+            Contiene funciones adicionales para los tipos IEnumerable
             </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.IEnumerableExtensiones.ConvertirAObservableCollection``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Convierte un tipo IEnumerable a ObservableCollection
+            </summary>
+            <typeparam name="T">Tipo de IEnumerable</typeparam>
+            <param name="Enumerable">Coleccion de objetos</param>
+            <returns>ObservableColeccion de objetos tipo T</returns>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion">
             <summary>
@@ -42,16 +55,24 @@
             hacer dos clases distintas pero es mucho mas elegante que una derive de la otra. ¿Tendeis?
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion.OnPropertyChanged(System.String)">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones">
             <summary>
-            Esta función se llama de forma interna cuando se cambia una propiedad de esta clase
+            Contiene funciones adicionales para los tipos SecureString.
             </summary>
-            <param name="info">Nombre de la propiedad modificada.</param>
         </member>
-        <member name="E:Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion.PropertyChanged">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones.ConvertirAUnsecureString(System.Security.SecureString)">
             <summary>
-            Evento que se activa cuando una propiedad de esta clase ha sido modificada.
+            
             </summary>
+            <param name="StringSegura"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones.ConvertirASecureString(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="StringNoSegura"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

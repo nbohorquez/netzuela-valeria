@@ -12,14 +12,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Zuliaworks.Netzuela.Valeria.Presentacion
+namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
 {
     /// <summary>
-    /// Ventana de inicio del programa.
+    /// Lógica de interacción para AutentificacionView.xaml
     /// </summary>
-    public partial class VentanaPrincipal : Window
+    public partial class AutentificacionView : UserControl
     {
-        public VentanaPrincipal()
+        public AutentificacionView()
         {
             InitializeComponent();
         }

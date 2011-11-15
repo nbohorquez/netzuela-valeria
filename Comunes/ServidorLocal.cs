@@ -3,19 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Zuliaworks.Netzuela.Valeria.Datos
+namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
     /// <summary>
     /// Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
     /// </summary>    
     public class ServidorLocal
     {
-        #region Variables
-
-        // ...
-
-        #endregion
-
         #region Constructores
 
         public ServidorLocal() { }
@@ -27,33 +21,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         // Un servidor puede crear muchas instancias de si mismo
         public string Nombre { get; set; }
         public List<Instancia> Instancias { get; set; }
-
-        #endregion
-
-        #region Eventos
-
-        // ...
-
-        #endregion
-
-        #region Funciones
-
-        public static List<ServidorLocal> DetectarTodos()
-        {
-            List<ServidorLocal> Servidores = new List<ServidorLocal>();
-
-            Servidores.Add(SQLServer.DetectarServidor());
-            Servidores.Add(Oracle.DetectarServidor());
-            Servidores.Add(MySQL.DetectarServidor());
-
-            return Servidores;
-        }
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
 
         #endregion
 

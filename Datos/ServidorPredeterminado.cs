@@ -16,8 +16,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Variables
 
-        public DatosDeConexion Servidor;
-        ConnectionState Estado;
+        private ConnectionState _Estado;
 
         #endregion
 
@@ -26,26 +25,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public ServidorPredeterminado(DatosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
-            Estado = ConnectionState.Closed;
+            _Estado = ConnectionState.Closed;
         }
 
         #endregion
 
         #region Propiedades
 
-        // ...
-
-        #endregion
-
-        #region Eventos
-
-        // ...
-
-        #endregion
-
-        #region Funciones
-
-        // ...
+        public DatosDeConexion Servidor { get; set; }
 
         #endregion
 
@@ -53,7 +40,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         ConnectionState IBaseDeDatos.Estado
         {
-            get { return Estado; }
+            get { return _Estado; }
+        }
+
+        StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
+        {
+            set { throw new NotImplementedException(); }
         }
 
         void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena) { }
@@ -74,12 +66,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             return new DataTable();
         }
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

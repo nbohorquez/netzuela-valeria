@@ -4,20 +4,18 @@ using System.Linq;
 using System.Text;
 
 using System.Collections.ObjectModel;           // ObservableCollection
-using System.Data;                              // ConnectionState, DataTable
 using System.Collections;
-using Zuliaworks.Netzuela.Valeria.Comunes;                          // Constantes
+using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
 
 namespace Zuliaworks.Netzuela.Valeria.Logica
 {
     /// <summary>
     /// 
     /// </summary>
-    public class MapeoDeTablas
+    public class TablaMapeada
     {
         #region Variables
 
-        private List<MapeoDeColumnas> _MapasColumnas;
         private Nodo _Tabla;
 
         #endregion
@@ -27,9 +25,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// 
         /// </summary>
-        public MapeoDeTablas()
+        public TablaMapeada()
         {
-            _MapasColumnas = new List<MapeoDeColumnas>();
+            MapasColumnas = new List<MapeoDeColumnas>();
             Tabla = new Nodo();
         }
 
@@ -37,10 +35,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// 
         /// </summary>
         /// <param name="Tabla"></param>
-        public MapeoDeTablas(Nodo Tabla)
+        public TablaMapeada(Nodo Tabla)
         {
+            if (Tabla == null)
+                throw new ArgumentNullException("Tabla");
+
             this.Tabla = Tabla;
-            this._MapasColumnas = new List<MapeoDeColumnas>();
+            this.MapasColumnas = new List<MapeoDeColumnas>();
 
             foreach (Nodo Columna in this.Tabla.Hijos)
             {
@@ -56,10 +57,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// 
         /// </summary>
-        public List<MapeoDeColumnas> MapasColumnas 
-        {
-            get { return _MapasColumnas; }
-        }
+        public List<MapeoDeColumnas> MapasColumnas { get; private set; }
 
         /// <summary>
         /// 
@@ -67,19 +65,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         public Nodo Tabla
         {
             get { return _Tabla; }
-            set
+            private set
             {
                 Nodo Nuevo = value as Nodo;
                 if (Nuevo.Nivel == Constantes.NivelDeNodo.TABLA && Nuevo != _Tabla)
                     _Tabla = Nuevo;
             }
         }
-
-        #endregion
-
-        #region Eventos
-
-        // ...
 
         #endregion
 
@@ -103,8 +95,8 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     {
                         if (Mapa.ColumnaOrigen.Nombre == Nodo.Nombre)
                         {
-                            string RutaNodoNuevo = Nodo.RutaCompleta(Nodo);
-                            string RutaNodoViejo = Nodo.RutaCompleta(Mapa.ColumnaOrigen);
+                            string RutaNodoNuevo = Nodo.RutaCompleta();
+                            string RutaNodoViejo = Mapa.ColumnaOrigen.RutaCompleta();
 
                             if (RutaNodoNuevo == RutaNodoViejo)
                             {
@@ -135,10 +127,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <returns></returns>
         public bool AgregarMapa(MapeoDeColumnas MapaDeColumna)
         {
+            if (MapaDeColumna == null)
+                throw new ArgumentNullException("MapaDeColumna");
+
             if (NodoEsLegal(MapaDeColumna.ColumnaDestino) && NodoEsLegal(MapaDeColumna.ColumnaOrigen))
             {
-                MapaDeColumna.MapaTabla = this;
-                MapasColumnas.Add(MapaDeColumna);
+                MapaDeColumna.TablaPadre = this;
+                this.MapasColumnas.Add(MapaDeColumna);
                 return true;
             }
             else
@@ -146,56 +141,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 return false;
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public DataTable TablaMapeada()
-        {
-            DataTable TempTablaMapeada = new DataTable();
-
-            foreach (MapeoDeColumnas MapaCol in MapasColumnas)
-            {
-                DataColumn TablaColSinTipo = new DataColumn(MapaCol.ColumnaDestino.Nombre);
-                TempTablaMapeada.Columns.Add(TablaColSinTipo);
-
-                if (MapaCol.ColumnaOrigen != null)
-                {
-                    DataTable Temp = MapaCol.ColumnaOrigen.Explorador.ObtenerTabla(MapaCol.ColumnaOrigen.Padre);
-                    DataColumn TempCol = Temp.Columns[MapaCol.ColumnaOrigen.Nombre];
-
-                    TempTablaMapeada.Columns.Remove(MapaCol.ColumnaDestino.Nombre);
-
-                    DataColumn TablaColConTipo = new DataColumn(MapaCol.ColumnaDestino.Nombre, TempCol.DataType);
-                    TempTablaMapeada.Columns.Add(TablaColConTipo);
-
-                    while (TempTablaMapeada.Rows.Count < Temp.Rows.Count)
-                    {
-                        TempTablaMapeada.Rows.Add(TempTablaMapeada.NewRow());
-                    }
-
-                    for (int i = 0; i < Temp.Rows.Count; i++)
-                    {
-                        TempTablaMapeada.Rows[i][TablaColConTipo.ColumnName] = Temp.Rows[i][TempCol.ColumnName];
-                    }
-                }
-            }
-
-            return TempTablaMapeada;
-        }
-
-        #endregion
-
-        #region Implementaciones de interfaces
-
-        // ...
-
-        #endregion
-
-        #region Tipos anidados
-
-        // ...
 
         #endregion
     }

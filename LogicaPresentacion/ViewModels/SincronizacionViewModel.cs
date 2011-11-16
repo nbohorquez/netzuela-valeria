@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 
 using MvvmFoundation.Wpf;                       // RelayCommand
-using ObviexGeneradorContrasenas;               // RandomPassword
 using System.Data;                              // DataTable
 using System.Windows;                           // MessageBox
 using System.Windows.Input;                     // ICommand
@@ -19,7 +18,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private List<TablaMapeada> _Tablas;
         private DataSet _TablasAEnviar;
         private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
         private RelayCommand<object[]> _AsociarOrden;
@@ -33,14 +31,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public SincronizacionViewModel()
         {
-            _Tablas = new List<TablaMapeada>();
+            Tablas = new List<TablaMapeada>();
             _TablasAEnviar = new DataSet();
             _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
         }
 
         public SincronizacionViewModel(List<NodoViewModel> Nodos)
         {
-            _Tablas = new List<TablaMapeada>();
+            Tablas = new List<TablaMapeada>();
             _TablasAEnviar = new DataSet();
             _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
 
@@ -52,13 +50,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                  */
 
                 TablaMapeada MapTab = Nodo.CrearTablaMapeada();                
-                _Tablas.Add(MapTab);
+                Tablas.Add(MapTab);
             }
         }
 
         #endregion
 
         #region Propiedades
+
+        public List<TablaMapeada> Tablas { get; private set; }
 
         public bool Completado
         {
@@ -129,17 +129,21 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void Listo()
         {
-            if (_CacheDeTablas.Count <= 0)
-                return;
-
-            foreach (DataTable T in _CacheDeTablas.Values)
+            try
             {
-                _TablasAEnviar.Tables.Add(T);
+                foreach (DataTable T in _CacheDeTablas.Values)
+                {
+                    _TablasAEnviar.Tables.Add(T);
+                }
+
+                _TablasAEnviar.WriteXml("Millijigui.xml");
+
+                Completado = true;
             }
-
-            _TablasAEnviar.WriteXml("Millijigui.xml");
-
-            Completado = true;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void ActualizarTodasLasTablas()

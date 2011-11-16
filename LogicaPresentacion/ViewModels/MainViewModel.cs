@@ -123,7 +123,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Sincronizacion.Completado == false)
                 return;
 
-            MessageBox.Show("Millijigui");
+            List<string> NodosOrigen = new List<string>();
+
+            foreach (TablaMapeada TM in Sincronizacion.Tablas)
+            {
+                foreach (MapeoDeColumnas MC in TM.MapasColumnas)
+                {
+                    NodosOrigen.Add(MC.ColumnaOrigen.RutaCompleta());
+                }
+            }
+
+            ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
         }
 
         #endregion

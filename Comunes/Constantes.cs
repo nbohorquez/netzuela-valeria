@@ -59,6 +59,19 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
             public const int COLUMNA = 3;
         }
 
+        public class Privilegios
+        {
+            public const int NO_VALIDO = 0;
+            public const int SELECCIONAR = 1<<0;
+            public const int INSERTAR_FILAS = 1<<1;
+            public const int ACTUALIZAR = 1<<2;
+            public const int BORRAR_FILAS = 1<<3;
+            public const int INDIZAR = 1<<4;
+            public const int ALTERAR = 1<<5;
+            public const int CREAR = 1<<6;
+            public const int DESTRUIR = 1<<7;
+        }
+
         #endregion
     }
 }

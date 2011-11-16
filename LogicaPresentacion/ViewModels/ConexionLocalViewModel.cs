@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using MvvmFoundation.Wpf;                       // RelayCommand, ObservableObject
+using ObviexGeneradorContrasenas;               // RandomPassword
 using System.Data;                              // DataTable, ConnectionState
 using System.Security;                          // SecureString
 using System.Windows;                           // MessageBox
@@ -239,6 +240,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public void Desconectar()
         {
             _Local.Desconectar();
+        }
+
+        public void CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
+        {
+            SecureString Usuario = "netzuela".ConvertirASecureString();
+            SecureString Contrasena = RandomPassword.Generate(20).ConvertirASecureString();
+
+            BD.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
+
         }
 
         #endregion

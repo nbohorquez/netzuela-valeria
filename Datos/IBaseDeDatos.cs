@@ -29,7 +29,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         string[] ListarBasesDeDatos();
         string[] ListarTablas(string BaseDeDatos);
         DataTable MostrarTabla(string BaseDeDatos, string Tabla);
-
+        bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios);
+        
         #endregion
     }
 }

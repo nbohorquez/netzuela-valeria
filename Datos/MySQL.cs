@@ -485,7 +485,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             catch (Exception ex)
             {
                 throw new Exception("No se pudo obtener la lista de elementos", ex);
-                //MessageBox.Show("No se pudo obtener la lista de elementos: " + ex.Message + ex.InnerException);
             }
             
             return Resultado;
@@ -511,10 +510,67 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             catch (Exception ex)
             {
                 throw new Exception("Error cargando la tabla", ex);
-                //MessageBox.Show("Error cargando la tabla: " + ex.Message + ex.InnerException);
             }
 
             return Datos;
+        }
+
+        bool IBaseDeDatos.CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        {
+            /*
+             * La estructura de esta orden es:
+             * 
+             * GRANT privileges [columns]
+             * ON item
+             * TO user_name [IDENTIFIED BY ‘password’]
+             * [REQUIRE ssl_options] 
+             * [WITH [GRANT OPTION | limit_options] ]
+             */
+
+            // 1) Determinamos los privilegios otorgados
+            List<string> PrivilegiosLista = new List<string>();
+            
+            for (int i = 0; i < OrdenesComunes.Privilegios.Count; i++)
+            {
+                if ((Privilegios & (1<<i)) == 1)
+                {
+                    PrivilegiosLista.Add(OrdenesComunes.Privilegios[(1<<i)]);
+                }
+            }
+
+            string PrivilegiosSQL = string.Join(", ", PrivilegiosLista.ToArray());
+
+            // 2) Identificamos las columnas a las cuales se aplican estos privilegios
+            List<string[]> ColumnasLista = new List<string[]>();
+
+            foreach (string S in Columnas)
+            {
+                string[] Columna = S.Split('\\');
+                ColumnasLista.Add(Columna);
+            }
+
+            MySqlDataReader Lector = null;
+            List<string> Resultado = new List<string>();
+
+            try
+            {
+                MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
+
+                Lector = Orden.ExecuteReader();
+                while (Lector.Read())
+                {
+                    Resultado.Add(Lector.GetString(0));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo obtener la lista de elementos desde la base de datos", ex);
+            }
+            finally
+            {
+                if (Lector != null)
+                    Lector.Close();
+            }
         }
 
         #endregion
@@ -523,6 +579,19 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public static class OrdenesComunes
         {
+            public static Dictionary<int,string> Privilegios = new Dictionary<int,string>() 
+            {
+                { Constantes.Privilegios.NO_VALIDO, string.Empty },
+                { Constantes.Privilegios.SELECCIONAR, "SELECT" },
+                { Constantes.Privilegios.INSERTAR_FILAS, "INSERT" },
+                { Constantes.Privilegios.ACTUALIZAR, "UPDATE" },
+                { Constantes.Privilegios.BORRAR_FILAS, "DELETE" },
+                { Constantes.Privilegios.INDIZAR, "INDEX" },
+                { Constantes.Privilegios.ALTERAR, "ALTER" },
+                { Constantes.Privilegios.CREAR, "CREATE" },
+                { Constantes.Privilegios.DESTRUIR, "DROP" }
+            };
+
             public const string LISTAR_BASES_DE_DATOS = "SHOW DATABASES";
             public const string LISTAR_TABLAS = "SHOW TABLES";
             public const string MOSTRAR_TODO = "SELECT * FROM ";

@@ -33,8 +33,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0" Content="Dirección"/>
-            <TextBox Grid.Column="1" IsReadOnly="True" Text="{Binding Path=RutaNodoActual, Mode=OneWay}"/>
+            <Label Name="etq_Direccion" Grid.Column="0" Content="Dirección"/>
+            <TextBox Name="txt_Direccion" Grid.Column="1" IsReadOnly="True" Text="{Binding Path=RutaNodoActual, Mode=OneWay}"/>
         </Grid>
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
@@ -67,11 +67,11 @@
             <DataGrid Name="dgr_Tabla" Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView}" 
                       ACB:CommandBehavior.Event="MouseLeftButtonUp"
                       ACB:CommandBehavior.Command="{Binding Path=EstablecerNodoActualOrden}"
-                      ACB:CommandBehavior.CommandParameter="{Binding ElementName=dgr_Tabla, Path=CurrentCell.Column.Header}">
+                      ACB:CommandBehavior.CommandParameter="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=CurrentCell.Column.Header}">
                 <DataGrid.CurrentCell>
                     <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
                         <Binding Path="NodoActual.Nombre"/>
-                        <Binding RelativeSource="{x:Static RelativeSource.Self}"/>
+                        <Binding RelativeSource="{x:Static RelativeSource.Self}" />
                     </MultiBinding>
                 </DataGrid.CurrentCell>
             </DataGrid>

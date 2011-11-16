@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using MvvmFoundation.Wpf;                       // RelayCommand
+using ObviexGeneradorContrasenas;               // RandomPassword
 using System.Data;                              // DataTable
 using System.Windows;                           // MessageBox
 using System.Windows.Input;                     // ICommand
@@ -14,7 +15,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     /// <summary>
     /// 
     /// </summary>
-    public class SincronizacionViewModel
+    public class SincronizacionViewModel : ObservableObject
     {
         #region Variables
 
@@ -24,6 +25,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private RelayCommand<object[]> _AsociarOrden;
         private RelayCommand<object> _DesasociarOrden;
         private RelayCommand _ListoOrden;
+        private bool _Completado;
 
         #endregion
 
@@ -57,6 +59,19 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #endregion
 
         #region Propiedades
+
+        public bool Completado
+        {
+            get { return _Completado; }
+            private set
+            {
+                if (value != _Completado)
+                {
+                    _Completado = value;
+                    RaisePropertyChanged("Completado");
+                }
+            }
+        }
 
         public ICommand AsociarOrden
         {
@@ -114,15 +129,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void Listo()
         {
-            if (_CacheDeTablas.Count > 0)
-            {
-                foreach (DataTable T in _CacheDeTablas.Values)
-                {
-                    _TablasAEnviar.Tables.Add(T);
-                }
+            if (_CacheDeTablas.Count <= 0)
+                return;
 
-                _TablasAEnviar.WriteXml("Millijigui.xml");
+            foreach (DataTable T in _CacheDeTablas.Values)
+            {
+                _TablasAEnviar.Tables.Add(T);
             }
+
+            _TablasAEnviar.WriteXml("Millijigui.xml");
+
+            Completado = true;
         }
 
         private void ActualizarTodasLasTablas()

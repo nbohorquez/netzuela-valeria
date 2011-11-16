@@ -23,6 +23,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private ExploradorViewModel _ExploradorRemoto;
         private readonly PropertyObserver<ConexionLocalViewModel> _ObservadorConexionLocal;
         private readonly PropertyObserver<ConexionRemotaViewModel> _ObservadorConexionRemota;
+        private PropertyObserver<SincronizacionViewModel> _ObservadorSincronizacion;
 
         #endregion
         
@@ -111,7 +112,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 List<NodoViewModel> NodosCache = ExploradorRemoto.ObtenerNodosCache();
 
                 LocalARemota = new SincronizacionViewModel(NodosCache);
+
+                _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
+                    .RegisterHandler(n => n.Completado, this.SincronizacionLista);
             }
+        }
+
+        private void SincronizacionLista(SincronizacionViewModel Sincronizacion)
+        {
+            if (Sincronizacion.Completado == false)
+                return;
+
+            MessageBox.Show("Millijigui");
         }
 
         #endregion

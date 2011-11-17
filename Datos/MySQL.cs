@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Microsoft.Win32;                  // Registry
-using MySql.Data.MySqlClient;           // MySqlConnection
-using System.ComponentModel;            // INotifyPropertyChanged
-using System.Data;                      // ConnectionState, DataTable
-using System.IO;                        // StreamReader
-using System.Security;                  // SecureString
-
-using Zuliaworks.Netzuela.Valeria.Comunes;                  // DatosDeConexion
+using Microsoft.Win32;                          // Registry
+using MySql.Data.MySqlClient;                   // MySqlConnection
+using System.ComponentModel;                    // INotifyPropertyChanged
+using System.Data;                              // ConnectionState, DataTable
+using System.IO;                                // StreamReader
+using System.Security;                          // SecureString
+using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
 
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {
@@ -43,13 +42,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Funciones
 
-        /*
-        private void Conectar(SecureString Usuario, SecureString Contrasena)
-        {
-            Conectar(CrearRutaDeAcceso(Servidor, Usuario, Contrasena));
-        }
-        */
-
         private void Conectar(SecureString RutaDeAcceso)
         {
             if (RutaDeAcceso == null)
@@ -61,7 +53,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             try
             {
                 _Conexion.ConnectionString = RutaDeAcceso.ConvertirAUnsecureString();
-                //_Conexion = new MySqlConnection(RutaDeAcceso.ConvertirAUnsecureString());
                 _Conexion.Open();
             }
             catch (MySqlException ex)
@@ -99,7 +90,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             catch (Exception ex)
             {
                 throw new Exception("No se pudo obtener la lista de elementos desde la base de datos", ex);
-                //MessageBox.Show("No se pudo obtener la lista de elementos: " + ex.Message + ex.InnerException);
             }
             finally
             {
@@ -470,7 +460,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         string[] IBaseDeDatos.ListarBasesDeDatos()
         {
-            return Listar(OrdenesComunes.LISTAR_BASES_DE_DATOS);
+            return Listar("SHOW DATABASES");
         }
 
         string[] IBaseDeDatos.ListarTablas(string BaseDeDatos)
@@ -479,8 +469,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             try
             {
-                _Conexion.ChangeDatabase(BaseDeDatos);
-                Resultado = Listar(OrdenesComunes.LISTAR_TABLAS);
+                if (_Conexion.Database != BaseDeDatos)
+                    _Conexion.ChangeDatabase(BaseDeDatos);
+
+                Resultado = Listar("SHOW TABLES");
             }
             catch (Exception ex)
             {
@@ -502,7 +494,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 if (_Conexion.Database != BaseDeDatos)
                     _Conexion.ChangeDatabase(BaseDeDatos);
 
-                Adaptador = new MySqlDataAdapter(OrdenesComunes.MOSTRAR_TODO + Tabla, _Conexion);
+                Adaptador = new MySqlDataAdapter("SELECT * FROM " + Tabla, _Conexion);
                 CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
 
                 Adaptador.Fill(Datos);
@@ -515,62 +507,133 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Datos;
         }
 
-        bool IBaseDeDatos.CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        object IBaseDeDatos.CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
+            object Resultado = null;
+            string SQL = string.Empty;
+
             /*
              * La estructura de esta orden es:
              * 
-             * GRANT privileges [columns]
-             * ON item
-             * TO user_name [IDENTIFIED BY ‘password’]
-             * [REQUIRE ssl_options] 
-             * [WITH [GRANT OPTION | limit_options] ]
+             * GRANT
+             *      priv_type [(column_list)]
+             *      [, priv_type [(column_list)]] ...
+             *      ON [object_type] priv_level
+             *      TO user_specification [, user_specification] ...
+             *      [REQUIRE {NONE | ssl_option [[AND] ssl_option] ...}]
+             *      [WITH with_option ...]
+             *      
+             * 
+             * GRANT PROXY ON user_specification
+             *      TO user_specification [, user_specification] ...
+             *      [WITH GRANT OPTION]
+             * 
+             * object_type:
+             *      TABLE
+             *    | FUNCTION
+             *    | PROCEDURE
+             * 
+             * priv_level:
+             *      *
+             *    | *.*
+             *    | db_name.*
+             *    | db_name.tbl_name
+             *    | tbl_name
+             *    | db_name.routine_name
+             * 
+             * user_specification:
+             *      user
+             *      [
+             *          IDENTIFIED BY [PASSWORD] 'password'
+             *          | IDENTIFIED WITH auth_plugin [AS 'auth_string']
+             *      ]
+             *      
+             * ssl_option:
+             *     SSL
+             *   | X509
+             *   | CIPHER 'cipher'
+             *   | ISSUER 'issuer'
+             *   | SUBJECT 'subject'
+             *   
+             * with_option:
+             *     GRANT OPTION
+             *   | MAX_QUERIES_PER_HOUR count
+             *   | MAX_UPDATES_PER_HOUR count
+             *   | MAX_CONNECTIONS_PER_HOUR count
+             *   | MAX_USER_CONNECTIONS count
              */
 
-            // 1) Determinamos los privilegios otorgados
+            // 1) Determinamos los privilegios otorgados al nuevo usuario
             List<string> PrivilegiosLista = new List<string>();
-            
+
             for (int i = 0; i < OrdenesComunes.Privilegios.Count; i++)
             {
-                if ((Privilegios & (1<<i)) == 1)
+                if ((Privilegios & (1 << i)) == 1)
                 {
-                    PrivilegiosLista.Add(OrdenesComunes.Privilegios[(1<<i)]);
+                    PrivilegiosLista.Add(OrdenesComunes.Privilegios[(1 << i)]);
                 }
             }
 
-            string PrivilegiosSQL = string.Join(", ", PrivilegiosLista.ToArray());
-
             // 2) Identificamos las columnas a las cuales se aplican estos privilegios
-            List<string[]> ColumnasLista = new List<string[]>();
+            Dictionary<string, string> ColumnasDiccionario = new Dictionary<string, string>();
 
             foreach (string S in Columnas)
             {
                 string[] Columna = S.Split('\\');
-                ColumnasLista.Add(Columna);
+
+                string BD_Tabla = Columna[1] + "." + Columna[2];
+
+                if (ColumnasDiccionario.ContainsKey(BD_Tabla))
+                {
+                    ColumnasDiccionario[BD_Tabla] += ", " + Columna[3];
+                }
+                else
+                {
+                    ColumnasDiccionario.Add(BD_Tabla, Columna[3]);
+                }
             }
 
-            MySqlDataReader Lector = null;
-            List<string> Resultado = new List<string>();
-
+            List<KeyValuePair<string, string>> ColumnasLista = ColumnasDiccionario.ToList();
+ 
             try
             {
-                MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
+                // 3) Creamos el usuario con su contraseña
+                SQL = "CREATE USER '" + Usuario.ConvertirAUnsecureString() + "'@'localhost' " +
+                    "IDENTIFIED BY '" + Contrasena.ConvertirAUnsecureString() + "'";
+                MySqlCommand Orden = new MySqlCommand(SQL , _Conexion);
+                Resultado = Orden.ExecuteScalar();
 
-                Lector = Orden.ExecuteReader();
-                while (Lector.Read())
+                // 4) Otorgamos los privilegios de columnas
+                foreach (KeyValuePair<string, string> Par in ColumnasLista)
                 {
-                    Resultado.Add(Lector.GetString(0));
+                    SQL = "GRANT ";
+
+                    for (int i = 0; i < PrivilegiosLista.Count; i++)
+                    {
+                        SQL += PrivilegiosLista[i] + " (" + Par.Value + ")";
+                        if ((i + 1) < PrivilegiosLista.Count)
+                        {
+                            SQL += ", ";
+                        }
+                    }
+
+                    SQL += " ON " + Par.Key + " TO '" + Usuario.ConvertirAUnsecureString() + "'@'localhost'";
+
+                    Orden = new MySqlCommand(SQL, _Conexion);
+                    Resultado = Orden.ExecuteScalar();
                 }
+
+                // 5) Actualizamos la cache de privilegios del servidor
+                Orden = new MySqlCommand("FLUSH PRIVILEGES", _Conexion);
+                Resultado = Orden.ExecuteScalar();
+
             }
             catch (Exception ex)
             {
-                throw new Exception("No se pudo obtener la lista de elementos desde la base de datos", ex);
+                throw new Exception("No se pudo crear el usuario especificado", ex);
             }
-            finally
-            {
-                if (Lector != null)
-                    Lector.Close();
-            }
+
+            return Resultado;
         }
 
         #endregion
@@ -591,10 +654,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 { Constantes.Privilegios.CREAR, "CREATE" },
                 { Constantes.Privilegios.DESTRUIR, "DROP" }
             };
-
-            public const string LISTAR_BASES_DE_DATOS = "SHOW DATABASES";
-            public const string LISTAR_TABLAS = "SHOW TABLES";
-            public const string MOSTRAR_TODO = "SELECT * FROM ";
         }
 
         #endregion        

@@ -237,6 +237,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return new DataTable();
         }
 
+        object IBaseDeDatos.CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

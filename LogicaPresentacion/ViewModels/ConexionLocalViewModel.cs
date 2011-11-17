@@ -247,8 +247,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             SecureString Usuario = "netzuela".ConvertirASecureString();
             SecureString Contrasena = RandomPassword.Generate(20).ConvertirASecureString();
 
-            BD.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
-
+            try
+            {
+                BD.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
+            }
         }
 
         #endregion

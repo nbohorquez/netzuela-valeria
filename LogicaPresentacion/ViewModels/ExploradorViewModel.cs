@@ -127,7 +127,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// </summary>
         public ICommand ExpandirOrden
         {
-            get { return _ExpandirOrden ?? (_ExpandirOrden = new RelayCommand<NodoViewModel>(Nodo => this.Expandir(Nodo))); }
+            get { return _ExpandirOrden ?? (_ExpandirOrden = new RelayCommand<NodoViewModel>(Nodo => this.ExpandirAccion(Nodo))); }
         }
         
         /// <summary>
@@ -145,6 +145,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private void EstablecerNodoActual(string Nombre)
         {
             this.NodoActual = (Nombre == null) ? this.NodoActual : NodoViewModelExtensiones.BuscarNodo(Nombre, NodoTablaActual.Hijos);
+        }
+
+        private void ExpandirAccion(NodoViewModel Nodo)
+        {
+            try
+            {
+                Expandir(Nodo);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+            }
         }
 
         /// <summary>
@@ -187,7 +199,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             if (Item == null)
                 throw new ArgumentNullException("Item");
-
+            
             switch (Item.Nivel)
             {
                 case Constantes.NivelDeNodo.SERVIDOR:
@@ -211,10 +223,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void ExpandirServidor(NodoViewModel Item)
         {
+            if (Item == null)
+                throw new ArgumentNullException("Item");
+
             if (Item.Expandido == true)
                 return;
-
-            Item.Expandido = true;
 
             try
             {
@@ -222,6 +235,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 if (BasesDeDatos != null)
                 {
+                    Item.Expandido = true;
+
                     Item.Hijos.Clear();
                     foreach (string BdD in BasesDeDatos)
                     {
@@ -232,16 +247,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al listar las bases de datos");
+                MessageBox.Show("Error al listar las bases de datos \n\n" + ex.InnerException);
             }            
         }
 
         private void ExpandirBaseDeDatos(NodoViewModel Item)
         {
+            if (Item == null)
+                throw new ArgumentNullException("Item");
+
             if (Item.Expandido == true)
                 return;
-
-            Item.Expandido = true;
 
             try
             {
@@ -249,6 +265,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 if (Tablas != null)
                 {
+                    Item.Expandido = true;
+
                     Item.Hijos.Clear();
                     foreach (string Tabla in Tablas)
                     {
@@ -265,12 +283,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void ExpandirTabla(NodoViewModel Item)
         {
-            Item.Expandido = true;
+            if (Item == null)
+                throw new ArgumentNullException("Item");
 
             DataTable Tabla = ObtenerTabla(Item);
 
             if (Tabla != null)
             {
+                Item.Expandido = true;
+
                 /* 
                  * NodoTablaActual esta atado a TablaActual: el primero es el indice dentro del 
                  * diccionario Tablas para ubicar el segundo.
@@ -283,10 +304,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void ExpandirColumna(NodoViewModel Item)
         {
-            Item.Expandido = true;
+            if (Item == null)
+                throw new ArgumentNullException("Item");
 
             NodoViewModel Padre = Item.Padre;
             ExpandirTabla(Padre);
+
+            Item.Expandido = true;
         }
 
         /// <summary>

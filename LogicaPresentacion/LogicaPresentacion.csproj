@@ -65,6 +65,7 @@
     <Compile Include="ViewModels\AutentificacionViewModel.cs" />
     <Compile Include="ViewModels\ConexionLocalViewModel.cs" />
     <Compile Include="ViewModels\ConexionRemotaViewModel.cs" />
+    <Compile Include="ViewModels\ConexionViewModel.cs" />
     <Compile Include="ViewModels\DetectarServidoresLocalesViewModel.cs" />
     <Compile Include="ViewModels\ExploradorViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

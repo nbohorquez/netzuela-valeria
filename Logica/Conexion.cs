@@ -112,6 +112,18 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 BD.Desconectar();
         }
 
+        public void CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] ColumnasAutorizadas, int Privilegios)
+        {
+            try
+            {
+                BD.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error creando el usuario en la base de datos", ex);
+            }
+        }
+
         #endregion
     }
 }

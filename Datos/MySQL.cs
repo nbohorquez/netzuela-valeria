@@ -227,19 +227,16 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     break;
             }
 
-            // 3) Base de datos inicial
-            RutaDeConexion.Add("Database=mysql");
-
-            // 4) Requerimos pooling
+            // 3) Requerimos pooling
             RutaDeConexion.Add("Pooling=true");
 
-            // 5) Aumentamos la seguridad no permitiendo que se pueda leer la ruta de acceso
+            // 4) Aumentamos la seguridad no permitiendo que se pueda leer la ruta de acceso
             RutaDeConexion.Add("Persist Security Info=false");
 
-            // 6) Nombre de usuario
+            // 5) Nombre de usuario
             RutaDeConexion.Add(("Username=" + Usuario.ConvertirAUnsecureString()));
 
-            // 7) Contraseña
+            // 6) Contraseña
             RutaDeConexion.Add(("Password=" + Contrasena.ConvertirAUnsecureString()));
 
             /*
@@ -423,7 +420,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 catch (Exception ex)
                 {
                     throw new Exception("Ocurrio un error tratando de leer el archivo de configuracion de MySQL", ex);
-                    //MessageBox.Show("Ocurrio un error tratando de leer el archivo de configuracion de MySQL" + e.Message);
                 }
             }
 

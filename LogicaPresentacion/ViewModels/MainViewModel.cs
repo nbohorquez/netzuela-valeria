@@ -40,7 +40,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             _ObservadorConexionRemota = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
 
-            ConexionRemota.Conectar();
+            ConexionRemota.Conectar(null, null);
         }
 
         #endregion
@@ -134,6 +134,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
 
             ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
+            ConexionLocal.Desconectar();
+
+            // Cambiamos de usuario
+            ConexionLocal.ConexionNoAutoritativa();
         }
 
         #endregion

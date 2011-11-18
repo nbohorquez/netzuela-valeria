@@ -18,7 +18,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     /// <summary>
     /// 
     /// </summary>
-    public class ConexionLocalViewModel : ObservableObject
+    public class ConexionLocalViewModel : ConexionViewModel
     {
         #region Variables
 
@@ -31,81 +31,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private PropertyObserver<DetectarServidoresLocalesViewModel> _ObservadorServidores;
         private AutentificacionViewModel _Autentificacion;
         private DetectarServidoresLocalesViewModel _ServidoresDetectados;
-        private SecureString _Usuario;
-        private SecureString _Contrasena;
-        private Conexion _Local;
+        private SecureString _UsuarioRoot, _UsuarioNetzuela;
+        private SecureString _ContrasenaRoot, _ContrasenaNetzuela;
 
         #endregion
 
         #region Contructores
 
         public ConexionLocalViewModel()
-        {
-            _Local = new Conexion();
-        }
+            : base() { }
 
         #endregion
 
         #region Propiedades
 
-        public IBaseDeDatos BD
-        {
-            get { return _Local.BD; }
-        }
-
-        public ConnectionState Estado
-        { 
-            get { return BD.Estado; }
-        }
-
-        public string EstadoString
-        {
-            get
-            {
-                string Resultado;
-
-                switch (Estado)
-                {
-                    case ConnectionState.Broken:
-                        Resultado = "Rota";
-                        break;
-                    case ConnectionState.Closed:
-                        Resultado = "Cerrada";
-                        break;
-                    case ConnectionState.Connecting:
-                        Resultado = "Conectando...";
-                        break;
-                    case ConnectionState.Executing:
-                        Resultado = "Ejecutando";
-                        break;
-                    case ConnectionState.Fetching:
-                        Resultado = "Recibiendo";
-                        break;
-                    case ConnectionState.Open:
-                        Resultado = "Establecida";
-                        break;
-                    default:
-                        Resultado = "Indeterminada";
-                        break;
-                }
-
-                return Resultado;
-            }
-        }
-
-        public DatosDeConexion Datos
-        {
-            get { return _Local.Datos; }
-            set
-            {
-                if (value != _Local.Datos)
-                {
-                    _Local.Datos = value;
-                    RaisePropertyChanged("Datos");
-                }
-            }
-        }
-        
         public AutentificacionViewModel Autentificacion
         {
             get { return _Autentificacion; }
@@ -211,49 +150,43 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (AutentificacionVM.MostrarView == false)
             {
                 this.MostrarAutentificacionView = false;
-                this._Usuario = AutentificacionVM.Usuario;
-                this._Contrasena = AutentificacionVM.Contrasena;
-                Conectar();
+                this._UsuarioRoot = AutentificacionVM.Usuario;
+                this._ContrasenaRoot = AutentificacionVM.Contrasena;
+                ConexionAutoritativa();
             }
         }
 
         private void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
         {
-            RaisePropertyChanged("Estado");
-            RaisePropertyChanged("EstadoString");
+            RaisePropertyChanged("Estado");         // Para la gente de MainViewModel que esta observando esta variable
+            RaisePropertyChanged("EstadoString");   // Para la gente de BarraDeEstadoView
         }
 
-        public void Conectar()
+        public void ConexionAutoritativa()
+        {
+            base.Conectar(_UsuarioRoot, _ContrasenaRoot);
+        }
+            
+        public void ConexionNoAutoritativa()
+        {
+            base.Conectar(_UsuarioNetzuela, _ContrasenaNetzuela);
+        }
+        
+        public void CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
         {
             try
             {
-                _Local.ResolverDatosDeConexion();
-                BD.EnCambioDeEstado = new StateChangeEventHandler(EnCambioDeEstado);
-                _Local.Conectar(_Usuario, _Contrasena);
+                _UsuarioNetzuela = "netzuela".ConvertirASecureString();
+                _ContrasenaNetzuela = RandomPassword.Generate(20).ConvertirASecureString();
+
+                base.CrearUsuario(
+                    _UsuarioNetzuela, _ContrasenaNetzuela,
+                    ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR
+                );
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
-            }
-        }
-
-        public void Desconectar()
-        {
-            _Local.Desconectar();
-        }
-
-        public void CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
-        {
-            SecureString Usuario = "netzuela".ConvertirASecureString();
-            SecureString Contrasena = RandomPassword.Generate(20).ConvertirASecureString();
-
-            try
-            {
-                BD.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
             }
         }
 

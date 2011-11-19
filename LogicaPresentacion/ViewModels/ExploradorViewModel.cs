@@ -247,7 +247,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al listar las bases de datos \n\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
             }            
         }
 
@@ -277,7 +277,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al listar las tablas");
+                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
             }
         }
 
@@ -352,7 +352,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar la tabla");
+                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
             }
 
             return Temp;

@@ -480,6 +480,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         DataTable IBaseDeDatos.MostrarTabla(string BaseDeDatos, string Tabla)
         {
+            DataTable Descripcion = new DataTable();
             DataTable Datos = new DataTable();
 
             try
@@ -490,7 +491,27 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 if (_Conexion.Database != BaseDeDatos)
                     _Conexion.ChangeDatabase(BaseDeDatos);
 
-                Adaptador = new MySqlDataAdapter("SELECT * FROM " + Tabla, _Conexion);
+                // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
+                Adaptador = new MySqlDataAdapter("DESCRIBE " + Tabla, _Conexion);
+                CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
+
+                Adaptador.Fill(Descripcion);
+
+                List<string> ColumnasPermitidas = new List<string>();
+
+                foreach (DataRow Fila in Descripcion.Rows)
+                {
+                    ColumnasPermitidas.Add(Fila[0] as string);
+                }
+
+                string Columnas = string.Join(", ", ColumnasPermitidas.ToArray());
+
+                /*
+                 * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
+                 * generar un error si el usuario no tiene los privilegios suficientes
+                 */
+
+                Adaptador = new MySqlDataAdapter("SELECT " + Columnas + " FROM " + Tabla, _Conexion);
                 CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
 
                 Adaptador.Fill(Datos);

@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Microsoft.Win32;                          // Registry
 using MySql.Data.MySqlClient;                   // MySqlConnection
-using System.ComponentModel;                    // INotifyPropertyChanged
 using System.Data;                              // ConnectionState, DataTable
-using System.IO;                                // StreamReader
 using System.Security;                          // SecureString
 using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
 
@@ -16,7 +13,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos MySQL
     /// </summary>
-    public class MySQL : IBaseDeDatos
+    public partial class MySQL : IBaseDeDatos
     {
         #region Variables
 
@@ -42,34 +39,36 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Funciones
 
-        private void Conectar(SecureString RutaDeAcceso)
+        private void CambiarBaseDeDatos(string BaseDeDatos)
         {
-            if (RutaDeAcceso == null)
-                throw new ArgumentNullException("RutaDeAcceso");
-
-            if (_Conexion != null)
-                _Conexion.Close();
-
             try
             {
-                _Conexion.ConnectionString = RutaDeAcceso.ConvertirAUnsecureString();
-                _Conexion.Open();
+                if (_Conexion.Database != BaseDeDatos)
+                    _Conexion.ChangeDatabase(BaseDeDatos);
             }
             catch (MySqlException ex)
             {
-                switch (ex.Number)
-                {
-                    case 0:
-                        throw new Exception("No se puede conectar al servidor. Contacte al administrador", ex);
-                    case 1045:
-                        throw new Exception("Usuario/clave inválido, intente nuevamente", ex);
-                    default:
-                        throw new Exception("Error en la conexion", ex);
-                }
+                throw new Exception("Error al cambiar la base de datos.\nError MySQL No. " + ex.Number.ToString(), ex);
             }
         }
 
-        private string[] Listar(string SQL)
+        private void EjecutarOrden(string SQL)
+        {
+            if (SQL == null)
+                throw new ArgumentNullException("SQL");
+
+            try
+            {
+                MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
+                Orden.ExecuteScalar();
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception("No se pudo ejecutar la orden.\nError MySQL No. " + ex.Number.ToString(), ex);
+            }
+        }
+
+        private string[] LectorSimple(string SQL)
         {
             if (SQL == null)
                 throw new ArgumentNullException("SQL");
@@ -87,9 +86,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     Resultado.Add(Lector.GetString(0));
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("No se pudo obtener la lista de elementos desde la base de datos", ex);
+                throw new Exception("No se pudo obtener la lista de elementos desde la base de datos.\nError MySQL No. " + ex.Number.ToString(), ex);
             }
             finally
             {
@@ -98,6 +97,28 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
 
             return Resultado.ToArray();
+        }
+
+        private DataTable LectorAvanzado(string SQL)
+        {
+            if (SQL == null)
+                throw new ArgumentNullException("SQL");
+
+            DataTable Resultado = new DataTable();
+
+            try
+            {
+                MySqlDataAdapter Adaptador = new MySqlDataAdapter(SQL, _Conexion);
+                MySqlCommandBuilder CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
+
+                Adaptador.Fill(Resultado);
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception("No se pudo obtener la tabla la base de datos.\nError MySQL No. " + ex.Number.ToString(), ex);
+            }
+
+            return Resultado;
         }
 
         /*
@@ -109,17 +130,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
          * Sin embargo las operaciones internas las estoy haciendo con string normales (no es sino hasta el 
          * final que las convierto en SecureStrings) y no se si eso pueda suponer un "hueco" de seguridad.
          */   
-
-        /*
-        private SecureString CrearRutaDeAcceso(DatosDeConexion Seleccion)
-        {
-            // Pedimos nombre de usuario y contraseña
-            VentanaAutentificacion Credenciales = new VentanaAutentificacion();
-            Credenciales.ShowDialog();
-
-            return (CrearRutaDeAcceso(Seleccion, Credenciales.txt_Usuario.Text.ConvertirASecureString(), Credenciales.pwd_Contasena.SecurePassword));
-        }
-        */
 
         private SecureString CrearRutaDeAcceso(DatosDeConexion Seleccion, SecureString Usuario, SecureString Contrasena)
         {
@@ -246,188 +256,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             return (string.Join(";", RutaDeConexion.ToArray())).ConvertirASecureString();
         }
-
-        public static ServidorLocal DetectarServidor()
-        {
-            /*
-             * MySQL:
-             * ======
-             * 
-             * La informacion sobre el puerto de escucha de MySQL se encuentra en el archivo my.ini de configuración 
-             * al lado de la etiqueta 'port=' en la seccion del servidor [mysqld]. El archivo my.ini reside en la carpeta
-             * de instalación del servidor (su ubicación esta disponible en el registro de Windows).
-             */
-
-            // Se descubre la ruta de instalación de todos los servidores MySQL registrados en el sistema
-            List<string> Rutas = new List<string>();
-            string[] ArchivosDeConfiguracion;
-
-            RegistryKey Registro = Registry.LocalMachine.OpenSubKey("SOFTWARE\\MySQL AB");
-            if (Registro != null)
-            {
-                string[] Directorio = Registro.GetSubKeyNames();
-
-                foreach (string s in Directorio)
-                {
-                    if (s.Contains("MySQL Server"))
-                    {
-                        Registro = Registry.LocalMachine.OpenSubKey("SOFTWARE\\MySQL AB\\" + s);
-                        string Ruta = (string)Registro.GetValue("Location");
-
-                        if (Ruta != null)
-                        {
-                            Rutas.Add(Ruta);
-                        }
-                    }
-                }
-            }
-
-            ArchivosDeConfiguracion = Rutas.ToArray();
-
-            /*
-             * Se analiza sintacticamente ("parse" en ingles) cada archivo de configuracion para detectar
-             * instancias y metodos de conexion. Las opciones que pueden aparecer en estos archivos se 
-             * especifican con detalle en:
-             * http://dev.mysql.com/doc/refman/5.5/en/connecting.html
-             */
-
-            List<ServidorLocal.Instancia> Instancias = new List<ServidorLocal.Instancia>();
-
-            foreach (string Ruta in ArchivosDeConfiguracion)
-            {
-                try
-                {
-                    ServidorLocal.Instancia Ins = new ServidorLocal.Instancia();
-
-                    string Linea;
-                    string NombreDeInstancia = null;
-                    bool SeccionServidor = false;
-                    bool MemoriaCompartidaHabilitada = false;
-                    bool CanalizacionesHabilitadas = false;
-                    bool TcpIpHabilitado = true;
-
-                    StreamReader my_ini = new StreamReader(Ruta + "my.ini");
-
-                    while (my_ini.Peek() > 0)
-                    {
-                        Linea = my_ini.ReadLine();
-
-                        //Quitamos todos los espacios en blanco para analizar mejor
-                        Linea = Linea.Replace(" ", string.Empty);
-
-                        // Si esta linea esta comentada, pasamos a la siguiente
-                        if (Linea.Length == 0 || Linea[0] == '#')
-                            continue;
-
-                        /*
-                         * Si se encuentra "[mysqld" (puede ser [mysqld1], [mysqld2], [mysqld3], etc...)
-                         * significa que hemos llegado a la seccion que especifica los datos del servidor
-                         */
-                        if (Linea.Contains("[mysqld"))
-                        {
-                            NombreDeInstancia = Linea.Replace("[", string.Empty);
-                            NombreDeInstancia = NombreDeInstancia.Replace("]", string.Empty);
-
-                            Ins.Nombre = NombreDeInstancia;
-                            Ins.Metodos = new List<ServidorLocal.MetodoDeConexion>();
-                            Instancias.Add(Ins);
-
-                            SeccionServidor = true;
-                            continue;
-                        }
-
-                        if (SeccionServidor)
-                        {
-                            ServidorLocal.MetodoDeConexion Metodo = new ServidorLocal.MetodoDeConexion();
-
-                            // TCP/IP
-                            if (Linea.Contains("port=") && TcpIpHabilitado)
-                            {
-                                string Puerto = Linea.Replace("port=", string.Empty);
-                                // Esta instruccion esta demas porque MySQL no puede escuchar mas de un puerto a la vez...
-                                string[] Puertos = Puerto.Split(',').ToArray();
-
-                                Metodo.Nombre = Constantes.MetodosDeConexion.TCP_IP;
-                                Metodo.Valores = Puertos.ToList();
-
-                                Ins = Instancias[Instancias.Count - 1];
-                                Ins.Metodos.Add(Metodo);
-                                Instancias[Instancias.Count - 1] = Ins;
-                            }
-                            // Esto deshabilita TCP/IP
-                            else if (Linea.Contains("skip-networking"))
-                            {
-                                TcpIpHabilitado = false;
-                                Ins = Instancias[Instancias.Count - 1];
-
-                                for (int i = 0; i < Ins.Metodos.Count; i++)
-                                {
-                                    if (Ins.Metodos[i].Nombre == Constantes.MetodosDeConexion.TCP_IP)
-                                    {
-                                        Ins.Metodos.RemoveAt(i);
-                                        Instancias[Instancias.Count - 1] = Ins;
-                                    }
-                                }
-                            }
-                            // Canalizaciones con nombre
-                            else if (Linea.Contains("socket=") && CanalizacionesHabilitadas)
-                            {
-                                string Socket = Linea.Replace("socket=", string.Empty);
-                                // Esta instruccion esta demas porque MySQL no puede escuchar mas de un socket a la vez...
-                                string[] Sockets = Socket.Split(',').ToArray();
-
-                                Metodo.Nombre = Constantes.MetodosDeConexion.CANALIZACIONES_CON_NOMBRE;
-                                Metodo.Valores = Sockets.ToList();
-
-                                Ins = Instancias[Instancias.Count - 1];
-                                Ins.Metodos.Add(Metodo);
-                                Instancias[Instancias.Count - 1] = Ins;
-                            }
-
-                            // Esto habilita las canalizaciones con nombre
-                            else if (Linea.Contains("enable-named-pipe"))
-                            {
-                                CanalizacionesHabilitadas = true;
-                            }
-                            // Memoria compartida
-                            else if (Linea.Contains("shared-memory-base-name=") && MemoriaCompartidaHabilitada)
-                            {
-                                string DireccionDeMemoria = Linea.Replace("shared-memory-base-name=", string.Empty);
-
-                                // Si no se especifica una direccion de memoria, "MYSQL" se coloca por defecto
-                                if (DireccionDeMemoria == string.Empty)
-                                    DireccionDeMemoria = "MYSQL";
-
-                                // Esta instruccion esta demas porque MySQL no puede escuchar mas de un socket a la vez...
-                                string[] DireccionesDeMemorias = DireccionDeMemoria.Split(',').ToArray();
-
-                                Metodo.Nombre = Constantes.MetodosDeConexion.MEMORIA_COMPARTIDA;
-                                Metodo.Valores = DireccionesDeMemorias.ToList();
-
-                                Ins = Instancias[Instancias.Count - 1];
-                                Ins.Metodos.Add(Metodo);
-                                Instancias[Instancias.Count - 1] = Ins;
-                            }
-                            // Esto habilita la memoria compartida
-                            else if (Linea.Contains("shared-memory"))
-                            {
-                                MemoriaCompartidaHabilitada = true;
-                            }
-                        }
-                    }
-                    my_ini.Close();
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Ocurrio un error tratando de leer el archivo de configuracion de MySQL", ex);
-                }
-            }
-
-            ServidorLocal Serv = new ServidorLocal();
-            Serv.Nombre = Constantes.SGBDR.MYSQL;
-            Serv.Instancias = Instancias;
-            return Serv;
-        }
          
         #endregion
 
@@ -445,7 +273,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena)
         {
-            Conectar(CrearRutaDeAcceso(Servidor, Usuario, Contrasena));
+            if (_Conexion != null)
+                _Conexion.Close();
+
+            try
+            {
+                _Conexion.ConnectionString = CrearRutaDeAcceso(Servidor, Usuario, Contrasena).ConvertirAUnsecureString();
+                _Conexion.Open();
+            }
+            catch (MySqlException ex)
+            {
+                switch (ex.Number)
+                {
+                    case 0:
+                        throw new Exception("No se puede conectar al servidor. Contacte al administrador", ex);
+                    case 1045:
+                        throw new Exception("Usuario/clave inválido, intente nuevamente", ex);
+                    default:
+                        throw new Exception("Error en la conexión", ex);
+                }
+            }
         }
 
         void IBaseDeDatos.Desconectar()
@@ -456,72 +303,37 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         string[] IBaseDeDatos.ListarBasesDeDatos()
         {
-            return Listar("SHOW DATABASES");
+            return LectorSimple("SHOW DATABASES");
         }
 
         string[] IBaseDeDatos.ListarTablas(string BaseDeDatos)
         {
-            string[] Resultado = null;
-
-            try
-            {
-                if (_Conexion.Database != BaseDeDatos)
-                    _Conexion.ChangeDatabase(BaseDeDatos);
-
-                Resultado = Listar("SHOW TABLES");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("No se pudo obtener la lista de elementos", ex);
-            }
-            
-            return Resultado;
+            CambiarBaseDeDatos(BaseDeDatos);
+            return LectorSimple("SHOW TABLES");
         }
 
         DataTable IBaseDeDatos.MostrarTabla(string BaseDeDatos, string Tabla)
         {
             DataTable Descripcion = new DataTable();
-            DataTable Datos = new DataTable();
 
-            try
+            CambiarBaseDeDatos(BaseDeDatos);
+
+            // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
+            Descripcion = LectorAvanzado("DESCRIBE " + Tabla);
+            List<string> ColumnasPermitidas = new List<string>();
+
+            foreach (DataRow Fila in Descripcion.Rows)
             {
-                MySqlDataAdapter Adaptador;
-                MySqlCommandBuilder CreadorDeOrden;
-
-                if (_Conexion.Database != BaseDeDatos)
-                    _Conexion.ChangeDatabase(BaseDeDatos);
-
-                // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
-                Adaptador = new MySqlDataAdapter("DESCRIBE " + Tabla, _Conexion);
-                CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
-
-                Adaptador.Fill(Descripcion);
-
-                List<string> ColumnasPermitidas = new List<string>();
-
-                foreach (DataRow Fila in Descripcion.Rows)
-                {
-                    ColumnasPermitidas.Add(Fila[0] as string);
-                }
-
-                string Columnas = string.Join(", ", ColumnasPermitidas.ToArray());
-
-                /*
-                 * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
-                 * generar un error si el usuario no tiene los privilegios suficientes
-                 */
-
-                Adaptador = new MySqlDataAdapter("SELECT " + Columnas + " FROM " + Tabla, _Conexion);
-                CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
-
-                Adaptador.Fill(Datos);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error cargando la tabla", ex);
+                ColumnasPermitidas.Add(Fila[0] as string);
             }
 
-            return Datos;
+            string Columnas = string.Join(", ", ColumnasPermitidas.ToArray());
+
+            /*
+             * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
+             * generar un error si el usuario no tiene los privilegios suficientes
+             */
+            return LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
         }
 
         object IBaseDeDatos.CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
@@ -611,14 +423,24 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
 
             List<KeyValuePair<string, string>> ColumnasLista = ColumnasDiccionario.ToList();
- 
+
             try
             {
-                // 3) Creamos el usuario con su contraseña
+                // 3) Chequeamos a ver si ya existe el usuario en el sistema
+                SQL = "SELECT user FROM mysql.user WHERE user = '" + Usuario.ConvertirAUnsecureString() + "' AND host = 'localhost'";
+                List<string> UsuariosExistentes = LectorSimple(SQL).ToList();
+                
+                // 4) Si es asi, se elimina
+                if(UsuariosExistentes.Contains(Usuario.ConvertirAUnsecureString()))
+                {
+                    SQL = "DROP USER '" + Usuario.ConvertirAUnsecureString() + "'@'localhost'";
+                    EjecutarOrden(SQL);
+                }
+                
+                // 5) Creamos el usuario con su contraseña
                 SQL = "CREATE USER '" + Usuario.ConvertirAUnsecureString() + "'@'localhost' " +
                     "IDENTIFIED BY '" + Contrasena.ConvertirAUnsecureString() + "'";
-                MySqlCommand Orden = new MySqlCommand(SQL , _Conexion);
-                Resultado = Orden.ExecuteScalar();
+                EjecutarOrden(SQL);
 
                 // 4) Otorgamos los privilegios de columnas
                 foreach (KeyValuePair<string, string> Par in ColumnasLista)
@@ -635,19 +457,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     }
 
                     SQL += " ON " + Par.Key + " TO '" + Usuario.ConvertirAUnsecureString() + "'@'localhost'";
-
-                    Orden = new MySqlCommand(SQL, _Conexion);
-                    Resultado = Orden.ExecuteScalar();
+                    EjecutarOrden(SQL);
                 }
 
                 // 5) Actualizamos la cache de privilegios del servidor
-                Orden = new MySqlCommand("FLUSH PRIVILEGES", _Conexion);
-                Resultado = Orden.ExecuteScalar();
-
+                EjecutarOrden("FLUSH PRIVILEGES");
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("No se pudo crear el usuario especificado", ex);
+                throw new Exception("No se pudo crear el usuario especificado. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
             return Resultado;

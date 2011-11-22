@@ -20,6 +20,12 @@
             Implementa las funciones de acceso a las bases de datos MySQL
             </summary>
         </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.MySQL.DetectarServidor">
+            <summary>
+            Esta función detecta las instancias de servidores MySQL instalados en el sistema.
+            </summary>
+            <returns>Instancias MySQL detectadas.</returns>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorPredeterminado">
             <summary>
             Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.

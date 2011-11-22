@@ -125,6 +125,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             List<string> NodosOrigen = new List<string>();
 
+            // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
             foreach (TablaMapeada TM in Sincronizacion.Tablas)
             {
                 foreach (MapeoDeColumnas MC in TM.MapasColumnas)
@@ -133,6 +134,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             }
 
+            /*
+             * Creamos un usuario en la base de datos local con los privilegios necesarios 
+             * para leer las columnas de origen
+             */
             ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
             ConexionLocal.Desconectar();
 

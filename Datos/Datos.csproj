@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="IBaseDeDatos.cs" />
     <Compile Include="MySQL.cs" />
+    <Compile Include="MySQL.Detectar.cs" />
     <Compile Include="Netzuela.cs" />
     <Compile Include="Oracle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

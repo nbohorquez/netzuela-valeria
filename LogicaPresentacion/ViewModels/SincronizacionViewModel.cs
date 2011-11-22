@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using MvvmFoundation.Wpf;                       // RelayCommand
+using System.Collections.ObjectModel;           // ObservableCollection
 using System.Data;                              // DataTable
 using System.Windows;                           // MessageBox
 using System.Windows.Input;                     // ICommand
@@ -23,7 +24,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private RelayCommand<object[]> _AsociarOrden;
         private RelayCommand<object> _DesasociarOrden;
         private RelayCommand _ListoOrden;
-        private bool _Completado;
+        private bool _Listo;
 
         #endregion
 
@@ -60,15 +61,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public List<TablaMapeada> Tablas { get; private set; }
 
-        public bool Completado
+        public bool Listo
         {
-            get { return _Completado; }
+            get { return _Listo; }
             private set
             {
-                if (value != _Completado)
+                if (value != _Listo)
                 {
-                    _Completado = value;
-                    RaisePropertyChanged("Completado");
+                    _Listo = value;
+                    RaisePropertyChanged("Listo");
                 }
             }
         }
@@ -85,7 +86,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ICommand ListoOrden
         {
-            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(this.Listo)); }
+            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(this.SincronizacionLista)); }
         }
 
         #endregion
@@ -96,13 +97,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             try
             {
-                var NodoLocalActual = (NodoViewModel)Argumento[0];
-                var NodoRemotoActual = (NodoViewModel)Argumento[1];
+                NodoViewModel NodoOrigen = Argumento[0] as NodoViewModel;
+                NodoViewModel NodoDestino = Argumento[1] as NodoViewModel;
 
-                NodoRemotoActual.AsociarseCon(NodoLocalActual);
-                NodoRemotoActual.Explorador.TablaActual = CrearTabla(NodoRemotoActual.MapaColumna.TablaPadre);
+                NodoDestino.AsociarseCon(NodoOrigen);
 
-                _CacheDeTablas[NodoRemotoActual.Padre] = NodoRemotoActual.Explorador.TablaActual;
+                NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;
+                NodoDestino.Explorador.TablaActual = CrearTabla(NodoDestino.MapaColumna.TablaPadre);
+                _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.TablaActual;
             }
             catch (Exception ex)
             {
@@ -114,12 +116,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             try
             {
-                NodoViewModel NodoRemotoActual = Argumento as NodoViewModel;
+                NodoViewModel NodoDestino = Argumento as NodoViewModel;
 
-                NodoRemotoActual.Desasociarse();
-                NodoRemotoActual.Explorador.TablaActual = CrearTabla(NodoRemotoActual.MapaColumna.TablaPadre);
+                NodoDestino.Desasociarse();
 
-                _CacheDeTablas[NodoRemotoActual.Padre] = NodoRemotoActual.Explorador.TablaActual;
+                NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;
+                NodoDestino.Explorador.TablaActual = CrearTabla(NodoDestino.MapaColumna.TablaPadre);
+                _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.TablaActual;
             }
             catch (Exception ex)
             {
@@ -127,18 +130,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void Listo()
+        private void SincronizacionLista()
         {
             try
             {
+                _TablasAEnviar.Clear();
+                _TablasAEnviar.Tables.Clear();
+
                 foreach (DataTable T in _CacheDeTablas.Values)
                 {
                     _TablasAEnviar.Tables.Add(T);
                 }
 
                 _TablasAEnviar.WriteXml("Millijigui.xml");
-
-                Completado = true;
+                Listo = true;
             }
             catch (Exception ex)
             {
@@ -146,7 +151,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void ActualizarTodasLasTablas()
+        private void Actualizar()
         {
             /*
             foreach (TablaMapeada T in _Tablas)
@@ -155,7 +160,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }*/
         }
 
-        private DataTable CrearTabla(TablaMapeada Tabla)
+        public DataTable CrearTabla(TablaMapeada Tabla)
         {
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
@@ -192,7 +197,48 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             return TempTablaMapeada;
         }
-        
+
+        /// <summary>
+        /// Vuelve a vincular las columnas de destino con las de origen. Se emplea generalmente 
+        /// cuando se actualizan las tablas de origen desde el servidor local.
+        /// </summary>
+        /// <param name="Nodos">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
+        public void Resincronizar(ObservableCollection<NodoViewModel> Nodos)
+        {
+            string RutaNodoOrigen = string.Empty;
+            string[] PasosDeLaRuta = null;            
+            NodoViewModel NodoDestino = null;
+
+            _CacheDeTablas.Clear();
+            
+            foreach (TablaMapeada TM in Tablas)
+            {
+                foreach (MapeoDeColumnas MC in TM.MapasColumnas)
+                {
+                    if (MC.ColumnaOrigen == null)
+                        continue;
+
+                    NodoViewModel NodoOrigen = new NodoViewModel();
+                    NodoOrigen.Hijos = Nodos;
+
+                    RutaNodoOrigen = MC.ColumnaOrigen.RutaCompleta();
+                    PasosDeLaRuta = RutaNodoOrigen.Split('\\');
+
+                    for (int i = 0; i < (PasosDeLaRuta.Length - 1); i++)
+                    {
+                        NodoOrigen = NodoViewModelExtensiones.BuscarNodo(PasosDeLaRuta[i], NodoOrigen.Hijos);
+                    }
+
+                    NodoDestino = NodoViewModelExtensiones.BuscarEnRepositorio(MC.ColumnaDestino);
+                    NodoDestino.AsociarseCon(NodoOrigen);
+                }
+
+                NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;
+                NodoDestino.Explorador.TablaActual = CrearTabla(NodoDestino.MapaColumna.TablaPadre);
+                _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.TablaActual;
+            }
+        }
+
         #endregion
     }
 }

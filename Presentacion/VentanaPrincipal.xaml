@@ -8,10 +8,6 @@
         Height="600" MinHeight="480"
         Width="800" MinWidth="640">
 
-    <!--
-    xmlns:Logica="clr-namespace:Zuliaworks.Netzuela.Valeria.Logica;assembly=Logica"
-    xmlns:Local="clr-namespace:Zuliaworks.Netzuela.Valeria.Presentacion"
-    -->
     <Window.DataContext>
         <ViewModels:MainViewModel/>
     </Window.DataContext>

@@ -72,8 +72,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     if(CambioEnColumnas != null)
                         CambioEnColumnas(this, new CambioEnColumnasArgumentos("Origen", ValorAnterior, ValorNuevo));
                 }
-                else if (ValorNuevo.Nivel == Constantes.NivelDeNodo.COLUMNA && ValorNuevo != ColumnaDestino && ValorNuevo != _ColumnaOrigen)
+                else if (ValorNuevo != ColumnaDestino && ValorNuevo != _ColumnaOrigen)
                 {
+                    if (ValorNuevo.Nivel != Constantes.NivelDeNodo.COLUMNA)
+                        throw new Exception("El nodo a asociar no es de tipo columna");
+
                     if (TablaPadre != null)
                     {
                         if (TablaPadre.NodoEsLegal(ValorNuevo))
@@ -115,8 +118,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     if(CambioEnColumnas != null)
                         CambioEnColumnas(this, new CambioEnColumnasArgumentos("Destino", ValorAnterior, ValorNuevo));
                 }
-                else if (ValorNuevo.Nivel == Constantes.NivelDeNodo.COLUMNA && ValorNuevo != ColumnaOrigen && ValorNuevo != _ColumnaDestino)
+                else if (ValorNuevo != ColumnaOrigen && ValorNuevo != _ColumnaDestino)
                 {
+                    if (ValorNuevo.Nivel != Constantes.NivelDeNodo.COLUMNA)
+                        throw new Exception("El nodo a asociar no es de tipo columna");
+
                     if (TablaPadre != null)
                     {
                         if (TablaPadre.NodoEsLegal(ValorNuevo))

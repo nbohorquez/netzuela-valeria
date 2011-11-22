@@ -114,13 +114,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 LocalARemota = new SincronizacionViewModel(NodosCache);
 
                 _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
-                    .RegisterHandler(n => n.Completado, this.SincronizacionLista);
+                    .RegisterHandler(n => n.Listo, this.SincronizacionLista);
             }
         }
 
         private void SincronizacionLista(SincronizacionViewModel Sincronizacion)
         {
-            if (Sincronizacion.Completado == false)
+            if (Sincronizacion.Listo == false)
                 return;
 
             List<string> NodosOrigen = new List<string>();
@@ -130,7 +130,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 foreach (MapeoDeColumnas MC in TM.MapasColumnas)
                 {
-                    NodosOrigen.Add(MC.ColumnaOrigen.RutaCompleta());
+                    if (MC.ColumnaOrigen != null)
+                        NodosOrigen.Add(MC.ColumnaOrigen.RutaCompleta());
                 }
             }
 
@@ -143,6 +144,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             // Cambiamos de usuario
             ConexionLocal.ConexionNoAutoritativa();
+
+            ExploradorLocal.ExpandirTodo();
+
+            // Atamos nuevamente las columnas de origen recien cargadas a las columnas destino
+            Sincronizacion.Resincronizar(ExploradorLocal.Nodos);
         }
 
         #endregion

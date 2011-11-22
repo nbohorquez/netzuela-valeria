@@ -51,7 +51,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// <param name="Nodos">Árbol de nodos a emplear. Si se trata de un explorador de carga
         /// de nodos por demanda (lazy loading), el árbol pasado como parámetro por lo general 
         /// sólo contiene el nodo inicial.</param>
-        /// <param name="BD">Proveedor de datos. A través de este se obtiene la data y metadata 
+        /// <param name="BD">Proveedor de datos. A través de este se obtienen los datos y metadatos
         /// de los nodos del árbol.</param>
         public ExploradorViewModel(ObservableCollection<NodoViewModel> Nodos, IBaseDeDatos BD)
         {
@@ -85,12 +85,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 if (_CacheDeTablas.ContainsKey(NodoTablaActual))
                 {
                     if (_CacheDeTablas[NodoTablaActual] != value)
+                    {
                         _CacheDeTablas[NodoTablaActual] = value;
+                        RaisePropertyChanged("TablaActual");
+                    }
                 }
                 else
+                {
                     _CacheDeTablas.Add(NodoTablaActual, value);
-
-                RaisePropertyChanged("TablaActual");
+                    RaisePropertyChanged("TablaActual");
+                }
             }
         }
 
@@ -120,7 +124,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// <summary>
         /// Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="NodoActual"/>).
         /// </summary>
-        public NodoViewModel NodoTablaActual { get; private set; }
+        public NodoViewModel NodoTablaActual { get; set; }
         
         /// <summary>
         /// Expande el nodo especificado
@@ -141,7 +145,21 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #endregion
 
         #region Funciones
-        
+
+        private void AsignarExplorador(ObservableCollection<NodoViewModel> Nodos, ExploradorViewModel Arbol)
+        {
+            NodoViewModel Nodito = new NodoViewModel();
+
+            foreach (NodoViewModel Nodo in Nodos)
+            {
+                Nodo.Explorador = this;
+                if (Nodo.Hijos.Count > 0)
+                {
+                    AsignarExplorador(Nodo.Hijos, this);
+                }
+            }
+        }
+
         private void EstablecerNodoActual(string Nombre)
         {
             this.NodoActual = (Nombre == null) ? this.NodoActual : NodoViewModelExtensiones.BuscarNodo(Nombre, NodoTablaActual.Hijos);
@@ -157,68 +175,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
             }
-        }
-
-        /// <summary>
-        /// Expande todos los nodos del árbol de nodos <see cref="Nodos"/> de este explorador.
-        /// </summary>
-        public void ExpandirTodo()
-        {
-            ExpandirTodo(this.Nodos);
-        }
-
-        /// <summary>
-        /// Expande todos los nodos del árbol de nodos especificado.
-        /// </summary>
-        /// <param name="Nodos">Arbol a expandir.</param>
-        /// <exception cref="ArgumentNullException">Si <paramref name="Nodos"/> es una referencia 
-        /// nula.</exception>
-        public void ExpandirTodo(ObservableCollection<NodoViewModel> Nodos)
-        {
-            if (Nodos == null)
-                throw new ArgumentNullException("Nodos");
-
-            // Este mismo ciclo no quiso funcionar con un foreach porque se perdia la numeracion
-            for (int i = 0; i < Nodos.Count; i++)
-            {
-                Expandir(Nodos[i]);
-
-                if (Nodos[i].Hijos.Count > 0)
-                    ExpandirTodo(Nodos[i].Hijos);
-            }
-        }
-
-        /// <summary>
-        /// Obtiene el contenido del nodo especificado desde el proveedor de datos.
-        /// </summary>
-        /// <param name="Item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
-        /// especificados en <see cref="Constantes.NivelDeNodo"/>.</param>
-        /// <exception cref="ArgumentNullException">Si <paramref name="Item"/> es una referencia 
-        /// nula.</exception>
-        public void Expandir(NodoViewModel Item)
-        {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
-            
-            switch (Item.Nivel)
-            {
-                case Constantes.NivelDeNodo.SERVIDOR:
-                    ExpandirServidor(Item);
-                    break;
-                case Constantes.NivelDeNodo.BASE_DE_DATOS:
-                    ExpandirBaseDeDatos(Item);
-                    break;
-                case Constantes.NivelDeNodo.TABLA:
-                    ExpandirTabla(Item);
-                    break;
-                case Constantes.NivelDeNodo.COLUMNA:
-                    ExpandirColumna(Item);
-                    break;
-                default:
-                    break;
-            }
-
-            NodoActual = Item;
         }
 
         private void ExpandirServidor(NodoViewModel Item)
@@ -314,6 +270,68 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
 
         /// <summary>
+        /// Expande todos los nodos del árbol de nodos <see cref="Nodos"/> de este explorador.
+        /// </summary>
+        public void ExpandirTodo()
+        {
+            ExpandirTodo(this.Nodos);
+        }
+
+        /// <summary>
+        /// Expande todos los nodos del árbol de nodos especificado.
+        /// </summary>
+        /// <param name="Nodos">Arbol a expandir.</param>
+        /// <exception cref="ArgumentNullException">Si <paramref name="Nodos"/> es una referencia 
+        /// nula.</exception>
+        public void ExpandirTodo(ObservableCollection<NodoViewModel> Nodos)
+        {
+            if (Nodos == null)
+                throw new ArgumentNullException("Nodos");
+
+            // Este mismo ciclo no quiso funcionar con un foreach porque se perdia la numeracion
+            for (int i = 0; i < Nodos.Count; i++)
+            {
+                Expandir(Nodos[i]);
+
+                if (Nodos[i].Hijos.Count > 0)
+                    ExpandirTodo(Nodos[i].Hijos);
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el contenido del nodo especificado desde el proveedor de datos.
+        /// </summary>
+        /// <param name="Item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
+        /// especificados en <see cref="Constantes.NivelDeNodo"/>.</param>
+        /// <exception cref="ArgumentNullException">Si <paramref name="Item"/> es una referencia 
+        /// nula.</exception>
+        public void Expandir(NodoViewModel Item)
+        {
+            if (Item == null)
+                throw new ArgumentNullException("Item");
+
+            switch (Item.Nivel)
+            {
+                case Constantes.NivelDeNodo.SERVIDOR:
+                    ExpandirServidor(Item);
+                    break;
+                case Constantes.NivelDeNodo.BASE_DE_DATOS:
+                    ExpandirBaseDeDatos(Item);
+                    break;
+                case Constantes.NivelDeNodo.TABLA:
+                    ExpandirTabla(Item);
+                    break;
+                case Constantes.NivelDeNodo.COLUMNA:
+                    ExpandirColumna(Item);
+                    break;
+                default:
+                    break;
+            }
+
+            NodoActual = Item;
+        }
+
+        /// <summary>
         /// Lee la tabla especificada desde el proveedor de datos.
         /// </summary>
         /// <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
@@ -374,20 +392,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public List<NodoViewModel> ObtenerNodosCache()
         {
             return _CacheDeTablas.Keys.ToList();
-        }
-
-        private void AsignarExplorador(ObservableCollection<NodoViewModel> Nodos, ExploradorViewModel Arbol)
-        {
-            NodoViewModel Nodito = new NodoViewModel();
-
-            foreach (NodoViewModel Nodo in Nodos)
-            {
-                Nodo.Explorador = this;
-                if (Nodo.Hijos.Count > 0)
-                {
-                    AsignarExplorador(Nodo.Hijos, this);
-                }
-            }
         }
 
         #endregion

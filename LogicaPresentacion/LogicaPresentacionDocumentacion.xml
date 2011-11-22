@@ -22,7 +22,7 @@
             <param name="Nodos">Árbol de nodos a emplear. Si se trata de un explorador de carga
             de nodos por demanda (lazy loading), el árbol pasado como parámetro por lo general 
             sólo contiene el nodo inicial.</param>
-            <param name="BD">Proveedor de datos. A través de este se obtiene la data y metadata 
+            <param name="BD">Proveedor de datos. A través de este se obtienen los datos y metadatos
             de los nodos del árbol.</param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirTodo">
@@ -130,6 +130,13 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel.Resincronizar(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel})">
+            <summary>
+            Vuelve a vincular las columnas de destino con las de origen. Se emplea generalmente 
+            cuando se actualizan las tablas de origen desde el servidor local.
+            </summary>
+            <param name="Nodos">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView">
             <summary>

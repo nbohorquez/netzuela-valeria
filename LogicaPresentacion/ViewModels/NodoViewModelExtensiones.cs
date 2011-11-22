@@ -69,7 +69,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             else if (Lista == null)
                 throw new ArgumentNullException("Lista");
 
-            NodoViewModel Resultado = new NodoViewModel();
+            NodoViewModel Resultado = null;
 
             foreach (NodoViewModel n in Lista)
             {
@@ -104,6 +104,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
 
             return Resultado;
+        }
+
+        public static NodoViewModel RutaANodo(string RutaCompleta)
+        {
+            throw new NotImplementedException();
         }
 
         public static string[] ListarHijos(this NodoViewModel Nodo)

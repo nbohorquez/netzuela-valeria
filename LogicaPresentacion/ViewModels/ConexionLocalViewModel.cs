@@ -156,12 +156,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
-        {
-            RaisePropertyChanged("Estado");         // Para la gente de MainViewModel que esta observando esta variable
-            RaisePropertyChanged("EstadoString");   // Para la gente de BarraDeEstadoView
-        }
-
         public void ConexionAutoritativa()
         {
             base.Conectar(_UsuarioRoot, _ContrasenaRoot);

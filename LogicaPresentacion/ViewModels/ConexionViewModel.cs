@@ -5,6 +5,7 @@ using System.Text;
 
 using MvvmFoundation.Wpf;                       // ObservableObject
 using System.Data;                              // DataTable, ConnectionState
+using System.Windows.Input;                     // ICommand
 using System.Security;                          // SecureString
 using System.Windows;                           // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
@@ -17,6 +18,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
+        private RelayCommand _ConectarOrden;
+        private RelayCommand _DesconectarOrden;
         private readonly Conexion _Conexion;
 
         #endregion
@@ -98,9 +101,24 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
+        public virtual ICommand ConectarOrden
+        {
+            get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.ConectarNulo)); }
+        }
+
+        public virtual ICommand DesconectarOrden
+        {
+            get { return _DesconectarOrden ?? (_DesconectarOrden = new RelayCommand(this.Desconectar)); }
+        }
+
         #endregion
 
         #region Funciones
+
+        private void ConectarNulo()
+        {
+            Conectar(null, null);
+        }
 
         public void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
         {
@@ -108,7 +126,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             RaisePropertyChanged("EstadoString");   // Para la gente de BarraDeEstadoView
         }
 
-        public virtual void Conectar(SecureString Usuario, SecureString Contrasena)
+        public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
             try
             {
@@ -122,7 +140,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        public virtual void Desconectar()
+        public void Desconectar()
         {
             _Conexion.Desconectar();
         }

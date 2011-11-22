@@ -287,7 +287,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             return T;
         }
 
-        public void AsociarseCon(NodoViewModel NodoOrigen)
+        public void AsociarCon(NodoViewModel NodoOrigen)
         {
             if (NodoOrigen == null)
                 throw new ArgumentNullException("NodoOrigen");

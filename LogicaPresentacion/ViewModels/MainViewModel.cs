@@ -8,8 +8,6 @@ using System.Collections.ObjectModel;               // ObservableCollection
 using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion, Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;           // Conexion
 
-using System.Windows;
-
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     /// <summary>

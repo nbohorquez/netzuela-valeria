@@ -106,11 +106,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             return Resultado;
         }
 
-        public static NodoViewModel RutaANodo(string RutaCompleta)
-        {
-            throw new NotImplementedException();
-        }
-
         public static string[] ListarHijos(this NodoViewModel Nodo)
         {
             if (Nodo == null)

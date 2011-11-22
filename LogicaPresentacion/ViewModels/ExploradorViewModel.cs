@@ -85,16 +85,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 if (_CacheDeTablas.ContainsKey(NodoTablaActual))
                 {
                     if (_CacheDeTablas[NodoTablaActual] != value)
-                    {
-                        _CacheDeTablas[NodoTablaActual] = value;
-                        RaisePropertyChanged("TablaActual");
-                    }
+                        _CacheDeTablas[NodoTablaActual] = value;                        
                 }
                 else
                 {
                     _CacheDeTablas.Add(NodoTablaActual, value);
-                    RaisePropertyChanged("TablaActual");
                 }
+
+                RaisePropertyChanged("TablaActual");
             }
         }
 
@@ -139,7 +137,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// </summary>
         public ICommand EstablecerNodoActualOrden
         {
-            get { return _EstablecerNodoActualOrden ?? (_EstablecerNodoActualOrden = new RelayCommand<string>(Nombre => this.EstablecerNodoActual(Nombre))); }
+            get { return _EstablecerNodoActualOrden ?? (_EstablecerNodoActualOrden = new RelayCommand<string>(Nombre => this.EstablecerNodoActualAccion(Nombre))); }
         }
 
         #endregion
@@ -160,7 +158,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void EstablecerNodoActual(string Nombre)
+        private void EstablecerNodoActualAccion(string Nombre)
         {
             this.NodoActual = (Nombre == null) ? this.NodoActual : NodoViewModelExtensiones.BuscarNodo(Nombre, NodoTablaActual.Hijos);
         }

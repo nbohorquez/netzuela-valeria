@@ -28,6 +28,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ConexionRemotaViewModel()
             : base(new Conexion(new DatosDeConexion()
             {
+                Anfitrion = "http://www.netzuela.com/ingreso",
                 Servidor = Constantes.SGBDR.NETZUELA,
                 Instancia = "Isla Providencia"
             })) { }

@@ -76,31 +76,31 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ICommand AsociarOrden
         {
-            get { return _AsociarOrden ?? (_AsociarOrden = new RelayCommand<object[]>(param => this.Asociar(param))); }
+            get { return _AsociarOrden ?? (_AsociarOrden = new RelayCommand<object[]>(param => this.AsociarAccion(param))); }
         }
 
         public ICommand DesasociarOrden
         {
-            get { return _DesasociarOrden ?? (_DesasociarOrden = new RelayCommand<object>(param => this.Desasociar(param))); }
+            get { return _DesasociarOrden ?? (_DesasociarOrden = new RelayCommand<object>(param => this.DesasociarAccion(param))); }
         }
 
         public ICommand ListoOrden
         {
-            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(this.SincronizacionLista)); }
+            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(this.SincronizacionListaAccion)); }
         }
 
         #endregion
 
         #region Funciones
 
-        private void Asociar(object[] Argumento)
+        private void AsociarAccion(object[] Argumento)
         {
             try
             {
                 NodoViewModel NodoOrigen = Argumento[0] as NodoViewModel;
                 NodoViewModel NodoDestino = Argumento[1] as NodoViewModel;
 
-                NodoDestino.AsociarseCon(NodoOrigen);
+                NodoDestino.AsociarCon(NodoOrigen);
 
                 NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;
                 NodoDestino.Explorador.TablaActual = CrearTabla(NodoDestino.MapaColumna.TablaPadre);
@@ -112,7 +112,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void Desasociar(object Argumento)
+        private void DesasociarAccion(object Argumento)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void SincronizacionLista()
+        private void SincronizacionListaAccion()
         {
             try
             {
@@ -230,7 +230,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
 
                     NodoDestino = NodoViewModelExtensiones.BuscarEnRepositorio(MC.ColumnaDestino);
-                    NodoDestino.AsociarseCon(NodoOrigen);
+                    NodoDestino.AsociarCon(NodoOrigen);
                 }
 
                 NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;

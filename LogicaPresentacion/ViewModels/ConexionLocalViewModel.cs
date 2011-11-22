@@ -22,9 +22,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private RelayCommand _DetectarOrden;
         private RelayCommand _ConectarOrden;
-        private RelayCommand _DesconectarOrden;
+        private RelayCommand _DetectarOrden;        
         private bool _MostrarAutentificacionView;
         private bool _MostrarDetectarServidoresLocalesView;
         private PropertyObserver<AutentificacionViewModel> _ObservadorAutentificacion;
@@ -99,34 +98,29 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ICommand DetectarOrden
         {
-            get { return _DetectarOrden ?? (_DetectarOrden = new RelayCommand(this.AbrirDetectarServidoresLocalesView)); }
+            get { return _DetectarOrden ?? (_DetectarOrden = new RelayCommand(this.AbrirDetectarServidores)); }
         }
 
-        public ICommand ConectarOrden
+        public override ICommand ConectarOrden
         {
-            get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.AbrirAutentificacionView)); }
-        }
-
-        public ICommand DesconectarOrden
-        {
-            get { return _DesconectarOrden ?? (_DesconectarOrden = new RelayCommand(this.Desconectar)); }
+            get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.AbrirAutentificacion)); }
         }
 
         #endregion
 
         #region Funciones
 
-        private void AbrirDetectarServidoresLocalesView()
+        private void AbrirDetectarServidores()
         {
             ServidoresDetectados = new DetectarServidoresLocalesViewModel();
 
             _ObservadorServidores = new PropertyObserver<DetectarServidoresLocalesViewModel>(this.ServidoresDetectados)
-                .RegisterHandler(n => n.MostrarView, this.CerrarDetectarServidoresLocalesView);
+                .RegisterHandler(n => n.MostrarView, this.CerrarDetectarServidores);
 
             MostrarDetectarServidoresLocalesView = true;
         }
 
-        private void CerrarDetectarServidoresLocalesView(DetectarServidoresLocalesViewModel ServidoresVM)
+        private void CerrarDetectarServidores(DetectarServidoresLocalesViewModel ServidoresVM)
         {
             if (ServidoresVM.MostrarView == false)
             {
@@ -135,17 +129,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void AbrirAutentificacionView()
+        private void AbrirAutentificacion()
         {
             Autentificacion = new AutentificacionViewModel();
 
             _ObservadorAutentificacion = new PropertyObserver<AutentificacionViewModel>(this.Autentificacion)
-                .RegisterHandler(n => n.MostrarView, this.CerrarAutentificacionView);
+                .RegisterHandler(n => n.MostrarView, this.CerrarAutentificacion);
             
             MostrarAutentificacionView = true;
         }
 
-        private void CerrarAutentificacionView(AutentificacionViewModel AutentificacionVM)
+        private void CerrarAutentificacion(AutentificacionViewModel AutentificacionVM)
         {
             if (AutentificacionVM.MostrarView == false)
             {

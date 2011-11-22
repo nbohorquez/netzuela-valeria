@@ -303,7 +303,21 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         string[] IBaseDeDatos.ListarBasesDeDatos()
         {
-            return LectorSimple("SHOW DATABASES");
+            string[] ResultadoBruto = LectorSimple("SHOW DATABASES");
+            List<string> ResultadoFinal = new List<string>();
+
+            // No podemos permitir que el usuario acceda a estas bases de datos privilegiadas
+            for(int i = 0; i < ResultadoBruto.Length; i++)
+            {
+                if (ResultadoBruto[i] != "information_schema" &&
+                    ResultadoBruto[i] != "mysql" &&
+                    ResultadoBruto[i] != "performance_schema")
+                {
+                    ResultadoFinal.Add(ResultadoBruto[i]);
+                }                
+            }
+
+            return ResultadoFinal.ToArray();
         }
 
         string[] IBaseDeDatos.ListarTablas(string BaseDeDatos)

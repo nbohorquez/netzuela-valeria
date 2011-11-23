@@ -49,9 +49,12 @@
                 <TextBox Name="txt_ArgumentoDeConexion" Text="{Binding Path=Datos.ArgumentoDeConexion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             
-            <Button Margin="0,30,0,0" Content="Detectar" Command="{Binding Path=DetectarOrden, Mode=OneTime}"/>
+            <Button Margin="0,15,0,0" Content="Detectar" Command="{Binding Path=DetectarOrden, Mode=OneTime}"/>
+            <Button Content="{Binding Path=BotonConectarDesconectar}" Command="{Binding Path=ConectarDesconectarOrden, Mode=OneTime}"/>
+            <!--
             <Button Content="Conectar" Command="{Binding Path=ConectarOrden, Mode=OneTime}"/>
             <Button Content="Desconectar" Command="{Binding Path=DesconectarOrden, Mode=OneTime}"/>
+            -->
         </StackPanel>
 
         <Popup Height="150" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarAutentificacionView}" StaysOpen="False" Placement="Top">

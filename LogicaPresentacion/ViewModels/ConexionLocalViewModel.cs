@@ -100,15 +100,33 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             get { return _DetectarOrden ?? (_DetectarOrden = new RelayCommand(this.AbrirDetectarServidores)); }
         }
-
+        /*
+        public override ICommand ConectarDesconectarOrden
+        {
+            get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.AbrirAutentificacion)); }
+        }
+        */
+        /*
         public override ICommand ConectarOrden
         {
             get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.AbrirAutentificacion)); }
         }
-
+        */
         #endregion
 
         #region Funciones
+
+        public override void ConectarDesconectar()
+        {
+            if (Estado == ConnectionState.Open)
+            {
+                Desconectar();
+            }
+            else
+            {
+                AbrirAutentificacion();
+            }
+        }
 
         private void AbrirDetectarServidores()
         {
@@ -162,20 +180,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         
         public void CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
         {
-            try
-            {
-                _UsuarioNetzuela = "netzuela".ConvertirASecureString();
-                _ContrasenaNetzuela = RandomPassword.Generate(20).ConvertirASecureString();
+            _UsuarioNetzuela = "netzuela".ConvertirASecureString();
+            _ContrasenaNetzuela = RandomPassword.Generate(20).ConvertirASecureString();
 
-                base.CrearUsuario(
-                    _UsuarioNetzuela, _ContrasenaNetzuela,
-                    ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR
-                );
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
-            }
+            base.CrearUsuario(
+                _UsuarioNetzuela, _ContrasenaNetzuela,
+                ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR
+            );
         }
 
         #endregion

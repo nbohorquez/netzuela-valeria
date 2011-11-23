@@ -110,8 +110,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
-            this.
-            Estado = ConnectionState.Open;
+            this.Estado = ConnectionState.Open;
         }
 
         public void Desconectar() 

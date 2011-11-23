@@ -151,15 +151,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void Actualizar()
-        {
-            /*
-            foreach (TablaMapeada T in _Tablas)
-            {
-                T. CrearTabla(T);
-            }*/
-        }
-
         public DataTable CrearTabla(TablaMapeada Tabla)
         {
             if (Tabla == null)

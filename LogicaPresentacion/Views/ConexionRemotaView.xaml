@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionRemotaViewModel"
+﻿<UserControl x:Class="Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionRemotaView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -28,8 +28,7 @@
                 <TextBox Name="txt_Direccion" Text="{Binding Path=Datos.Anfitrion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
-            <Button Margin="0,15,0,0" Content="Conectar" Command="{Binding Path=ConectarOrden, Mode=OneTime}"/>
-            <Button Content="Desconectar" Command="{Binding Path=DesconectarOrden, Mode=OneTime}"/>
+            <Button Margin="0,15,0,0" Content="{Binding Path=BotonConectarDesconectar}" Command="{Binding Path=ConectarDesconectarOrden, Mode=OneTime}"/>
         </StackPanel>
     </Grid>
 </UserControl>

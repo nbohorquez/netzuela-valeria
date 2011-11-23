@@ -5,8 +5,8 @@
         xmlns:Views="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views;assembly=LogicaPresentacion"
         xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;assembly=LogicaPresentacion"
         Title="Netzuela - Monitor de tienda"
-        Height="600" MinHeight="480"
-        Width="800" MinWidth="640">
+        Height="600" MinHeight="568"
+        Width="800" MinWidth="757">
 
     <Window.DataContext>
         <ViewModels:MainViewModel/>
@@ -37,7 +37,7 @@
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="Width" Value="Auto"/>
             <Setter Property="Margin" Value="6"/>
-            <Setter Property="TabStripPlacement" Value="Left"/>
+            <Setter Property="TabStripPlacement" Value="Top"/>
         </Style>
 
         <Style x:Key="est_DivisorDeRejilla" TargetType="GridSplitter">
@@ -67,23 +67,33 @@
             <TabItem Header="Conexión base de datos" Name="tab_ConexionBD">
                 <Grid DockPanel.Dock="Top">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <GroupBox Grid.Column="0" Name="grp_ExploradorLocal" Header="Explorador local" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
+                    <DockPanel Grid.Column="0">
+                        <GroupBox DockPanel.Dock="Top" Name="grp_ConexionRemota" Header="Conexión remota" Width="140" Style="{StaticResource est_Agrupador}">
+                            <Views:ConexionRemotaView DataContext="{Binding Path=ConexionRemota}"/>
+                        </GroupBox>                        
+                        <GroupBox DockPanel.Dock="Bottom" Name="grp_ConexionLocal" Header="Conexión local" Width="140" Style="{StaticResource est_Agrupador}">
+                            <Views:ConexionLocalView DataContext="{Binding Path=ConexionLocal}"/>
+                        </GroupBox>
+                    </DockPanel>
+
+                    <GroupBox Grid.Column="1" Name="grp_ExploradorLocal" Header="Explorador local" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
                         <Views:ExploradorView DataContext="{Binding Path=ExploradorLocal}"/>
                     </GroupBox>
 
-                    <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
+                    <GridSplitter Grid.Column="2" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
 
-                    <GroupBox Grid.Column="2" Name="grp_ExploradorRemoto" Header="Explorador remoto" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
+                    <GroupBox Grid.Column="3" Name="grp_ExploradorRemoto" Header="Explorador remoto" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
                         <Views:ExploradorView DataContext="{Binding Path=ExploradorRemoto}"/>
                     </GroupBox>
 
-                    <GroupBox Grid.Column="3" Name="grp_Sincronizacion" Header="Sincronización" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
+                    <GroupBox Grid.Column="4" Name="grp_Sincronizacion" Header="Sincronización" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
                         <StackPanel Orientation="Vertical">
                             <Button HorizontalAlignment="Center" Width="70" Height="Auto" Padding="0,2" Margin="0,1" Content="Asociar"
                                     Command="{Binding Path=LocalARemota.AsociarOrden}">
@@ -103,13 +113,6 @@
                                     Command="{Binding Path=LocalARemota.ListoOrden}"/>
                         </StackPanel>
                     </GroupBox>
-
-                    <!-- Que molleja de feo este "Canvas" aqui... Es una solucion poco elegante pero funciona :$ -->
-                    <Canvas Grid.Column="0" Width="1" Height="1" VerticalAlignment="Bottom" HorizontalAlignment="Left">
-                        <GroupBox Name="grp_ConexionLocal" Header="Conexión local" Canvas.Left="-155" Canvas.Bottom="-1" Width="140" Style="{StaticResource est_Agrupador}">
-                            <Views:ConexionLocalView DataContext="{Binding Path=ConexionLocal}"/>
-                        </GroupBox>
-                    </Canvas>
                 </Grid>
             </TabItem>
 

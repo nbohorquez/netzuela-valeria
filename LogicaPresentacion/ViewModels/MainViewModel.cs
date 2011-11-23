@@ -5,6 +5,7 @@ using System.Text;
 
 using MvvmFoundation.Wpf;                           // PropertyObserver<>
 using System.Collections.ObjectModel;               // ObservableCollection
+using System.Windows;                               // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion, Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;           // Conexion
 
@@ -19,6 +20,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private ExploradorViewModel _ExploradorLocal;
         private ExploradorViewModel _ExploradorRemoto;
+        private SincronizacionViewModel _LocalARemota;
         private readonly PropertyObserver<ConexionLocalViewModel> _ObservadorConexionLocal;
         private readonly PropertyObserver<ConexionRemotaViewModel> _ObservadorConexionRemota;
         private PropertyObserver<SincronizacionViewModel> _ObservadorSincronizacion;
@@ -37,8 +39,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             _ObservadorConexionRemota = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
-
-            ConexionRemota.Conectar(null, null);
         }
 
         #endregion
@@ -47,8 +47,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ConexionRemotaViewModel ConexionRemota { get; private set; }
         public ConexionLocalViewModel ConexionLocal { get; private set; }
-        public SincronizacionViewModel LocalARemota { get; private set; }
-
+        
         public ExploradorViewModel ExploradorLocal 
         {
             get { return _ExploradorLocal; }
@@ -71,6 +70,19 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     _ExploradorRemoto = value;
                     RaisePropertyChanged("ExploradorRemoto");
+                }
+            }
+        }
+
+        public SincronizacionViewModel LocalARemota
+        {
+            get { return _LocalARemota; }
+            private set
+            {
+                if (value != _LocalARemota)
+                {
+                    _LocalARemota = value;
+                    RaisePropertyChanged("LocalARemota");
                 }
             }
         }
@@ -134,9 +146,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
 
             /*
-             * Creamos un usuario en la base de datos local con los privilegios necesarios 
-             * para leer las columnas de origen
-             */
+                * Creamos un usuario en la base de datos local con los privilegios necesarios 
+                * para leer las columnas de origen
+                */
             ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
             ConexionLocal.Desconectar();
 
@@ -147,6 +159,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             // Atamos nuevamente las columnas de origen recien cargadas a las columnas destino
             Sincronizacion.Resincronizar(ExploradorLocal.Nodos);
+
+            MessageBox.Show("La sincronización se realizó correctamente");                
         }
 
         #endregion

@@ -33,6 +33,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 Instancia = "Isla Providencia"
             })) { }
         
-        #endregion
+        #endregion        
     }
 }

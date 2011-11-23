@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArbolVisual.cs" />
-    <Compile Include="CacheDeTablas.cs" />
     <Compile Include="DosArgumentosAUno.cs" />
     <Compile Include="PasswordBoxVinculable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,8 +81,8 @@
     <Compile Include="Views\ConexionLocalView.xaml.cs">
       <DependentUpon>ConexionLocalView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ConexionRemotaViewModel.xaml.cs">
-      <DependentUpon>ConexionRemotaViewModel.xaml</DependentUpon>
+    <Compile Include="Views\ConexionRemotaView.xaml.cs">
+      <DependentUpon>ConexionRemotaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DetectarServidoresLocalesView.xaml.cs">
       <DependentUpon>DetectarServidoresLocalesView.xaml</DependentUpon>
@@ -119,7 +118,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ConexionRemotaViewModel.xaml">
+    <Page Include="Views\ConexionRemotaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

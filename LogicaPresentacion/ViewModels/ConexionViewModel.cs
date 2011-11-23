@@ -18,8 +18,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
+        private string _BotonConectarDesconectar;
+        private RelayCommand _ConectarDesconectarOrden;
+        /*
         private RelayCommand _ConectarOrden;
         private RelayCommand _DesconectarOrden;
+         */
         private readonly Conexion _Conexion;
 
         #endregion
@@ -101,29 +105,48 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
+        public string BotonConectarDesconectar
+        {
+            get { return (Estado == ConnectionState.Open) ? "Desconectar" : "Conectar"; }
+        }
+
+        public ICommand ConectarDesconectarOrden
+        {
+            get { return _ConectarDesconectarOrden ?? (_ConectarDesconectarOrden = new RelayCommand(this.ConectarDesconectar)); }
+        }
+
+        /*
         public virtual ICommand ConectarOrden
         {
-            get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.ConectarNulo)); }
+            get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.ConectarPorDefecto)); }
         }
 
         public virtual ICommand DesconectarOrden
         {
             get { return _DesconectarOrden ?? (_DesconectarOrden = new RelayCommand(this.Desconectar)); }
         }
-
+        */
         #endregion
 
         #region Funciones
 
-        private void ConectarNulo()
+        public virtual void ConectarDesconectar()
         {
-            Conectar(null, null);
+            if (Estado == ConnectionState.Open)
+            {
+                Desconectar();
+            }
+            else
+            {
+                Conectar(null, null);
+            }
         }
 
         public void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
         {
-            RaisePropertyChanged("Estado");         // Para la gente de MainViewModel
-            RaisePropertyChanged("EstadoString");   // Para la gente de BarraDeEstadoView
+            RaisePropertyChanged("Estado");                     // Para la gente de MainViewModel
+            RaisePropertyChanged("EstadoString");               // Para la gente de BarraDeEstadoView
+            RaisePropertyChanged("BotonConectarDesconectar");   // Para la gente de ConexionLocalView y ConexionRemotaView
         }
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)

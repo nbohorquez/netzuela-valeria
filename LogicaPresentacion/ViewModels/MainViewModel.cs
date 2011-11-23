@@ -153,7 +153,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             ConexionLocal.Desconectar();
 
             // Cambiamos de usuario
-            ConexionLocal.ConexionNoAutoritativa();
+            ConexionLocal.ConexionNetzuela();
 
             ExploradorLocal.ExpandirTodo();
 

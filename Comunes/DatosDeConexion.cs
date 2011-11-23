@@ -35,5 +35,22 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         public string ArgumentoDeConexion { get; set; }
 
         #endregion
+
+        #region Funciones
+
+        public DatosDeConexion Clonar()
+        {
+            DatosDeConexion Resultado = new DatosDeConexion();
+
+            Resultado.Anfitrion = string.Copy(this.Anfitrion);
+            Resultado.Servidor = string.Copy(this.Servidor);
+            Resultado.Instancia = string.Copy(this.Instancia);
+            Resultado.MetodoDeConexion = string.Copy(this.MetodoDeConexion);
+            Resultado.ArgumentoDeConexion = string.Copy(this.ArgumentoDeConexion);
+
+            return Resultado;
+        }
+
+        #endregion   
     }
 }

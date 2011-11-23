@@ -22,7 +22,7 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         public string Nombre { get; set; }
         public List<Instancia> Instancias { get; set; }
 
-        #endregion
+        #endregion     
 
         #region Tipos anidados
 

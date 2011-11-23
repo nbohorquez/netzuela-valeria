@@ -49,7 +49,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 if (value != _MostrarView)
                 {
                     _MostrarView = value;
-                    base.RaisePropertyChanged("MostrarView");
+                    RaisePropertyChanged("MostrarView");
                 }
             }
         }

@@ -30,8 +30,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private PropertyObserver<DetectarServidoresLocalesViewModel> _ObservadorServidores;
         private AutentificacionViewModel _Autentificacion;
         private DetectarServidoresLocalesViewModel _ServidoresDetectados;
-        private SecureString _UsuarioRoot, _UsuarioNetzuela;
-        private SecureString _ContrasenaRoot, _ContrasenaNetzuela;
+        private SecureString _UsuarioExterno, _UsuarioNetzuela;
+        private SecureString _ContrasenaExterna, _ContrasenaNetzuela;
 
         #endregion
 
@@ -100,33 +100,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             get { return _DetectarOrden ?? (_DetectarOrden = new RelayCommand(this.AbrirDetectarServidores)); }
         }
-        /*
-        public override ICommand ConectarDesconectarOrden
-        {
-            get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.AbrirAutentificacion)); }
-        }
-        */
-        /*
-        public override ICommand ConectarOrden
-        {
-            get { return _ConectarOrden ?? (_ConectarOrden = new RelayCommand(this.AbrirAutentificacion)); }
-        }
-        */
+
         #endregion
 
         #region Funciones
-
-        public override void ConectarDesconectar()
-        {
-            if (Estado == ConnectionState.Open)
-            {
-                Desconectar();
-            }
-            else
-            {
-                AbrirAutentificacion();
-            }
-        }
 
         private void AbrirDetectarServidores()
         {
@@ -143,7 +120,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (ServidoresVM.MostrarView == false)
             {
                 this.MostrarDetectarServidoresLocalesView = false;
-                this.Datos = ServidoresVM.Datos;
+                this.Datos = ServidoresVM.Datos.Clonar();
             }
         }
 
@@ -162,18 +139,30 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (AutentificacionVM.MostrarView == false)
             {
                 this.MostrarAutentificacionView = false;
-                this._UsuarioRoot = AutentificacionVM.Usuario;
-                this._ContrasenaRoot = AutentificacionVM.Contrasena;
-                ConexionAutoritativa();
+                this._UsuarioExterno = AutentificacionVM.Usuario;
+                this._ContrasenaExterna = AutentificacionVM.Contrasena;
+                ConexionUsuario();
             }
         }
 
-        public void ConexionAutoritativa()
+        public override void ConectarDesconectar()
         {
-            base.Conectar(_UsuarioRoot, _ContrasenaRoot);
+            if (Estado == ConnectionState.Open)
+            {
+                Desconectar();
+            }
+            else
+            {
+                AbrirAutentificacion();
+            }
+        }
+
+        public void ConexionUsuario()
+        {
+            base.Conectar(_UsuarioExterno, _ContrasenaExterna);
         }
             
-        public void ConexionNoAutoritativa()
+        public void ConexionNetzuela()
         {
             base.Conectar(_UsuarioNetzuela, _ContrasenaNetzuela);
         }

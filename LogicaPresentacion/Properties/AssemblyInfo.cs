@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // conjunto de atributos. Cambie estos atributos para modificar la información
 // asociada con un ensamblado.
 [assembly: AssemblyTitle("LogicaPresentacion")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Es el motor que hace funcionar la aplicación")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("jarcob")]
+[assembly: AssemblyCompany("Zuliaworks C.A.")]
 [assembly: AssemblyProduct("LogicaPresentacion")]
-[assembly: AssemblyCopyright("Copyright © jarcob 2011")]
+[assembly: AssemblyCopyright("Copyright © Zuliaworks C.A. 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

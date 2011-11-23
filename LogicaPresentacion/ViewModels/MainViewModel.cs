@@ -146,9 +146,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
 
             /*
-                * Creamos un usuario en la base de datos local con los privilegios necesarios 
-                * para leer las columnas de origen
-                */
+             * Creamos un usuario en la base de datos local con los privilegios necesarios 
+             * para leer las columnas de origen
+             */
             ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
             ConexionLocal.Desconectar();
 

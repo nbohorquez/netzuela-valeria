@@ -255,18 +255,6 @@
             http://stackoverflow.com/questions/4269896/creating-an-instance-of-a-nested-class-in-xaml
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel">
-            <summary>
-            Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
-            y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
-            la consistencia de esta clase.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ArbolVisual">
-            <summary>
-            Contiene funciones para los objetos de un arbol visual
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionRemotaView">
             <summary>
             Lógica de interacción para ConexionRemotaView.xaml
@@ -278,6 +266,18 @@
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionRemotaView.InitializeComponent">
             <summary>
             InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel">
+            <summary>
+            Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
+            y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
+            la consistencia de esta clase.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ArbolVisual">
+            <summary>
+            Contiene funciones para los objetos de un arbol visual
             </summary>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">

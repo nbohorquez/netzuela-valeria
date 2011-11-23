@@ -18,7 +18,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #region Variables
 
         private MySqlConnection _Conexion;
-
+        
         #endregion
 
         #region Constructores
@@ -60,7 +60,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             try
             {
                 MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
-                Orden.ExecuteScalar();
+                Orden.ExecuteNonQuery();
             }
             catch (MySqlException ex)
             {
@@ -456,7 +456,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     "IDENTIFIED BY '" + Contrasena.ConvertirAUnsecureString() + "'";
                 EjecutarOrden(SQL);
 
-                // 4) Otorgamos los privilegios de columnas
+                // 6) Otorgamos los privilegios de columnas
                 foreach (KeyValuePair<string, string> Par in ColumnasLista)
                 {
                     SQL = "GRANT ";
@@ -474,7 +474,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     EjecutarOrden(SQL);
                 }
 
-                // 5) Actualizamos la cache de privilegios del servidor
+                // 7) Actualizamos la cache de privilegios del servidor
                 EjecutarOrden("FLUSH PRIVILEGES");
             }
             catch (MySqlException ex)

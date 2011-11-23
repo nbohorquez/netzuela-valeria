@@ -6,10 +6,7 @@ using System.Text;
 namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
     /// <summary>
-    /// Esta clase se usa en todas partes. Lo que en verdad quiero hacer (y todavia no se como) son 
-    /// 2 clases: una que implemente INotifyPropertyChanged (para ser usada en la capa de logica y 
-    /// presentacion) y otra que no (para usarse en la capa de datos). Seria muy facil simplemente 
-    /// hacer dos clases distintas pero es mucho mas elegante que una derive de la otra. ¿Tendeis?
+    /// Esta clase se usa en todas partes.
     /// </summary>
     public class DatosDeConexion
     {

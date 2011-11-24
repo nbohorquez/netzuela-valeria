@@ -5,6 +5,7 @@ using System.Text;
 
 using MvvmFoundation.Wpf;                           // PropertyObserver<>
 using System.Collections.ObjectModel;               // ObservableCollection
+using System.Configuration;                         // ConfigurationManager
 using System.Windows;                               // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion, Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;           // Conexion
@@ -18,6 +19,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
+        private Configuration _Configuracion;
         private ExploradorViewModel _ExploradorLocal;
         private ExploradorViewModel _ExploradorRemoto;
         private SincronizacionViewModel _LocalARemota;
@@ -145,22 +147,44 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             }
 
-            /*
-             * Creamos un usuario en la base de datos local con los privilegios necesarios 
-             * para leer las columnas de origen
-             */
+            
+            // Creamos un usuario en la base de datos local con los privilegios necesarios 
+            // para leer las columnas de origen            
             ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
-            ConexionLocal.Desconectar();
 
             // Cambiamos de usuario
+            ConexionLocal.Desconectar();
             ConexionLocal.ConexionNetzuela();
 
+            // Expandimos todos los nodos locales para poder operar sobre ellos
             ExploradorLocal.ExpandirTodo();
 
-            // Atamos nuevamente las columnas de origen recien cargadas a las columnas destino
+            // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
             Sincronizacion.Resincronizar(ExploradorLocal.Nodos);
 
+            GuardarConfiguracion();
+
             MessageBox.Show("La sincronización se realizó correctamente");                
+        }
+
+        private void GuardarConfiguracion()
+        {
+            try
+            {
+                _Configuracion = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                _Configuracion.AppSettings.Settings.Add("Nombre", "Nestor Bohorquez");
+                
+                _Configuracion.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("appSettings");
+
+                AppSettingsSection appSettingSection = (AppSettingsSection)_Configuracion.GetSection("appSettings");
+
+                //MessageBox.Show(appSettingSection.SectionInformation.GetRawXml());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+            }
         }
 
         #endregion

@@ -132,23 +132,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void SincronizacionListaAccion()
         {
-            try
-            {
-                _TablasAEnviar.Clear();
-                _TablasAEnviar.Tables.Clear();
+            _TablasAEnviar.Clear();
+            _TablasAEnviar.Tables.Clear();
 
-                foreach (DataTable T in _CacheDeTablas.Values)
-                {
-                    _TablasAEnviar.Tables.Add(T);
-                }
-
-                _TablasAEnviar.WriteXml("Millijigui.xml");
-                Listo = true;
-            }
-            catch (Exception ex)
+            foreach (DataTable T in _CacheDeTablas.Values)
             {
-                MessageBox.Show(ex.Message);
+                _TablasAEnviar.Tables.Add(T);
             }
+
+            //_TablasAEnviar.WriteXml("Millijigui.xml");
+            Listo = true;
         }
 
         public DataTable CrearTabla(TablaMapeada Tabla)

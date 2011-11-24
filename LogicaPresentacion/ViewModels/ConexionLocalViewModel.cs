@@ -119,8 +119,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             if (ServidoresVM.MostrarView == false)
             {
-                this.MostrarDetectarServidoresLocalesView = false;
-                this.Datos = ServidoresVM.Datos.Clonar();
+                MostrarDetectarServidoresLocalesView = false;
+                Datos = ServidoresVM.Datos.Clonar();
             }
         }
 
@@ -138,9 +138,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             if (AutentificacionVM.MostrarView == false)
             {
-                this.MostrarAutentificacionView = false;
-                this._UsuarioExterno = AutentificacionVM.Usuario;
-                this._ContrasenaExterna = AutentificacionVM.Contrasena;
+                MostrarAutentificacionView = false;
+                _UsuarioExterno = AutentificacionVM.Usuario;
+                _ContrasenaExterna = AutentificacionVM.Contrasena;
                 ConexionUsuario();
             }
         }
@@ -149,7 +149,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             if (Estado == ConnectionState.Open)
             {
-                Desconectar();
+                base.Desconectar();
             }
             else
             {

@@ -150,17 +150,38 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public void Desconectar()
         {
-            _Conexion.Desconectar();
+            try
+            {
+                _Conexion.Desconectar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+            }
         }
 
         public void CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] ColumnasAutorizadas, int Privilegios)
         {
-            _Conexion.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Privilegios);
+            try
+            {
+                _Conexion.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Privilegios);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+            }
         }
 
         public void ResolverDatosDeConexion()
         {
-            _Conexion.ResolverDatosDeConexion();
+            try
+            {
+                _Conexion.ResolverDatosDeConexion();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+            }
         }
 
         #endregion

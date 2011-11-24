@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Valeria")]
 [assembly: AssemblyDescription("Ejecutable final")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Zuliaworks C.A.")]
+[assembly: AssemblyCompany("Zuliaworks")]
 [assembly: AssemblyProduct("Netzuela")]
-[assembly: AssemblyCopyright("Copyright © Zuliaworks C.A. 2011")]
+[assembly: AssemblyCopyright("Copyright © Zuliaworks 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

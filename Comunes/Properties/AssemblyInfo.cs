@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Comunes")]
 [assembly: AssemblyDescription("Definiciones comunes para los componentes de Valeria")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Zuliaworks C.A.")]
+[assembly: AssemblyCompany("Zuliaworks")]
 [assembly: AssemblyProduct("Comunes")]
-[assembly: AssemblyCopyright("Copyright © Zuliaworks C.A. 2011")]
+[assembly: AssemblyCopyright("Copyright © Zuliaworks 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

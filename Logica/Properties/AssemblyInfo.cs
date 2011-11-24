@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Logica")]
 [assembly: AssemblyDescription("Contiene los elementos administrativos básicos de la aplicación")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Zuliaworks C.A.")]
+[assembly: AssemblyCompany("Zuliaworks")]
 [assembly: AssemblyProduct("Logica")]
-[assembly: AssemblyCopyright("Copyright © Zuliaworks C.A. 2011")]
+[assembly: AssemblyCopyright("Copyright © Zuliaworks 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

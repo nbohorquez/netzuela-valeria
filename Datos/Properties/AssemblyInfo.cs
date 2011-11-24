@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Datos")]
 [assembly: AssemblyDescription("Provee una interfaz de acceso única a diversas fuentes de datos")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Zuliaworks C.A.")]
+[assembly: AssemblyCompany("Zuliaworks")]
 [assembly: AssemblyProduct("Datos")]
-[assembly: AssemblyCopyright("Copyright © Zuliaworks C.A. 2011")]
+[assembly: AssemblyCopyright("Copyright © Zuliaworks 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

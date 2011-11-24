@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Configuration;
+
 namespace Zuliaworks.Netzuela.Valeria.Presentacion
 {
     /// <summary>

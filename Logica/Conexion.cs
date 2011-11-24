@@ -108,8 +108,15 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public void Desconectar()
         {
-            if (BD != null)
-                BD.Desconectar();
+            try
+            {
+                if (BD != null)
+                    BD.Desconectar();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al desconectarse de la base de datos", ex);
+            }
         }
 
         public void CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] ColumnasAutorizadas, int Privilegios)

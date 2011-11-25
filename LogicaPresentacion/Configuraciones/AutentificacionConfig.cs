@@ -10,6 +10,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
 {
     public class AutentificacionConfig : ConfigurationSection
     {
+        // Con codigo de http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
+
         #region Constructores
 
         public AutentificacionConfig() { }

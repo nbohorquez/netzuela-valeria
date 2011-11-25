@@ -9,6 +9,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
 {
     public class MapeoDeColumnasConfig : ConfigurationElement
     {
+        // Con codigo de http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
+
         #region Constructores
 
         public MapeoDeColumnasConfig() { }

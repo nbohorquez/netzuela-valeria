@@ -11,6 +11,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
     CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
     public class TablaMapeadaConfig : ConfigurationElementCollection
     {
+        // Con codigo de http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
+
         #region Variables
 
         private static ConfigurationPropertyCollection _Propiedades;

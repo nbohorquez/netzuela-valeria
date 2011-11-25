@@ -189,7 +189,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             Configuration AppConfig;
             ConexionesConfig ConexionesGuardadas;
             AutentificacionConfig Credenciales;
-            TablaMapeadaConfig Tabla;
+            TablaMapeadaConfig Mapa;
             
             try
             {
@@ -209,8 +209,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 Credenciales.ContrasenaRemota = "1234".ConvertirASecureString().Encriptar();
 
                 // ¡¡¡TERMINAR ESTE CODIGO AQUI!!!
-                Tabla = new TablaMapeadaConfig();
-                Tabla.Add(new MapeoDeColumnasConfig());
+                Mapa = new TablaMapeadaConfig();
+                Mapa.Add(new MapeoDeColumnasConfig());
 
                 AppConfig.Sections.Add("conexionesGuardadas", ConexionesGuardadas);
                 AppConfig.Sections.Add("credenciales", Credenciales);

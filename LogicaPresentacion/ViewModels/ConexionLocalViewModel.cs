@@ -142,8 +142,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (AutentificacionVM.MostrarView == false)
             {
                 MostrarAutentificacionView = false;
+
                 _UsuarioExterno = AutentificacionVM.Usuario;
                 _ContrasenaExterna = AutentificacionVM.Contrasena;
+
                 ConexionUsuario();
             }
         }
@@ -163,6 +165,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public void ConexionUsuario()
         {
             base.Conectar(_UsuarioExterno, _ContrasenaExterna);
+
+            // Borramos todo aquello que pudiese resultar atractivo para alguien con malas intenciones
+            _UsuarioExterno.Clear();
+            _ContrasenaExterna.Clear();
         }
             
         public void ConexionNetzuela()
@@ -172,6 +178,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         
         public void CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
         {
+            // ¿Ocasionará un problema de seguridad colocar el nombre "netzuela" asi tan a la vista?
             UsuarioNetzuela = "netzuela".ConvertirASecureString();
             ContrasenaNetzuela = RandomPassword.Generate(20).ConvertirASecureString();
 

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MvvmFoundation.Wpf;                                               // PropertyObserver<>
+using MvvmFoundation.Wpf;                                               // PropertyObserver<>, ObservableObject
 using System.Collections.ObjectModel;                                   // ObservableCollection
 using System.Configuration;                                             // ConfigurationManager
 using System.Windows;                                                   // MessageBox
-using Zuliaworks.Netzuela.Valeria.Comunes;                              // DatosDeConexion, Constantes
+using Zuliaworks.Netzuela.Valeria.Comunes;                              // ParametrosDeConexion, Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;                               // Conexion
 using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones;   // ConexionesConfig
 
@@ -43,11 +43,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             _ObservadorConexionRemota = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
 
-            if (CargarConfiguracion())
+            _ConfiguracionLocal = new Configuracion();
+
+            if (CargarParametrosDeConexion())
             {
                 ConexionLocal.Parametros = _ConfiguracionLocal.ParametrosConexionLocal;
                 ConexionRemota.Parametros = _ConfiguracionLocal.ParametrosConexionRemota;
+            }
 
+            if (CargarCredenciales())
+            {
                 ConexionLocal.Conectar(_ConfiguracionLocal.UsuarioLocal, _ConfiguracionLocal.ContrasenaLocal);
                 ConexionRemota.Conectar(_ConfiguracionLocal.UsuarioRemoto, _ConfiguracionLocal.ContrasenaRemota);
             }
@@ -184,6 +189,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             Configuration AppConfig;
             ConexionesConfig ConexionesGuardadas;
             AutentificacionConfig Credenciales;
+            TablaMapeadaConfig Tabla;
             
             try
             {
@@ -202,6 +208,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 Credenciales.UsuarioRemoto = "maricoerconio".ConvertirASecureString().Encriptar();
                 Credenciales.ContrasenaRemota = "1234".ConvertirASecureString().Encriptar();
 
+                // ¡¡¡TERMINAR ESTE CODIGO AQUI!!!
+                Tabla = new TablaMapeadaConfig();
+                Tabla.Add(new MapeoDeColumnasConfig());
+
                 AppConfig.Sections.Add("conexionesGuardadas", ConexionesGuardadas);
                 AppConfig.Sections.Add("credenciales", Credenciales);
 
@@ -216,24 +226,42 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private bool CargarConfiguracion()
+        private bool CargarParametrosDeConexion()
         {
             bool Resultado = false;
-            _ConfiguracionLocal = new Configuracion();
 
             try
             {
                 ConexionesConfig ConexionesGuardadas = ConfigurationManager.GetSection("conexionesGuardadas")
                     as ConexionesConfig;
-
-                AutentificacionConfig Credenciales = ConfigurationManager.GetSection("credenciales")
-                    as AutentificacionConfig;
-
-                if (ConexionesGuardadas != null && Credenciales != null)
+                
+                if (ConexionesGuardadas != null)
                 {
                     _ConfiguracionLocal.ParametrosConexionLocal = ConexionesGuardadas.ParametrosConexionLocal.ConvertirAParametrosDeConexion();
                     _ConfiguracionLocal.ParametrosConexionRemota = ConexionesGuardadas.ParametrosConexionRemota.ConvertirAParametrosDeConexion();
+                    
+                    Resultado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+            }
 
+            return Resultado;
+        }
+
+        private bool CargarCredenciales()
+        {
+            bool Resultado = false;
+
+            try
+            {
+                AutentificacionConfig Credenciales = ConfigurationManager.GetSection("credenciales")
+                    as AutentificacionConfig;
+
+                if (Credenciales != null)
+                {
                     _ConfiguracionLocal.UsuarioLocal = Credenciales.UsuarioLocal.Desencriptar();
                     _ConfiguracionLocal.ContrasenaLocal = Credenciales.ContrasenaLocal.Desencriptar();
                     _ConfiguracionLocal.UsuarioRemoto = Credenciales.UsuarioRemoto.Desencriptar();

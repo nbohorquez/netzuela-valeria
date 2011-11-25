@@ -226,24 +226,21 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 ConexionesConfig ConexionesGuardadas = ConfigurationManager.GetSection("conexionesGuardadas")
                     as ConexionesConfig;
 
-                if (ConexionesGuardadas != null)
-                {
-                    _ConfiguracionLocal.ParametrosConexionLocal = ConexionesGuardadas.ParametrosConexionLocal.ConvertirAParametrosDeConexion();
-                    _ConfiguracionLocal.ParametrosConexionRemota = ConexionesGuardadas.ParametrosConexionRemota.ConvertirAParametrosDeConexion();
-                }
-
                 AutentificacionConfig Credenciales = ConfigurationManager.GetSection("credenciales")
                     as AutentificacionConfig;
 
-                if (Credenciales != null)
+                if (ConexionesGuardadas != null && Credenciales != null)
                 {
+                    _ConfiguracionLocal.ParametrosConexionLocal = ConexionesGuardadas.ParametrosConexionLocal.ConvertirAParametrosDeConexion();
+                    _ConfiguracionLocal.ParametrosConexionRemota = ConexionesGuardadas.ParametrosConexionRemota.ConvertirAParametrosDeConexion();
+
                     _ConfiguracionLocal.UsuarioLocal = Credenciales.UsuarioLocal.Desencriptar();
                     _ConfiguracionLocal.ContrasenaLocal = Credenciales.ContrasenaLocal.Desencriptar();
                     _ConfiguracionLocal.UsuarioRemoto = Credenciales.UsuarioRemoto.Desencriptar();
                     _ConfiguracionLocal.ContrasenaRemota = Credenciales.ContrasenaRemota.Desencriptar();
-                }
 
-                Resultado = true;
+                    Resultado = true;
+                }
             }
             catch (Exception ex)
             {

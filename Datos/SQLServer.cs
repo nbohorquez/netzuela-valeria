@@ -25,7 +25,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Constructores
 
-        public SQLServer(DatosDeConexion ServidorBD)
+        public SQLServer(ParametrosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
             _Conexion = new SqlConnection();
@@ -35,7 +35,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Propiedades
 
-        public DatosDeConexion Servidor { get; set; }
+        public ParametrosDeConexion Servidor { get; set; }
 
         #endregion
 

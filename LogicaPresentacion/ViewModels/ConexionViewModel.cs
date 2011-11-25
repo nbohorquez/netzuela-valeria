@@ -53,15 +53,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             get { return BD.Estado; }
         }
 
-        public DatosDeConexion Datos
+        public ParametrosDeConexion Parametros
         {
-            get { return _Conexion.Datos; }
+            get { return _Conexion.Parametros; }
             set
             {
-                if (value != _Conexion.Datos)
+                if (value != _Conexion.Parametros)
                 {
-                    _Conexion.Datos = value;
-                    RaisePropertyChanged("Datos");
+                    _Conexion.Parametros = value;
+                    RaisePropertyChanged("Parametros");
                 }
             }
         }

@@ -8,11 +8,11 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
     /// <summary>
     /// Esta clase se usa en todas partes.
     /// </summary>
-    public class DatosDeConexion
+    public class ParametrosDeConexion
     {
         #region Constructores
 
-        public DatosDeConexion() 
+        public ParametrosDeConexion() 
         {
             Anfitrion = string.Empty;
             Servidor = string.Empty;
@@ -35,9 +35,9 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
 
         #region Funciones
 
-        public DatosDeConexion Clonar()
+        public ParametrosDeConexion Clonar()
         {
-            DatosDeConexion Resultado = new DatosDeConexion();
+            ParametrosDeConexion Resultado = new ParametrosDeConexion();
 
             Resultado.Anfitrion = string.Copy(this.Anfitrion);
             Resultado.Servidor = string.Copy(this.Servidor);

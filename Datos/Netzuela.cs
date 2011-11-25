@@ -24,7 +24,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Constructores
 
-        public Netzuela(DatosDeConexion ServidorBD)
+        public Netzuela(ParametrosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
             _Estado = ConnectionState.Closed;
@@ -77,7 +77,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Propiedades
 
-        public DatosDeConexion Servidor { get; set; }
+        public ParametrosDeConexion Servidor { get; set; }
 
         #endregion
 

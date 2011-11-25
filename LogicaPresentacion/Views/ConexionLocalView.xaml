@@ -26,35 +26,31 @@
         <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch">
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Anfitrión</Label>
-                <TextBox Name="txt_Anfitrion" Text="{Binding Path=Datos.Anfitrion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Name="txt_Anfitrion" Text="{Binding Path=Parametros.Anfitrion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Servidor</Label>
-                <TextBox Name="txt_Servidor" Text="{Binding Path=Datos.Servidor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Name="txt_Servidor" Text="{Binding Path=Parametros.Servidor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Instancia</Label>
-                <TextBox Name="txt_Instancia" Text="{Binding Path=Datos.Instancia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Name="txt_Instancia" Text="{Binding Path=Parametros.Instancia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Método de conexión</Label>
-                <TextBox Name="txt_MetodoDeConexion" Text="{Binding Path=Datos.MetodoDeConexion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Name="txt_MetodoDeConexion" Text="{Binding Path=Parametros.MetodoDeConexion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Arg. de conexión</Label>
-                <TextBox Name="txt_ArgumentoDeConexion" Text="{Binding Path=Datos.ArgumentoDeConexion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Name="txt_ArgumentoDeConexion" Text="{Binding Path=Parametros.ArgumentoDeConexion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             
             <Button Margin="0,15,0,0" Content="Detectar" Command="{Binding Path=DetectarOrden, Mode=OneTime}"/>
             <Button Content="{Binding Path=BotonConectarDesconectar}" Command="{Binding Path=ConectarDesconectarOrden, Mode=OneTime}"/>
-            <!--
-            <Button Content="Conectar" Command="{Binding Path=ConectarOrden, Mode=OneTime}"/>
-            <Button Content="Desconectar" Command="{Binding Path=DesconectarOrden, Mode=OneTime}"/>
-            -->
         </StackPanel>
 
         <Popup Height="150" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarAutentificacionView}" StaysOpen="False" Placement="Top">

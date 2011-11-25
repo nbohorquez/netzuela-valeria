@@ -36,7 +36,7 @@
                   ItemsSource="{Binding Path=ServidoresDetectados}"
                   DisplayMemberPath="Nombre"
                   SelectedValuePath="Nombre"
-                  SelectedValue="{Binding Path=Datos.Servidor, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                  SelectedValue="{Binding Path=Parametros.Servidor, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Row="0" Grid.Column="1"
                    Visibility="{Binding SelectedItem, ElementName=cmb_Servidor, Converter={StaticResource TextoPorDefectoEnComboBox1}}"
                    Text="Seleccione el servidor"/>
@@ -47,7 +47,7 @@
                   ItemsSource="{Binding ElementName=cmb_Servidor, Path=SelectedItem.Instancias}"
                   DisplayMemberPath="Nombre"
                   SelectedValuePath="Nombre"
-                  SelectedValue="{Binding Path=Datos.Instancia, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                  SelectedValue="{Binding Path=Parametros.Instancia, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Seleccione la instancia">
              <TextBlock.Visibility>
                 <MultiBinding Converter="{StaticResource TextoPorDefectoEnComboBox2}">
@@ -65,7 +65,7 @@
                   ItemsSource="{Binding ElementName=cmb_Instancia, Path=SelectedItem.Metodos}"
                   DisplayMemberPath="Nombre"
                   SelectedValuePath="Nombre"
-                  SelectedValue="{Binding Path=Datos.MetodoDeConexion, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                  SelectedValue="{Binding Path=Parametros.MetodoDeConexion, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Seleccione el método">
              <TextBlock.Visibility>
                 <MultiBinding Converter="{StaticResource TextoPorDefectoEnComboBox2}">
@@ -81,7 +81,7 @@
         <ComboBox Grid.Row="3" Grid.Column="1" Name="cmb_ArgumentoDeConexion"
                   DataContext="{Binding Path=.}"
                   ItemsSource="{Binding ElementName=cmb_MetodoDeConexion, Path=SelectedItem.Valores}"
-                  SelectedValue="{Binding Path=Datos.ArgumentoDeConexion, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                  SelectedValue="{Binding Path=Parametros.ArgumentoDeConexion, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Row="3" Grid.Column="1" Text="Seleccione el argumento">
              <TextBlock.Visibility>
                 <MultiBinding Converter="{StaticResource TextoPorDefectoEnComboBox2}">

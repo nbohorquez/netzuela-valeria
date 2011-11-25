@@ -23,7 +23,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Constructores
 
-        public MySQL(DatosDeConexion ServidorBD)
+        public MySQL(ParametrosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
             _Conexion = new MySqlConnection();
@@ -33,7 +33,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Propiedades
 
-        public DatosDeConexion Servidor { get; set; }
+        public ParametrosDeConexion Servidor { get; set; }
 
         #endregion
 
@@ -129,9 +129,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
          * Estoy haciendo que los datos que entran y salen de ambas funciones sean seguros (SecureString).
          * Sin embargo las operaciones internas las estoy haciendo con string normales (no es sino hasta el 
          * final que las convierto en SecureStrings) y no se si eso pueda suponer un "hueco" de seguridad.
-         */   
+         */
 
-        private SecureString CrearRutaDeAcceso(DatosDeConexion Seleccion, SecureString Usuario, SecureString Contrasena)
+        private SecureString CrearRutaDeAcceso(ParametrosDeConexion Seleccion, SecureString Usuario, SecureString Contrasena)
         {
             /*
              * La lista completa de las opciones de la ruta de conexion ("Connection String" en ingles) se detalla en:

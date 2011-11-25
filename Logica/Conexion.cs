@@ -25,22 +25,22 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public Conexion()
         {
-            this.Datos = new DatosDeConexion();
-            this.BD = new ServidorPredeterminado(this.Datos);
+            this.Parametros = new ParametrosDeConexion();
+            this.BD = new ServidorPredeterminado(this.Parametros);
         }
 
         /// <summary>
         /// Crea una conexión con el servidor especificado.
         /// </summary>
-        /// <param name="Datos">Datos de configuración de la conexión con el servidor.</param>
-        /// <exception cref="ArgumentNullException">Si <paramref name="Datos"/> es una referencia 
+        /// <param name="Parametros">Datos de configuración de la conexión con el servidor.</param>
+        /// <exception cref="ArgumentNullException">Si <paramref name="Parametros"/> es una referencia 
         /// nula.</exception>
-        public Conexion(DatosDeConexion Datos)
+        public Conexion(ParametrosDeConexion Parametros)
         {
-            if (Datos == null)
-                throw new ArgumentNullException("Datos");
+            if (Parametros == null)
+                throw new ArgumentNullException("Parametros");
 
-            this.Datos = Datos;
+            this.Parametros = Parametros;
             ResolverDatosDeConexion();
         }
 
@@ -51,7 +51,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// Parámetros de la conexión con el servidor actual.
         /// </summary>
-        public DatosDeConexion Datos { get; set; }
+        public ParametrosDeConexion Parametros { get; set; }
 
         /// <summary>
         /// Proveedor de datos creado a partir de las especificaciones de conexión.
@@ -64,28 +64,28 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         public void ResolverDatosDeConexion()
         {
-            switch (Datos.Servidor)
+            switch (Parametros.Servidor)
             {
                 case Constantes.SGBDR.SQL_SERVER:
-                    BD = new SQLServer(Datos);
+                    BD = new SQLServer(Parametros);
                     break;
                 case Constantes.SGBDR.ORACLE:
-                    BD = new Oracle(Datos);
+                    BD = new Oracle(Parametros);
                     break;
                 case Constantes.SGBDR.MYSQL:
-                    BD = new MySQL(Datos);
+                    BD = new MySQL(Parametros);
                     break;
                 case Constantes.SGBDR.NETZUELA:
-                    BD = new Datos.Netzuela(Datos);
+                    BD = new Datos.Netzuela(Parametros);
                     break;
                 default:
-                    BD = new ServidorPredeterminado(Datos);
+                    BD = new ServidorPredeterminado(Parametros);
                     break;
             }
         }
 
         /// <summary>
-        /// Abre la conexión con el servidor especificado en <see cref="Datos"/>.
+        /// Abre la conexión con el servidor especificado en <see cref="Parametros"/>.
         /// </summary>
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {

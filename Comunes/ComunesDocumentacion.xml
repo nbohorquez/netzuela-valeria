@@ -47,7 +47,7 @@
             <param name="Enumerable">Coleccion de objetos</param>
             <returns>ObservableColeccion de objetos tipo T</returns>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.DatosDeConexion">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ParametrosDeConexion">
             <summary>
             Esta clase se usa en todas partes.
             </summary>

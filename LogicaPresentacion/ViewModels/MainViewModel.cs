@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MvvmFoundation.Wpf;                           // PropertyObserver<>
-using System.Collections.ObjectModel;               // ObservableCollection
-using System.Configuration;                         // ConfigurationManager
-using System.Windows;                               // MessageBox
-using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion, Constantes
-using Zuliaworks.Netzuela.Valeria.Logica;           // Conexion
+using MvvmFoundation.Wpf;                                               // PropertyObserver<>
+using System.Collections.ObjectModel;                                   // ObservableCollection
+using System.Configuration;                                             // ConfigurationManager
+using System.Windows;                                                   // MessageBox
+using Zuliaworks.Netzuela.Valeria.Comunes;                              // DatosDeConexion, Constantes
+using Zuliaworks.Netzuela.Valeria.Logica;                               // Conexion
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones;   // ConexionesConfig
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -19,7 +20,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private Configuration _Configuracion;
+        private Configuracion _ConfiguracionLocal;
         private ExploradorViewModel _ExploradorLocal;
         private ExploradorViewModel _ExploradorRemoto;
         private SincronizacionViewModel _LocalARemota;
@@ -41,6 +42,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             _ObservadorConexionRemota = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
+
+            if (CargarConfiguracion())
+            {
+                ConexionLocal.Parametros = _ConfiguracionLocal.ParametrosConexionLocal;
+                ConexionRemota.Parametros = _ConfiguracionLocal.ParametrosConexionRemota;
+
+                ConexionLocal.Conectar(_ConfiguracionLocal.UsuarioLocal, _ConfiguracionLocal.ContrasenaLocal);
+                ConexionRemota.Conectar(_ConfiguracionLocal.UsuarioRemoto, _ConfiguracionLocal.ContrasenaRemota);
+            }
         }
 
         #endregion
@@ -99,7 +109,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 ObservableCollection<NodoViewModel> NodosLocales = new ObservableCollection<NodoViewModel>()
                 {
-                    new NodoViewModel(Conexion.Datos.Servidor + "(" + Conexion.Datos.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
+                    new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
                 };
 
                 ExploradorLocal = new ExploradorViewModel(NodosLocales, Conexion.BD);
@@ -112,7 +122,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 ObservableCollection<NodoViewModel> NodosRemotos = new ObservableCollection<NodoViewModel>()
                 {
-                    new NodoViewModel(Conexion.Datos.Servidor + "(" + Conexion.Datos.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
+                    new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
                 };
 
                 ExploradorRemoto = new ExploradorViewModel(NodosRemotos, Conexion.BD);
@@ -146,7 +156,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                         NodosOrigen.Add(MC.ColumnaOrigen.RutaCompleta());
                 }
             }
-
             
             // Creamos un usuario en la base de datos local con los privilegios necesarios 
             // para leer las columnas de origen            
@@ -169,22 +178,79 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void GuardarConfiguracion()
         {
+            // Con codigo de 
+            // http://msdn.microsoft.com/es-es/library/system.configuration.configurationmanager%28v=VS.100%29.aspx
+
+            Configuration AppConfig;
+            ConexionesConfig ConexionesGuardadas;
+            AutentificacionConfig Credenciales;
+            
             try
             {
-                _Configuracion = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                _Configuracion.AppSettings.Settings.Add("Nombre", "Nestor Bohorquez");
-                
-                _Configuracion.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection("appSettings");
+                AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-                AppSettingsSection appSettingSection = (AppSettingsSection)_Configuracion.GetSection("appSettings");
+                ConexionesGuardadas = new ConexionesConfig();
+                ConexionesGuardadas.ParametrosConexionLocal = new ParametrosDeConexionConfig(ConexionLocal.Parametros);
+                ConexionesGuardadas.ParametrosConexionRemota = new ParametrosDeConexionConfig(ConexionRemota.Parametros);
 
-                //MessageBox.Show(appSettingSection.SectionInformation.GetRawXml());
+                Credenciales = new AutentificacionConfig();
+                Credenciales.UsuarioLocal = ConexionLocal.UsuarioNetzuela.Encriptar();
+                Credenciales.ContrasenaLocal = ConexionLocal.ContrasenaNetzuela.Encriptar();
+
+                // Esto esta aqui por joda... cuando tenga el servidor de Netzuela listo, aqui va 
+                // a haber una vaina seria.
+                Credenciales.UsuarioRemoto = "maricoerconio".ConvertirASecureString().Encriptar();
+                Credenciales.ContrasenaRemota = "1234".ConvertirASecureString().Encriptar();
+
+                AppConfig.Sections.Add("conexionesGuardadas", ConexionesGuardadas);
+                AppConfig.Sections.Add("credenciales", Credenciales);
+
+                AppConfig.Save(ConfigurationSaveMode.Modified);
+
+                ConfigurationManager.RefreshSection("conexionesGuardadas");
+                ConfigurationManager.RefreshSection("credenciales");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
             }
+        }
+
+        private bool CargarConfiguracion()
+        {
+            bool Resultado = false;
+            _ConfiguracionLocal = new Configuracion();
+
+            try
+            {
+                ConexionesConfig ConexionesGuardadas = ConfigurationManager.GetSection("conexionesGuardadas")
+                    as ConexionesConfig;
+
+                if (ConexionesGuardadas != null)
+                {
+                    _ConfiguracionLocal.ParametrosConexionLocal = ConexionesGuardadas.ParametrosConexionLocal.ConvertirAParametrosDeConexion();
+                    _ConfiguracionLocal.ParametrosConexionRemota = ConexionesGuardadas.ParametrosConexionRemota.ConvertirAParametrosDeConexion();
+                }
+
+                AutentificacionConfig Credenciales = ConfigurationManager.GetSection("credenciales")
+                    as AutentificacionConfig;
+
+                if (Credenciales != null)
+                {
+                    _ConfiguracionLocal.UsuarioLocal = Credenciales.UsuarioLocal.Desencriptar();
+                    _ConfiguracionLocal.ContrasenaLocal = Credenciales.ContrasenaLocal.Desencriptar();
+                    _ConfiguracionLocal.UsuarioRemoto = Credenciales.UsuarioRemoto.Desencriptar();
+                    _ConfiguracionLocal.ContrasenaRemota = Credenciales.ContrasenaRemota.Desencriptar();
+                }
+
+                Resultado = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+            }
+
+            return Resultado;
         }
 
         #endregion

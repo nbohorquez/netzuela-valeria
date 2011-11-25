@@ -22,7 +22,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Constructores
 
-        public Oracle(DatosDeConexion ServidorBD) 
+        public Oracle(ParametrosDeConexion ServidorBD) 
         {
             Servidor = ServidorBD;
         }
@@ -31,7 +31,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Propiedades
 
-        public DatosDeConexion Servidor { get; set; }
+        public ParametrosDeConexion Servidor { get; set; }
 
         #endregion
 

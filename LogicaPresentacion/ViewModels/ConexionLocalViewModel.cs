@@ -30,8 +30,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private PropertyObserver<DetectarServidoresLocalesViewModel> _ObservadorServidores;
         private AutentificacionViewModel _Autentificacion;
         private DetectarServidoresLocalesViewModel _ServidoresDetectados;
-        private SecureString _UsuarioExterno, _UsuarioNetzuela;
-        private SecureString _ContrasenaExterna, _ContrasenaNetzuela;
+        private SecureString _UsuarioExterno;
+        private SecureString _ContrasenaExterna;
 
         #endregion
 
@@ -43,6 +43,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #endregion
 
         #region Propiedades
+
+        public SecureString UsuarioNetzuela { get; private set; }
+        public SecureString ContrasenaNetzuela { get; private set; }
 
         public AutentificacionViewModel Autentificacion
         {
@@ -120,7 +123,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (ServidoresVM.MostrarView == false)
             {
                 MostrarDetectarServidoresLocalesView = false;
-                Datos = ServidoresVM.Datos.Clonar();
+                Parametros = ServidoresVM.Parametros.Clonar();
             }
         }
 
@@ -164,16 +167,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             
         public void ConexionNetzuela()
         {
-            base.Conectar(_UsuarioNetzuela, _ContrasenaNetzuela);
+            base.Conectar(UsuarioNetzuela, ContrasenaNetzuela);
         }
         
         public void CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
         {
-            _UsuarioNetzuela = "netzuela".ConvertirASecureString();
-            _ContrasenaNetzuela = RandomPassword.Generate(20).ConvertirASecureString();
+            UsuarioNetzuela = "netzuela".ConvertirASecureString();
+            ContrasenaNetzuela = RandomPassword.Generate(20).ConvertirASecureString();
 
             base.CrearUsuario(
-                _UsuarioNetzuela, _ContrasenaNetzuela,
+                UsuarioNetzuela, ContrasenaNetzuela,
                 ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR
             );
         }

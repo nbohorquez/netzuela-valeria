@@ -29,10 +29,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             this.ServidoresDetectados = ExponerAnfitrionLocal.DetectarServidoresLocales().ConvertirAObservableCollection();
             this.MostrarView = true;
-            this.Datos = new DatosDeConexion();
+            this.Parametros = new ParametrosDeConexion();
 
             // Ya se jodio el chamo, ahora se conecta con el localhost a juro :)
-            this.Datos.Anfitrion = "localhost";
+            this.Parametros.Anfitrion = "localhost";
         }
 
         #endregion
@@ -40,7 +40,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Propiedades
 
         public ObservableCollection<ServidorLocal> ServidoresDetectados { get; private set; }
-        public DatosDeConexion Datos { get; set; }
+        public ParametrosDeConexion Parametros { get; set; }
         public bool MostrarView
         {
             get { return _MostrarView; }

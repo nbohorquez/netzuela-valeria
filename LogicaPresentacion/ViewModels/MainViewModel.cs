@@ -158,7 +158,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 foreach (MapeoDeColumnas MC in TM.MapasColumnas)
                 {
                     if (MC.ColumnaOrigen != null)
-                        NodosOrigen.Add(MC.ColumnaOrigen.RutaCompleta());
+                        NodosOrigen.Add(MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta());
                 }
             }
             

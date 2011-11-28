@@ -49,9 +49,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                  * Creamos una TablaMapeada por cada Tabla listada en el servidor remoto.
                  * Posteriormente se agregaran MapeoDeColumnas a estas TablaMapeada.
                  */
-
-                TablaMapeada MapTab = Nodo.CrearTablaMapeada();                
-                Tablas.Add(MapTab);
+                Tablas.Add(Nodo.CrearTablaMapeada());
             }
         }
 
@@ -205,7 +203,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     NodoViewModel NodoOrigen = new NodoViewModel();
                     NodoOrigen.Hijos = Nodos;
 
-                    RutaNodoOrigen = MC.ColumnaOrigen.RutaCompleta();
+                    RutaNodoOrigen = MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta();
                     PasosDeLaRuta = RutaNodoOrigen.Split('\\');
 
                     for (int i = 0; i < (PasosDeLaRuta.Length - 1); i++)
@@ -213,7 +211,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                         NodoOrigen = NodoViewModelExtensiones.BuscarNodo(PasosDeLaRuta[i], NodoOrigen.Hijos);
                     }
 
-                    NodoDestino = NodoViewModelExtensiones.BuscarEnRepositorio(MC.ColumnaDestino);
+                    NodoDestino = MC.ColumnaDestino.BuscarEnRepositorio();
                     NodoDestino.AsociarCon(NodoOrigen);
                 }
 

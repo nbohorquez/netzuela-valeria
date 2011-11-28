@@ -93,35 +93,23 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
             if (Nodo != null)
             {
-                foreach (MapeoDeColumnas Mapa in MapasColumnas)
+                if (Nodo.ExisteEnRepositorio())
                 {
-                    // Si hay una columna de origen igual a la nueva que se quiere agregar, se elimina la vieja
-                    if (Mapa.ColumnaOrigen != null)
+                    if (Nodo.MapaColumna.ColumnaOrigen == Nodo)
                     {
-                        if (Mapa.ColumnaOrigen.Nombre == Nodo.Nombre)
-                        {
-                            string RutaNodoNuevo = Nodo.RutaCompleta();
-                            string RutaNodoViejo = Mapa.ColumnaOrigen.RutaCompleta();
-
-                            if (RutaNodoNuevo == RutaNodoViejo)
-                            {
-                                Mapa.Desasociar();
-                            }
-                        }
+                        Nodo.MapaColumna.Desasociar();
                     }
-
-                    if (Mapa.ColumnaDestino != null)
+                    else if (Nodo.MapaColumna.ColumnaDestino == Nodo)
                     {
-                        // Definitivamente en una tabla destino no puede haber dos columnas iguales
-                        if (Mapa.ColumnaDestino.Nombre == Nodo.Nombre)
-                        {
-                            Resultado = false;
-                            break;
-                        }
+                        Resultado = false;
                     }
                 }
+                else
+                {
+                    Nodo.AgregarARepositorio();
+                }
             }
-
+                        
             return Resultado;
         }
 

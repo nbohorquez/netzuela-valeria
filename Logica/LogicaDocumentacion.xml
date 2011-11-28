@@ -188,28 +188,6 @@
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.BuscarNodo(System.String,System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
-            <summary>
-            
-            </summary>
-            <param name="Nombre"></param>
-            <param name="Lista"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.RutaCompleta(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Nodo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.NodoExtensiones.ListarHijos(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Nodo"></param>
-            <returns></returns>
-        </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
             <summary>
             Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.

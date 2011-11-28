@@ -167,8 +167,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             base.Conectar(_UsuarioExterno, _ContrasenaExterna);
 
             // Borramos todo aquello que pudiese resultar atractivo para alguien con malas intenciones
-            _UsuarioExterno.Clear();
-            _ContrasenaExterna.Clear();
+            _UsuarioExterno.Dispose();
+            _ContrasenaExterna.Dispose();
         }
             
         public void ConexionNetzuela()

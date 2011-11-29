@@ -7,18 +7,18 @@ using System.Configuration;         // ConfigurationElement
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
 {
-    public class MapeoDeColumnasConfig : ConfigurationElement
+    public class MapeoDeColumnasElement : ConfigurationElement
     {
         // Con codigo de http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
 
         #region Constructores
 
-        public MapeoDeColumnasConfig() { }
+        public MapeoDeColumnasElement() { }
 
         #endregion
 
         #region Propiedades
- 
+         
         [ConfigurationProperty("nodoOrigen", IsRequired = true)]
         public string NodoOrigen
         {

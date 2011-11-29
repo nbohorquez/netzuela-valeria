@@ -7,29 +7,29 @@ using System.Configuration;     // ConfigurationSection
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
 {
-    public class ConexionesConfig : ConfigurationSection
+    public class ConexionesSection : ConfigurationSection
     {
         // Con codigo de http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
 
         #region Constructores
 
-        public ConexionesConfig() { }
+        public ConexionesSection() { }
 
         #endregion
 
         #region Propiedades
 
         [ConfigurationProperty("parametrosConexionLocal", IsRequired = false)]
-        public ParametrosDeConexionConfig ParametrosConexionLocal
+        public ParametrosDeConexionElement ParametrosConexionLocal
         {
-            get { return (ParametrosDeConexionConfig)base["parametrosConexionLocal"]; }
+            get { return (ParametrosDeConexionElement)base["parametrosConexionLocal"]; }
             set { base["parametrosConexionLocal"] = value; }
         }
 
         [ConfigurationProperty("parametrosConexionRemota", IsRequired = false)]
-        public ParametrosDeConexionConfig ParametrosConexionRemota
+        public ParametrosDeConexionElement ParametrosConexionRemota
         {
-            get { return (ParametrosDeConexionConfig)base["parametrosConexionRemota"]; }
+            get { return (ParametrosDeConexionElement)base["parametrosConexionRemota"]; }
             set { base["parametrosConexionRemota"] = value; }
         }
 

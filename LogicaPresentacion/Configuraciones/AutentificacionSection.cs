@@ -8,13 +8,13 @@ using System.Configuration;     // ConfigurationSection
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
 {
-    public class AutentificacionConfig : ConfigurationSection
+    public class AutentificacionSection : ConfigurationSection
     {
         // Con codigo de http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
 
         #region Constructores
 
-        public AutentificacionConfig() { }
+        public AutentificacionSection() { }
 
         #endregion
 

@@ -8,15 +8,15 @@ using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
 {
-    public class ParametrosDeConexionConfig : ConfigurationElement
+    public class ParametrosDeConexionElement : ConfigurationElement
     {
         // Con codigo de http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.asp
 
         #region Constructores
 
-        public ParametrosDeConexionConfig() { }
+        public ParametrosDeConexionElement() { }
 
-        public ParametrosDeConexionConfig(ParametrosDeConexion Parametros) 
+        public ParametrosDeConexionElement(ParametrosDeConexion Parametros) 
         {
             this.Anfitrion = Parametros.Anfitrion;
             this.Servidor = Parametros.Servidor;

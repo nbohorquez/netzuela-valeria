@@ -24,6 +24,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
         public SecureString ContrasenaLocal { get; set; }
         public SecureString UsuarioRemoto { get; set; }
         public SecureString ContrasenaRemota { get; set; }
+        public List<string[]> Mapas { get; set; }
 
         #endregion
     }

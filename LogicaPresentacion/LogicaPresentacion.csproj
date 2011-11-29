@@ -59,12 +59,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArbolVisual.cs" />
-    <Compile Include="Configuraciones\AutentificacionConfig.cs" />
-    <Compile Include="Configuraciones\ConexionesConfig.cs" />
+    <Compile Include="Configuraciones\AutentificacionSection.cs" />
+    <Compile Include="Configuraciones\ConexionesSection.cs" />
     <Compile Include="Configuraciones\Configuracion.cs" />
-    <Compile Include="Configuraciones\MapeoDeColumnasConfig.cs" />
-    <Compile Include="Configuraciones\ParametrosDeConexionConfig.cs" />
-    <Compile Include="Configuraciones\TablaMapeadaConfig.cs" />
+    <Compile Include="Configuraciones\MapeoDeColumnasElement.cs" />
+    <Compile Include="Configuraciones\ParametrosDeConexionElement.cs" />
+    <Compile Include="Configuraciones\ColeccionElementosGenerica.cs" />
+    <Compile Include="Configuraciones\TablaMapeadaElement.cs" />
+    <Compile Include="Configuraciones\TablasMapeadasSection.cs" />
     <Compile Include="DosArgumentosAUno.cs" />
     <Compile Include="PasswordBoxVinculable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

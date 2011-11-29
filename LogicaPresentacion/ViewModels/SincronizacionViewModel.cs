@@ -201,14 +201,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                         continue;
 
                     NodoViewModel NodoOrigen = new NodoViewModel();
-                    NodoOrigen.Hijos = Nodos;
 
                     RutaNodoOrigen = MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta();
                     PasosDeLaRuta = RutaNodoOrigen.Split('\\');
 
                     for (int i = 0; i < (PasosDeLaRuta.Length - 1); i++)
                     {
-                        NodoOrigen = NodoViewModelExtensiones.BuscarNodo(PasosDeLaRuta[i], NodoOrigen.Hijos);
+                        if (i == 0)
+                        {
+                            NodoOrigen = NodoViewModelExtensiones.BuscarNodo(PasosDeLaRuta[i], Nodos);
+                        }
+                        else
+                        {
+                            NodoOrigen = NodoViewModelExtensiones.BuscarNodo(PasosDeLaRuta[i], NodoOrigen.Hijos);
+                        }
                     }
 
                     NodoDestino = MC.ColumnaDestino.BuscarEnRepositorio();

@@ -194,6 +194,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 NodoDestino = NodoViewModelExtensiones.RutaANodo(Mapa[1], NodosRemotos);
                 NodoDestino.AsociarCon(NodoOrigen);
 
+                // Estas tres lineas de abajo se repiten frecuentemente en esta clase. 
+                // Tengo que ver que hago con ellas
                 NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;
                 NodoDestino.Explorador.TablaActual = CrearTabla(NodoDestino.MapaColumna.TablaPadre);
                 _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.TablaActual;

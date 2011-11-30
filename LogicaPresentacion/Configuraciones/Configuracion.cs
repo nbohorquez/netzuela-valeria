@@ -12,7 +12,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
     {
         #region Constructores
 
-        public Configuracion() { }
+        public Configuracion() 
+        {
+            Mapas = new List<string[]>();
+        }
 
         #endregion
 

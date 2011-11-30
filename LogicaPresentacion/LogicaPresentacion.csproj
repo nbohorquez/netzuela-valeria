@@ -71,6 +71,8 @@
     <Compile Include="PasswordBoxVinculable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleccionarTodaLaColumna.cs" />
+    <Compile Include="ViewModels\ExploradorViewModel.Expandir.cs" />
+    <Compile Include="ViewModels\MainViewModel.Preferencias.cs" />
     <Compile Include="ViewModels\AutentificacionViewModel.cs" />
     <Compile Include="ViewModels\ConexionLocalViewModel.cs" />
     <Compile Include="ViewModels\ConexionRemotaViewModel.cs" />

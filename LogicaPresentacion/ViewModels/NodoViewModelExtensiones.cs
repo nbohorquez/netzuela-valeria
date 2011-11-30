@@ -106,6 +106,32 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             return Resultado;
         }
 
+        public static NodoViewModel RutaANodo(string Ruta, ObservableCollection<NodoViewModel> Arbol)
+        {
+            if (Ruta == null)
+                throw new ArgumentNullException("Ruta");
+            else if (Arbol == null)
+                throw new ArgumentNullException("Arbol");
+
+            NodoViewModel Resultado = null;
+
+            string[] PasosDeLaRuta = Ruta.Split('\\');
+
+            for (int i = 0; i < (PasosDeLaRuta.Length - 1); i++)
+            {
+                if (i == 0)
+                {
+                    Resultado = NodoViewModelExtensiones.BuscarNodo(PasosDeLaRuta[i], Arbol);
+                }
+                else
+                {
+                    Resultado = NodoViewModelExtensiones.BuscarNodo(PasosDeLaRuta[i], Resultado.Hijos);
+                }
+            }
+
+            return Resultado;
+        }
+
         public static string[] ListarHijos(this NodoViewModel Nodo)
         {
             if (Nodo == null)

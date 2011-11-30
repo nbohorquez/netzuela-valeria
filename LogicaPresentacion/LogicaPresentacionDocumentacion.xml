@@ -136,7 +136,7 @@
             Vuelve a vincular las columnas de destino con las de origen. Se emplea generalmente 
             cuando se actualizan las tablas de origen desde el servidor local.
             </summary>
-            <param name="Nodos">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
+            <param name="NodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView">
             <summary>

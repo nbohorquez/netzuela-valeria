@@ -182,7 +182,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public void Sincronizar(ObservableCollection<NodoViewModel> NodosLocales, ObservableCollection<NodoViewModel> NodosRemotos, List<string[]> Mapas)
         {
-            //string[][] ArregloDeMapas = Mapas.ToArray();
             NodoViewModel NodoOrigen = null;
             NodoViewModel NodoDestino = null;
             

@@ -53,13 +53,18 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WcfSamples.DynamicProxy">
+      <HintPath>..\..\Bibliotecas\WCFDynamicProxy\src\bin\Debug\WcfSamples.DynamicProxy.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClienteDinamico.cs" />
     <Compile Include="IBaseDeDatos.cs" />
     <Compile Include="MySQL.cs" />
     <Compile Include="MySQL.Detectar.cs" />

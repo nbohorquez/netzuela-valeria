@@ -34,13 +34,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AttachedCommandBehavior">
-      <HintPath>..\Bibliotecas\AttachedCommandBehavior\AttachedCommandBehavior.dll</HintPath>
+      <HintPath>..\..\Bibliotecas\AttachedCommandBehavior\AttachedCommandBehavior.dll</HintPath>
     </Reference>
     <Reference Include="MvvmFoundation.Wpf">
-      <HintPath>..\Bibliotecas\MvvmFoundation\MvvmFoundation.Wpf.dll</HintPath>
+      <HintPath>..\..\Bibliotecas\MvvmFoundation\MvvmFoundation.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="ObviexGeneradorContrasenas">
-      <HintPath>..\Bibliotecas\ObviexGeneradorContrasenas\ObviexGeneradorContrasenas.dll</HintPath>
+      <HintPath>..\..\Bibliotecas\ObviexGeneradorContrasenas\ObviexGeneradorContrasenas.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

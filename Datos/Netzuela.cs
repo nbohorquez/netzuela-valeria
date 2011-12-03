@@ -19,6 +19,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         // ¡Temporal!
         private List<Nodito> _ServidorRemoto;
         private ConnectionState _Estado;
+
+        private AppDomain _DominioProxy;
+        private ProxyDinamico _Proxy;
         
         #endregion
 
@@ -27,6 +30,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public Netzuela(ParametrosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
+            
+            // Hay que ver como quito esto
             _Estado = ConnectionState.Closed;
 
             // Me invento una base de datos ficticia
@@ -68,19 +73,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     }
                 }
             };
-
-                /*
-            ServidorRemoto = new List<Nodito>()
-            {
-                { new Nodo("Netzuela", Constantes.NivelDeNodo.SERVIDOR) }
-            };
-
-            ServidorRemoto[0].Hijos.Clear();
-            Nodo Spuria = new Nodo("Spuria", ServidorRemoto[0]);
-
-            Spuria.Hijos.Clear();
-            Nodo Inventario = new Nodo("Inventario", Spuria, new string[] { "Codigo", "Descripcion", "Precio", "Cantidad" });
-                 * */
         }
 
         #endregion
@@ -120,16 +112,40 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
-            this.Estado = ConnectionState.Open;
+            if (_DominioProxy != null)
+                Desconectar();
+
+            try
+            {
+                _DominioProxy = AppDomain.CreateDomain("DominioProxy");
+                _Proxy = new ProxyDinamico("http://localhost:4757/Servidor.svc?wsdl");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error... ¡Cachuo pa'r coño!", ex);
+            }
+
+            // Esto hay que borrarlo
+            Estado = ConnectionState.Open;
         }
 
         public void Desconectar() 
         {
+            if (_DominioProxy != null)
+            {
+                AppDomain.Unload(_DominioProxy);
+                GC.Collect();
+            }
+
+            // Esto hay que borrarlo
             Estado = ConnectionState.Closed;
         }
 
         public string[] ListarBasesDeDatos()
         {
+            _DominioProxy.DoCallBack(new CrossAppDomainDelegate(_Proxy.CrossAppDomainCallback));
+
+
             List<string> Resultado = new List<string>();
 
             foreach (Nodito N in _ServidorRemoto[0].Hijos)

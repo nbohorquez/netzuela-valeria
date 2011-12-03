@@ -4,6 +4,92 @@
         <name>LogicaPresentacion</name>
     </assembly>
     <members>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModelExtensiones">
+            <summary>
+            Esta clase lleva el repositorio de todos los Nodo's que tienen un NodoViewModel asociado
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.DetectarServidoresLocalesViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionLocalViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel">
+            <summary>
+            Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
+            y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
+            la consistencia de esta clase.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ArbolVisual">
+            <summary>
+            Contiene funciones para los objetos de un arbol visual
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView">
+            <summary>
+            Lógica de interacción para BarraDeEstadoView.xaml
+            </summary>
+            <summary>
+            BarraDeEstadoView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.SeleccionarTodaLaColumna">
+            <summary>
+            Este convertidor sirve para seleccionar toda la columna especificada por NodoActual
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel.RecargarTablasLocales(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel})">
+            <summary>
+            Vuelve a vincular las columnas de destino con las de origen. Se emplea generalmente 
+            cuando se actualizan las tablas de origen desde el servidor local.
+            </summary>
+            <param name="NodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionRemotaView">
+            <summary>
+            Lógica de interacción para ConexionRemotaView.xaml
+            </summary>
+            <summary>
+            ConexionRemotaView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionRemotaView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionRemotaViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.PasswordBoxVinculable">
+            <summary>
+            Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
+            y asi poder vincularse (to bind) a ella desde el ViewModel.
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel">
             <summary>
             Esta clase se emplea para acceder a los datos de una fuente cuya estructura 
@@ -103,93 +189,6 @@
             Establece NodoActual
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView">
-            <summary>
-            Lógica de interacción para BarraDeEstadoView.xaml
-            </summary>
-            <summary>
-            BarraDeEstadoView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModelExtensiones">
-            <summary>
-            Esta clase lleva el repositorio de todos los Nodo's que tienen un NodoViewModel asociado
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionLocalViewModel">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel.RecargarTablasLocales(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel})">
-            <summary>
-            Vuelve a vincular las columnas de destino con las de origen. Se emplea generalmente 
-            cuando se actualizan las tablas de origen desde el servidor local.
-            </summary>
-            <param name="NodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView">
-            <summary>
-            Lógica de interacción para AutentificacionView.xaml
-            </summary>
-            <summary>
-            AutentificacionView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionRemotaViewModel">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.DetectarServidoresLocalesViewModel">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.SeleccionarTodaLaColumna">
-            <summary>
-            Este convertidor sirve para seleccionar toda la columna especificada por NodoActual
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView">
-            <summary>
-            Lógica de interacción para ConexionLocalView.xaml
-            </summary>
-            <summary>
-            ConexionLocalView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.PasswordBoxVinculable">
-            <summary>
-            Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
-            y asi poder vincularse (to bind) a ella desde el ViewModel.
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.AutentificacionViewModel">
             <summary>
             Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
@@ -210,6 +209,32 @@
             </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView">
+            <summary>
+            Lógica de interacción para ConexionLocalView.xaml
+            </summary>
+            <summary>
+            ConexionLocalView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionLocalView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView">
+            <summary>
+            Lógica de interacción para AutentificacionView.xaml
+            </summary>
+            <summary>
+            AutentificacionView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
@@ -253,31 +278,6 @@
             por la siguiente razon:
             
             http://stackoverflow.com/questions/4269896/creating-an-instance-of-a-nested-class-in-xaml
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionRemotaView">
-            <summary>
-            Lógica de interacción para ConexionRemotaView.xaml
-            </summary>
-            <summary>
-            ConexionRemotaView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionRemotaView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel">
-            <summary>
-            Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
-            y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
-            la consistencia de esta clase.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ArbolVisual">
-            <summary>
-            Contiene funciones para los objetos de un arbol visual
             </summary>
         </member>
         <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">

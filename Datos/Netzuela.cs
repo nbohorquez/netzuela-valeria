@@ -44,13 +44,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                             {
                                 new Nodito()
                                 {
-                                    Nombre = "Avion",
+                                    Nombre = "Ordenes de compra",
                                     Hijos = new List<Nodito>()
                                     {
-                                        new Nodito() { Nombre = "B737", Hijos = null },
-                                        new Nodito() { Nombre = "DC9", Hijos = null },
-                                        new Nodito() { Nombre = "A319", Hijos = null },
-                                        new Nodito() { Nombre = "B757", Hijos = null }
+                                        new Nodito() { Nombre = "Codigo", Hijos = null },
+                                        new Nodito() { Nombre = "Cantidad de articulos", Hijos = null },
+                                        new Nodito() { Nombre = "Total", Hijos = null }
                                     }
                                 },
                                 new Nodito()

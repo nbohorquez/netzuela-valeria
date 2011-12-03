@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Configuration;
 
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
+namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 {
     public class ColeccionElementosGenerica<T> : ConfigurationElementCollection, IEnumerable<T>, ICollection<T> where T : ConfigurationElement, new()
     {

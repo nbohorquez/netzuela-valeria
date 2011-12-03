@@ -99,10 +99,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 NodoViewModel NodoDestino = Argumento[1] as NodoViewModel;
 
                 NodoDestino.AsociarCon(NodoOrigen);
-
-                NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;
-                NodoDestino.Explorador.TablaActual = CrearTabla(NodoDestino.MapaColumna.TablaPadre);
-                _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.TablaActual;
+                ActualizarTabla(NodoDestino);
             }
             catch (Exception ex)
             {
@@ -117,10 +114,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 NodoViewModel NodoDestino = Argumento as NodoViewModel;
 
                 NodoDestino.Desasociarse();
-
-                NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;
-                NodoDestino.Explorador.TablaActual = CrearTabla(NodoDestino.MapaColumna.TablaPadre);
-                _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.TablaActual;
+                ActualizarTabla(NodoDestino);
             }
             catch (Exception ex)
             {
@@ -138,8 +132,29 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 _TablasAEnviar.Tables.Add(T);
             }
 
-            //_TablasAEnviar.WriteXml("Millijigui.xml");
-            Listo = true;
+            try
+            {
+                // Aqui enviamos las tablas al servidor al otro lado del mundo... muajajajaja
+                ServidorValeria.ValeriaClient Cliente = new ServidorValeria.ValeriaClient();
+                Cliente.EnviarTablas(new ServidorValeria.DataSetXML()
+                {
+                    EsquemaXML = _TablasAEnviar.GetXmlSchema(),
+                    XML = _TablasAEnviar.GetXml()
+                });
+
+                Listo = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+            }
+        }
+
+        private void ActualizarTabla(NodoViewModel Nodo)
+        {
+            Nodo.Explorador.NodoTablaActual = Nodo.Padre;
+            Nodo.Explorador.TablaActual = CrearTabla(Nodo.MapaColumna.TablaPadre);
+            _CacheDeTablas[Nodo.Padre] = Nodo.Explorador.TablaActual;
         }
 
         public DataTable CrearTabla(TablaMapeada Tabla)
@@ -191,13 +206,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 NodoOrigen = NodoViewModelExtensiones.RutaANodo(Mapa[0], NodosLocales);
                 NodoDestino = NodoViewModelExtensiones.RutaANodo(Mapa[1], NodosRemotos);
-                NodoDestino.AsociarCon(NodoOrigen);
 
-                // Estas tres lineas de abajo se repiten frecuentemente en esta clase. 
-                // Tengo que ver que hago con ellas
-                NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;
-                NodoDestino.Explorador.TablaActual = CrearTabla(NodoDestino.MapaColumna.TablaPadre);
-                _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.TablaActual;
+                NodoDestino.AsociarCon(NodoOrigen);
+                ActualizarTabla(NodoDestino);
             }
         }
 
@@ -206,7 +217,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// cuando se actualizan las tablas de origen desde el servidor local.
         /// </summary>
         /// <param name="NodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
-        public void Resincronizar(ObservableCollection<NodoViewModel> NodosLocales)
+        public void RecargarTablasLocales(ObservableCollection<NodoViewModel> NodosLocales)
         {
             string RutaNodoOrigen = string.Empty;
             NodoViewModel NodoDestino = null;
@@ -228,9 +239,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     NodoDestino.AsociarCon(NodoOrigen);
                 }
 
-                NodoDestino.Explorador.NodoTablaActual = NodoDestino.Padre;
-                NodoDestino.Explorador.TablaActual = CrearTabla(NodoDestino.MapaColumna.TablaPadre);
-                _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.TablaActual;
+                ActualizarTabla(NodoDestino);
             }
         }
 

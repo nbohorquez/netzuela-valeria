@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Configuration;         // ConfigurationElement
 
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
+namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 {
     public class TablasMapeadasSection : ConfigurationSection
     {

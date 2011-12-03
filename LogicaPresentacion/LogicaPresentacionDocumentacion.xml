@@ -103,6 +103,11 @@
             Establece NodoActual
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView">
             <summary>
             Lógica de interacción para BarraDeEstadoView.xaml
@@ -131,7 +136,7 @@
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel.Resincronizar(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel})">
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel.RecargarTablasLocales(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel})">
             <summary>
             Vuelve a vincular las columnas de destino con las de origen. Se emplea generalmente 
             cuando se actualizan las tablas de origen desde el servidor local.
@@ -194,11 +199,6 @@
             <summary>
             Esta propiedad es una fachada. Solo sirve para tomar el string desde el View y 
             convertirlo inmediatamente a SecureString en Usuario. No se puede leer
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
-            <summary>
-            
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView">

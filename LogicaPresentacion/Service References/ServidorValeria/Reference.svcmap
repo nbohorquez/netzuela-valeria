@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="dae580c4-e2a3-42fc-9cb2-1bae98317863" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:4757/Servidor.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Servidor.xsd" MetadataType="Schema" ID="e00b118f-6584-478c-ae22-ca9737210cdf" SourceId="1" SourceUrl="http://localhost:4757/Servidor.svc?xsd=xsd3" />
+    <MetadataFile FileName="Servidor.wsdl" MetadataType="Wsdl" ID="4dc0963c-20ca-4d1f-8179-3210c34f517b" SourceId="1" SourceUrl="http://localhost:4757/Servidor.svc?wsdl" />
+    <MetadataFile FileName="Servidor1.xsd" MetadataType="Schema" ID="1d3e3640-ff07-4d43-a9dc-6bfbdea7e5e6" SourceId="1" SourceUrl="http://localhost:4757/Servidor.svc?xsd=xsd2" />
+    <MetadataFile FileName="Servidor2.xsd" MetadataType="Schema" ID="eb03c79c-d36d-443b-b724-97b3a94426e8" SourceId="1" SourceUrl="http://localhost:4757/Servidor.svc?xsd=xsd1" />
+    <MetadataFile FileName="Servidor.disco" MetadataType="Disco" ID="1a752615-d783-4c6a-9797-155df6db1aa4" SourceId="1" SourceUrl="http://localhost:4757/Servidor.svc?disco" />
+    <MetadataFile FileName="Servidor3.xsd" MetadataType="Schema" ID="9a9b6585-c254-4170-9575-b5713026d39d" SourceId="1" SourceUrl="http://localhost:4757/Servidor.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

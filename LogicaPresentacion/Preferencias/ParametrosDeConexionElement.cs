@@ -6,7 +6,7 @@ using System.Text;
 using System.Configuration;                         // ConfigurationElement
 using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
 
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
+namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 {
     public class ParametrosDeConexionElement : ConfigurationElement
     {

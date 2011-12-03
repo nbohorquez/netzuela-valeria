@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;                                   // Obser
 using System.Windows;                                                   // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;                              // Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;                               // TablaMapeada
-using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones;   // Configuracion
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias;      // Configuracion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -179,7 +179,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             ExploradorLocal.ExpandirTodo();
 
             // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
-            Sincronizacion.Resincronizar(ExploradorLocal.Nodos);
+            Sincronizacion.RecargarTablasLocales(ExploradorLocal.Nodos);
 
             GuardarConfiguracion();
 

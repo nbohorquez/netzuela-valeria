@@ -69,6 +69,7 @@
     <Compile Include="AnfitrionLocal.cs" />
     <Compile Include="ServidorPredeterminado.cs" />
     <Compile Include="SQLServer.cs" />
+    <Compile Include="SQLServer.Detectar.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

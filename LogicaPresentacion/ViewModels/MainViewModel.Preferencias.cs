@@ -7,7 +7,7 @@ using System.Configuration;                                             // Confi
 using System.Windows;                                                   // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;                              // ParametrosDeConexion
 using Zuliaworks.Netzuela.Valeria.Logica;                               // TablaMapeada
-using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones;   // Configuracion
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias;   // Configuracion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {

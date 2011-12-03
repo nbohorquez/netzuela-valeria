@@ -6,7 +6,7 @@ using System.Text;
 using System.Security;          // SecureString
 using System.Configuration;     // ConfigurationSection
 
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Configuraciones
+namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 {
     public class AutentificacionSection : ConfigurationSection
     {

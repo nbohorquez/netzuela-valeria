@@ -18,7 +18,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private string _BotonConectarDesconectar;
         private RelayCommand _ConectarDesconectarOrden;
         private readonly Conexion _Conexion;
 

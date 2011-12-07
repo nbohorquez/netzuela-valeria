@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -124,13 +124,13 @@
       <Project>{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}</Project>
       <Name>Datos</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LogicaPresentacion\LogicaPresentacion.csproj">
-      <Project>{39A2598C-EEE2-4C32-84E5-A7277586C9BD}</Project>
-      <Name>LogicaPresentacion</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Logica\Logica.csproj">
       <Project>{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}</Project>
       <Name>Logica</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogicaPresentacion\LogicaPresentacion.csproj">
+      <Project>{39A2598C-EEE2-4C32-84E5-A7277586C9BD}</Project>
+      <Name>LogicaPresentacion</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

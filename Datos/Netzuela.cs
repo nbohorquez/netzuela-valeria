@@ -124,28 +124,25 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             {
                 throw new Exception("Error... ¡Cachuo pa'r coño!", ex);
             }
-
+            
             // Esto hay que borrarlo
             Estado = ConnectionState.Open;
         }
 
-        public void Desconectar() 
+        public void Desconectar()
         {
             if (_DominioProxy != null)
             {
                 AppDomain.Unload(_DominioProxy);
                 GC.Collect();
             }
-
+            
             // Esto hay que borrarlo
             Estado = ConnectionState.Closed;
         }
 
         public string[] ListarBasesDeDatos()
         {
-            _DominioProxy.DoCallBack(new CrossAppDomainDelegate(_Proxy.CrossAppDomainCallback));
-
-
             List<string> Resultado = new List<string>();
 
             foreach (Nodito N in _ServidorRemoto[0].Hijos)
@@ -166,9 +163,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado.ToArray();
         }
 
-        public DataTable MostrarTabla(string BaseDeDatos, string Tabla)
-        {
-            
+        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
+        {            
             DataTable Tbl = new DataTable();
 
             Nodito BD = Nodito.BuscarNodo(BaseDeDatos, _ServidorRemoto[0].Hijos);
@@ -178,6 +174,27 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Tbl.Columns.Add(N.Nombre);
 
             return Tbl;
+        }
+
+        public void EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        {
+            try
+            {
+                DataSet Tablas = new DataSet(NombreTabla);
+                Tablas.Tables.Add(Tabla);
+
+                _Proxy.EsquemaXML = Tablas.GetXmlSchema();
+                _Proxy.XML = Tablas.GetXml();
+
+                _DominioProxy.DoCallBack(new CrossAppDomainDelegate(_Proxy.InvocarEnviarTablas));
+
+                _Proxy.EsquemaXML = string.Empty;
+                _Proxy.XML = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cachuo pa'r coño...", ex);
+            }
         }
 
         public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)

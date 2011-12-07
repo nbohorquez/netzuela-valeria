@@ -10,7 +10,7 @@ using System.ServiceModel.Description;      // ServiceEndpoint
 
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {
-    [Serializable]
+    //[Serializable]
     public class ProxyDinamico
     {
         // Con codigo de: http://blogs.msdn.com/b/vipulmodi/archive/2008/10/16/dynamic-proxy-and-memory-footprint.aspx
@@ -32,6 +32,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #endregion
 
+        #region Propiedades
+
+        public string EsquemaXML { get; set; }
+        public string XML { get; set; }
+
+        #endregion
+
         #region Funciones
 
         public DataSet InvocarRecibirTablas()
@@ -45,7 +52,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado;
         }
 
-        public void InvocarEnviarTablas(string EsquemaXML, string XML)
+        public void InvocarEnviarTablas()
         {
             DynamicProxy EnviarTablas = _Fabrica.CreateProxy("IValeria");
             EnviarTablas.CallMethod("EnviarTablas", EsquemaXML, XML);

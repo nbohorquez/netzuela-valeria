@@ -19,7 +19,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private DataSet _TablasAEnviar;
         private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
         private RelayCommand<object[]> _AsociarOrden;
         private RelayCommand<object> _DesasociarOrden;
@@ -33,14 +32,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public SincronizacionViewModel()
         {
             Tablas = new List<TablaMapeada>();
-            _TablasAEnviar = new DataSet();
+            //TablasAEnviar = new DataSet();
             _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
         }
 
         public SincronizacionViewModel(List<NodoViewModel> Nodos)
         {
             Tablas = new List<TablaMapeada>();
-            _TablasAEnviar = new DataSet();
+            //TablasAEnviar = new DataSet();
             _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
 
             foreach (NodoViewModel Nodo in Nodos)
@@ -58,6 +57,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Propiedades
 
         public List<TablaMapeada> Tablas { get; private set; }
+        //public DataSet TablasAEnviar { get; private set; }
 
         public bool Listo
         {
@@ -123,17 +123,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
 
         private void SincronizacionListaAccion()
-        {
-            _TablasAEnviar.Clear();
-            _TablasAEnviar.Tables.Clear();
+        {/*
+            TablasAEnviar.Clear();
+            TablasAEnviar.Tables.Clear();
 
             foreach (DataTable T in _CacheDeTablas.Values)
             {
-                _TablasAEnviar.Tables.Add(T);
+                TablasAEnviar.Tables.Add(T);
             }
-
+            */
             try
             {
+                /*
                 // Aqui enviamos las tablas al servidor al otro lado del mundo... muajajajaja
                 ServidorValeria.ValeriaClient Cliente = new ServidorValeria.ValeriaClient();
                 Cliente.EnviarTablas(new ServidorValeria.DataSetXML()
@@ -141,7 +142,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     EsquemaXML = _TablasAEnviar.GetXmlSchema(),
                     XML = _TablasAEnviar.GetXml()
                 });
-
+                */
                 Listo = true;
             }
             catch (Exception ex)
@@ -241,6 +242,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 ActualizarTabla(NodoDestino);
             }
+        }
+
+        public Dictionary<NodoViewModel, DataTable> TablasAEnviar()
+        {
+            // Creamos una copia solamente. De esta forma, las modificaciones externas no afectan 
+            // las estructuras internas
+            return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
         }
 
         #endregion

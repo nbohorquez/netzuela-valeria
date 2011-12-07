@@ -19,6 +19,105 @@
             
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel">
+            <summary>
+            Esta clase se emplea para acceder a los datos de una fuente cuya estructura 
+            sea un árbol de nodos.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirTodo">
+            <summary>
+            Expande todos los nodos del árbol de nodos <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Nodos"/> de este explorador.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirTodo(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel})">
+            <summary>
+            Expande todos los nodos del árbol de nodos especificado.
+            </summary>
+            <param name="Nodos">Arbol a expandir.</param>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="Nodos"/> es una referencia 
+            nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Expandir(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
+            <summary>
+            Obtiene el contenido del nodo especificado desde el proveedor de datos.
+            </summary>
+            <param name="Item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
+            especificados en <see cref="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes.NivelDeNodo"/>.</param>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="Item"/> es una referencia 
+            nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTabla(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
+            <summary>
+            Lee la tabla especificada desde el proveedor de datos.
+            </summary>
+            <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
+            <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
+            nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTablasCache">
+            <summary>
+            Devuelve las tablas presentes en la caché de tablas.
+            </summary>
+            <returns>Lista de las tablas guardadas en la caché.</returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerNodosCache">
+            <summary>
+            Devuelve los nodos asociados a las tablas de la caché de tablas.
+            </summary>
+            <returns>Lista de los nodos de tablas guardados en la caché.</returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor">
+            <summary>
+            Construye un explorador vacio.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel},Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos)">
+            <summary>
+            Construye un explorador con determinado arbol de nodos y proveedor de datos.
+            </summary>
+            <param name="Nodos">Árbol de nodos a emplear. Si se trata de un explorador de carga
+            de nodos por demanda (lazy loading), el árbol pasado como parámetro por lo general 
+            sólo contiene el nodo inicial.</param>
+            <param name="BD">Proveedor de datos. A través de este se obtienen los datos y metadatos
+            de los nodos del árbol.</param>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Nodos">
+            <summary>
+            Representa la colección de nodos que conforman el arbol de datos.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.TablaActual">
+            <summary>
+            Lee o escribe la cache de tablas en la entrada especificada por <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoTablaActual"/>.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual">
+            <summary>
+            Indica el nodo actual seleccionado.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.RutaNodoActual">
+            <summary>
+            Este string indica la ruta completa del nodo actual seleccionado.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoTablaActual">
+            <summary>
+            Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual"/>).
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirOrden">
+            <summary>
+            Expande el nodo especificado
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.EstablecerNodoActualOrden">
+            <summary>
+            Establece NodoActual
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel">
             <summary>
             Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
@@ -88,105 +187,6 @@
             <summary>
             Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
             y asi poder vincularse (to bind) a ella desde el ViewModel.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel">
-            <summary>
-            Esta clase se emplea para acceder a los datos de una fuente cuya estructura 
-            sea un árbol de nodos.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor">
-            <summary>
-            Construye un explorador vacio.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel},Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos)">
-            <summary>
-            Construye un explorador con determinado arbol de nodos y proveedor de datos.
-            </summary>
-            <param name="Nodos">Árbol de nodos a emplear. Si se trata de un explorador de carga
-            de nodos por demanda (lazy loading), el árbol pasado como parámetro por lo general 
-            sólo contiene el nodo inicial.</param>
-            <param name="BD">Proveedor de datos. A través de este se obtienen los datos y metadatos
-            de los nodos del árbol.</param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirTodo">
-            <summary>
-            Expande todos los nodos del árbol de nodos <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Nodos"/> de este explorador.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirTodo(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel})">
-            <summary>
-            Expande todos los nodos del árbol de nodos especificado.
-            </summary>
-            <param name="Nodos">Arbol a expandir.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Nodos"/> es una referencia 
-            nula.</exception>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Expandir(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
-            <summary>
-            Obtiene el contenido del nodo especificado desde el proveedor de datos.
-            </summary>
-            <param name="Item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
-            especificados en <see cref="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes.NivelDeNodo"/>.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Item"/> es una referencia 
-            nula.</exception>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTabla(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
-            <summary>
-            Lee la tabla especificada desde el proveedor de datos.
-            </summary>
-            <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
-            <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
-            nula.</exception>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTablasCache">
-            <summary>
-            Devuelve las tablas presentes en la caché de tablas.
-            </summary>
-            <returns>Lista de las tablas guardadas en la caché.</returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerNodosCache">
-            <summary>
-            Devuelve los nodos asociados a las tablas de la caché de tablas.
-            </summary>
-            <returns>Lista de los nodos de tablas guardados en la caché.</returns>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Nodos">
-            <summary>
-            Representa la colección de nodos que conforman el arbol de datos.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.TablaActual">
-            <summary>
-            Lee o escribe la cache de tablas en la entrada especificada por <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoTablaActual"/>.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual">
-            <summary>
-            Indica el nodo actual seleccionado.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.RutaNodoActual">
-            <summary>
-            Este string indica la ruta completa del nodo actual seleccionado.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoTablaActual">
-            <summary>
-            Indica el nodo asociado a la tabla actual (no necesariamente es igual a <see cref="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.NodoActual"/>).
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirOrden">
-            <summary>
-            Expande el nodo especificado
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.EstablecerNodoActualOrden">
-            <summary>
-            Establece NodoActual
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.AutentificacionViewModel">

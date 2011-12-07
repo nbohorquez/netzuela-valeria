@@ -39,42 +39,47 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Implementaciones de interfaces
 
-        ConnectionState IBaseDeDatos.Estado
+        public ConnectionState Estado
         {
             get { return _Conexion.State; }
         }
 
-        StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
+        public StateChangeEventHandler EnCambioDeEstado
         {
             set { _Conexion.StateChange += value; }
         }
 
-        void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena) { }
+        public void Conectar(SecureString Usuario, SecureString Contrasena) { }
 
-        void IBaseDeDatos.Desconectar() { }
+        public void Desconectar() { }
 
-        string[] IBaseDeDatos.ListarBasesDeDatos()
+        public string[] ListarBasesDeDatos()
         {
             string[] Resultado = new string[] { };
             return Resultado;
         }
 
-        string[] IBaseDeDatos.ListarTablas(string BaseDeDatos)
+        public string[] ListarTablas(string BaseDeDatos)
         {
             string[] Resultado = new string[] { };
             return Resultado;
         }
 
-        DataTable IBaseDeDatos.MostrarTabla(string BaseDeDatos, string Tabla)
+        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
         {
             return new DataTable();
         }
 
-        object IBaseDeDatos.CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public void EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
+        public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion        
     }
 }

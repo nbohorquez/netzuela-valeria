@@ -5,6 +5,7 @@ using System.Text;
 
 using MvvmFoundation.Wpf;                       // ObservableObject
 using System.Collections.ObjectModel;           // ObservableCollection
+using Zuliaworks.Netzuela.Valeria.Comunes;      // ConvertirALista
 using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
@@ -14,13 +15,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     /// y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
     /// la consistencia de esta clase.
     /// </summary>
-    public class NodoViewModel : ObservableObject
+    public class NodoViewModel : ObservableObject, IDisposable
     {
         #region Variables
 
         private Nodo _Nodo;
-        private NodoViewModel _Padre;
-        private ObservableCollection<NodoViewModel> _Hijos;
 
         #endregion
 
@@ -28,103 +27,91 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         // Con codigo de: http://www.codeproject.com/KB/cs/3ways_extend_class.aspx
 
-        public NodoViewModel()
+        private void InicializacionComun1()
         {
-            // La parte de Nodo
-            _Nodo = new Nodo();
-            
-            // La parte de NodoViewModel
+            this.Padre = null;
+            this.Hijos = new ObservableCollection<NodoViewModel>();
             this.Expandido = false;
             this.Explorador = null;
-
-            // Agregamos el par (Nodo, NodoViewModel) al repositorio
-            _Nodo.AgregarARepositorio(this);
-        }
-            
-        public NodoViewModel(string Nombre)
-        {
-            // La parte de Nodo
-            _Nodo = new Nodo(Nombre);
-
-            // La parte de NodoViewModel
-            this.Expandido = false;
-            this.Explorador = null;
-            //this.Hijos = new ObservableCollection<NodoViewModel>() { new NodoViewModel() };
-
-            // Agregamos el par (Nodo, NodoViewModel) al repositorio
-            _Nodo.AgregarARepositorio(this);
-        }
-            
-        public NodoViewModel(string Nombre, int Nivel)
-        {
-            // La parte de Nodo
-            _Nodo = new Nodo(Nombre, Nivel);
-
-            // La parte de NodoViewModel
-            this.Expandido = false;
-            this.Explorador = null;
-            //this.Hijos = new ObservableCollection<NodoViewModel>() { new NodoViewModel() };
-
-            // Agregamos el par (Nodo, NodoViewModel) al repositorio 
-            _Nodo.AgregarARepositorio(this);
-        }            
-
-        public NodoViewModel(string Nombre, NodoViewModel Padre)
-        {
-            // La parte de Nodo
-            _Nodo = new Nodo(Nombre, Padre._Nodo);
-
-            // La parte de NodoViewModel
-            this.Padre = Padre;
-            //this.Hijos = new ObservableCollection<NodoViewModel>() { new NodoViewModel() };
-            this.Expandido = false;
-            this.Explorador = Padre.Explorador;
-
-            // Agregamos el par (Nodo, NodoViewModel) al repositorio
-            _Nodo.AgregarARepositorio(this);
-        }            
-
-        public NodoViewModel(string Nombre, NodoViewModel Padre, string[] Hijos)
-        {
-            // La parte de Nodo
-            _Nodo = new Nodo(Nombre, Padre._Nodo, Hijos);
-
-            // La parte de NodoViewModel
-            this.Padre = Padre;
-            //this.Hijos = new ObservableCollection<NodoViewModel>() { new NodoViewModel() };
-            this.Expandido = true;
-            this.Explorador = Padre.Explorador;
-
-            // Agregamos el par (Nodo, NodoViewModel) al repositorio
             _Nodo.AgregarARepositorio(this);
         }
 
-        public NodoViewModel(string Nombre, NodoViewModel Padre, ObservableCollection<NodoViewModel> Hijos)
+        private void InicializacionComun2(NodoViewModel Padre)
         {
-            // La parte de Nodo
-            _Nodo = new Nodo(Nombre, _Padre._Nodo);
-
-            // La parte de NodoViewModel
-            this.Padre = Padre;
-            this.Hijos = Hijos;
-            this.Expandido = true;
-            this.Explorador = Padre.Explorador;
-
-            // Agregamos el par (Nodo, NodoViewModel) al repositorio
+            Padre.AgregarHijo(this);
+            this.Hijos = new ObservableCollection<NodoViewModel>();
+            this.Expandido = false;
             _Nodo.AgregarARepositorio(this);
         }
 
         private NodoViewModel(Nodo Nodo)
         {
-            // La parte de Nodo
             _Nodo = Nodo;
+            InicializacionComun1();
+        }
 
-            // La parte de NodoViewModel
-            this.Expandido = false;
-            this.Explorador = null;
+        public NodoViewModel()
+        {
+            _Nodo = new Nodo();
+            InicializacionComun1();
+        }
+            
+        public NodoViewModel(string Nombre)
+        {
+            _Nodo = new Nodo(Nombre);
+            InicializacionComun1();
+        }
+            
+        public NodoViewModel(string Nombre, int Nivel)
+        {
+            _Nodo = new Nodo(Nombre, Nivel);
+            InicializacionComun1();
+        }            
 
-            // Agregamos el par (Nodo, NodoViewModel) al repositorio
-            _Nodo.AgregarARepositorio(this);
+        public NodoViewModel(string Nombre, NodoViewModel Padre)
+        {
+            if (Padre == null)
+                throw new ArgumentNullException("Padre");
+
+            _Nodo = new Nodo(Nombre);
+            InicializacionComun2(Padre);
+        }            
+
+        public NodoViewModel(string Nombre, NodoViewModel Padre, string[] Hijos)
+        {
+            if (Padre == null)
+                throw new ArgumentNullException("Padre");
+
+            _Nodo = new Nodo(Nombre);
+            InicializacionComun2(Padre);
+
+            foreach (string s in Hijos)
+            {
+                NodoViewModel N = new NodoViewModel(s, this);
+            }
+
+            this.Expandido = true;        
+        }
+
+        public NodoViewModel(string Nombre, NodoViewModel Padre, ObservableCollection<NodoViewModel> Hijos)
+        {
+            if (Padre == null)
+                throw new ArgumentNullException("Padre");
+
+            _Nodo = new Nodo(Nombre);
+            InicializacionComun2(Padre);
+
+            foreach (NodoViewModel n in Hijos)
+            {
+                this.AgregarHijo(n);
+            }
+
+            this.Expandido = true;
+        }
+
+        ~NodoViewModel()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -164,87 +151,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             get { return _Nodo.Nivel; }
             set { _Nodo.Nivel = value; }
         }
-       
-        public NodoViewModel Padre 
-        {
-            get
-            {
-                if (_Padre == null)
-                {
-                    if (_Nodo.Padre == null)
-                        return null;
 
-                    // Actualizamos este NodoViewModel para que refleje la estructura en Nodo
-                    _Padre = _Nodo.Padre.ExisteEnRepositorio() ? _Nodo.Padre.BuscarEnRepositorio() : new NodoViewModel(_Nodo.Padre);
-                    
-                    if (!_Padre.Hijos.Contains(this))
-                        _Padre.Hijos.Add(this);
-
-                    this.Explorador = _Padre.Explorador;
-                }
-
-                return _Padre;
-            }
-            set
-            {
-                if (value != _Padre)
-                {
-                    _Padre = value;
-
-                    if (!_Padre.Hijos.Contains(this))
-                        _Padre.Hijos.Add(this);
-
-                    this.Explorador = _Padre.Explorador;
-
-                    // Actualizamos Nodo para que refleje la estructura de NodoViewModel
-                    if (!_Padre._Nodo.Hijos.Contains(this._Nodo))
-                        _Padre._Nodo.AgregarHijo(this._Nodo);
-                }
-            }
-        }
-
-        public ObservableCollection<NodoViewModel> Hijos 
-        {
-            get
-            {
-                if (_Hijos == null)
-                {
-                    if (_Nodo.Hijos == null)
-                        return null;
-
-                    // Actualizamos este NodoViewModel para que refleje la estructura en Nodo
-                    _Hijos = new ObservableCollection<NodoViewModel>();
-
-                    foreach (Nodo n in _Nodo.Hijos)
-                    {
-                        //NodoViewModel nvm = new NodoViewModel(n);
-                        NodoViewModel nvm = n.ExisteEnRepositorio() ? n.BuscarEnRepositorio() : new NodoViewModel(n);
-                        nvm.Padre = this;
-                    }
-                }
-
-                return _Hijos;
-            }
-            set
-            {
-                if (value != _Hijos)
-                {
-                    _Hijos = value;
-
-                    foreach (NodoViewModel nvm in _Hijos)
-                    {
-                        nvm.Padre = this;
-                        Nodo n = nvm._Nodo;
-
-                        if(!_Nodo.Hijos.Contains(n))
-                        {
-                            _Nodo.AgregarHijo(n);
-                        }
-                    }
-                }
-            }
-        }
-
+        public NodoViewModel Padre { get; set; }
+        public ObservableCollection<NodoViewModel> Hijos { get; set; }
+        
         public MapeoDeColumnas MapaColumna
         {
             get { return _Nodo.MapaColumna; }
@@ -258,6 +168,49 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Funciones
 
+        protected void Dispose(bool BorrarCodigoAdministrado)
+        {
+            if (_Nodo != null)
+            {
+                _Nodo.QuitarDeRepositorio();
+                _Nodo = null;
+            }
+
+            if (Padre != null)
+            {
+                Padre.Hijos.Remove(this);
+                Padre = null;
+            }
+
+            if (MapaColumna != null)
+            {
+                if (_Nodo == MapaColumna.ColumnaDestino)
+                {
+                    MapaColumna.QuitarDestino();
+                }
+                else if (_Nodo == MapaColumna.ColumnaOrigen)
+                {
+                    MapaColumna.QuitarOrigen();
+                }
+
+                MapaColumna = null;
+            }
+
+            if (BorrarCodigoAdministrado)
+            {
+                if (Hijos != null)
+                {
+                    foreach (NodoViewModel N in Hijos)
+                    {
+                        N.Dispose();
+                    }
+
+                    Hijos.Clear();
+                    Hijos = null;
+                }
+            }
+        }
+
         private void EnCambioDeColumnas(object Remitente, CambioEnColumnasArgumentos Argumentos)
         {
             RaisePropertyChanged("NombreParaMostrar");
@@ -269,11 +222,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new ArgumentNullException("Nodo");
 
             Nodo.Padre = this;
+            Nodo.Nivel = this.Nivel + 1;
+            Nodo.Explorador = this.Explorador;
+
+            this.Hijos.Add(Nodo);
         }
 
         public TablaMapeada CrearTablaMapeada()
         {
-            TablaMapeada T = new TablaMapeada(this._Nodo);
+            List<Nodo> Lista = new List<Nodo>();
+
+            foreach (NodoViewModel N in this.Hijos)
+            {
+                Lista.Add(N._Nodo);
+            }
+            
+            TablaMapeada T = new TablaMapeada(this._Nodo, Lista);
 
             foreach (NodoViewModel Hijo in this.Hijos)
             {
@@ -299,7 +263,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                  * mapeadas
                  */
                 this.MapaColumna.CambioEnColumnas += NodoOrigen.EnCambioDeColumnas;
-                this.MapaColumna.Asociar(NodoOrigen._Nodo);
+                this.MapaColumna.FijarOrigen(NodoOrigen._Nodo);
             }
             catch (Exception ex)
             {
@@ -313,13 +277,26 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 NodoViewModel NodoOrigen = this.MapaColumna.ColumnaOrigen.BuscarEnRepositorio();
 
-                this.MapaColumna.Desasociar();
+                this.MapaColumna.QuitarOrigen();
                 this.MapaColumna.CambioEnColumnas -= NodoOrigen.EnCambioDeColumnas;
             }
             catch (Exception ex)
             {
                 throw new Exception("No se pudo completar la desasociación de nodos", ex);
             }
+        }
+
+        #endregion
+
+        #region Implementacion de interfaces
+
+        public void Dispose()
+        {
+            // En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+            // http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

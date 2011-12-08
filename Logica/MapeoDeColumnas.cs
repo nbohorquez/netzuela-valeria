@@ -49,7 +49,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             this.ColumnaDestino = ColumnaDestino;
             this.ColumnaOrigen = ColumnaOrigen;
         }
-
+        
         #endregion
 
         #region Propiedades
@@ -160,25 +160,45 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         #endregion
 
         #region Funciones
-
+        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ColumnaOrigen"></param>
-        public void Asociar(Nodo ColumnaOrigen)
+        public void FijarOrigen(Nodo ColumnaOrigen)
         {
+            if (ColumnaOrigen == null)
+                throw new ArgumentNullException("ColumnaOrigen");
+
             this.ColumnaOrigen = ColumnaOrigen;
+        }
+
+        public void FijarDestino(Nodo ColumnaDestino)
+        {
+            if (ColumnaDestino == null)
+                throw new ArgumentNullException("ColumnaDestino");
+
+            this.ColumnaDestino = ColumnaDestino;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void Desasociar()
+        public void QuitarOrigen()
         {
             if (this.ColumnaOrigen != null)
             {
                 this.ColumnaOrigen.MapaColumna = null;
                 this.ColumnaOrigen = null;
+            }
+        }
+
+        public void QuitarDestino()
+        {
+            if (this.ColumnaDestino != null)
+            {
+                this.ColumnaDestino.MapaColumna = null;
+                this.ColumnaDestino = null;
             }
         }
 

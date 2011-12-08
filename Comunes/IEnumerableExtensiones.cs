@@ -27,5 +27,15 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
 
             return c;
         }
+
+        public static List<T> ConvertirALista<T>(this IEnumerable<T> Enumerable)
+        {
+            var c = new List<T>();
+
+            foreach (var e in Enumerable)
+                c.Add(e);
+
+            return c;
+        }
     }
 }

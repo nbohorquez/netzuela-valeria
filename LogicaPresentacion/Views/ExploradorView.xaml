@@ -52,7 +52,7 @@
                                       ACB:CommandBehavior.CommandParameter="{Binding Path=.}">
                             <!-- 
                             Para una explicacion acerca de la biblioteca empleada (Attached Command Behavior) ver 
-                            la direccion: http://marlongrech.wordpress.com/2008/12/13/attachedcommandbehavior-v2-aka-acb/ 
+                            el documento: http://marlongrech.wordpress.com/2008/12/13/attachedcommandbehavior-v2-aka-acb 
                             -->
                             <TreeViewItem.Header>
                                 <TextBlock Text="{Binding Path=NombreParaMostrar}"/>

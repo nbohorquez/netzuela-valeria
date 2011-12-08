@@ -29,13 +29,13 @@
             <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
             <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.Asociar(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.FijarOrigen(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
             <summary>
             
             </summary>
             <param name="ColumnaOrigen"></param>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.Desasociar">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.QuitarOrigen">
             <summary>
             
             </summary>
@@ -119,35 +119,6 @@
             <param name="Nombre"></param>
             <param name="Nivel"></param>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String,Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Nombre"></param>
-            <param name="Padre"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String,Zuliaworks.Netzuela.Valeria.Logica.Nodo,System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
-            <summary>
-            
-            </summary>
-            <param name="Nombre"></param>
-            <param name="Padre"></param>
-            <param name="Hijos"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String,Zuliaworks.Netzuela.Valeria.Logica.Nodo,System.String[])">
-            <summary>
-            
-            </summary>
-            <param name="Nombre"></param>
-            <param name="Padre"></param>
-            <param name="Hijos"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.AgregarHijo(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="Hijo"></param>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada">
             <summary>
             
@@ -158,11 +129,12 @@
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
             <summary>
             
             </summary>
             <param name="Tabla"></param>
+            <param name="Columnas"></param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
             <summary>

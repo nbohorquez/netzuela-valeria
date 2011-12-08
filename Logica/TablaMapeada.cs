@@ -35,7 +35,8 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// 
         /// </summary>
         /// <param name="Tabla"></param>
-        public TablaMapeada(Nodo Tabla)
+        /// <param name="Columnas"></param>
+        public TablaMapeada(Nodo Tabla, List<Nodo> Columnas)
         {
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
@@ -43,7 +44,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             this.Tabla = Tabla;
             this.MapasColumnas = new List<MapeoDeColumnas>();
 
-            foreach (Nodo Columna in this.Tabla.Hijos)
+            foreach (Nodo Columna in Columnas)
             {
                 MapeoDeColumnas MapCol = new MapeoDeColumnas(Columna);
                 AgregarMapa(MapCol);
@@ -97,7 +98,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 {
                     if (Nodo.MapaColumna.ColumnaOrigen == Nodo)
                     {
-                        Nodo.MapaColumna.Desasociar();
+                        Nodo.MapaColumna.QuitarOrigen();
                     }
                     else if (Nodo.MapaColumna.ColumnaDestino == Nodo)
                     {

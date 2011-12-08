@@ -11,7 +11,8 @@
     <RootNamespace>Zuliaworks.Netzuela.Valeria.Presentacion</RootNamespace>
     <AssemblyName>Aplicacion</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -52,10 +53,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AttachedCommandBehavior">
-      <HintPath>..\Bibliotecas\AttachedCommandBehavior\AttachedCommandBehavior.dll</HintPath>
+      <HintPath>..\..\Bibliotecas\AttachedCommandBehavior\AttachedCommandBehavior.dll</HintPath>
     </Reference>
     <Reference Include="MvvmFoundation.Wpf">
-      <HintPath>..\Bibliotecas\MvvmFoundation\MvvmFoundation.Wpf.dll</HintPath>
+      <HintPath>..\..\Bibliotecas\MvvmFoundation\MvvmFoundation.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -109,6 +110,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -124,13 +126,13 @@
       <Project>{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}</Project>
       <Name>Datos</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LogicaPresentacion\LogicaPresentacion.csproj">
-      <Project>{39A2598C-EEE2-4C32-84E5-A7277586C9BD}</Project>
-      <Name>LogicaPresentacion</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Logica\Logica.csproj">
       <Project>{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}</Project>
       <Name>Logica</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogicaPresentacion\LogicaPresentacion.csproj">
+      <Project>{39A2598C-EEE2-4C32-84E5-A7277586C9BD}</Project>
+      <Name>LogicaPresentacion</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@ using System.Configuration;                                             // Confi
 using System.Windows;                                                   // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;                              // ParametrosDeConexion
 using Zuliaworks.Netzuela.Valeria.Logica;                               // TablaMapeada
-using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias;   // Configuracion
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias;      // Configuracion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -15,7 +15,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {        
         #region Funciones
 
-        private void GuardarConfiguracion()
+        private void GuardarPreferencias()
         {
             // Con codigo de 
             // http://msdn.microsoft.com/es-es/library/system.configuration.configurationmanager%28v=VS.100%29.aspx
@@ -86,7 +86,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
 
             return Resultado;
@@ -136,7 +136,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
 
             return Resultado;
@@ -171,7 +171,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
 
             return Resultado;

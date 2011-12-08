@@ -10,6 +10,11 @@
             a las bases de datos.
             </summary>    
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
+            <summary>
+            Implementa las funciones de acceso a las bases de datos SQLServer
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Oracle">
             <summary>
             Implementa las funciones de acceso a las bases de datos Oracle
@@ -29,11 +34,6 @@
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorPredeterminado">
             <summary>
             Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
-            <summary>
-            Implementa las funciones de acceso a las bases de datos SQLServer
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Netzuela">

@@ -17,6 +17,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicaPresentacion", "LogicaPresentacion\LogicaPresentacion.csproj", "{39A2598C-EEE2-4C32-84E5-A7277586C9BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentacion", "Presentacion\Presentacion.csproj", "{E2C9719C-AFE8-4A2D-8609-C34FC3C91978}"
+	ProjectSection(ProjectDependencies) = postProject
+		{39A2598C-EEE2-4C32-84E5-A7277586C9BD} = {39A2598C-EEE2-4C32-84E5-A7277586C9BD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

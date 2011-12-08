@@ -5,6 +5,7 @@ using System.Text;
 
 using MvvmFoundation.Wpf;                                               // PropertyObserver<>, ObservableObject
 using System.Collections.ObjectModel;                                   // ObservableCollection
+using System.Data;                                                      // DataTable
 using System.Windows;                                                   // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;                              // Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;                               // TablaMapeada
@@ -181,8 +182,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
             Sincronizacion.RecargarTablasLocales(ExploradorLocal.Nodos);
 
-            GuardarConfiguracion();
-
+            GuardarPreferencias();
+            
+            // Este codigo deberia ejecutarse periodicamente y no solo cuando se termine de
+            // configurar la sincronizacion de las instancias local y remota
+            Dictionary<NodoViewModel,DataTable> Tablas = LocalARemota.TablasAEnviar();
+            foreach(KeyValuePair<NodoViewModel, DataTable> Par in Tablas)
+            {
+                ExploradorRemoto.EscribirTabla(Par.Key, Par.Value);
+            }
+            
             MessageBox.Show("La sincronización se realizó correctamente");                
         }
 

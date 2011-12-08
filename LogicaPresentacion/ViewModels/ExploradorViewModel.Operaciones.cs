@@ -43,7 +43,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -103,7 +103,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -225,7 +225,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
                     else
                     {
-                        Temp = _BD.MostrarTabla(Tabla.Padre.Nombre, Tabla.Nombre);
+                        Temp = _BD.LeerTabla(Tabla.Padre.Nombre, Tabla.Nombre);
                         Temp.TableName = Tabla.RutaCompleta();
 
                         Tabla.Hijos.Clear();
@@ -240,10 +240,25 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
             }
 
             return Temp;
+        }
+
+        public void EscribirTabla(NodoViewModel Nodo, DataTable Tabla)
+        {
+            if (Nodo.Nivel != Constantes.NivelDeNodo.TABLA)
+                return;
+
+            try
+            {
+                _BD.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+            }
         }
 
         /// <summary>

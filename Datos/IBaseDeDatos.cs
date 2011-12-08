@@ -28,7 +28,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         void Desconectar();
         string[] ListarBasesDeDatos();
         string[] ListarTablas(string BaseDeDatos);
-        DataTable MostrarTabla(string BaseDeDatos, string Tabla);
+        DataTable LeerTabla(string BaseDeDatos, string Tabla);
+        void EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla);
         object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios);
         
         #endregion

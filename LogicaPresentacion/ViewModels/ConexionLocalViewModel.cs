@@ -22,8 +22,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private RelayCommand _ConectarOrden;
-        private RelayCommand _DetectarOrden;        
+        private RelayCommand _DetectarOrden;
         private bool _MostrarAutentificacionView;
         private bool _MostrarDetectarServidoresLocalesView;
         private PropertyObserver<AutentificacionViewModel> _ObservadorAutentificacion;

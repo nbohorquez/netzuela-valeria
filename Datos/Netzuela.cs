@@ -19,6 +19,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         // ¡Temporal!
         private List<Nodito> _ServidorRemoto;
         private ConnectionState _Estado;
+
+        private AppDomain _DominioProxy;
+        private ProxyDinamico _Proxy;
         
         #endregion
 
@@ -27,6 +30,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public Netzuela(ParametrosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
+            
+            // Hay que ver como quito esto
             _Estado = ConnectionState.Closed;
 
             // Me invento una base de datos ficticia
@@ -68,19 +73,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     }
                 }
             };
-
-                /*
-            ServidorRemoto = new List<Nodito>()
-            {
-                { new Nodo("Netzuela", Constantes.NivelDeNodo.SERVIDOR) }
-            };
-
-            ServidorRemoto[0].Hijos.Clear();
-            Nodo Spuria = new Nodo("Spuria", ServidorRemoto[0]);
-
-            Spuria.Hijos.Clear();
-            Nodo Inventario = new Nodo("Inventario", Spuria, new string[] { "Codigo", "Descripcion", "Precio", "Cantidad" });
-                 * */
         }
 
         #endregion
@@ -119,12 +111,32 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         }
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
-        {
-            this.Estado = ConnectionState.Open;
+        {/*
+            if (_DominioProxy != null)
+                Desconectar();
+            */
+            try
+            {
+                _Proxy = new ProxyDinamico("http://localhost:4757/Servidor.svc?wsdl");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en la conexion a Netzuela ", ex);
+            }
+            
+            // Esto hay que borrarlo
+            Estado = ConnectionState.Open;
         }
 
-        public void Desconectar() 
-        {
+        public void Desconectar()
+        {/*
+            if (_DominioProxy != null)
+            {
+                AppDomain.Unload(_DominioProxy);
+                GC.Collect();
+            }
+            */
+            // Esto hay que borrarlo
             Estado = ConnectionState.Closed;
         }
 
@@ -150,9 +162,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado.ToArray();
         }
 
-        public DataTable MostrarTabla(string BaseDeDatos, string Tabla)
-        {
-            
+        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
+        {            
             DataTable Tbl = new DataTable();
 
             Nodito BD = Nodito.BuscarNodo(BaseDeDatos, _ServidorRemoto[0].Hijos);
@@ -162,6 +173,37 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Tbl.Columns.Add(N.Nombre);
 
             return Tbl;
+        }
+
+        public void EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        {
+            try
+            {
+                DataSet Tablas = new DataSet(NombreTabla);
+                Tablas.Tables.Add(Tabla);
+
+                _Proxy.EsquemaXML = Tablas.GetXmlSchema();
+                _Proxy.XML = Tablas.GetXml();
+
+                _DominioProxy = AppDomain.CreateDomain("DominioProxyValeria");
+                _DominioProxy.DoCallBack(new CrossAppDomainDelegate(_Proxy.InvocarEnviarTablas));
+                //_Proxy.InvocarEnviarTablas(Tablas.GetXmlSchema(), Tablas.GetXml());
+
+                _Proxy.XML = string.Empty;
+                _Proxy.EsquemaXML = string.Empty;                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cachuo pa'r coño...", ex);
+            }
+            finally
+            {
+                if (_DominioProxy != null)
+                {
+                    AppDomain.Unload(_DominioProxy);
+                    GC.Collect();
+                }
+            }
         }
 
         public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)

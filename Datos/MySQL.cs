@@ -326,7 +326,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return LectorSimple("SHOW TABLES");
         }
 
-        DataTable IBaseDeDatos.MostrarTabla(string BaseDeDatos, string Tabla)
+        DataTable IBaseDeDatos.LeerTabla(string BaseDeDatos, string Tabla)
         {
             DataTable Descripcion = new DataTable();
 
@@ -483,6 +483,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
 
             return Resultado;
+        }
+
+        void IBaseDeDatos.EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

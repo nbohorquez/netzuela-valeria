@@ -32,14 +32,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public SincronizacionViewModel()
         {
             Tablas = new List<TablaMapeada>();
-            //TablasAEnviar = new DataSet();
             _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
         }
 
         public SincronizacionViewModel(List<NodoViewModel> Nodos)
         {
             Tablas = new List<TablaMapeada>();
-            //TablasAEnviar = new DataSet();
             _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
 
             foreach (NodoViewModel Nodo in Nodos)
@@ -57,7 +55,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Propiedades
 
         public List<TablaMapeada> Tablas { get; private set; }
-        //public DataSet TablasAEnviar { get; private set; }
 
         public bool Listo
         {
@@ -84,7 +81,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ICommand ListoOrden
         {
-            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(this.SincronizacionListaAccion)); }
+            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(() => Listo = true)); }
         }
 
         #endregion
@@ -147,7 +144,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -246,8 +243,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public Dictionary<NodoViewModel, DataTable> TablasAEnviar()
         {
-            // Creamos una copia solamente. De esta forma, las modificaciones externas no afectan 
-            // las estructuras internas
+            // Creamos una copia solamente. De esta forma, las modificaciones externas no afectaran 
+            // al objeto interno
             return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
         }
 

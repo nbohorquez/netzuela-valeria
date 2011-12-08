@@ -111,18 +111,17 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         }
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
-        {
+        {/*
             if (_DominioProxy != null)
                 Desconectar();
-
+            */
             try
             {
-                _DominioProxy = AppDomain.CreateDomain("DominioProxy");
                 _Proxy = new ProxyDinamico("http://localhost:4757/Servidor.svc?wsdl");
             }
             catch (Exception ex)
             {
-                throw new Exception("Error... ¡Cachuo pa'r coño!", ex);
+                throw new Exception("Error en la conexion a Netzuela ", ex);
             }
             
             // Esto hay que borrarlo
@@ -130,13 +129,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         }
 
         public void Desconectar()
-        {
+        {/*
             if (_DominioProxy != null)
             {
                 AppDomain.Unload(_DominioProxy);
                 GC.Collect();
             }
-            
+            */
             // Esto hay que borrarlo
             Estado = ConnectionState.Closed;
         }
@@ -183,17 +182,22 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 DataSet Tablas = new DataSet(NombreTabla);
                 Tablas.Tables.Add(Tabla);
 
-                _Proxy.EsquemaXML = Tablas.GetXmlSchema();
-                _Proxy.XML = Tablas.GetXml();
-
-                _DominioProxy.DoCallBack(new CrossAppDomainDelegate(_Proxy.InvocarEnviarTablas));
-
-                _Proxy.EsquemaXML = string.Empty;
-                _Proxy.XML = string.Empty;
+                _DominioProxy = AppDomain.CreateDomain("DominioProxyValeria");
+                _DominioProxy.DoCallBack(new CrossAppDomainDelegate());
+                //_Proxy.InvocarEnviarTablas(Tablas.GetXmlSchema(), Tablas.GetXml());
+                
             }
             catch (Exception ex)
             {
                 throw new Exception("Cachuo pa'r coño...", ex);
+            }
+            finally
+            {
+                if (_DominioProxy != null)
+                {
+                    AppDomain.Unload(_DominioProxy);
+                    GC.Collect();
+                }
             }
         }
 

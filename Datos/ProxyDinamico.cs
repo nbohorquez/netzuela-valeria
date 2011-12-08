@@ -16,13 +16,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         // Con codigo de: http://blogs.msdn.com/b/vipulmodi/archive/2008/10/16/dynamic-proxy-and-memory-footprint.aspx
 
-        // Hay una forma de destruir los 
         #region Variable
 
         private string _UriWsdlServicio;
-        //private DynamicProxyFactory _Fabrica;
-        //private DynamicProxy _IValeria;
-        //private ServiceEndpoint _Endpoint;
 
         #endregion
 
@@ -49,6 +45,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         private DynamicProxy CrearProxy()
         {
+            DynamicProxy Resultado = null;
             DynamicProxyFactory Fabrica = new DynamicProxyFactory(_UriWsdlServicio);
             ServiceEndpoint Endpoint = null;
 
@@ -89,46 +86,44 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                         MaxStringContentLength = 2147483647
                     }
                 };
+
+                Resultado = Fabrica.CreateProxy("IValeria");
             }
 
-            return Fabrica.CreateProxy("IValeria");
+            return Resultado;
         }
 
         public DataSet InvocarRecibirTablas()
         {
-            DataSet Resultado;
-            /*
-            DynamicProxyFactory _Fabrica = new DynamicProxyFactory(_UriWsdlServicio);
+            DataSet Resultado = null;
 
-            DynamicProxy RecibirTablas = _Fabrica.CreateProxy("IValeria");
+            DynamicProxy RecibirTablas = CrearProxy();
             Resultado = RecibirTablas.CallMethod("RecibirTablas", null) as DataSet;
             RecibirTablas.Close();
-            */
+            
+            /*
             _IValeria = _Fabrica.CreateProxy("IValeria");
             Resultado = _IValeria.CallMethod("RecibirTablas", null) as DataSet;
             _IValeria.Close();
+             * */
             return Resultado;
         }
 
-        /*
         public void InvocarEnviarTablas()
         {
-            DynamicProxyFactory _Fabrica = new DynamicProxyFactory(_UriWsdlServicio);
-
-            DynamicProxy EnviarTablas = _Fabrica.CreateProxy("IValeria");
-            
+            DynamicProxy EnviarTablas = CrearProxy();            
             EnviarTablas.CallMethod("EnviarTablas", EsquemaXML, XML);
             EnviarTablas.Close();
         }
-    */
-
+    
+        /*
         public void InvocarEnviarTablas(string EsquemaXML, string XML)
         {
             _IValeria = _Fabrica.CreateProxy("IValeria");
             _IValeria.CallMethod("EnviarTablas", EsquemaXML, XML);
             _IValeria.Close();
         }
-
+        */
         #endregion
     }
 }

@@ -182,10 +182,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 DataSet Tablas = new DataSet(NombreTabla);
                 Tablas.Tables.Add(Tabla);
 
+                _Proxy.EsquemaXML = Tablas.GetXmlSchema();
+                _Proxy.XML = Tablas.GetXml();
+
                 _DominioProxy = AppDomain.CreateDomain("DominioProxyValeria");
-                _DominioProxy.DoCallBack(new CrossAppDomainDelegate());
+                _DominioProxy.DoCallBack(new CrossAppDomainDelegate(_Proxy.InvocarEnviarTablas));
                 //_Proxy.InvocarEnviarTablas(Tablas.GetXmlSchema(), Tablas.GetXml());
-                
+
+                _Proxy.XML = string.Empty;
+                _Proxy.EsquemaXML = string.Empty;                
             }
             catch (Exception ex)
             {

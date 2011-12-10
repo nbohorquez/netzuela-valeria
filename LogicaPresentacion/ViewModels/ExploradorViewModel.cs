@@ -37,7 +37,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             this.Nodos = new ObservableCollection<NodoViewModel>();
             this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
-            this.NodoActual = new NodoViewModel();
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
             this._BD = null;
@@ -54,13 +53,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ExploradorViewModel(ObservableCollection<NodoViewModel> Nodos, IBaseDeDatos BD)
         {
             this.Nodos = Nodos;
-            AsignarExplorador(this.Nodos, this);
+            AsignarEsteExploradorA(Nodos);
 
             this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
             this.NodoActual = Nodos[0];
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
             this._BD = BD;
+        }
+
+        ~ExploradorViewModel()
+        {
+            Dispose(false);
         }
 
         #endregion

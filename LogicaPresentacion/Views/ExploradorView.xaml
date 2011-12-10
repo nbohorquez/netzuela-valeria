@@ -64,16 +64,17 @@
 
             <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
 
-            <DataGrid Name="dgr_Tabla" Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView}" 
+            <DataGrid Name="dgr_Tabla" Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView, NotifyOnTargetUpdated=True}" 
+                      TargetUpdated="dgr_Tabla_DestinoActualizado"
                       ACB:CommandBehavior.Event="MouseLeftButtonUp"
                       ACB:CommandBehavior.Command="{Binding Path=EstablecerNodoActualOrden}"
                       ACB:CommandBehavior.CommandParameter="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=CurrentCell.Column.Header}">
-                <DataGrid.CurrentCell>
+                <DataGrid.CurrentColumn>
                     <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
                         <Binding Path="NodoActual.Nombre"/>
                         <Binding RelativeSource="{x:Static RelativeSource.Self}" />
                     </MultiBinding>
-                </DataGrid.CurrentCell>
+                </DataGrid.CurrentColumn>
             </DataGrid>
         </Grid>
     </DockPanel>

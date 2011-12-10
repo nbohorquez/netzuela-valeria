@@ -31,10 +31,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                     break;
                 }
             }
-
+            
             // Seleccionamos todas las celdas de esa columna
             if (Columna != -1)
-            {
+            {                
                 Grilla.SelectedCells.Clear();
                 for (int i = 0; i < Grilla.Items.Count; i++)
                 {
@@ -43,7 +43,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                 }
             }
 
-            return Grilla.CurrentCell;
+            return Grilla.CurrentColumn;
         }
 
         public object[] ConvertBack(object Valor, Type[] TipoObjetivo, object Parametro, CultureInfo Cultura)

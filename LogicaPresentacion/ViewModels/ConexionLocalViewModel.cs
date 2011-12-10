@@ -142,8 +142,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 MostrarAutentificacionView = false;
 
-                _UsuarioExterno = AutentificacionVM.Usuario;
-                _ContrasenaExterna = AutentificacionVM.Contrasena;
+                _UsuarioExterno = AutentificacionVM.Usuario.Copy();
+                _ContrasenaExterna = AutentificacionVM.Contrasena.Copy();
 
                 ConexionUsuario();
             }
@@ -166,8 +166,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             base.Conectar(_UsuarioExterno, _ContrasenaExterna);
 
             // Borramos todo aquello que pudiese resultar atractivo para alguien con malas intenciones
-            _UsuarioExterno.Dispose();
-            _ContrasenaExterna.Dispose();
+            if (_UsuarioExterno != null)
+            {
+                _UsuarioExterno.Dispose();
+                Autentificacion.Usuario = null;
+                _UsuarioExterno = null;
+            }
+            if (_ContrasenaExterna != null)
+            {
+                _ContrasenaExterna.Dispose();
+                Autentificacion.Contrasena = null;
+                _ContrasenaExterna = null;
+            }
         }
             
         public void ConexionNetzuela()

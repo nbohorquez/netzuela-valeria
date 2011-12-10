@@ -13,7 +13,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     /// de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
     /// empleada por <see cref="TablaMapeada"/> como unidad básica de mapeo.
     /// </summary>
-    public class MapeoDeColumnas
+    public class MapeoDeColumnas : IDisposable
     {
         #region Variables
 
@@ -50,6 +50,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             this.ColumnaOrigen = ColumnaOrigen;
         }
         
+        ~MapeoDeColumnas()
+        {
+            Dispose(false);
+        }
+
         #endregion
 
         #region Propiedades
@@ -160,7 +165,24 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         #endregion
 
         #region Funciones
-        
+
+        protected void Dispose(bool BorrarCodigoAdministrado)
+        {
+            if (TablaPadre != null)
+            {
+                TablaPadre.MapasColumnas.Remove(this);
+                TablaPadre = null;
+            }
+
+            if (ColumnaDestino != null)
+                QuitarDestino();
+
+            if (ColumnaOrigen != null)
+                QuitarOrigen();
+
+            if (BorrarCodigoAdministrado) { }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -200,6 +222,19 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 this.ColumnaDestino.MapaColumna = null;
                 this.ColumnaDestino = null;
             }
+        }
+
+        #endregion
+
+        #region Implementacion de interfaces
+
+        public void Dispose()
+        {
+            // En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+            // http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

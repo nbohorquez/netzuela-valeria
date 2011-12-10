@@ -16,7 +16,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     {
         #region Variables
 
-        private Nodo _Tabla;
+        private Nodo _NodoTabla;
 
         #endregion
 
@@ -28,7 +28,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         public TablaMapeada()
         {
             MapasColumnas = new List<MapeoDeColumnas>();
-            Tabla = new Nodo();
+            NodoTabla = new Nodo();
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
 
-            this.Tabla = Tabla;
+            this.NodoTabla = Tabla;
             this.MapasColumnas = new List<MapeoDeColumnas>();
 
             foreach (Nodo Columna in Columnas)
@@ -60,22 +60,17 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public List<MapeoDeColumnas> MapasColumnas { get; private set; }
 
-        public string Nombre
-        {
-            get { return Tabla.Nombre; }
-        }
-
         /// <summary>
         /// 
         /// </summary>
-        public Nodo Tabla
+        public Nodo NodoTabla
         {
-            get { return _Tabla; }
+            get { return _NodoTabla; }
             private set
             {
                 Nodo Nuevo = value as Nodo;
-                if (Nuevo.Nivel == Constantes.NivelDeNodo.TABLA && Nuevo != _Tabla)
-                    _Tabla = Nuevo;
+                if (Nuevo.Nivel == Constantes.NivelDeNodo.TABLA && Nuevo != _NodoTabla)
+                    _NodoTabla = Nuevo;
             }
         }
 

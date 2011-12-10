@@ -39,11 +39,20 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         {
             ParametrosDeConexion Resultado = new ParametrosDeConexion();
 
-            Resultado.Anfitrion = string.Copy(this.Anfitrion);
-            Resultado.Servidor = string.Copy(this.Servidor);
-            Resultado.Instancia = string.Copy(this.Instancia);
-            Resultado.MetodoDeConexion = string.Copy(this.MetodoDeConexion);
-            Resultado.ArgumentoDeConexion = string.Copy(this.ArgumentoDeConexion);
+            if(this.Anfitrion != null)
+                Resultado.Anfitrion = string.Copy(this.Anfitrion);
+
+            if(this.Servidor != null)
+                Resultado.Servidor = string.Copy(this.Servidor);
+
+            if(this.Instancia != null)
+                Resultado.Instancia = string.Copy(this.Instancia);
+
+            if(this.MetodoDeConexion != null)
+                Resultado.MetodoDeConexion = string.Copy(this.MetodoDeConexion);
+
+            if(this.ArgumentoDeConexion != null)
+                Resultado.ArgumentoDeConexion = string.Copy(this.ArgumentoDeConexion);
 
             return Resultado;
         }

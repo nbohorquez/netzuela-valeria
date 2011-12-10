@@ -12,6 +12,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using MS.Internal.WindowsBase;
+using System.Data;                                                  // DataRowView
+using System.Diagnostics;                                           // Debug
+using System.Reflection;                                            // FieldInfo
 using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;    // ExploradorViewModel
 using Zuliaworks.Netzuela.Valeria.Logica;                           // Nodo, Explorador ¡¡BORRAR!!
 
@@ -61,6 +65,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
                 Item.FontStyle = System.Windows.FontStyles.Normal;
         }
 
+        private void dgr_Tabla_DestinoActualizado(object sender, DataTransferEventArgs e)
+        {
+            DataGrid Grilla = ArbolVisual.BusquedaHaciaArriba<DataGrid>(e.OriginalSource as DependencyObject) as DataGrid;
+
+            // Codigo tomado del proyecto publicado en 
+            // http://social.msdn.microsoft.com/Forums/en/wpf/thread/a5767cf4-8d26-4f72-b1b1-feca26bb6b2e
+            
+            FieldInfo selectionAnchorFieldInfo =
+                typeof(DataGrid).GetField("_selectionAnchor", BindingFlags.NonPublic | BindingFlags.Instance);
+            Debug.Assert(selectionAnchorFieldInfo != null, "El campo _selectionAnchor no existe en DataGrid");
+
+            if (selectionAnchorFieldInfo != null)
+            {
+                selectionAnchorFieldInfo.SetValue(Grilla, null);
+            }
+        }
+        
         #endregion
     }
 }

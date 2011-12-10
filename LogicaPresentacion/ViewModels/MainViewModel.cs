@@ -157,6 +157,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 return;
 
             List<string> NodosOrigen = new List<string>();
+            ExploradorViewModel ExploradorLocalViejo;
 
             // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
             foreach (TablaMapeada TM in Sincronizacion.Tablas)
@@ -168,6 +169,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             }
             
+            // Guardamos el arbol de nodos de ExploradorLocal. Sera util unos pasos mas adelante
+            ExploradorLocalViejo = ExploradorLocal;
+
             // Creamos un usuario en la base de datos local con los privilegios necesarios 
             // para leer las columnas de origen            
             ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
@@ -181,6 +185,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
             Sincronizacion.RecargarTablasLocales(ExploradorLocal.Nodos);
+
+            // Ahora tenemos que borrar todos los nodos y tablas que no se van a utilizar mas. Para ello, 
+            // simplemente borramos todo el ExploradorLocal viejo.
+            ExploradorLocalViejo.Dispose();
+            ExploradorLocalViejo = null;
 
             GuardarPreferencias();
             

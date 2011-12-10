@@ -120,26 +120,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
 
         private void SincronizacionListaAccion()
-        {/*
-            TablasAEnviar.Clear();
-            TablasAEnviar.Tables.Clear();
-
-            foreach (DataTable T in _CacheDeTablas.Values)
-            {
-                TablasAEnviar.Tables.Add(T);
-            }
-            */
+        {
             try
             {
-                /*
-                // Aqui enviamos las tablas al servidor al otro lado del mundo... muajajajaja
-                ServidorValeria.ValeriaClient Cliente = new ServidorValeria.ValeriaClient();
-                Cliente.EnviarTablas(new ServidorValeria.DataSetXML()
-                {
-                    EsquemaXML = _TablasAEnviar.GetXmlSchema(),
-                    XML = _TablasAEnviar.GetXml()
-                });
-                */
                 Listo = true;
             }
             catch (Exception ex)
@@ -150,8 +133,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void ActualizarTabla(NodoViewModel Nodo)
         {
+            // Como borrar la referencia del DataGrid a un DataTable:
+            // http://social.msdn.microsoft.com/Forums/en/wpf/thread/a5767cf4-8d26-4f72-b1b1-feca26bb6b2e
+
             Nodo.Explorador.NodoTablaActual = Nodo.Padre;
+
+            DataTable T = Nodo.Explorador.TablaActual;
             Nodo.Explorador.TablaActual = CrearTabla(Nodo.MapaColumna.TablaPadre);
+
+            if (_CacheDeTablas.ContainsKey(Nodo.Padre))
+                _CacheDeTablas.Remove(Nodo.Padre);
+
+            T.Clear();
+            T.Columns.Clear();
+            T.DefaultView.Dispose();
+            T.Dispose();
+            T = null;
+
             _CacheDeTablas[Nodo.Padre] = Nodo.Explorador.TablaActual;
         }
 
@@ -160,7 +158,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
 
-            DataTable TempTablaMapeada = new DataTable(Tabla.Nombre);
+            DataTable TempTablaMapeada = new DataTable(Tabla.NodoTabla.BuscarEnRepositorio().RutaCompleta());
 
             foreach (MapeoDeColumnas MapaCol in Tabla.MapasColumnas)
             {
@@ -170,21 +168,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 if (MapaCol.ColumnaOrigen != null)
                 {
                     NodoViewModel NodoCol = MapaCol.ColumnaOrigen.BuscarEnRepositorio();
+
                     DataTable Temp = NodoCol.Explorador.ObtenerTabla(NodoCol.Padre);
                     DataColumn TempCol = Temp.Columns[MapaCol.ColumnaOrigen.Nombre];
-
                     TempTablaMapeada.Columns.Remove(MapaCol.ColumnaDestino.Nombre);
-
+                    
                     DataColumn TablaColConTipo = new DataColumn(MapaCol.ColumnaDestino.Nombre, TempCol.DataType);
                     TempTablaMapeada.Columns.Add(TablaColConTipo);
 
-                    while (TempTablaMapeada.Rows.Count < Temp.Rows.Count)
-                    {
-                        TempTablaMapeada.Rows.Add(TempTablaMapeada.NewRow());
-                    }
+                    TablaColSinTipo.Dispose();
 
                     for (int i = 0; i < Temp.Rows.Count; i++)
                     {
+                        if (TempTablaMapeada.Rows.Count < Temp.Rows.Count)
+                        {
+                            TempTablaMapeada.Rows.Add(TempTablaMapeada.NewRow());
+                        }
+
                         TempTablaMapeada.Rows[i][TablaColConTipo.ColumnName] = Temp.Rows[i][TempCol.ColumnName];
                     }
                 }

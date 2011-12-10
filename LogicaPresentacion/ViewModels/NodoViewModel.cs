@@ -75,7 +75,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             _Nodo = new Nodo(Nombre);
             InicializacionComun2(Padre);
-        }            
+        }
 
         public NodoViewModel(string Nombre, NodoViewModel Padre, string[] Hijos)
         {
@@ -170,20 +170,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
-            if (_Nodo != null)
-            {
-                _Nodo.QuitarDeRepositorio();
-                _Nodo = null;
-            }
-
-            if (Padre != null)
-            {
-                Padre.Hijos.Remove(this);
-                Padre = null;
-            }
-
             if (MapaColumna != null)
             {
+                MapaColumna.CambioEnColumnas -= this.EnCambioDeColumnas;
+
                 if (_Nodo == MapaColumna.ColumnaDestino)
                 {
                     MapaColumna.QuitarDestino();
@@ -192,19 +182,62 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     MapaColumna.QuitarOrigen();
                 }
-
+                
                 MapaColumna = null;
             }
 
+            if (_Nodo != null)
+            {
+                _Nodo.QuitarDeRepositorio();
+                _Nodo = null;
+            }
+
+            if (Explorador != null)
+                Explorador = null;
+
             if (BorrarCodigoAdministrado)
             {
+                if (Padre != null)
+                {
+                    /* Si escribo aqui: -----Padre.Hijos.Remove(this)------ ocurre un "bug" muy dificil 
+                     * de detectar que se presenta la siguiente situacion:
+                     * 
+                     * (Empleo el termino "borrar" como equivalente a llamar a "dispose()")
+                     * 
+                     * 1) Suponga que procedo a borrar un nodo (nodo A) que tiene un numero arbitrario de 10 hijos a 
+                     * quienes llamaremos de forma generica "nodos H".
+                     * 2) Al llegar a este condicional, remuevo al nodo A de la lista de hijos de su padre con 
+                     * Padre.Hijos.Remove(this) sin mayor problema.
+                     * 3) Comienzo a borrar el primer hijo H y al llegar a este mismo condicional tengo que removerlo 
+                     * de la lista de hijos del padre (nodo A).
+                     * 4) Supongamos que este hijo H no tiene hijos propios para facilitar la explicacion de este caso.
+                     * No incurrimos en "perdida de generalidad", sin embargo.
+                     * 5) Cuando continue borrando los hijos H, me voy a dar cuenta que el numero de iteraciones 
+                     * "Hijos.Count" cada vez se hace mas pequeño. De hecho, todo el ciclo de borrado de nodos H solo 
+                     * se ejecutara 5 veces, borrando 5 hijos en lugar de los 10 originales.
+                     * 
+                     * ¿Que fue lo que sucedio?
+                     * 
+                     * Lo que ocurrio fue que, cuando se llama a Padre.Hijos.Remove(), el contador de hijos se actualiza 
+                     * automaticamente afectando la iteracion que esta ocurriendo actualmente. Si se coloca un foreach
+                     * en lugar de un for, el depurador se dara cuenta de esto y provocara una excepcion.
+                     * 
+                     * Para evitar esta situacion no se elimina el nodo de la lista de hijos, sino que se sustituye a si 
+                     * mismo con un objeto nulo.
+                     */
+
+                    int i = Padre.Hijos.IndexOf(this);
+                    Padre.Hijos[i] = null;
+                    Padre = null;
+                }
+
                 if (Hijos != null)
                 {
-                    foreach (NodoViewModel N in Hijos)
+                    for (int i = 0; i < Hijos.Count; i++)
                     {
-                        N.Dispose();
+                        Hijos[i].Dispose();
                     }
-
+                    
                     Hijos.Clear();
                     Hijos = null;
                 }

@@ -14,16 +14,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Funciones
 
-        private void AsignarExplorador(ObservableCollection<NodoViewModel> Nodos, ExploradorViewModel Arbol)
+        private void AsignarEsteExploradorA(ObservableCollection<NodoViewModel> Nodos)
         {
-            NodoViewModel Nodito = new NodoViewModel();
-
             foreach (NodoViewModel Nodo in Nodos)
             {
                 Nodo.Explorador = this;
                 if (Nodo.Hijos.Count > 0)
                 {
-                    AsignarExplorador(Nodo.Hijos, this);
+                    AsignarEsteExploradorA(Nodo.Hijos);
                 }
             }
         }
@@ -63,11 +61,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     Item.Expandido = true;
 
+                    foreach (NodoViewModel N in Item.Hijos)
+                    {
+                        N.Dispose();
+                    }
+                    
                     Item.Hijos.Clear();
+
                     foreach (string BdD in BasesDeDatos)
                     {
-                        NodoViewModel Nodo = new NodoViewModel(BdD);
-                        Item.AgregarHijo(Nodo);
+                        NodoViewModel Nodo = new NodoViewModel(BdD, Item);
                     }
                 }
             }
@@ -93,11 +96,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     Item.Expandido = true;
 
+                    foreach (NodoViewModel N in Item.Hijos)
+                    {
+                        N.Dispose();
+                    }
+
                     Item.Hijos.Clear();
+
                     foreach (string Tabla in Tablas)
                     {
-                        NodoViewModel Nodo = new NodoViewModel(Tabla);
-                        Item.AgregarHijo(Nodo);
+                        NodoViewModel Nodo = new NodoViewModel(Tabla, Item);
                     }
                 }
             }
@@ -228,12 +236,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                         Temp = _BD.LeerTabla(Tabla.Padre.Nombre, Tabla.Nombre);
                         Temp.TableName = Tabla.RutaCompleta();
 
+                        foreach (NodoViewModel N in Tabla.Hijos)
+                        {
+                            N.Dispose();
+                        }
                         Tabla.Hijos.Clear();
+
                         foreach (DataColumn Columna in Temp.Columns)
                         {
-                            NodoViewModel N = new NodoViewModel(Columna.ColumnName);
-                            N.Hijos.Clear();
-                            Tabla.AgregarHijo(N);
+                            NodoViewModel N = new NodoViewModel(Columna.ColumnName, Tabla);
                         }
                     }
                 }

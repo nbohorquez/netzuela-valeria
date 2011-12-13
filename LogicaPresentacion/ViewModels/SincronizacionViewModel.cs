@@ -158,7 +158,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
 
-            DataTable TempTablaMapeada = new DataTable(Tabla.NodoTabla.BuscarEnRepositorio().RutaCompleta());
+            //DataTable TempTablaMapeada = new DataTable(Tabla.NodoTabla.BuscarEnRepositorio().RutaCompleta());
+            DataTable TempTablaMapeada = new DataTable(Tabla.NodoTabla.Nombre);
 
             foreach (MapeoDeColumnas MapaCol in Tabla.MapasColumnas)
             {

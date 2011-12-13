@@ -20,7 +20,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         private List<Nodito> _ServidorRemoto;
         private ConnectionState _Estado;
 
-        private AppDomain _DominioProxy;
         private ProxyDinamico _Proxy;
         
         #endregion
@@ -111,33 +110,36 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         }
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
-        {/*
-            if (_DominioProxy != null)
-                Desconectar();
-            */
+        {
+            Desconectar();
+
             try
             {
                 _Proxy = new ProxyDinamico("http://localhost:4757/Servidor.svc?wsdl");
+                _Proxy.Conectar();
+                
+                // Esto hay que borrarlo
+                Estado = ConnectionState.Open;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error en la conexion a Netzuela ", ex);
+                throw new Exception("Error al establecer la conexión con el servidor de Netzuela", ex);
             }
-            
-            // Esto hay que borrarlo
-            Estado = ConnectionState.Open;
         }
 
         public void Desconectar()
-        {/*
-            if (_DominioProxy != null)
+        {
+            try
             {
-                AppDomain.Unload(_DominioProxy);
-                GC.Collect();
+                _Proxy.Desconectar();
+                
+                // Esto hay que borrarlo
+                Estado = ConnectionState.Closed;
             }
-            */
-            // Esto hay que borrarlo
-            Estado = ConnectionState.Closed;
+            catch(Exception ex)
+            {
+                throw new Exception("Error al cerrar la conexión con el servidor de Netzuela", ex);
+            }
         }
 
         public string[] ListarBasesDeDatos()
@@ -182,27 +184,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 DataSet Tablas = new DataSet(NombreTabla);
                 Tablas.Tables.Add(Tabla);
 
-                _Proxy.EsquemaXML = Tablas.GetXmlSchema();
-                _Proxy.XML = Tablas.GetXml();
-
-                _DominioProxy = AppDomain.CreateDomain("DominioProxyValeria");
-                _DominioProxy.DoCallBack(new CrossAppDomainDelegate(_Proxy.InvocarEnviarTablas));
-                //_Proxy.InvocarEnviarTablas(Tablas.GetXmlSchema(), Tablas.GetXml());
-
-                _Proxy.XML = string.Empty;
-                _Proxy.EsquemaXML = string.Empty;                
+                _Proxy.InvocarEnviarTablas(Tablas.GetXmlSchema(), Tablas.GetXml());
             }
             catch (Exception ex)
             {
-                throw new Exception("Cachuo pa'r coño...", ex);
-            }
-            finally
-            {
-                if (_DominioProxy != null)
-                {
-                    AppDomain.Unload(_DominioProxy);
-                    GC.Collect();
-                }
+                throw new Exception("Error al escribir tabla ", ex);
             }
         }
 

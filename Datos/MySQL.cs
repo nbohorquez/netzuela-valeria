@@ -297,8 +297,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         void IBaseDeDatos.Desconectar()
         {
-            if (_Conexion != null)
+            try
+            {
                 _Conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al cerrar la conexión con la base de datos", ex);
+            }
         }
 
         string[] IBaseDeDatos.ListarBasesDeDatos()

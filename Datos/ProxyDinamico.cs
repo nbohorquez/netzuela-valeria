@@ -11,13 +11,15 @@ using System.ServiceModel.Description;      // ServiceEndpoint
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {
     [Serializable]
-    public class ProxyDinamico
+    public class ProxyDinamico : IDisposable
     {
         // Con codigo de: http://blogs.msdn.com/b/vipulmodi/archive/2008/10/16/dynamic-proxy-and-memory-footprint.aspx
 
         #region Variable
 
         private string _UriWsdlServicio;
+        private DynamicProxyFactory _Fabrica;
+        private DynamicProxy _IValeria;
 
         #endregion
 
@@ -31,24 +33,29 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             _UriWsdlServicio = UriWsdlServicio;
         }
 
-        #endregion
-
-        #region Propiedades
-
-        public string EsquemaXML { get; set; }
-        public string XML { get; set; }
+        ~ProxyDinamico()
+        {
+            Dispose(false);
+        }
 
         #endregion
-
+        
         #region Funciones
 
-        private DynamicProxy CrearProxy()
+        private void Dispose(bool BorrarCodigoAdministrado)
         {
-            DynamicProxy Resultado = null;
-            DynamicProxyFactory Fabrica = new DynamicProxyFactory(_UriWsdlServicio);
+            this.Desconectar();
+
+            if (BorrarCodigoAdministrado) { }
+        }
+        private void CrearProxy()
+        {
             ServiceEndpoint Endpoint = null;
 
-            foreach (ServiceEndpoint SE in Fabrica.Endpoints)
+            // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
+            _Fabrica = new DynamicProxyFactory(_UriWsdlServicio);
+
+            foreach (ServiceEndpoint SE in _Fabrica.Endpoints)
             {
                 if (SE.Contract.Name.Contains("IValeria"))
                 {
@@ -85,44 +92,46 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                         MaxStringContentLength = 2147483647
                     }
                 };
-
-                Resultado = Fabrica.CreateProxy("IValeria");
             }
-
-            return Resultado;
         }
 
+        public void Conectar()
+        {
+            _IValeria = _Fabrica.CreateProxy("IValeria");
+        }
+        
         public DataSet InvocarRecibirTablas()
         {
             DataSet Resultado = null;
-
-            DynamicProxy RecibirTablas = CrearProxy();
-            Resultado = RecibirTablas.CallMethod("RecibirTablas", null) as DataSet;
-            RecibirTablas.Close();
-            
-            /*
-            _IValeria = _Fabrica.CreateProxy("IValeria");
             Resultado = _IValeria.CallMethod("RecibirTablas", null) as DataSet;
-            _IValeria.Close();
-             * */
+            
             return Resultado;
         }
-
-        public void InvocarEnviarTablas()
-        {
-            DynamicProxy EnviarTablas = CrearProxy();            
-            EnviarTablas.CallMethod("EnviarTablas", EsquemaXML, XML);
-            EnviarTablas.Close();
-        }
-    
-        /*
+                
         public void InvocarEnviarTablas(string EsquemaXML, string XML)
         {
-            _IValeria = _Fabrica.CreateProxy("IValeria");
             _IValeria.CallMethod("EnviarTablas", EsquemaXML, XML);
-            _IValeria.Close();
         }
-        */
+
+        public void Desconectar()
+        {
+            if (_IValeria != null)
+            {
+                _IValeria.Close();
+                _IValeria = null;
+            }
+        }
+        
+        #endregion
+
+        #region Implementacion de interfaces
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         #endregion
     }
 }

@@ -31,7 +31,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             Servidor = ServidorBD;
             
-            // Hay que ver como quito esto
+            // Hay que ver como quito este pedazo de codigo tan feo
             _Estado = ConnectionState.Closed;
 
             // Me invento una base de datos ficticia

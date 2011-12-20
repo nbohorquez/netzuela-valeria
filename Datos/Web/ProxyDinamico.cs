@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using WcfSamples.DynamicProxy;              // DynamicProxyFactory
-using System.Data;                          // DataSet
-using System.ServiceModel;                  // WSHttpBinding
-using System.ServiceModel.Description;      // ServiceEndpoint
+using WcfSamples.DynamicProxy;                      // DynamicProxyFactory
+using System.Data;                                  // DataSet
+using System.ServiceModel;                          // WSHttpBinding
+using System.ServiceModel.Description;              // ServiceEndpoint
 
-namespace Zuliaworks.Netzuela.Valeria.Datos
+namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
-    [Serializable]
+    //[Serializable]
     public class ProxyDinamico : IDisposable
     {
         // Con codigo de: http://blogs.msdn.com/b/vipulmodi/archive/2008/10/16/dynamic-proxy-and-memory-footprint.aspx
@@ -19,7 +19,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         private string _UriWsdlServicio;
         private DynamicProxyFactory _Fabrica;
-        private DynamicProxy _IValeria;
+        private DynamicProxy _Proxy;
 
         #endregion
 
@@ -31,6 +31,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 throw new ArgumentNullException("UriWsdlServicio");
                 
             _UriWsdlServicio = UriWsdlServicio;
+
+            // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
+            _Fabrica = new DynamicProxyFactory(_UriWsdlServicio);
         }
 
         ~ProxyDinamico()
@@ -44,20 +47,18 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         private void Dispose(bool BorrarCodigoAdministrado)
         {
-            this.Desconectar();
+            Desconectar();
 
             if (BorrarCodigoAdministrado) { }
         }
-        private void CrearProxy()
+        
+        public void Conectar(string Contrato)
         {
             ServiceEndpoint Endpoint = null;
 
-            // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
-            _Fabrica = new DynamicProxyFactory(_UriWsdlServicio);
-
             foreach (ServiceEndpoint SE in _Fabrica.Endpoints)
             {
-                if (SE.Contract.Name.Contains("IValeria"))
+                if (SE.Contract.Name.Contains(Contrato))
                 {
                     Endpoint = SE;
                 }
@@ -65,7 +66,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             if (Endpoint != null)
             {
-                // Al usar WsHttpBinding se pierde la capacidad de enviar los datos en un flujo sin fin 
+                // Al usar WSHttpBinding se pierde la capacidad de enviar los datos en un flujo sin fin 
                 // (streaming). Por lo que se hace obligatorio el uso de intermedios (buffers) para enviar
                 // archivos o datos extensos.
                 // http://kjellsj.blogspot.com/2007/02/wcf-streaming-upload-files-over-http.html
@@ -93,32 +94,34 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     }
                 };
             }
-        }
 
-        public void Conectar()
-        {
-            _IValeria = _Fabrica.CreateProxy("IValeria");
+            _Proxy = _Fabrica.CreateProxy(Contrato);
         }
-        
+        /*
         public DataSet InvocarRecibirTablas()
         {
             DataSet Resultado = null;
-            Resultado = _IValeria.CallMethod("RecibirTablas", null) as DataSet;
+            Resultado = _Proxy.CallMethod("RecibirTablas", null) as DataSet;
             
             return Resultado;
         }
                 
         public void InvocarEnviarTablas(string EsquemaXML, string XML)
         {
-            _IValeria.CallMethod("EnviarTablas", EsquemaXML, XML);
+            _Proxy.CallMethod("EnviarTablas", EsquemaXML, XML);
+        }
+        */
+        public object InvocarMetodo(string Metodo, params object[] Argumentos)
+        {
+            return _Proxy.CallMethod(Metodo, Argumentos);
         }
 
         public void Desconectar()
         {
-            if (_IValeria != null)
+            if (_Proxy != null)
             {
-                _IValeria.Close();
-                _IValeria = null;
+                _Proxy.Close();
+                _Proxy = null;
             }
         }
         
@@ -135,7 +138,3 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #endregion
     }
 }
-
-// http://www.google.co.ve/search?hl=es&client=firefox-a&hs=nJJ&rls=org.mozilla:es-ES:official&q=+site:social.msdn.microsoft.com+WCF+DynamicProxy+Library&sa=X&ei=txfjTp-0KrLE0AGKmoDNBQ&sqi=2&ved=0CDoQrQIwAg&biw=1366&bih=606#sclient=psy-ab&hl=es&client=firefox-a&hs=6JJ&rls=org.mozilla:es-ES%3Aofficial&source=hp&q=site:social.msdn.microsoft.com+WCF+DynamicProxy+Library+asynchronous&pbx=1&oq=site:social.msdn.microsoft.com+WCF+DynamicProxy+Library+asynchronous&aq=f&aqi=&aql=&gs_sm=e&gs_upl=29517l32601l0l32802l13l11l0l0l0l0l284l2401l0.3.8l11l0&bav=on.2,or.r_gc.r_pw.,cf.osb&fp=ecddcbf5a724ca0a&biw=1366&bih=606
-// http://social.msdn.microsoft.com/Forums/en-US/wcf/thread/8cacd2e6-c817-4dd4-acc1-887c074ae3fe/
-// http://social.msdn.microsoft.com/Forums/en/windowsphone7series/thread/7697d769-782c-4f38-b930-8fbaa38833e1

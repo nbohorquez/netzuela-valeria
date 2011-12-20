@@ -6,6 +6,7 @@ using System.Text;
 using System.Data;                              // ConnectionState, DataTable
 using System.Security;                          // SecureString
 using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
+using Zuliaworks.Netzuela.Valeria.Datos.Web;    // ProxyDinamico
 
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {
@@ -20,7 +21,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         private List<Nodito> _ServidorRemoto;
         private ConnectionState _Estado;
 
-        private ProxyDinamico _Proxy;
+        private ProxyDinamico _Cliente;
         
         #endregion
 
@@ -84,7 +85,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Eventos
 
-        public event StateChangeEventHandler Cambio;
+        public event StateChangeEventHandler CambioDeEstado;
 
         #endregion
 
@@ -99,14 +100,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 {
                     ConnectionState Anterior = _Estado;
                     _Estado = value;
-                    Cambio(this, new StateChangeEventArgs(Anterior, _Estado));
+                    CambioDeEstado(this, new StateChangeEventArgs(Anterior, _Estado));
                 }
             }
         }
 
         public StateChangeEventHandler EnCambioDeEstado
         {
-            set { Cambio += value; }
+            set { CambioDeEstado += value; }
         }
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
@@ -115,8 +116,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             try
             {
-                _Proxy = new ProxyDinamico("http://localhost:4757/Servidor.svc?wsdl");
-                _Proxy.Conectar();
+                _Cliente = new ProxyDinamico("http://localhost:4757/Servidor.svc?wsdl");
+                _Cliente.Conectar("IValeria");
                 
                 // Esto hay que borrarlo
                 Estado = ConnectionState.Open;
@@ -131,7 +132,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             try
             {
-                _Proxy.Desconectar();
+                _Cliente.Desconectar();
                 
                 // Esto hay que borrarlo
                 Estado = ConnectionState.Closed;
@@ -184,7 +185,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 DataSet Tablas = new DataSet(NombreTabla);
                 Tablas.Tables.Add(Tabla);
 
-                _Proxy.InvocarEnviarTablas(Tablas.GetXmlSchema(), Tablas.GetXml());
+                //_Cliente.InvocarEnviarTablas(Tablas.GetXmlSchema(), Tablas.GetXml());
+                _Cliente.InvocarMetodo("EnviarTablas", Tablas.GetXmlSchema(), Tablas.GetXml());
             }
             catch (Exception ex)
             {

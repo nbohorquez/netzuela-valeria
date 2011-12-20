@@ -19,7 +19,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         private Nodo _ColumnaDestino;
         private Nodo _ColumnaOrigen;
-        public delegate void CambioEnColumnasEvento(object Remitente, CambioEnColumnasArgumentos Argumentos); 
+        //public delegate void CambioEnColumnasEvento(object Remitente, CambioEnColumnasArgumentos Argumentos);
 
         #endregion
 
@@ -75,7 +75,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     _ColumnaOrigen = ValorNuevo;
 
                     if(CambioEnColumnas != null)
-                        CambioEnColumnas(this, new CambioEnColumnasArgumentos("Origen", ValorAnterior, ValorNuevo));
+                        CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
                 }
                 else if (ValorNuevo != ColumnaDestino && ValorNuevo != _ColumnaOrigen)
                 {
@@ -90,7 +90,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                             _ColumnaOrigen = ValorNuevo;
 
                             if (CambioEnColumnas != null)
-                                CambioEnColumnas(this, new CambioEnColumnasArgumentos("Origen", ValorAnterior, ValorNuevo));
+                                CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
                         }
                     }
                     else
@@ -99,7 +99,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                         _ColumnaOrigen = ValorNuevo;
 
                         if (CambioEnColumnas != null)
-                            CambioEnColumnas(this, new CambioEnColumnasArgumentos("Origen", ValorAnterior, ValorNuevo));
+                            CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
                     }
                 }
             }
@@ -121,7 +121,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     _ColumnaDestino = ValorNuevo;
 
                     if(CambioEnColumnas != null)
-                        CambioEnColumnas(this, new CambioEnColumnasArgumentos("Destino", ValorAnterior, ValorNuevo));
+                        CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
                 }
                 else if (ValorNuevo != ColumnaOrigen && ValorNuevo != _ColumnaDestino)
                 {
@@ -136,7 +136,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                             _ColumnaDestino = ValorNuevo;
 
                             if (CambioEnColumnas != null)
-                                CambioEnColumnas(this, new CambioEnColumnasArgumentos("Destino", ValorAnterior, ValorNuevo));
+                                CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
                         }
                     }
                     else
@@ -145,7 +145,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                         _ColumnaDestino = ValorNuevo;
 
                         if (CambioEnColumnas != null)
-                            CambioEnColumnas(this, new CambioEnColumnasArgumentos("Destino", ValorAnterior, ValorNuevo));
+                            CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
                     }                 
                 }
             }
@@ -160,7 +160,8 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         #region Eventos
 
-        public event CambioEnColumnasEvento CambioEnColumnas;
+        public EventHandler<EventoCambioEnColumnasArgs> CambioEnColumnas;
+        //public event CambioEnColumnasEvento CambioEnColumnas;
 
         #endregion
 

@@ -172,7 +172,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             if (MapaColumna != null)
             {
-                MapaColumna.CambioEnColumnas -= this.EnCambioDeColumnas;
+                MapaColumna.CambioEnColumnas -= this.EnCambioEnColumnas;
 
                 if (_Nodo == MapaColumna.ColumnaDestino)
                 {
@@ -244,7 +244,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void EnCambioDeColumnas(object Remitente, CambioEnColumnasArgumentos Argumentos)
+        private void EnCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
         {
             RaisePropertyChanged("NombreParaMostrar");
         }
@@ -278,7 +278,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                  * Quiero ser notificado cuando ocurra una cambio en ColumnaOrigen o 
                  * ColumnaDestino del MapeoDeColumnas asociado a este NodoViewModel.
                  */
-                Hijo.MapaColumna.CambioEnColumnas += Hijo.EnCambioDeColumnas;
+                Hijo.MapaColumna.CambioEnColumnas += Hijo.EnCambioEnColumnas;
             }
 
             return T;
@@ -295,7 +295,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                  * El nuevo nodo tambien quiere saber cuándo ocurre un cambio en las columnas 
                  * mapeadas
                  */
-                this.MapaColumna.CambioEnColumnas += NodoOrigen.EnCambioDeColumnas;
+                this.MapaColumna.CambioEnColumnas += NodoOrigen.EnCambioEnColumnas;
                 this.MapaColumna.FijarOrigen(NodoOrigen._Nodo);
             }
             catch (Exception ex)
@@ -311,7 +311,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 NodoViewModel NodoOrigen = this.MapaColumna.ColumnaOrigen.BuscarEnRepositorio();
 
                 this.MapaColumna.QuitarOrigen();
-                this.MapaColumna.CambioEnColumnas -= NodoOrigen.EnCambioDeColumnas;
+                this.MapaColumna.CambioEnColumnas -= NodoOrigen.EnCambioEnColumnas;
             }
             catch (Exception ex)
             {

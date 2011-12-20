@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Zuliaworks.Netzuela.Valeria.Logica
 {
-    public class CambioEnColumnasArgumentos
+    public class EventoCambioEnColumnasArgs : EventArgs
     {
         #region Constructores
 
-        public CambioEnColumnasArgumentos(string Columna, Nodo ValorAnterior, Nodo ValorActual)
+        public EventoCambioEnColumnasArgs(string Columna, Nodo ValorAnterior, Nodo ValorActual)
         {
             this.Columna = Columna;
             this.ValorAnterior = ValorAnterior;

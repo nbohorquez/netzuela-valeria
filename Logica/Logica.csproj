@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CambioEnColumnasArgumentos.cs" />
+    <Compile Include="EventoCambioEnColumnasArgs.cs" />
     <Compile Include="Conexion.cs" />
     <Compile Include="MapeoDeColumnas.cs" />
     <Compile Include="TablaMapeada.cs" />

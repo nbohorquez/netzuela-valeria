@@ -86,7 +86,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -109,7 +110,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
 
             return Resultado;
@@ -136,7 +138,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
 
             return Resultado;
@@ -171,7 +174,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
 
             return Resultado;

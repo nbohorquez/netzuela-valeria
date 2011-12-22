@@ -7,6 +7,8 @@ using System.Data;              // DataTable, ConnectionState
 using System.Security;          // SecureString
 using MySql.Data.MySqlClient;   // MySqlConnection
 
+using Zuliaworks.Netzuela.Valeria.Comunes;
+
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {
     /// <summary>
@@ -18,7 +20,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #region Propiedades
 
         ConnectionState Estado { get; }
-        StateChangeEventHandler EnCambioDeEstado { set; }
+        ParametrosDeConexion DatosDeConexion { get; }
+        StateChangeEventHandler CambioDeEstado { set; }
+        EventHandler<EventoEnviarTablasCompletadoArgs> EnviarTablasCompletado { set; }
 
         #endregion
 

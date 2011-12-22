@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.ComponentModel;
+using System.ComponentModel;    // AsyncCompletedEventArgs
 
-namespace Zuliaworks.Netzuela.Valeria.Datos.Web
+namespace Zuliaworks.Netzuela.Valeria.Datos
 {
     public class EventoEnviarTablasCompletadoArgs : AsyncCompletedEventArgs
     {
@@ -29,7 +29,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         public bool Resultado
         {
-            get 
+            get
             {
                 base.RaiseExceptionIfNecessary();
                 return (bool)Resultados[0];

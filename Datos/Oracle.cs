@@ -63,11 +63,21 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             get { return ConnectionState.Closed; }
         }
 
-        public StateChangeEventHandler EnCambioDeEstado
+        public ParametrosDeConexion DatosDeConexion
+        {
+            get { return Servidor; }
+        }
+
+        public StateChangeEventHandler CambioDeEstado
         {
             set { throw new NotImplementedException(); }
         }
 
+        public EventHandler<EventoEnviarTablasCompletadoArgs> EnviarTablasCompletado
+        {
+            set { throw new NotImplementedException(); }
+        }
+        
         public void Conectar(SecureString Usuario, SecureString Contrasena) { }
 
         public void Desconectar() { }

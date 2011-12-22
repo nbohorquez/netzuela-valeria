@@ -138,12 +138,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             try
             {
                 ResolverDatosDeConexion();
-                BD.EnCambioDeEstado = new StateChangeEventHandler(EnCambioDeEstado);
+                BD.CambioDeEstado = new StateChangeEventHandler(EnCambioDeEstado);
                 _Conexion.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -155,7 +156,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -167,7 +169,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -179,7 +182,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 

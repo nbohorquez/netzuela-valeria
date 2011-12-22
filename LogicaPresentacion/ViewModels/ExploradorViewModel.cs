@@ -60,6 +60,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
             this._BD = BD;
+            
+            // ¡¡¡HEY ESTA VERGA HAY QUE CAMBIARLA!!!
+            if (_BD.DatosDeConexion.Servidor == Comunes.Constantes.SGBDR.NETZUELA)
+            {
+                this._BD.EnviarTablasCompletado = EscribirTablaRetorno;
+            }
         }
 
         ~ExploradorViewModel()

@@ -44,9 +44,19 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             get { return _Conexion.State; }
         }
 
-        public StateChangeEventHandler EnCambioDeEstado
+        public ParametrosDeConexion DatosDeConexion
+        {
+            get { return Servidor; }
+        }
+
+        public StateChangeEventHandler CambioDeEstado
         {
             set { _Conexion.StateChange += value; }
+        }
+
+        public EventHandler<EventoEnviarTablasCompletadoArgs> EnviarTablasCompletado
+        {
+            set { throw new NotImplementedException(); }
         }
 
         public void Conectar(SecureString Usuario, SecureString Contrasena) { }
@@ -80,6 +90,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
-        #endregion        
+        #endregion
     }
 }

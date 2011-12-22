@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Data;                              // ConnectionState, DataTable
-using System.Security;                          // SecureString
-using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
-using Zuliaworks.Netzuela.Valeria.Datos.Web;    // ProxyDinamico
+using System.Data;                                  // ConnectionState, DataTable
+using System.Security;                              // SecureString
+using Zuliaworks.Netzuela.Paris.ContratoValeria;    // DataSetXML
+using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
+using Zuliaworks.Netzuela.Valeria.Datos.Web;        // ProxyDinamico
 
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {
@@ -17,12 +18,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Variables
 
+        private ClienteValeria _Cliente;
+
         // ¡Temporal!
         private List<Nodito> _ServidorRemoto;
         private ConnectionState _Estado;
 
-        private ProxyDinamico _Cliente;
-        
         #endregion
 
         #region Constructores
@@ -30,7 +31,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public Netzuela(ParametrosDeConexion ServidorBD)
         {
             Servidor = ServidorBD;
-            
+                       
             // Hay que ver como quito este pedazo de codigo tan feo
             _Estado = ConnectionState.Closed;
 
@@ -85,7 +86,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Eventos
 
-        public event StateChangeEventHandler CambioDeEstado;
+        public event StateChangeEventHandler CambioDeEstadoDeConexion;
 
         #endregion
 
@@ -100,24 +101,40 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 {
                     ConnectionState Anterior = _Estado;
                     _Estado = value;
-                    CambioDeEstado(this, new StateChangeEventArgs(Anterior, _Estado));
+                    CambioDeEstadoDeConexion(this, new StateChangeEventArgs(Anterior, _Estado));
                 }
             }
         }
 
-        public StateChangeEventHandler EnCambioDeEstado
+        public ParametrosDeConexion DatosDeConexion
         {
-            set { CambioDeEstado += value; }
+            get { return Servidor; }
         }
 
+        public StateChangeEventHandler CambioDeEstado
+        {
+            set { CambioDeEstadoDeConexion += value; }
+        }
+
+        public EventHandler<EventoEnviarTablasCompletadoArgs> EnviarTablasCompletado
+        {
+            set
+            {
+                if (_Cliente != null)
+                {
+                    _Cliente.EnviarTablasCompletado += value;
+                }
+            }
+        }
+        
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
             Desconectar();
 
             try
             {
-                _Cliente = new ProxyDinamico("http://localhost:4757/Servidor.svc?wsdl");
-                _Cliente.Conectar("IValeria");
+                _Cliente = new ClienteValeria("http://localhost:4757/Servidor.svc?wsdl");
+                _Cliente.Conectar();
                 
                 // Esto hay que borrarlo
                 Estado = ConnectionState.Open;
@@ -132,7 +149,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             try
             {
-                _Cliente.Desconectar();
+                if (_Cliente != null)
+                {
+                    _Cliente.Desconectar();
+                }
                 
                 // Esto hay que borrarlo
                 Estado = ConnectionState.Closed;
@@ -185,12 +205,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 DataSet Tablas = new DataSet(NombreTabla);
                 Tablas.Tables.Add(Tabla);
 
-                //_Cliente.InvocarEnviarTablas(Tablas.GetXmlSchema(), Tablas.GetXml());
-                _Cliente.InvocarMetodo("EnviarTablas", Tablas.GetXmlSchema(), Tablas.GetXml());
+                DataSetXML XML = new DataSetXML(Tablas.GetXmlSchema(), Tablas.GetXml());
+                _Cliente.EnviarTablasAsinc(XML);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al escribir tabla ", ex);
+                string Error = "Error al escribir la tabla " + NombreTabla + " en la base de datos " + BaseDeDatos;
+                throw new Exception(Error, ex);
             }
         }
 

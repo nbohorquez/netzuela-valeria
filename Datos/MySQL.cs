@@ -261,17 +261,27 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Implementaciones de interfaces
 
-        ConnectionState IBaseDeDatos.Estado
+        public ConnectionState Estado
         {
             get { return _Conexion.State; }
         }
 
-        StateChangeEventHandler IBaseDeDatos.EnCambioDeEstado
+        public ParametrosDeConexion DatosDeConexion
+        {
+            get { return Servidor; }
+        }
+
+        public StateChangeEventHandler CambioDeEstado
         {
             set { _Conexion.StateChange += value; }
         }
 
-        void IBaseDeDatos.Conectar(SecureString Usuario, SecureString Contrasena)
+        public EventHandler<EventoEnviarTablasCompletadoArgs> EnviarTablasCompletado
+        {
+            set { throw new NotImplementedException(); }
+        }
+
+        public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
             if (_Conexion != null)
                 _Conexion.Close();
@@ -295,7 +305,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
         }
 
-        void IBaseDeDatos.Desconectar()
+        public void Desconectar()
         {
             try
             {
@@ -307,7 +317,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
         }
 
-        string[] IBaseDeDatos.ListarBasesDeDatos()
+        public string[] ListarBasesDeDatos()
         {
             string[] ResultadoBruto = LectorSimple("SHOW DATABASES");
             List<string> ResultadoFinal = new List<string>();
@@ -326,13 +336,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return ResultadoFinal.ToArray();
         }
 
-        string[] IBaseDeDatos.ListarTablas(string BaseDeDatos)
+        public string[] ListarTablas(string BaseDeDatos)
         {
             CambiarBaseDeDatos(BaseDeDatos);
             return LectorSimple("SHOW TABLES");
         }
 
-        DataTable IBaseDeDatos.LeerTabla(string BaseDeDatos, string Tabla)
+        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
         {
             DataTable Descripcion = new DataTable();
 
@@ -356,7 +366,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
         }
 
-        object IBaseDeDatos.CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
             object Resultado = null;
             string SQL = string.Empty;
@@ -491,7 +501,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado;
         }
 
-        void IBaseDeDatos.EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public void EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
         {
             throw new NotImplementedException();
         }

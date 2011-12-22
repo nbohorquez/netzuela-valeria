@@ -11,12 +11,21 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         {
             List<string> Resultado = new List<string>();
 
-            do
+            Resultado.Add("==========================================================\n");
+            Resultado.Add("Pila de excepciones:\n\n");
+            for (int i = 0; ; ex = ex.InnerException, i++)
             {
-                Resultado.Add(ex.Message);
+                Resultado.Add("EXCEPCION NIVEL " + i.ToString() + ": ");
+                Resultado.Add(ex.Source + ".dll: \"" + ex.Message + "\"" + "\n");
 
+                if (ex.InnerException == null)
+                {
+                    Resultado.Add("==========================================================\n");
+                    break;
+                }
             }
-            while (ex.InnerException != null);
+
+            Resultado.Add(ex.StackTrace);
 
             return string.Concat(Resultado.ToArray());
         }

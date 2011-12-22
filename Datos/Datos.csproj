@@ -71,6 +71,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventoEnviarTablasCompletadoArgs.cs" />
+    <Compile Include="Web\ClienteValeria.EnviarTablas.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Web\ProxyDinamico.cs" />
     <Compile Include="IBaseDeDatos.cs" />
     <Compile Include="MySQL.cs" />
@@ -82,8 +86,7 @@
     <Compile Include="ServidorPredeterminado.cs" />
     <Compile Include="SQLServer.cs" />
     <Compile Include="SQLServer.Detectar.cs" />
-    <Compile Include="Web\EventoEnviarTablasCompletadoArgs.cs" />
-    <Compile Include="Web\ServidorValeriaAsinc.cs">
+    <Compile Include="Web\ClienteValeria.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>

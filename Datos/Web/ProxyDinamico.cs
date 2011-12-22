@@ -7,6 +7,7 @@ using WcfSamples.DynamicProxy;                      // DynamicProxyFactory
 using System.Data;                                  // DataSet
 using System.ServiceModel;                          // WSHttpBinding
 using System.ServiceModel.Description;              // ServiceEndpoint
+using Zuliaworks.Netzuela.Paris.ContratoValeria;    // DataSetXML
 
 namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
@@ -19,7 +20,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private string _UriWsdlServicio;
         private DynamicProxyFactory _Fabrica;
-        private DynamicProxy _Proxy;
+        private DynamicProxy _ProxyDinamico;
 
         #endregion
 
@@ -95,7 +96,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 };
             }
 
-            _Proxy = _Fabrica.CreateProxy(Contrato);
+            _ProxyDinamico = _Fabrica.CreateProxy(Contrato);
         }
         /*
         public DataSet InvocarRecibirTablas()
@@ -105,23 +106,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             
             return Resultado;
         }
-                
+               
         public void InvocarEnviarTablas(string EsquemaXML, string XML)
         {
             _Proxy.CallMethod("EnviarTablas", EsquemaXML, XML);
         }
         */
-        public object InvocarMetodo(string Metodo, params object[] Argumentos)
+        //public object InvocarMetodo(string Metodo, params object[] Argumentos)
+        public object InvocarMetodo(string Metodo, DataSetXML Argumentos)
         {
-            return _Proxy.CallMethod(Metodo, Argumentos);
+            //DataSetXML XML = Argumentos[0] as DataSetXML;
+            //return _ProxyDinamico.CallMethod(Metodo, Argumentos);
+            return _ProxyDinamico.CallMethod(Metodo, Argumentos);
         }
 
         public void Desconectar()
         {
-            if (_Proxy != null)
+            if (_ProxyDinamico != null)
             {
-                _Proxy.Close();
-                _Proxy = null;
+                _ProxyDinamico.Close();
+                _ProxyDinamico = null;
             }
         }
         

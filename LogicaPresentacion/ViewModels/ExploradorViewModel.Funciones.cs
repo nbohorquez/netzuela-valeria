@@ -7,12 +7,35 @@ using System.Data;                              // DataTable
 using System.Windows;                           // MessageBox
 using System.Collections.ObjectModel;           // ObservableCollection
 using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
+using Zuliaworks.Netzuela.Valeria.Datos;        // EventoEnviarTablasCompletadoArgs
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     public partial class ExploradorViewModel
     {
         #region Funciones
+
+        private void EscribirTablaRetorno(object Remitente, EventoEnviarTablasCompletadoArgs e)
+        {
+            try
+            {
+                if (e.Error != null)
+                {
+                    MessageBox.Show(e.UserState + ": " + e.Error.MostrarPilaDeExcepciones());
+                }
+
+                if (e.Cancelled)
+                {
+                    MessageBox.Show(e.UserState + ": " + "La operacion de envio fue cancelada");
+                }
+
+                MessageBox.Show(e.UserState + ": " + "el resultado de la operacion fue " + e.Resultado);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+            }
+        }
 
         private void AsignarEsteExploradorA(ObservableCollection<NodoViewModel> Nodos)
         {
@@ -41,7 +64,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -76,7 +100,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -111,7 +136,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -251,7 +277,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
             }
 
             return Temp;
@@ -268,7 +295,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 

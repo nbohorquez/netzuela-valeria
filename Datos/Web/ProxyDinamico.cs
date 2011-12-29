@@ -112,11 +112,22 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             _Proxy.CallMethod("EnviarTablas", EsquemaXML, XML);
         }
         */
-        //public object InvocarMetodo(string Metodo, params object[] Argumentos)
-        public object InvocarMetodo(string Metodo, DataSetXML Argumentos)
+
+        public object InvocarMetodo(string Metodo, params object[] Argumentos)
         {
-            //DataSetXML XML = Argumentos[0] as DataSetXML;
-            //return _ProxyDinamico.CallMethod(Metodo, Argumentos);
+            for(int i = 0; i < Argumentos.Length; i++)
+            {
+                // Si alguno de los argumentos es un DataContract entonces hay que convertirlo en DynamicObject
+                if (Argumentos[i] is DataSetXML)
+                {
+                    DataSetXMLDinamico DataSetDinamico = new DataSetXMLDinamico(_Fabrica.ProxyAssembly);
+                    DataSetDinamico.EsquemaXML = ((DataSetXML)Argumentos[i]).EsquemaXML;
+                    DataSetDinamico.XML = ((DataSetXML)Argumentos[i]).XML;
+
+                    Argumentos[i] = DataSetDinamico.ObjectInstance;
+                }
+            }
+
             return _ProxyDinamico.CallMethod(Metodo, Argumentos);
         }
 

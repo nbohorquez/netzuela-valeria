@@ -75,6 +75,7 @@
     <Compile Include="Web\ClienteValeria.EnviarTablas.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Web\DataSetXMLDinamico.cs" />
     <Compile Include="Web\ProxyDinamico.cs" />
     <Compile Include="IBaseDeDatos.cs" />
     <Compile Include="MySQL.cs" />

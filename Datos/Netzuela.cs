@@ -205,8 +205,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 DataSet Tablas = new DataSet(NombreTabla);
                 Tablas.Tables.Add(Tabla);
 
-                DataSetXML XML = new DataSetXML(Tablas.GetXmlSchema(), Tablas.GetXml());
-                _Cliente.EnviarTablasAsinc(XML);
+                DataSetXML DatosAEnviar = new DataSetXML(Tablas.GetXmlSchema(), Tablas.GetXml());
+                _Cliente.EnviarTablasAsinc(DatosAEnviar);
             }
             catch (Exception ex)
             {

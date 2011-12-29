@@ -25,7 +25,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                 }
             }
 
-            Resultado.Add(ex.StackTrace);
+            Resultado.Add("\n\n" + ex.StackTrace);
 
             return string.Concat(Resultado.ToArray());
         }

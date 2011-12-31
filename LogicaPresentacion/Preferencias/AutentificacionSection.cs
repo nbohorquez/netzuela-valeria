@@ -20,32 +20,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 
         #region Propiedades
 
-        [ConfigurationProperty("usuarioLocal", IsRequired = true)]
-        public string UsuarioLocal
+        [ConfigurationProperty("llavesDeAcceso")]
+        public ColeccionElementosGenerica<UsuarioContrasenaElement> LlavesDeAcceso
         {
-            get { return (string)base["usuarioLocal"]; }
-            set { base["usuarioLocal"] = value; }
-        }
-
-        [ConfigurationProperty("contrasenaLocal", IsRequired = true)]
-        public string ContrasenaLocal
-        {
-            get { return (string)base["contrasenaLocal"]; }
-            set { base["contrasenaLocal"] = value; }
-        }
-
-        [ConfigurationProperty("usuarioRemoto", IsRequired = true)]
-        public string UsuarioRemoto
-        {
-            get { return (string)base["usuarioRemoto"]; }
-            set { base["usuarioRemoto"] = value; }
-        }
-
-        [ConfigurationProperty("contrasenaRemota", IsRequired = true)]
-        public string ContrasenaRemota
-        {
-            get { return (string)base["contrasenaRemota"]; }
-            set { base["contrasenaRemota"] = value; }
+            get { return (ColeccionElementosGenerica<UsuarioContrasenaElement>)this["llavesDeAcceso"]; }
+            set { this["llavesDeAcceso"] = value; }
         }
 
         #endregion

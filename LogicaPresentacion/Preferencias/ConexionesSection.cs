@@ -19,18 +19,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 
         #region Propiedades
 
-        [ConfigurationProperty("parametrosConexionLocal", IsRequired = false)]
-        public ParametrosDeConexionElement ParametrosConexionLocal
+        [ConfigurationProperty("parametrosDeConexion")]
+        public ColeccionElementosGenerica<ParametrosDeConexionElement> ParametrosDeConexion
         {
-            get { return (ParametrosDeConexionElement)base["parametrosConexionLocal"]; }
-            set { base["parametrosConexionLocal"] = value; }
-        }
-
-        [ConfigurationProperty("parametrosConexionRemota", IsRequired = false)]
-        public ParametrosDeConexionElement ParametrosConexionRemota
-        {
-            get { return (ParametrosDeConexionElement)base["parametrosConexionRemota"]; }
-            set { base["parametrosConexionRemota"] = value; }
+            get { return (ColeccionElementosGenerica<ParametrosDeConexionElement>)this["parametrosDeConexion"]; }
+            set { this["parametrosDeConexion"] = value; }
         }
 
         #endregion

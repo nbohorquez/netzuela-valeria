@@ -41,7 +41,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 new Nodito() 
                 { 
                     Nombre = "Netzuela", 
-                    Hijos = new List<Nodito>() 
+                    Hijos = new List<Nodito>()
                     {
                         new Nodito()
                         {

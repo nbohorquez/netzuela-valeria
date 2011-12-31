@@ -35,19 +35,43 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
+                // Parametros de las conexiones
                 ConexionesGuardadas = new ConexionesSection();
-                ConexionesGuardadas.ParametrosConexionLocal = new ParametrosDeConexionElement(ConexionLocal.Parametros);
-                ConexionesGuardadas.ParametrosConexionRemota = new ParametrosDeConexionElement(ConexionRemota.Parametros);
+                ColeccionElementosGenerica<ParametrosDeConexionElement> ColeccionParametros =
+                    new ColeccionElementosGenerica<ParametrosDeConexionElement>();
 
+                ParametrosDeConexionElement ParametrosLocales = new ParametrosDeConexionElement(ConexionLocal.Parametros);
+                ParametrosDeConexionElement ParametrosRemotos = new ParametrosDeConexionElement(ConexionRemota.Parametros);
+                ParametrosLocales.ID = "Local";
+                ParametrosRemotos.ID = "Remoto";
+
+                ColeccionParametros.Add(ParametrosLocales);
+                ColeccionParametros.Add(ParametrosRemotos);
+                ConexionesGuardadas.ParametrosDeConexion = ColeccionParametros;
+                
+                // Credenciales
                 Credenciales = new AutentificacionSection();
-                Credenciales.UsuarioLocal = ConexionLocal.UsuarioNetzuela.Encriptar();
-                Credenciales.ContrasenaLocal = ConexionLocal.ContrasenaNetzuela.Encriptar();
+                ColeccionElementosGenerica<UsuarioContrasenaElement> ColeccionDeLlaves =
+                    new ColeccionElementosGenerica<UsuarioContrasenaElement>();
+
+                UsuarioContrasenaElement LlaveLocal = new UsuarioContrasenaElement();
+                UsuarioContrasenaElement LlaveRemota = new UsuarioContrasenaElement();
+
+                LlaveLocal.ID = "Local";
+                LlaveLocal.Usuario = ConexionLocal.UsuarioNetzuela.Encriptar();
+                LlaveLocal.Contrasena = ConexionLocal.ContrasenaNetzuela.Encriptar();
 
                 // Esto esta aqui por joda... cuando tenga el servidor de Netzuela listo, aqui va 
                 // a haber una vaina seria.
-                Credenciales.UsuarioRemoto = "maricoerconio".ConvertirASecureString().Encriptar();
-                Credenciales.ContrasenaRemota = "1234".ConvertirASecureString().Encriptar();
+                LlaveRemota.ID = "Remoto";
+                LlaveRemota.Usuario = "maricoerconio".ConvertirASecureString().Encriptar();
+                LlaveRemota.Contrasena = "1234".ConvertirASecureString().Encriptar();
 
+                ColeccionDeLlaves.Add(LlaveLocal);
+                ColeccionDeLlaves.Add(LlaveRemota);
+                Credenciales.LlavesDeAcceso = ColeccionDeLlaves;
+
+                // Mapas de tablas
                 Columnas = new MapeoDeColumnasElement();
                 Tablas = new TablasMapeadasSection();
 
@@ -67,6 +91,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
 
                     Tabla = new TablaMapeadaElement();
+                    Tabla.ID = T.NodoTabla.Nombre;
                     Tabla.TablaMapeada = ColeccionColumnas;
 
                     ColeccionTablas.Add(Tabla);
@@ -87,7 +112,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -102,16 +126,31 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 if (ConexionesGuardadas != null)
                 {
+                    foreach (ParametrosDeConexionElement Param in ConexionesGuardadas.ParametrosDeConexion)
+                    {
+                        switch(Param.ID)
+                        {
+                            case "Local":
+                                _ConfiguracionLocal.ParametrosConexionLocal = Param.ConvertirAParametrosDeConexion();
+                                break;
+                            case "Remoto":
+                                _ConfiguracionLocal.ParametrosConexionRemota = Param.ConvertirAParametrosDeConexion();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    /*
                     _ConfiguracionLocal.ParametrosConexionLocal = ConexionesGuardadas.ParametrosConexionLocal.ConvertirAParametrosDeConexion();
                     _ConfiguracionLocal.ParametrosConexionRemota = ConexionesGuardadas.ParametrosConexionRemota.ConvertirAParametrosDeConexion();
-
+                    */
                     Resultado = true;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
 
             return Resultado;
@@ -128,10 +167,29 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 if (Credenciales != null)
                 {
+                    foreach (UsuarioContrasenaElement UsuCon in Credenciales.LlavesDeAcceso)
+                    {
+                        switch (UsuCon.ID)
+                        {
+                            case "Local":
+                                _ConfiguracionLocal.UsuarioLocal = UsuCon.Usuario.Desencriptar();
+                                _ConfiguracionLocal.ContrasenaLocal = UsuCon.Contrasena.Desencriptar();
+                                break;
+                            case "Remoto":
+                                _ConfiguracionLocal.UsuarioRemoto = UsuCon.Usuario.Desencriptar();
+                                _ConfiguracionLocal.ContrasenaRemota = UsuCon.Contrasena.Desencriptar();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    /*
                     _ConfiguracionLocal.UsuarioLocal = Credenciales.UsuarioLocal.Desencriptar();
                     _ConfiguracionLocal.ContrasenaLocal = Credenciales.ContrasenaLocal.Desencriptar();
                     _ConfiguracionLocal.UsuarioRemoto = Credenciales.UsuarioRemoto.Desencriptar();
                     _ConfiguracionLocal.ContrasenaRemota = Credenciales.ContrasenaRemota.Desencriptar();
+                    */
 
                     Resultado = true;
                 }
@@ -139,7 +197,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
 
             return Resultado;
@@ -175,7 +232,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
 
             return Resultado;

@@ -29,6 +29,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 
         #region Propiedades
 
+        [ConfigurationProperty("id", IsRequired = true)]
+        public string ID
+        {
+            get { return (string)base["id"]; }
+            set { base["id"] = value; }
+        }
+
         [ConfigurationProperty("anfitrion", IsRequired = true)]
         public string Anfitrion
         {

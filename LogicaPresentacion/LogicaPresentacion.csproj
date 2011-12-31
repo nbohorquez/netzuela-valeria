@@ -74,6 +74,7 @@
     <Compile Include="Preferencias\TablasMapeadasSection.cs" />
     <Compile Include="DosArgumentosAUno.cs" />
     <Compile Include="PasswordBoxVinculable.cs" />
+    <Compile Include="Preferencias\UsuarioContrasenaElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleccionarTodaLaColumna.cs" />
     <Compile Include="ViewModels\ExploradorViewModel.Disposable.cs" />

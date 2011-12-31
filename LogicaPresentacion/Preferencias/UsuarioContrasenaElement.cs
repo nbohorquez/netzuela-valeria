@@ -7,11 +7,11 @@ using System.Configuration;         // ConfigurationElement
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 {
-    public class TablaMapeadaElement : ConfigurationElement
+    public class UsuarioContrasenaElement : ConfigurationElement
     {
         #region Constructores
 
-        public TablaMapeadaElement() { }
+        public UsuarioContrasenaElement() { }
 
         #endregion
 
@@ -24,15 +24,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
             set { base["id"] = value; }
         }
 
-        [ConfigurationProperty("tablaMapeada")]
-        [ConfigurationCollection(typeof(MapeoDeColumnasElement), 
-            AddItemName = "add", 
-            ClearItemsName = "clear", 
-            RemoveItemName = "remove")]
-        public ColeccionElementosGenerica<MapeoDeColumnasElement> TablaMapeada
+        [ConfigurationProperty("usuario", IsRequired = true)]
+        public string Usuario
         {
-            get { return (ColeccionElementosGenerica<MapeoDeColumnasElement>)base["tablaMapeada"]; }
-            set { base["tablaMapeada"] = value; }
+            get { return (string)base["usuario"]; }
+            set { base["usuario"] = value; }
+        }
+
+        [ConfigurationProperty("contrasena", IsRequired = true)]
+        public string Contrasena
+        {
+            get { return (string)base["contrasena"]; }
+            set { base["contrasena"] = value; }
         }
 
         #endregion

@@ -19,7 +19,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         private Nodo _ColumnaDestino;
         private Nodo _ColumnaOrigen;
-        //public delegate void CambioEnColumnasEvento(object Remitente, CambioEnColumnasArgumentos Argumentos);
 
         #endregion
 
@@ -161,7 +160,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         #region Eventos
 
         public EventHandler<EventoCambioEnColumnasArgs> CambioEnColumnas;
-        //public event CambioEnColumnasEvento CambioEnColumnas;
 
         #endregion
 

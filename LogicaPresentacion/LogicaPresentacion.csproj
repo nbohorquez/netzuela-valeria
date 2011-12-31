@@ -63,18 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArbolVisual.cs" />
+    <Compile Include="Configuracion.cs" />
     <Compile Include="ManejoDeExcepciones.cs" />
-    <Compile Include="Preferencias\AutentificacionSection.cs" />
-    <Compile Include="Preferencias\ConexionesSection.cs" />
-    <Compile Include="Preferencias\Configuracion.cs" />
-    <Compile Include="Preferencias\MapeoDeColumnasElement.cs" />
-    <Compile Include="Preferencias\ParametrosDeConexionElement.cs" />
-    <Compile Include="Preferencias\ColeccionElementosGenerica.cs" />
-    <Compile Include="Preferencias\TablaMapeadaElement.cs" />
-    <Compile Include="Preferencias\TablasMapeadasSection.cs" />
     <Compile Include="DosArgumentosAUno.cs" />
     <Compile Include="PasswordBoxVinculable.cs" />
-    <Compile Include="Preferencias\UsuarioContrasenaElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleccionarTodaLaColumna.cs" />
     <Compile Include="ViewModels\ExploradorViewModel.Disposable.cs" />
@@ -121,6 +113,10 @@
     <ProjectReference Include="..\Logica\Logica.csproj">
       <Project>{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}</Project>
       <Name>Logica</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Preferencias\Preferencias.csproj">
+      <Project>{A60A5CA5-0C85-447F-B673-56EB97D4F056}</Project>
+      <Name>Preferencias</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

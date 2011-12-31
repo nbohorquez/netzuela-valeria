@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Configuration;         // ConfigurationElement
 
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
+namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
     public class MapeoDeColumnasElement : ConfigurationElement
     {
@@ -18,7 +18,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
         #endregion
 
         #region Propiedades
-         
+
         [ConfigurationProperty("nodoOrigen", IsRequired = true)]
         public string NodoOrigen
         {

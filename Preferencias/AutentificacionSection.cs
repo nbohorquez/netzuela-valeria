@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Security;          // SecureString
 using System.Configuration;     // ConfigurationSection
 
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
+namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
     public class AutentificacionSection : ConfigurationSection
     {

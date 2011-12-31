@@ -9,7 +9,7 @@ using System.Data;                                                      // DataT
 using System.Windows;                                                   // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;                              // Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;                               // TablaMapeada
-using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias;      // Configuracion
+//using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias;      // Configuracion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Configuration;                                             // ConfigurationManager
-using System.Windows;                                                   // MessageBox
-using Zuliaworks.Netzuela.Valeria.Comunes;                              // ParametrosDeConexion
-using Zuliaworks.Netzuela.Valeria.Logica;                               // TablaMapeada
-using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias;      // Configuracion
+using System.Configuration;                         // ConfigurationManager
+using System.Windows;                               // MessageBox
+using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
+using Zuliaworks.Netzuela.Valeria.Logica;           // TablaMapeada
+using Zuliaworks.Netzuela.Valeria.Preferencias;     // Configuracion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {

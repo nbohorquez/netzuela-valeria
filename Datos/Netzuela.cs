@@ -21,7 +21,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         private ClienteValeria _Cliente;
 
         // ¡Temporal!
-        private List<Nodito> _ServidorRemoto;
         private ConnectionState _Estado;
 
         #endregion
@@ -44,46 +43,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             
             // Hay que ver como quito este pedazo de codigo tan feo
             _Estado = ConnectionState.Closed;
-
-            // Me invento una base de datos ficticia
-            _ServidorRemoto = new List<Nodito>()
-            {
-                new Nodito() 
-                { 
-                    Nombre = "Netzuela", 
-                    Hijos = new List<Nodito>()
-                    {
-                        new Nodito()
-                        {
-                            Nombre = "Spuria",
-                            Hijos = new List<Nodito>()
-                            {
-                                new Nodito()
-                                {
-                                    Nombre = "Ordenes de compra",
-                                    Hijos = new List<Nodito>()
-                                    {
-                                        new Nodito() { Nombre = "Codigo", Hijos = null },
-                                        new Nodito() { Nombre = "Cantidad de articulos", Hijos = null },
-                                        new Nodito() { Nombre = "Total", Hijos = null }
-                                    }
-                                },
-                                new Nodito()
-                                {
-                                    Nombre = "Inventario",
-                                    Hijos = new List<Nodito>()
-                                    {
-                                        new Nodito() { Nombre = "Codigo", Hijos = null },
-                                        new Nodito() { Nombre = "Descripcion", Hijos = null },
-                                        new Nodito() { Nombre = "Cantidad", Hijos = null },
-                                        new Nodito() { Nombre = "Precio", Hijos = null }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
         }
 
         #endregion
@@ -307,7 +266,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 string Error = "Error al escribir la tabla " + NombreTabla + " en la base de datos " + BaseDeDatos;
                 throw new Exception(Error, ex);
             }
-                
+
             return Resultado;
         }
 
@@ -377,34 +336,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #endregion
 
         #endregion
-
-        #endregion
-
-        #region Tipos anidados
-
-        private class Nodito
-        {
-            public string Nombre;
-            public List<Nodito> Hijos;
-
-            public Nodito() { }
-
-            public static Nodito BuscarNodo(string Nombre, List<Nodito> Lista)
-            {
-                Nodito Resultado = new Nodito();
-
-                foreach (Nodito n in Lista)
-                {
-                    if (n.Nombre == Nombre)
-                    {
-                        Resultado = n;
-                        break;
-                    }
-                }
-
-                return Resultado;
-            }
-        }
 
         #endregion
     }

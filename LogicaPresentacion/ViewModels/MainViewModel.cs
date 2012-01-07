@@ -9,7 +9,6 @@ using System.Data;                                                      // DataT
 using System.Windows;                                                   // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;                              // Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;                               // TablaMapeada
-//using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias;      // Configuracion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -123,7 +122,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
                 };
 
-                ExploradorLocal = new ExploradorViewModel(NodosLocales, Conexion.BD);
+                ExploradorLocal = new ExploradorViewModel(NodosLocales, Conexion.Conexion);
             }
         }
 
@@ -136,7 +135,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
                 };
 
-                ExploradorRemoto = new ExploradorViewModel(NodosRemotos, Conexion.BD);
+                ExploradorRemoto = new ExploradorViewModel(NodosRemotos, Conexion.Conexion);
 
                 // Leemos todas las tablas de todas las bases de datos del servidor remoto
                 ExploradorRemoto.ExpandirTodo();

@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="ContratoValeria">
       <HintPath>..\..\Paris\ContratoValeria\bin\Debug\ContratoValeria.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="MySql.Data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,8 +72,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventoEnviarTablasCompletadoArgs.cs" />
-    <Compile Include="Web\ClienteValeria.EnviarTablas.cs">
+    <Compile Include="EventoOperacionAsincCompletadaArgs.cs" />
+    <Compile Include="Web\ClienteValeria.Operaciones.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Web\ProxyDinamico.cs" />

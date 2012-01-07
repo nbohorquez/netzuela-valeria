@@ -7,7 +7,7 @@ using System.ComponentModel;    // AsyncCompletedEventArgs
 
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {
-    public class EventoEnviarTablasCompletadoArgs : AsyncCompletedEventArgs
+    public class EventoOperacionAsincCompletadaArgs : AsyncCompletedEventArgs
     {
         #region Variables
 
@@ -17,7 +17,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Constructores
 
-        public EventoEnviarTablasCompletadoArgs(object[] Resultados, bool Cancelado, Exception Error, object UsuarioID)
+        public EventoOperacionAsincCompletadaArgs(object[] Resultados, bool Cancelado, Exception Error, object UsuarioID)
             : base(Error, Cancelado, UsuarioID)
         {
             this.Resultados = Resultados;
@@ -27,12 +27,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Propiedades
 
-        public bool Resultado
+        public object Resultado
         {
             get
             {
                 base.RaiseExceptionIfNecessary();
-                return (bool)Resultados[0];
+                return Resultados[0];
             }
         }
 

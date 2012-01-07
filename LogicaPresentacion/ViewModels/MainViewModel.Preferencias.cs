@@ -118,6 +118,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private bool CargarParametrosDeConexion()
         {
             bool Resultado = false;
+            bool ResultadoA = false;
+            bool ResultadoB = false;
 
             try
             {
@@ -132,20 +134,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                         {
                             case "Local":
                                 _ConfiguracionLocal.ParametrosConexionLocal = Param.ConvertirAParametrosDeConexion();
+                                ResultadoA = true;
                                 break;
                             case "Remoto":
                                 _ConfiguracionLocal.ParametrosConexionRemota = Param.ConvertirAParametrosDeConexion();
+                                ResultadoB = true;
                                 break;
                             default:
                                 break;
                         }
                     }
 
-                    /*
-                    _ConfiguracionLocal.ParametrosConexionLocal = ConexionesGuardadas.ParametrosConexionLocal.ConvertirAParametrosDeConexion();
-                    _ConfiguracionLocal.ParametrosConexionRemota = ConexionesGuardadas.ParametrosConexionRemota.ConvertirAParametrosDeConexion();
-                    */
-                    Resultado = true;
+                    Resultado = ResultadoA && ResultadoB;
                 }
             }
             catch (Exception ex)
@@ -159,6 +159,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private bool CargarCredenciales()
         {
             bool Resultado = false;
+            bool ResultadoA = false;
+            bool ResultadoB = false;
 
             try
             {
@@ -174,24 +176,19 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                             case "Local":
                                 _ConfiguracionLocal.UsuarioLocal = UsuCon.Usuario.Desencriptar();
                                 _ConfiguracionLocal.ContrasenaLocal = UsuCon.Contrasena.Desencriptar();
+                                ResultadoA = true;
                                 break;
                             case "Remoto":
                                 _ConfiguracionLocal.UsuarioRemoto = UsuCon.Usuario.Desencriptar();
                                 _ConfiguracionLocal.ContrasenaRemota = UsuCon.Contrasena.Desencriptar();
+                                ResultadoB = true;
                                 break;
                             default:
                                 break;
                         }
                     }
 
-                    /*
-                    _ConfiguracionLocal.UsuarioLocal = Credenciales.UsuarioLocal.Desencriptar();
-                    _ConfiguracionLocal.ContrasenaLocal = Credenciales.ContrasenaLocal.Desencriptar();
-                    _ConfiguracionLocal.UsuarioRemoto = Credenciales.UsuarioRemoto.Desencriptar();
-                    _ConfiguracionLocal.ContrasenaRemota = Credenciales.ContrasenaRemota.Desencriptar();
-                    */
-
-                    Resultado = true;
+                    Resultado = ResultadoA && ResultadoB;
                 }
             }
             catch (Exception ex)

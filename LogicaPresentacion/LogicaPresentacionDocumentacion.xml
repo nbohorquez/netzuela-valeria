@@ -15,14 +15,14 @@
             Construye un explorador vacio.
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel},Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel},Zuliaworks.Netzuela.Valeria.Logica.Conexion)">
             <summary>
             Construye un explorador con determinado arbol de nodos y proveedor de datos.
             </summary>
             <param name="Nodos">Árbol de nodos a emplear. Si se trata de un explorador de carga
             de nodos por demanda (lazy loading), el árbol pasado como parámetro por lo general 
             sólo contiene el nodo inicial.</param>
-            <param name="BD">Proveedor de datos. A través de este se obtienen los datos y metadatos
+            <param name="Conexion">Proveedor de datos. A través de este se obtienen los datos y metadatos
             de los nodos del árbol.</param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ExpandirTodo">
@@ -47,7 +47,7 @@
             <exception cref="T:System.ArgumentNullException">Si <paramref name="Item"/> es una referencia 
             nula.</exception>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTabla(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTablaDeCache(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
             <summary>
             Lee la tabla especificada desde el proveedor de datos.
             </summary>

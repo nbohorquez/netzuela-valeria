@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Configuration;         // ConfigurationElement
 
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
+namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
     public class TablaMapeadaElement : ConfigurationElement
     {
@@ -17,10 +17,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 
         #region Propiedades
 
+        [ConfigurationProperty("id", IsRequired = true)]
+        public string ID
+        {
+            get { return (string)base["id"]; }
+            set { base["id"] = value; }
+        }
+
         [ConfigurationProperty("tablaMapeada")]
-        [ConfigurationCollection(typeof(MapeoDeColumnasElement), 
-            AddItemName = "add", 
-            ClearItemsName = "clear", 
+        [ConfigurationCollection(typeof(MapeoDeColumnasElement),
+            AddItemName = "add",
+            ClearItemsName = "clear",
             RemoveItemName = "remove")]
         public ColeccionElementosGenerica<MapeoDeColumnasElement> TablaMapeada
         {
@@ -31,3 +38,4 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
         #endregion
     }
 }
+

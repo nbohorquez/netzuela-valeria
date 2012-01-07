@@ -8,7 +8,8 @@ using System.Collections.ObjectModel;           // ObservableCollection
 using System.Data;                              // DataTable
 using System.Windows;                           // MessageBox
 using System.Windows.Input;                     // ICommand
-using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
+using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
+//using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Variables
 
         private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
-        private IBaseDeDatos _BD;
+        private Conexion _Conexion;
         private NodoViewModel _NodoActual;
         private RelayCommand<NodoViewModel> _ExpandirOrden;
         private RelayCommand<string> _EstablecerNodoActualOrden;
@@ -39,7 +40,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
-            this._BD = null;
+            this._Conexion = null;
         }
 
         /// <summary>
@@ -48,9 +49,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// <param name="Nodos">Árbol de nodos a emplear. Si se trata de un explorador de carga
         /// de nodos por demanda (lazy loading), el árbol pasado como parámetro por lo general 
         /// sólo contiene el nodo inicial.</param>
-        /// <param name="BD">Proveedor de datos. A través de este se obtienen los datos y metadatos
+        /// <param name="Conexion">Proveedor de datos. A través de este se obtienen los datos y metadatos
         /// de los nodos del árbol.</param>
-        public ExploradorViewModel(ObservableCollection<NodoViewModel> Nodos, IBaseDeDatos BD)
+        public ExploradorViewModel(ObservableCollection<NodoViewModel> Nodos, Conexion Conexion)
         {
             this.Nodos = Nodos;
             AsignarEsteExploradorA(Nodos);
@@ -59,13 +60,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this.NodoActual = Nodos[0];
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
-            this._BD = BD;
-            
-            // ¡¡¡HEY ESTA VERGA HAY QUE CAMBIARLA!!!
-            if (_BD.DatosDeConexion.Servidor == Comunes.Constantes.SGBDR.NETZUELA)
-            {
-                this._BD.EnviarTablasCompletado = EscribirTablaRetorno;
-            }
+            this._Conexion = Conexion;
         }
 
         ~ExploradorViewModel()

@@ -58,6 +58,51 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public IBaseDeDatos BD { get; private set; }
 
+        public ConnectionState Estado 
+        { 
+            get { return BD.Estado; }
+        }
+
+        #endregion
+
+        #region Eventos
+
+        public event StateChangeEventHandler CambioDeEstado
+        {
+            add { BD.CambioDeEstado += value; }
+            remove { BD.CambioDeEstado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarBasesDeDatosCompletado
+        {
+            add { BD.ListarBasesDeDatosCompletado += value; }
+            remove { BD.ListarBasesDeDatosCompletado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarTablasCompletado
+        {
+            add { BD.ListarTablasCompletado += value; }
+            remove { BD.ListarTablasCompletado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado
+        {
+            add { BD.LeerTablaCompletado += value; }
+            remove { BD.LeerTablaCompletado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado
+        {
+            add { BD.EscribirTablaCompletado += value; }
+            remove { BD.EscribirTablaCompletado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado
+        {
+            add { BD.CrearUsuarioCompletado += value; }
+            remove { BD.CrearUsuarioCompletado -= value; }
+        }
+
         #endregion
 
         #region Funciones
@@ -84,6 +129,8 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             }
         }
 
+        #region Métodos sincrónicos
+        
         /// <summary>
         /// Abre la conexión con el servidor especificado en <see cref="Parametros"/>.
         /// </summary>
@@ -95,6 +142,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 {
                     ResolverDatosDeConexion();
                 }
+
                 BD.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)
@@ -119,6 +167,70 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             }
         }
 
+        public string[] ListarBasesDeDatos()
+        {
+            string[] Resultado = null;
+
+            try
+            {
+                Resultado = BD.ListarBasesDeDatos();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las bases de datos", ex);
+            }
+
+            return Resultado;
+        }
+
+        public string[] ListarTablas(string BaseDeDatos)
+        {
+            string[] Resultado = null;
+
+            try
+            {
+                Resultado = BD.ListarTablas(BaseDeDatos);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las tablas de la base de datos \"" + BaseDeDatos + "\"", ex);
+            }
+
+            return Resultado;
+        }
+
+        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
+        {
+            DataTable Resultado = null;
+
+            try
+            {
+                Resultado = BD.LeerTabla(BaseDeDatos, Tabla);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al leer la tabla \"" + Tabla + "\" de la base de datos \"" + BaseDeDatos + "\"", ex);
+            }
+
+            return Resultado;
+        }
+
+        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        {
+            bool Resultado = false;
+
+            try
+            {
+                Resultado = BD.EscribirTabla(BaseDeDatos, NombreTabla, Tabla);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al escribir la tabla \"" + Tabla + "\" en la base de datos \"" + BaseDeDatos + "\"", ex);
+            }
+
+            return Resultado;
+        }
+
         public void CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] ColumnasAutorizadas, int Privilegios)
         {
             try
@@ -130,6 +242,72 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 throw new Exception("Error creando el usuario en la base de datos", ex);
             }
         }
+
+        #endregion
+
+        #region Métodos asincrónicos
+
+        public void ListarBasesDeDatosAsinc()
+        {
+            try
+            {
+                BD.ListarBasesDeDatosAsinc();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las bases de datos", ex);
+            }
+        }
+
+        public void ListarTablasAsinc(string BaseDeDatos)
+        {
+            try
+            {
+                BD.ListarTablasAsinc(BaseDeDatos);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las tablas de la base de datos \"" + BaseDeDatos + "\"", ex);
+            }
+        }
+
+        public void LeerTablaAsinc(string BaseDeDatos, string Tabla)
+        {
+            try
+            {
+                BD.LeerTablaAsinc(BaseDeDatos, Tabla);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al leer la tabla \"" + Tabla + "\" de la base de datos \"" + BaseDeDatos + "\"", ex);
+            }
+        }
+
+        public void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        {
+            try
+            {
+                BD.EscribirTablaAsinc(BaseDeDatos, NombreTabla, Tabla);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al escribir la tabla \"" + Tabla + "\" en la base de datos \"" + BaseDeDatos + "\"", ex);
+            }
+        }
+
+        public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        {
+            try
+            {
+                BD.CrearUsuarioAsinc(Usuario, Contrasena, Columnas, Privilegios);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error creando el usuario en la base de datos", ex);
+            }
+        }
+        
+        #endregion
 
         #endregion
     }

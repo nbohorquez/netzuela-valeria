@@ -78,5 +78,5 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         }
 
         #endregion
-    }        
+    }
 }

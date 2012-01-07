@@ -19,7 +19,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         private Nodo _ColumnaDestino;
         private Nodo _ColumnaOrigen;
-        //public delegate void CambioEnColumnasEvento(object Remitente, CambioEnColumnasArgumentos Argumentos);
 
         #endregion
 
@@ -74,8 +73,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 {
                     _ColumnaOrigen = ValorNuevo;
 
+                    DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
+                    /*
                     if(CambioEnColumnas != null)
-                        CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
+                        CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));*/
                 }
                 else if (ValorNuevo != ColumnaDestino && ValorNuevo != _ColumnaOrigen)
                 {
@@ -89,8 +90,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                             ValorNuevo.MapaColumna = this;
                             _ColumnaOrigen = ValorNuevo;
 
+                            DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
+                            /*
                             if (CambioEnColumnas != null)
-                                CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
+                                CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));*/
                         }
                     }
                     else
@@ -98,8 +101,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                         ValorNuevo.MapaColumna = this;
                         _ColumnaOrigen = ValorNuevo;
 
+                        DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
+                        /*
                         if (CambioEnColumnas != null)
-                            CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
+                            CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));*/
                     }
                 }
             }
@@ -120,8 +125,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 {
                     _ColumnaDestino = ValorNuevo;
 
+                    DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
+
+                    /*
                     if(CambioEnColumnas != null)
-                        CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
+                        CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));*/
                 }
                 else if (ValorNuevo != ColumnaOrigen && ValorNuevo != _ColumnaDestino)
                 {
@@ -135,8 +143,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                             ValorNuevo.MapaColumna = this;
                             _ColumnaDestino = ValorNuevo;
 
+                            DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
+                            /*
                             if (CambioEnColumnas != null)
-                                CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
+                                CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));*/
                         }
                     }
                     else
@@ -144,8 +154,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                         ValorNuevo.MapaColumna = this;
                         _ColumnaDestino = ValorNuevo;
 
+                        DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
+                        /*
                         if (CambioEnColumnas != null)
-                            CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
+                            CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));*/
                     }                 
                 }
             }
@@ -160,12 +172,23 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         #region Eventos
 
-        public EventHandler<EventoCambioEnColumnasArgs> CambioEnColumnas;
-        //public event CambioEnColumnasEvento CambioEnColumnas;
+        public event EventHandler<EventoCambioEnColumnasArgs> CambioEnColumnas;
 
         #endregion
 
         #region Funciones
+
+        #region Métodos de eventos
+
+        protected virtual void DispararCambioEnColumnas(EventoCambioEnColumnasArgs Argumentos)
+        {
+            if(CambioEnColumnas != null)
+            {
+                CambioEnColumnas(this, Argumentos);
+            }
+        }
+
+        #endregion
 
         protected void Dispose(bool BorrarCodigoAdministrado)
         {

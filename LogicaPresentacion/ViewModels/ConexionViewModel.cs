@@ -19,7 +19,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Variables
 
         private RelayCommand _ConectarDesconectarOrden;
-        private readonly Conexion _Conexion;
+        protected Conexion _Conexion;
 
         #endregion
 
@@ -42,14 +42,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Propiedades
 
-        public IBaseDeDatos BD
+        public Conexion Conexion
         {
-            get { return _Conexion.BD; }
+            get { return _Conexion; }
         }
 
         public ConnectionState Estado
         {
-            get { return BD.Estado; }
+            get { return _Conexion.Estado; }
         }
 
         public ParametrosDeConexion Parametros
@@ -138,13 +138,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             try
             {
                 ResolverDatosDeConexion();
-                BD.CambioDeEstado = new StateChangeEventHandler(EnCambioDeEstado);
+                _Conexion.CambioDeEstado += new StateChangeEventHandler(EnCambioDeEstado);
                 _Conexion.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -157,23 +156,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
-
-        public void CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] ColumnasAutorizadas, int Privilegios)
-        {
-            try
-            {
-                _Conexion.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Privilegios);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
-            }
-        }
-
+        
         public void ResolverDatosDeConexion()
         {
             try
@@ -183,7 +168,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 

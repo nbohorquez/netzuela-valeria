@@ -13,29 +13,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     public partial class ExploradorViewModel
     {
+        #region Variables
+
+        delegate void ExpresionGenerica();
+
+        #endregion
+
         #region Funciones
 
-        private void EscribirTablaRetorno(object Remitente, EventoEnviarTablasCompletadoArgs e)
-        {
-            try
-            {
-                if (e.Error != null)
-                {
-                    MessageBox.Show(e.UserState + ": " + e.Error.MostrarPilaDeExcepciones());
-                }
-
-                if (e.Cancelled)
-                {
-                    MessageBox.Show(e.UserState + ": " + "La operacion de envio fue cancelada");
-                }
-
-                MessageBox.Show(e.UserState + ": " + "el resultado de la operacion fue " + e.Resultado);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.MostrarPilaDeExcepciones());
-            }
-        }
+        #region Otras
 
         private void AsignarEsteExploradorA(ObservableCollection<NodoViewModel> Nodos)
         {
@@ -48,6 +34,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             }
         }
+
+        #endregion
+
+        #region Acciones
 
         private void EstablecerNodoActualAccion(string Nombre)
         {
@@ -65,9 +55,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
+
+        #endregion
+
+        #region Expandir
 
         private void ExpandirServidor(NodoViewModel Item)
         {
@@ -77,10 +70,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Item.Expandido == true)
                 return;
 
-            try
-            {
-                string[] BasesDeDatos = _BD.ListarBasesDeDatos();
+            EventHandler<EventoOperacionAsincCompletadaArgs> Retorno = null;
+            string[] BasesDeDatos = null;
 
+            // Esta expresion lambda es llamada mas abajo.
+            ExpresionGenerica CrearNodos = () =>
+            {
                 if (BasesDeDatos != null)
                 {
                     Item.Expandido = true;
@@ -89,7 +84,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     {
                         N.Dispose();
                     }
-                    
+
                     Item.Hijos.Clear();
 
                     foreach (string BdD in BasesDeDatos)
@@ -97,11 +92,41 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                         NodoViewModel Nodo = new NodoViewModel(BdD, Item);
                     }
                 }
+            };
+
+            Retorno = (r, a) =>
+            {
+                try
+                {
+                    _Conexion.ListarBasesDeDatosCompletado -= Retorno;
+                    BasesDeDatos = a.Resultado as string[];
+                    CrearNodos();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                }
+            };
+
+            try
+            {
+                // Aqui seria mejor revisar una variable de configuracion del usuario
+                // que indique si se deben realizan llamadas a los procedimientos 
+                // remotos/locales de forma asincronica o sincronica
+                if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
+                {
+                    _Conexion.ListarBasesDeDatosCompletado += Retorno;
+                    _Conexion.ListarBasesDeDatosAsinc();
+                }
+                else
+                {
+                    BasesDeDatos = _Conexion.ListarBasesDeDatos();
+                    CrearNodos();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -113,10 +138,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Item.Expandido == true)
                 return;
 
-            try
-            {
-                string[] Tablas = _BD.ListarTablas(Item.Nombre);
+            EventHandler<EventoOperacionAsincCompletadaArgs> Retorno = null;
+            string[] Tablas = null;
 
+            // Esta expresion lambda es llamada mas abajo.
+            ExpresionGenerica CrearNodos = () =>
+            {
                 if (Tablas != null)
                 {
                     Item.Expandido = true;
@@ -133,11 +160,41 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                         NodoViewModel Nodo = new NodoViewModel(Tabla, Item);
                     }
                 }
+            };
+
+            Retorno = (r, a) =>
+            {
+                try
+                {
+                    _Conexion.ListarTablasCompletado -= Retorno;
+                    Tablas = a.Resultado as string[];
+                    CrearNodos();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                }
+            };
+
+            try
+            {
+                // Aqui seria mejor revisar una variable de configuracion del usuario
+                // que indique si se deben realizan llamadas a los procedimientos 
+                // remotos/locales de forma asincronica o sincronica
+                if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
+                {
+                    _Conexion.ListarTablasCompletado += Retorno;
+                    _Conexion.ListarTablasAsinc(Item.Nombre);
+                }
+                else
+                {
+                    Tablas = _Conexion.ListarTablas(Item.Nombre);
+                    CrearNodos();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -146,19 +203,86 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Item == null)
                 throw new ArgumentNullException("Item");
 
-            DataTable Tabla = ObtenerTabla(Item);
+            DataTable Tabla = null;
+            EventHandler<EventoOperacionAsincCompletadaArgs> Retorno = null;
 
-            if (Tabla != null)
+            ExpresionGenerica AjustarExplorador = () =>
             {
                 Item.Expandido = true;
 
                 /* 
-                 * NodoTablaActual esta atado a TablaActual: el primero es el indice dentro del 
-                 * diccionario Tablas para ubicar el segundo.
-                 */
+                    * NodoTablaActual esta atado a TablaActual: el primero es el indice dentro del 
+                    * diccionario Tablas para ubicar el segundo.
+                    */
 
                 NodoTablaActual = Item;
                 TablaActual = Tabla;
+            };
+
+            // Esta expresion lambda es llamada mas abajo.
+            ExpresionGenerica CrearNodos = () =>
+            {
+                if (Tabla != null)
+                {
+                    Tabla.TableName = Item.RutaCompleta();
+
+                    foreach (NodoViewModel N in Item.Hijos)
+                    {
+                        N.Dispose();
+                    }
+
+                    Item.Hijos.Clear();
+
+                    foreach (DataColumn Columna in Tabla.Columns)
+                    {
+                        NodoViewModel N = new NodoViewModel(Columna.ColumnName, Item);
+                    }
+
+                    AjustarExplorador();
+                }
+            };
+
+            Retorno = (r, a) =>
+            {
+                try
+                {
+                    _Conexion.LeerTablaCompletado -= Retorno;
+                    Tabla = a.Resultado as DataTable;
+                    CrearNodos();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                }
+            };
+
+            try
+            {
+                if (_CacheDeTablas.ContainsKey(Item))
+                {
+                    Tabla = _CacheDeTablas[Item];
+                    AjustarExplorador();
+                }
+                else
+                {
+                    // Aqui seria mejor revisar una variable de configuracion del usuario
+                    // que indique si se deben realizan llamadas a los procedimientos 
+                    // remotos/locales de forma asincronica o sincronica
+                    if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
+                    {
+                        _Conexion.LeerTablaCompletado += Retorno;
+                        _Conexion.LeerTablaAsinc(Item.Padre.Nombre, Item.Nombre);
+                    }
+                    else
+                    {
+                        Tabla = _Conexion.LeerTabla(Item.Padre.Nombre, Item.Nombre);
+                        CrearNodos();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
         }
 
@@ -235,6 +359,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             NodoActual = Item;
         }
 
+        #endregion
+
+        #region Funciones de tablas
+
         /// <summary>
         /// Lee la tabla especificada desde el proveedor de datos.
         /// </summary>
@@ -242,46 +370,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
         /// <exception cref="ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
         /// nula.</exception>
-        public DataTable ObtenerTabla(NodoViewModel Tabla)
+        public DataTable ObtenerTablaDeCache(NodoViewModel Tabla)
         {
+            DataTable Resultado = null;
+
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
 
-            DataTable Temp = null;
-
-            try
+            if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
             {
-                if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
+                if (_CacheDeTablas.ContainsKey(Tabla))
                 {
-                    if (_CacheDeTablas.ContainsKey(Tabla))
-                    {
-                        Temp = _CacheDeTablas[Tabla];
-                    }
-                    else
-                    {
-                        Temp = _BD.LeerTabla(Tabla.Padre.Nombre, Tabla.Nombre);
-                        Temp.TableName = Tabla.RutaCompleta();
-
-                        foreach (NodoViewModel N in Tabla.Hijos)
-                        {
-                            N.Dispose();
-                        }
-                        Tabla.Hijos.Clear();
-
-                        foreach (DataColumn Columna in Temp.Columns)
-                        {
-                            NodoViewModel N = new NodoViewModel(Columna.ColumnName, Tabla);
-                        }
-                    }
+                    Resultado = _CacheDeTablas[Tabla];
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
-            }
 
-            return Temp;
+            return Resultado;
         }
 
         public void EscribirTabla(NodoViewModel Nodo, DataTable Tabla)
@@ -291,12 +395,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             try
             {
-                _BD.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
+                _Conexion.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -317,6 +420,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             return _CacheDeTablas.Keys.ToList();
         }
+
+        #endregion
 
         #endregion
     }

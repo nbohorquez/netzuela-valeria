@@ -27,8 +27,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 _CacheDeTablas = null;
             }
 
-            if (_BD != null)
-                _BD = null;
+            if (_Conexion != null)
+                _Conexion = null;
 
             if (_NodoActual != null)
                 _NodoActual = null;

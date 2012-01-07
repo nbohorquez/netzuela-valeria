@@ -6,13 +6,13 @@ using System.Text;
 using System.Security;                              // SecureString
 using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
 
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
+namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 {
     public class Configuracion
     {
         #region Constructores
 
-        public Configuracion() 
+        public Configuracion()
         {
             Mapas = new List<string[]>();
         }

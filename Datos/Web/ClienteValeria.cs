@@ -23,62 +23,78 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         private Random _Aleatorio;
         private ProxyDinamico _Proxy;
         private HybridDictionary _Hilos;
-        private SendOrPostCallback _DelegadoReportarProgreso;
 
         #endregion
 
         #region Constructores
 
-        public ClienteValeria(string UriWsdlServicio)
+        public ClienteValeria()
         {
             InicializarDelegados();
 
             _Aleatorio = new Random();
             _Hilos = new HybridDictionary();
-            _Proxy = new ProxyDinamico(UriWsdlServicio);
+        }
+
+        public ClienteValeria(string UriWsdlServicio)
+            : this()
+        {
+            if (UriWsdlServicio == null)
+                throw new ArgumentNullException("UriWsdlServicio");
+
+            this.UriWsdlServicio = UriWsdlServicio;
+            CrearProxy();
         }
 
         #endregion
 
-        #region Eventos
+        #region Propiedades
 
-        public EventHandler<ProgressChangedEventArgs> CambioEnProgresoDeOperacion;
+        public string UriWsdlServicio { get; set; }
 
         #endregion
 
         #region Funciones
-        
+
+        private void CrearProxy()
+        {
+            try
+            {
+                _Proxy = new ProxyDinamico(UriWsdlServicio);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error creando ProxyDinamico con argumento: \"" + UriWsdlServicio + "\"", ex);
+            }
+        }
+
         private bool TareaCancelada(object TareaID)
         {
             return (_Hilos[TareaID] == null);
         }
 
-        private void AntesDeReportarProgreso(object Estado)
-        {
-            ProgressChangedEventArgs e = Estado as ProgressChangedEventArgs;
-            EnReportarProgreso(e);
-        }
-
-        protected void EnReportarProgreso(ProgressChangedEventArgs e)
-        {
-            if (CambioEnProgresoDeOperacion != null)
-            {
-                CambioEnProgresoDeOperacion(this, e);
-            }
-        }
-
         protected virtual void InicializarDelegados()
         {
-            _DelegadoReportarProgreso = new SendOrPostCallback(AntesDeReportarProgreso);
-            _DelegadoReportarEnvioDeTablasCompleado = new SendOrPostCallback(AntesDeReportarEnvioDeTablasCompletado);
+            _DelegadoDispararCambioEnProgresoDeOperacion = new SendOrPostCallback(AntesDeDispararCambioEnProgresoDeOperacion);
+            _DelegadoDispararListarBDsCompletado = new SendOrPostCallback(AntesDeDispararListarBDsCompletado);
+            _DelegadoDispararListarTablasCompletado = new SendOrPostCallback(AntesDeDispararListarTablasCompletado);
+            _DelegadoDispararLeerTablaCompletado = new SendOrPostCallback(AntesDeDispararLeerTablaCompletado);
+            _DelegadoDispararEscribirTablaCompletado = new SendOrPostCallback(AntesDeDispararEscribirTablaCompletado);
+            _DelegadoDispararCrearUsuarioCompletado = new SendOrPostCallback(AntesDeDispararCrearUsuarioCompletado);
+            _Carpintero = new DelegadoComenzarOperacion(ComenzarOperacion);
         }
 
         public void Conectar()
         {
-            if (_Proxy != null)
+            if (_Proxy == null)
             {
-                _Proxy.Conectar("IValeria");
+                if(UriWsdlServicio == null)
+                    throw new ArgumentNullException("UriWsdlServicio");
+
+                CrearProxy();
             }
+
+            _Proxy.Conectar("IValeria");            
         }
 
         public void Desconectar()

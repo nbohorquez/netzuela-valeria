@@ -101,7 +101,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message);
             }
         }
 
@@ -117,7 +116,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message);
             }
         }
 
@@ -130,7 +128,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                //MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -173,7 +170,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     NodoViewModel NodoCol = MapaCol.ColumnaOrigen.BuscarEnRepositorio();
 
-                    DataTable Temp = NodoCol.Explorador.ObtenerTabla(NodoCol.Padre);
+                    DataTable Temp = NodoCol.Explorador.ObtenerTablaDeCache(NodoCol.Padre);
                     DataColumn TempCol = Temp.Columns[MapaCol.ColumnaOrigen.Nombre];
                     TempTablaMapeada.Columns.Remove(MapaCol.ColumnaDestino.Nombre);
                     

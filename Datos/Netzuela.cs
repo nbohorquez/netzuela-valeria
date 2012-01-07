@@ -21,7 +21,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         private ClienteValeria _Cliente;
 
         // ¡Temporal!
-        private List<Nodito> _ServidorRemoto;
         private ConnectionState _Estado;
 
         #endregion
@@ -30,68 +29,28 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public Netzuela(ParametrosDeConexion ServidorBD)
         {
-            Servidor = ServidorBD;
-                       
+            DatosDeConexion = ServidorBD;
+
+            // El argumento de ClienteValeria debe estar relacionado con DatosDeConexion
+            _Cliente = new ClienteValeria();
+
+            // Inicializamos los manejadores de eventos
+            _Cliente.ListarBasesDeDatosCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarListarBasesDeDatosCompletado);
+            _Cliente.ListarTablasCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarListarTablasCompletado);
+            _Cliente.LeerTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarLeerTablaCompletado);
+            _Cliente.EscribirTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarEscribirTablaCompletado);
+            _Cliente.CrearUsuarioCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarCrearUsuarioCompletado);
+            
             // Hay que ver como quito este pedazo de codigo tan feo
             _Estado = ConnectionState.Closed;
-
-            // Me invento una base de datos ficticia
-            _ServidorRemoto = new List<Nodito>()
-            {
-                new Nodito() 
-                { 
-                    Nombre = "Netzuela", 
-                    Hijos = new List<Nodito>() 
-                    {
-                        new Nodito()
-                        {
-                            Nombre = "Spuria",
-                            Hijos = new List<Nodito>()
-                            {
-                                new Nodito()
-                                {
-                                    Nombre = "Ordenes de compra",
-                                    Hijos = new List<Nodito>()
-                                    {
-                                        new Nodito() { Nombre = "Codigo", Hijos = null },
-                                        new Nodito() { Nombre = "Cantidad de articulos", Hijos = null },
-                                        new Nodito() { Nombre = "Total", Hijos = null }
-                                    }
-                                },
-                                new Nodito()
-                                {
-                                    Nombre = "Inventario",
-                                    Hijos = new List<Nodito>()
-                                    {
-                                        new Nodito() { Nombre = "Codigo", Hijos = null },
-                                        new Nodito() { Nombre = "Descripcion", Hijos = null },
-                                        new Nodito() { Nombre = "Cantidad", Hijos = null },
-                                        new Nodito() { Nombre = "Precio", Hijos = null }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
         }
 
         #endregion
 
+        #region Implementaciones de interfaces
+
         #region Propiedades
 
-        public ParametrosDeConexion Servidor { get; set; }
-
-        #endregion
-
-        #region Eventos
-
-        public event StateChangeEventHandler CambioDeEstadoDeConexion;
-
-        #endregion
-
-        #region Implementaciones de interfaces
-        
         public ConnectionState Estado
         {
             get { return _Estado; }
@@ -101,39 +60,122 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 {
                     ConnectionState Anterior = _Estado;
                     _Estado = value;
-                    CambioDeEstadoDeConexion(this, new StateChangeEventArgs(Anterior, _Estado));
+                    DispararCambioDeEstado(new StateChangeEventArgs(Anterior, _Estado));
                 }
             }
         }
 
-        public ParametrosDeConexion DatosDeConexion
+        public ParametrosDeConexion DatosDeConexion { get; set; }
+
+        #endregion
+
+        #region Eventos
+
+        public event StateChangeEventHandler CambioDeEstado;
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarBasesDeDatosCompletado;
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarTablasCompletado;
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado;        
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado;
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado;
+        
+        #endregion
+
+        #region Funciones
+
+        #region Métodos de eventos
+
+        private void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs Args)
         {
-            get { return Servidor; }
+            DispararCambioDeEstado(Args);
         }
 
-        public StateChangeEventHandler CambioDeEstado
+        private void ManejarListarBasesDeDatosCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
         {
-            set { CambioDeEstadoDeConexion += value; }
+            DispararListarBasesDeDatosCompletado(Args);
         }
 
-        public EventHandler<EventoEnviarTablasCompletadoArgs> EnviarTablasCompletado
+        private void ManejarListarTablasCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
         {
-            set
+            DispararListarTablasCompletado(Args);
+        }
+
+        private void ManejarLeerTablaCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
+        {
+            DispararLeerTablaCompletado(Args);
+        }
+
+        private void ManejarEscribirTablaCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
+        {
+            DispararEscribirTablaCompletado(Args);
+        }
+
+        private void ManejarCrearUsuarioCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
+        {
+            DispararCrearUsuarioCompletado(Args);
+        }
+
+        protected virtual void DispararCambioDeEstado(StateChangeEventArgs e)
+        {
+            if (CambioDeEstado != null)
+            {
+                CambioDeEstado(this, e);
+            }
+        }
+
+        protected virtual void DispararListarBasesDeDatosCompletado(EventoOperacionAsincCompletadaArgs e)
+        {
+            if (ListarBasesDeDatosCompletado != null)
+            {
+                ListarBasesDeDatosCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararListarTablasCompletado(EventoOperacionAsincCompletadaArgs e)
+        {
+            if (ListarTablasCompletado != null)
+            {
+                ListarTablasCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararLeerTablaCompletado(EventoOperacionAsincCompletadaArgs e)
+        {
+            if (LeerTablaCompletado != null)
+            {
+                LeerTablaCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararEscribirTablaCompletado(EventoOperacionAsincCompletadaArgs e)
+        {
+            if (EscribirTablaCompletado != null)
+            {
+                EscribirTablaCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararCrearUsuarioCompletado(EventoOperacionAsincCompletadaArgs e)
+        {
+            if (CrearUsuarioCompletado != null)
+            {
+                CrearUsuarioCompletado(this, e);
+            }
+        }
+
+        #endregion
+
+        #region Métodos sincrónicos
+
+        public void Conectar(SecureString Usuario, SecureString Contrasena)
+        {
+            try
             {
                 if (_Cliente != null)
                 {
-                    _Cliente.EnviarTablasCompletado += value;
+                    Desconectar();
                 }
-            }
-        }
-        
-        public void Conectar(SecureString Usuario, SecureString Contrasena)
-        {
-            Desconectar();
 
-            try
-            {
-                _Cliente = new ClienteValeria("http://localhost:4757/Servidor.svc?wsdl");
+                _Cliente.UriWsdlServicio = "http://localhost:4757/Servidor.svc?wsdl";
                 _Cliente.Conectar();
                 
                 // Esto hay que borrarlo
@@ -167,9 +209,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             List<string> Resultado = new List<string>();
 
-            foreach (Nodito N in _ServidorRemoto[0].Hijos)
-                Resultado.Add(N.Nombre);
-
+            try
+            {
+                Resultado = _Cliente.ListarBasesDeDatos().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las bases de datos", ex);
+            }
+            
             return Resultado.ToArray();
         }
 
@@ -177,42 +225,49 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             List<string> Resultado = new List<string>();
 
-            Nodito BD = Nodito.BuscarNodo(BaseDeDatos, _ServidorRemoto[0].Hijos);
-
-            foreach (Nodito N in BD.Hijos)
-                Resultado.Add(N.Nombre);
+            try
+            {
+                Resultado = _Cliente.ListarTablas(BaseDeDatos).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las tablas", ex);
+            }
 
             return Resultado.ToArray();
         }
 
         public DataTable LeerTabla(string BaseDeDatos, string Tabla)
         {            
-            DataTable Tbl = new DataTable();
+            DataTable Resultado = new DataTable();
 
-            Nodito BD = Nodito.BuscarNodo(BaseDeDatos, _ServidorRemoto[0].Hijos);
-            Nodito T = Nodito.BuscarNodo(Tabla, BD.Hijos);
-
-            foreach (Nodito N in T.Hijos)
-                Tbl.Columns.Add(N.Nombre);
-
-            return Tbl;
-        }
-
-        public void EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
-        {
             try
             {
-                DataSet Tablas = new DataSet(NombreTabla);
-                Tablas.Tables.Add(Tabla);
+                Resultado = _Cliente.LeerTabla(BaseDeDatos, Tabla);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las tablas", ex);
+            }
 
-                DataSetXML DatosAEnviar = new DataSetXML(Tablas.GetXmlSchema(), Tablas.GetXml());
-                _Cliente.EnviarTablasAsinc(DatosAEnviar);
+            return Resultado;
+        }
+
+        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        {
+            bool Resultado = false;
+
+            try
+            {
+                Resultado = _Cliente.EscribirTabla(BaseDeDatos, NombreTabla, Tabla);
             }
             catch (Exception ex)
             {
                 string Error = "Error al escribir la tabla " + NombreTabla + " en la base de datos " + BaseDeDatos;
                 throw new Exception(Error, ex);
             }
+
+            return Resultado;
         }
 
         public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
@@ -222,31 +277,65 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #endregion
 
-        #region Tipos anidados
+        #region Métodos asincrónicos
 
-        private class Nodito
+        public void ListarBasesDeDatosAsinc()
         {
-            public string Nombre;
-            public List<Nodito> Hijos;
-
-            public Nodito() { }
-
-            public static Nodito BuscarNodo(string Nombre, List<Nodito> Lista)
+            try
             {
-                Nodito Resultado = new Nodito();
-
-                foreach (Nodito n in Lista)
-                {
-                    if (n.Nombre == Nombre)
-                    {
-                        Resultado = n;
-                        break;
-                    }
-                }
-
-                return Resultado;
+                _Cliente.ListarBasesDeDatosAsinc();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las bases de datos", ex);
             }
         }
+
+        public void ListarTablasAsinc(string BaseDeDatos)
+        {
+            try
+            {
+                _Cliente.ListarTablasAsinc(BaseDeDatos);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las tablas", ex);
+            }
+        }
+
+        public void LeerTablaAsinc(string BaseDeDatos, string Tabla)
+        {
+            try
+            {
+                _Cliente.LeerTablaAsinc(BaseDeDatos, Tabla);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al leer la tabla", ex);
+            }
+        }
+
+        public void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        {
+            try
+            {
+                _Cliente.EscribirTablaAsinc(BaseDeDatos, NombreTabla, Tabla);
+            }
+            catch (Exception ex)
+            {
+                string Error = "Error al escribir la tabla " + NombreTabla + " en la base de datos " + BaseDeDatos;
+                throw new Exception(Error, ex);
+            }
+        }
+
+        public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #endregion
 
         #endregion
     }

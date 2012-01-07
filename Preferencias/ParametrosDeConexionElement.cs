@@ -1,4 +1,4 @@
-﻿using System; 
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Configuration;                         // ConfigurationElement
 using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
 
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
+namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
     public class ParametrosDeConexionElement : ConfigurationElement
     {
@@ -16,7 +16,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
 
         public ParametrosDeConexionElement() { }
 
-        public ParametrosDeConexionElement(ParametrosDeConexion Parametros) 
+        public ParametrosDeConexionElement(ParametrosDeConexion Parametros)
         {
             this.Anfitrion = Parametros.Anfitrion;
             this.Servidor = Parametros.Servidor;
@@ -28,6 +28,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
         #endregion
 
         #region Propiedades
+
+        [ConfigurationProperty("id", IsRequired = true)]
+        public string ID
+        {
+            get { return (string)base["id"]; }
+            set { base["id"] = value; }
+        }
 
         [ConfigurationProperty("anfitrion", IsRequired = true)]
         public string Anfitrion
@@ -84,3 +91,4 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Preferencias
         #endregion
     }
 }
+

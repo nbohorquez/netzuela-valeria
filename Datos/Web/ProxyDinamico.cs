@@ -18,23 +18,23 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         #region Variable
 
-        private string _UriWsdlServicio;
         private DynamicProxyFactory _Fabrica;
         private DynamicProxy _ProxyDinamico;
 
         #endregion
 
         #region Constructores
-        
+
+        public ProxyDinamico() { }
+
         public ProxyDinamico(string UriWsdlServicio)
+            : this()
         {
             if (UriWsdlServicio == null)
                 throw new ArgumentNullException("UriWsdlServicio");
-                
-            _UriWsdlServicio = UriWsdlServicio;
 
-            // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
-            _Fabrica = new DynamicProxyFactory(_UriWsdlServicio);
+            this.UriWsdlServicio = UriWsdlServicio;
+            CrearFabrica();
         }
 
         ~ProxyDinamico()
@@ -43,7 +43,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         }
 
         #endregion
-        
+
+        #region Propiedades
+
+        public string UriWsdlServicio { get; set; }
+
+        #endregion
+
         #region Funciones
 
         private void Dispose(bool BorrarCodigoAdministrado)
@@ -52,9 +58,37 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
             if (BorrarCodigoAdministrado) { }
         }
-        
+
+        private void CrearFabrica()
+        {
+            try
+            {
+                // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
+                _Fabrica = new DynamicProxyFactory(UriWsdlServicio);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error creando DynamicProxyFactory con argumento: \"" + UriWsdlServicio + "\"", ex);
+            }
+        }
+
         public void Conectar(string Contrato)
         {
+            if (Contrato == null)
+            {
+                throw new ArgumentNullException("Contrato");
+            }
+
+            if (_Fabrica == null)
+            {
+                if (UriWsdlServicio == null)
+                {
+                    throw new ArgumentNullException("UriWsdlServicio");
+                }
+
+                CrearFabrica();
+            }
+            
             ServiceEndpoint Endpoint = null;
 
             foreach (ServiceEndpoint SE in _Fabrica.Endpoints)
@@ -98,37 +132,50 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
             _ProxyDinamico = _Fabrica.CreateProxy(Contrato);
         }
-        /*
-        public DataSet InvocarRecibirTablas()
-        {
-            DataSet Resultado = null;
-            Resultado = _Proxy.CallMethod("RecibirTablas", null) as DataSet;
-            
-            return Resultado;
-        }
-               
-        public void InvocarEnviarTablas(string EsquemaXML, string XML)
-        {
-            _Proxy.CallMethod("EnviarTablas", EsquemaXML, XML);
-        }
-        */
 
         public object InvocarMetodo(string Metodo, params object[] Argumentos)
         {
-            for(int i = 0; i < Argumentos.Length; i++)
-            {
-                // Si alguno de los argumentos es un DataContract entonces hay que convertirlo en DynamicObject
-                if (Argumentos[i] is DataSetXML)
-                {
-                    DataSetXMLDinamico DataSetDinamico = new DataSetXMLDinamico(_Fabrica.ProxyAssembly);
-                    DataSetDinamico.EsquemaXML = ((DataSetXML)Argumentos[i]).EsquemaXML;
-                    DataSetDinamico.XML = ((DataSetXML)Argumentos[i]).XML;
+            object Resultado = null;
 
-                    Argumentos[i] = DataSetDinamico.ObjectInstance;
+            // Si alguno de los argumentos es un DataContract entonces hay que convertirlo en DynamicObject
+            if (Argumentos != null)
+            {
+                for (int i = 0; i < Argumentos.Length; i++)
+                {
+                    if (Argumentos[i] is DataSetXML)
+                    {
+                        DataSetXMLDinamico DataSetDinamico = new DataSetXMLDinamico(_Fabrica.ProxyAssembly);
+                        DataSetDinamico.EsquemaXML = ((DataSetXML)Argumentos[i]).EsquemaXML;
+                        DataSetDinamico.XML = ((DataSetXML)Argumentos[i]).XML;
+
+                        Argumentos[i] = DataSetDinamico.ObjectInstance;
+                    }
                 }
             }
 
-            return _ProxyDinamico.CallMethod(Metodo, Argumentos);
+            try
+            {
+                Resultado = _ProxyDinamico.CallMethod(Metodo, Argumentos);
+                
+                // No puedo hacer "if(Resultado is DataSetXML)" por que ocurre este error:
+                // http://stackoverflow.com/questions/2500280/invalidcastexception-for-two-objects-of-the-same-type
+                if (Resultado.GetType().FullName == typeof(DataSetXML).FullName)
+                {
+                    //object Temp = Resultado;
+                    DataSetXMLDinamico SetXMLDinamico = new DataSetXMLDinamico(Resultado);
+
+                    Resultado = new DataSetXML();
+
+                    ((DataSetXML)Resultado).EsquemaXML = SetXMLDinamico.EsquemaXML;
+                    ((DataSetXML)Resultado).XML = SetXMLDinamico.XML;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error invocando el metodo \"" + Metodo + "\" en el servidor remoto", ex);
+            }
+
+            return Resultado;
         }
 
         public void Desconectar()

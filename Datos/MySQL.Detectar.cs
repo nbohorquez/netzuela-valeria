@@ -151,7 +151,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                                 Ins.Metodos.Add(Metodo);
                                 Instancias[Instancias.Count - 1] = Ins;
                             }
-
+                            // Esto deshabilita el TCP/IP
                             else if (Linea.Contains(DESHABILITAR_TCPIP))
                             {
                                 TcpIpHabilitado = false;
@@ -179,7 +179,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                                 Ins.Metodos.Add(Metodo);
                                 Instancias[Instancias.Count - 1] = Ins;
                             }
-
                             // Esto habilita las canalizaciones con nombre
                             else if (Linea.Contains(HABILITAR_CANALIZACIONES))
                             {

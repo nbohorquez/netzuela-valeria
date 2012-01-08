@@ -197,60 +197,58 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              */
 
             if(Seleccion == null)
-            {
                 throw new ArgumentNullException("Seleccion");
-            }
-            else if(Usuario == null)
-            {
-                throw new ArgumentNullException("Usuario");
-            }
-            else if (Contrasena == null)
-            {
-                throw new ArgumentNullException("Contrasena");
-            }
 
-            List<string> RutaDeConexion = new List<string>();
+            if(Usuario == null)
+                throw new ArgumentNullException("Usuario");
+            
+            if (Contrasena == null)
+                throw new ArgumentNullException("Contrasena");
+
+            SecureString RutaDeConexion = new SecureString();
 
             // 1) Nombre del servidor anfitrion
-            RutaDeConexion.Add(string.Format("Host={0}", Seleccion.Anfitrion));
+            RutaDeConexion.AgregarString("Host=" + Seleccion.Anfitrion + ";");
 
             // 2) Metodo de conexion
             switch (Seleccion.MetodoDeConexion)
             {
                 case Constantes.MetodosDeConexion.TCP_IP:
-                    RutaDeConexion.Add("Protocol=\"tcp\"");
-                    RutaDeConexion.Add(string.Format("Port={0}", Seleccion.ArgumentoDeConexion));
+                    RutaDeConexion.AgregarString("Protocol=\"tcp\";");
+                    RutaDeConexion.AgregarString("Port=" + Seleccion.ArgumentoDeConexion + ";");
                     break;
                 case Constantes.MetodosDeConexion.CANALIZACIONES_CON_NOMBRE:
-                    RutaDeConexion.Add("Protocol=\"pipe\"");
-                    RutaDeConexion.Add(string.Format("Pipe={0}", Seleccion.ArgumentoDeConexion));
+                    RutaDeConexion.AgregarString("Protocol=\"pipe\";");
+                    RutaDeConexion.AgregarString("Pipe=" + Seleccion.ArgumentoDeConexion + ";");
                     break;
                 case Constantes.MetodosDeConexion.MEMORIA_COMPARTIDA:
-                    RutaDeConexion.Add("Protocol=\"memory\"");
-                    RutaDeConexion.Add(string.Format("Shared Memory Name={0}", Seleccion.ArgumentoDeConexion));
+                    RutaDeConexion.AgregarString("Protocol=\"memory\";");
+                    RutaDeConexion.AgregarString("Shared Memory Name=" + Seleccion.ArgumentoDeConexion + ";");
                     break;
                 default:
                     break;
             }
 
             // 3) Requerimos pooling
-            RutaDeConexion.Add("Pooling=true");
+            RutaDeConexion.AgregarString("Pooling=true;");
 
             // 4) Aumentamos la seguridad no permitiendo que se pueda leer la ruta de acceso
-            RutaDeConexion.Add("Persist Security Info=false");
+            RutaDeConexion.AgregarString("Persist Security Info=false;");
 
             // 5) Nombre de usuario
-            RutaDeConexion.Add(("Username=" + Usuario.ConvertirAUnsecureString()));
+            RutaDeConexion.AgregarString(("Username=" + Usuario.ConvertirAUnsecureString()) + ";");
 
             // 6) Contraseña
-            RutaDeConexion.Add(("Password=" + Contrasena.ConvertirAUnsecureString()));
+            RutaDeConexion.AgregarString(("Password=" + Contrasena.ConvertirAUnsecureString()));
 
             /*
              * De la instruccion anterior (agregar password) hasta la siguiente (return) hay un hueco de 
              * seguridad porque cualquiera puede leer la contraseña al acceder a los miembros de RutaDeConexion
              */
 
-            return (string.Join(";", RutaDeConexion.ToArray())).ConvertirASecureString();
+            string dimfdmfd = RutaDeConexion.ConvertirAUnsecureString();
+
+            return RutaDeConexion;
         }
          
         #endregion

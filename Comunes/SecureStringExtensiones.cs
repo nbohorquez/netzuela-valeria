@@ -77,6 +77,19 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
             }
         }
 
+        public static void AgregarString(this SecureString StringSegura, string StringAgregada)
+        {
+            for (int i = 0; i < StringAgregada.Length; i++)
+            {
+                StringSegura.AppendChar(StringAgregada[i]);
+            }
+        }
+
+        public static void AgregarSecureString(this SecureString StringSegura, SecureString StringAgregada)
+        {
+            StringSegura.AgregarString(StringAgregada.ConvertirAUnsecureString());
+        }
+
         #endregion
     }
 }

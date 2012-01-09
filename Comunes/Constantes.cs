@@ -5,6 +5,8 @@ using System.Text;
 
 namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
+    public delegate void ExpresionGenerica();
+
     /// <summary>
     /// Define constantes empleadas por todas las capas de Valeria
     /// </summary>    

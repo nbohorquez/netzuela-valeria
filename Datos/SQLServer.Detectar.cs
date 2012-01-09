@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Zuliaworks.Netzuela.Valeria.Comunes;          // ServidorLocal, ParametrosDeConexion
+using Zuliaworks.Netzuela.Valeria.Comunes;          // ServidorLocal, ParametrosDeConexion, ExpresionGenerica
 using Microsoft.Win32;                              // RegistryKey, Registry
 
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {
     public partial class SQLServer
     {
-        #region Constantes
+        #region Variables y constantes
+
+        private delegate void DelegadoLeerPuertos(RegistryKey Registro, List<string> Puertos);
 
         private const string LOCALIZACION_SQL_SERVER_EN_REGISTRO = "SOFTWARE\\Microsoft\\Microsoft SQL Server";
         private const string LOCALIZACION_INSTANCIAS_SQL_SERVER_2000 = "SOFTWARE\\Microsoft\\MSQLServer\\MSSQLServer\\SuperSocketNetLib\\TCP";
@@ -29,7 +31,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             ServidorLocal.MetodoDeConexion Metodo;
 
-            //RegistryKey Registro = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Microsoft SQL Server\\" + NombreLegalInstancia + "\\MSSQLServer\\SuperSocketNetLib\\Np");
             RegistryKey Registro = Registry.LocalMachine.OpenSubKey(LOCALIZACION_SQL_SERVER_EN_REGISTRO + "\\" + NombreLegalInstancia + "\\" + CANALIZACIONES);
 
             if (Registro != null)
@@ -54,7 +55,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             ServidorLocal.MetodoDeConexion Metodo;
 
-            //RegistryKey Registro = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Microsoft SQL Server\\" + NombreLegalInstancia + "\\MSSQLServer\\SuperSocketNetLib\\Sm");
             RegistryKey Registro = Registry.LocalMachine.OpenSubKey(LOCALIZACION_SQL_SERVER_EN_REGISTRO + "\\" + NombreLegalInstancia + "\\" + MEMORIA_COMPARTIDA);
             
             if (Registro != null)
@@ -64,7 +64,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 if (Valor1 == 0x01)
                 {
                     Metodo.Nombre = Constantes.MetodosDeConexion.MEMORIA_COMPARTIDA;
-                    Metodo.Valores = null;                    
+                    Metodo.Valores = new List<string>() { "N/A" };                    
                 }
             }
 
@@ -75,7 +75,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             ServidorLocal.MetodoDeConexion Metodo;
 
-            //RegistryKey Registro = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Microsoft SQL Server\\" + NombreLegalInstancia + "\\MSSQLServer\\SuperSocketNetLib\\Via");
             RegistryKey Registro = Registry.LocalMachine.OpenSubKey(LOCALIZACION_SQL_SERVER_EN_REGISTRO + "\\" + NombreLegalInstancia + "\\" + VIA);
 
             if (Registro != null)
@@ -100,31 +99,38 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             ServidorLocal.MetodoDeConexion Metodo;
 
-            //RegistryKey Registro = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Microsoft SQL Server\\" + NombreLegalInstancia + "\\MSSQLServer\\SuperSocketNetLib\\Tcp");
+            DelegadoLeerPuertos LeerPuertos = (r, v) =>
+            {
+                string Valor2 = (string)r.GetValue("TcpDynamicPorts");
+                string Valor3 = (string)r.GetValue("TcpPort");
+
+                Valor2 = String.Concat(Valor2, Valor3);
+                Valor2 = Valor2.Replace(" ", string.Empty);
+                string[] ArregloDeValores = Valor2.Split(',');
+
+                foreach (string V in ArregloDeValores)
+                {
+                    if (V != string.Empty)
+                        v.Add(V);
+                }
+            };
+
             RegistryKey Registro = Registry.LocalMachine.OpenSubKey(LOCALIZACION_SQL_SERVER_EN_REGISTRO + "\\" + NombreLegalInstancia + "\\" + TCP_IP);
 
             if (Registro != null)
             {
-                int Valor1 = (int)Registro.GetValue("Enabled");
-
-                if (Valor1 == 0x01)
+                int Habilitado = (int)Registro.GetValue("Enabled");
+                if (Habilitado == 0x01)
                 {
-                    string[] Valores = null;
+                    List<string> Valores = new List<string>();
 
-                    Valor1 = (int)Registro.GetValue("ListenOnAllIPs");
-                    if (Valor1 == 0x01)
+                    int EscucharTodasLasIP = (int)Registro.GetValue("ListenOnAllIPs");
+                    if (EscucharTodasLasIP == 0x01)
                     {
-                        //Registro = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Microsoft SQL Server\\" + NombreLegalInstancia + "\\MSSQLServer\\SuperSocketNetLib\\Tcp\\IPAll");
                         Registro = Registry.LocalMachine.OpenSubKey(LOCALIZACION_SQL_SERVER_EN_REGISTRO + "\\" + NombreLegalInstancia + "\\" + TCP_IP + "\\IPAll");
-                        if (Registro != null)
-                        {
-                            string Valor2 = (string)Registro.GetValue("TcpDynamicPorts");
-                            string Valor3 = (string)Registro.GetValue("TcpPort");
 
-                            Valor2 = String.Concat(Valor2, Valor3);
-                            Valor2 = Valor2.Replace(" ", string.Empty);
-                            Valores = Valor2.Split(',').ToArray();
-                        }
+                        if (Registro != null)
+                            LeerPuertos(Registro, Valores);
                     }
                     else
                     {
@@ -132,22 +138,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                         foreach (string IP in IPs)
                         {
-                            //Registro = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Microsoft SQL Server\\" + NombreLegalInstancia + "\\MSSQLServer\\SuperSocketNetLib\\Tcp\\" + IP);
                             Registro = Registry.LocalMachine.OpenSubKey(LOCALIZACION_SQL_SERVER_EN_REGISTRO + "\\" + NombreLegalInstancia + "\\" + TCP_IP + "\\" + IP);
 
                             if (Registro != null)
-                            {
-                                string Valor2 = (string)Registro.GetValue("IpAddress");
-                                if (Valor2 == "127.0.0.1")
-                                {
-                                    Valor2 = (string)Registro.GetValue("TcpDynamicPorts");
-                                    string Valor3 = (string)Registro.GetValue("TcpPort");
-
-                                    Valor2 = String.Concat(Valor2, Valor3);
-                                    Valor2 = Valor2.Replace(" ", string.Empty);
-                                    Valores = Valor2.Split(',').ToArray();
-                                }
-                            }
+                                LeerPuertos(Registro, Valores);
                         }
                     }
 

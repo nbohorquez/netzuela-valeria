@@ -9,7 +9,6 @@ using System.Data;                              // DataTable
 using System.Windows;                           // MessageBox
 using System.Windows.Input;                     // ICommand
 using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
-//using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {

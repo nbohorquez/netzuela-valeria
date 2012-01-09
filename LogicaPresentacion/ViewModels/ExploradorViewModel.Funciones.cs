@@ -6,19 +6,13 @@ using System.Text;
 using System.Data;                              // DataTable
 using System.Windows;                           // MessageBox
 using System.Collections.ObjectModel;           // ObservableCollection
-using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
+using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes, ExpresionGenerica
 using Zuliaworks.Netzuela.Valeria.Datos;        // EventoEnviarTablasCompletadoArgs
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     public partial class ExploradorViewModel
     {
-        #region Variables
-
-        delegate void ExpresionGenerica();
-
-        #endregion
-
         #region Funciones
 
         #region Otras

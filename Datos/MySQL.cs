@@ -52,7 +52,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             if (SQL == null)
                 throw new ArgumentNullException("SQL");
-
+            
             try
             {
                 MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
@@ -245,8 +245,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * De la instruccion anterior (agregar password) hasta la siguiente (return) hay un hueco de 
              * seguridad porque cualquiera puede leer la contraseña al acceder a los miembros de RutaDeConexion
              */
-
-            string dimfdmfd = RutaDeConexion.ConvertirAUnsecureString();
 
             return RutaDeConexion;
         }

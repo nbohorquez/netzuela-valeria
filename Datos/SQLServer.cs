@@ -37,6 +37,88 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Funciones
 
+        private void CambiarBaseDeDatos(string BaseDeDatos)
+        {
+            try
+            {
+                if (_Conexion.Database != BaseDeDatos)
+                    _Conexion.ChangeDatabase(BaseDeDatos);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al cambiar la base de datos.\nError MSSQL No. " + ex.Number.ToString(), ex);
+            }
+        }
+
+        private void EjecutarOrden(string SQL)
+        {
+            if (SQL == null)
+                throw new ArgumentNullException("SQL");
+
+            try
+            {
+                SqlCommand Orden = new SqlCommand(SQL, _Conexion);
+                Orden.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo ejecutar la orden.\nError MSSQL No. " + ex.Number.ToString(), ex);
+            }
+        }
+
+        private string[] LectorSimple(string SQL)
+        {
+            if (SQL == null)
+                throw new ArgumentNullException("SQL");
+
+            SqlDataReader Lector = null;
+            List<string> Resultado = new List<string>();
+
+            try
+            {
+                SqlCommand Orden = new SqlCommand(SQL, _Conexion);
+
+                Lector = Orden.ExecuteReader();
+                while (Lector.Read())
+                {
+                    Resultado.Add(Lector.GetString(0));
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo obtener la lista de elementos desde la base de datos.\nError MSSQL No. " + ex.Number.ToString(), ex);
+            }
+            finally
+            {
+                if (Lector != null)
+                    Lector.Close();
+            }
+
+            return Resultado.ToArray();
+        }
+
+        private DataTable LectorAvanzado(string SQL)
+        {
+            if (SQL == null)
+                throw new ArgumentNullException("SQL");
+
+            DataTable Resultado = new DataTable();
+
+            try
+            {
+                SqlDataAdapter Adaptador = new SqlDataAdapter(SQL, _Conexion);
+                SqlCommandBuilder CreadorDeOrden = new SqlCommandBuilder(Adaptador);
+
+                Adaptador.Fill(Resultado);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo obtener la tabla la base de datos.\nError MSSQL No. " + ex.Number.ToString(), ex);
+            }
+
+            return Resultado;
+        }
+
         private string RutaServidorFormatoTCPIP(ParametrosDeConexion Seleccion)
         {
             List<string> RutaDeConexion = new List<string>();
@@ -59,7 +141,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             RutaDeConexion.Add((Seleccion.Anfitrion == "localhost") ? "." : Seleccion.Anfitrion);
             RutaDeConexion.Add("\\" + Seleccion.Instancia);
 
-            if ((Seleccion.ArgumentoDeConexion != null) && (Seleccion.ArgumentoDeConexion != string.Empty))
+            if ((Seleccion.ArgumentoDeConexion != null) && (Seleccion.ArgumentoDeConexion != string.Empty) && (Seleccion.ArgumentoDeConexion != "N/A"))
                 RutaDeConexion.Add("," + Seleccion.ArgumentoDeConexion);
 
             return string.Join(string.Empty, RutaDeConexion.ToArray());
@@ -70,15 +152,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             if(Seleccion.MetodoDeConexion != Constantes.MetodosDeConexion.CANALIZACIONES_CON_NOMBRE)
                 throw new Exception("No se reconoce el metodo de conexion: \"" + Seleccion.MetodoDeConexion + "\"");
 
-            List<string> RutaDeConexion = new List<string>();
-
-            RutaDeConexion.Add("np:" + Seleccion.ArgumentoDeConexion);
-            /*
-            RutaDeConexion.Add("np:\\\\");
-            RutaDeConexion.Add((Seleccion.Anfitrion == "localhost") ? "." : Seleccion.Anfitrion);
-            RutaDeConexion.Add("\\pipe\\" + Seleccion.ArgumentoDeConexion);
-             */
-            return string.Join(string.Empty, RutaDeConexion.ToArray());
+            return "np:" + Seleccion.ArgumentoDeConexion;;
         }
 
         private SecureString CrearRutaDeAcceso(ParametrosDeConexion Seleccion, SecureString Usuario, SecureString Contrasena)
@@ -248,8 +322,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * seguridad porque cualquiera puede leer la contraseña al acceder a los miembros de RutaDeConexion
              */
 
-            string dsij = RutaDeConexion.ConvertirAUnsecureString();
-
             return RutaDeConexion;
         }
 
@@ -379,17 +451,17 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             {
                 switch (ex.Number)
                 {
-                    case 0:
-                        throw new Exception("No se puede conectar al servidor. Contacte al administrador", ex);
-                    case 1045:
+                    /*case 0:
+                        throw new Exception("No se puede conectar al servidor. Contacte al administrador", ex);*/
+                    case 18456:
                         throw new Exception("Usuario/clave inválido, intente nuevamente", ex);
                     default:
                         throw new Exception("Error en la conexión", ex);
                 }
-            }        
+            }
         }
 
-        public void Desconectar() 
+        public void Desconectar()
         {
             try
             {
@@ -403,19 +475,65 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public string[] ListarBasesDeDatos()
         {
-            string[] Resultado = new string[] { };
-            return Resultado;
+            //string[] ResultadoBruto = LectorSimple("SELECT name FROM sys.databases");
+            string[] ResultadoBruto = LectorSimple("EXEC sp_databases");
+            List<string> ResultadoFinal = new List<string>();
+
+            foreach (string ResultadoParcial in ResultadoBruto)
+                ResultadoFinal.Add(ResultadoParcial);
+
+            /*
+            // No podemos permitir que el usuario acceda a estas bases de datos privilegiadas
+            for (int i = 0; i < ResultadoBruto.Length; i++)
+            {
+                if (ResultadoBruto[i] != "information_schema" &&
+                    ResultadoBruto[i] != "mysql" &&
+                    ResultadoBruto[i] != "performance_schema")
+                {
+                    ResultadoFinal.Add(ResultadoBruto[i]);
+                }
+            }*/
+
+            return ResultadoFinal.ToArray();
         }
 
         public string[] ListarTablas(string BaseDeDatos)
         {
-            string[] Resultado = new string[] { };
-            return Resultado;
+            CambiarBaseDeDatos(BaseDeDatos);
+
+            //DataTable Resultado = LectorAvanzado("SELECT * FROM information_schema.tables WHERE table_name = '" + BaseDeDatos + "'");
+            DataTable Resultado = LectorAvanzado("EXEC sp_tables @table_type = \"'TABLE'\"");           
+            List<string> Filas = new List<string>();
+
+            foreach (DataRow Fila in Resultado.Rows)
+            {
+                // La columna numero 3 es la que tiene el nombre de la tabla
+                Filas.Add((string)Fila.ItemArray[2]);
+            }
+
+            return Filas.ToArray();
         }
 
         public DataTable LeerTabla(string BaseDeDatos, string Tabla)
         {
-            return new DataTable();
+            CambiarBaseDeDatos(BaseDeDatos);
+
+            // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
+            DataTable Descripcion = LectorAvanzado("EXEC sp_columns @table_name = " + Tabla);
+            List<string> ColumnasPermitidas = new List<string>();
+
+            foreach (DataRow Fila in Descripcion.Rows)
+            {
+                ColumnasPermitidas.Add(Fila[3] as string);
+            }
+
+            string Columnas = string.Join(", ", ColumnasPermitidas.ToArray());
+
+            /*
+             * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
+             * generar un error si el usuario no tiene los privilegios suficientes
+             */
+            return LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
         }
 
         public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)

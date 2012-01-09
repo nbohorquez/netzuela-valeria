@@ -79,6 +79,11 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
 
         public static void AgregarString(this SecureString StringSegura, string StringAgregada)
         {
+            if (StringAgregada == null)
+                throw new ArgumentNullException("StringAgregada");
+            if (StringSegura == null)
+                throw new ArgumentNullException("StringSegura");
+
             for (int i = 0; i < StringAgregada.Length; i++)
             {
                 StringSegura.AppendChar(StringAgregada[i]);
@@ -87,6 +92,11 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
 
         public static void AgregarSecureString(this SecureString StringSegura, SecureString StringAgregada)
         {
+            if (StringAgregada == null)
+                throw new ArgumentNullException("StringAgregada");
+            if (StringSegura == null)
+                throw new ArgumentNullException("StringSegura");
+
             StringSegura.AgregarString(StringAgregada.ConvertirAUnsecureString());
         }
 

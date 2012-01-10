@@ -477,24 +477,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             //string[] ResultadoBruto = LectorSimple("SELECT name FROM sys.databases");
             string[] ResultadoBruto = LectorSimple("EXEC sp_databases");
+            /*
             List<string> ResultadoFinal = new List<string>();
 
             foreach (string ResultadoParcial in ResultadoBruto)
                 ResultadoFinal.Add(ResultadoParcial);
-
-            /*
-            // No podemos permitir que el usuario acceda a estas bases de datos privilegiadas
-            for (int i = 0; i < ResultadoBruto.Length; i++)
-            {
-                if (ResultadoBruto[i] != "information_schema" &&
-                    ResultadoBruto[i] != "mysql" &&
-                    ResultadoBruto[i] != "performance_schema")
-                {
-                    ResultadoFinal.Add(ResultadoBruto[i]);
-                }
-            }*/
-
-            return ResultadoFinal.ToArray();
+            */
+            return ResultadoBruto;
         }
 
         public string[] ListarTablas(string BaseDeDatos)
@@ -503,15 +492,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             //DataTable Resultado = LectorAvanzado("SELECT * FROM information_schema.tables WHERE table_name = '" + BaseDeDatos + "'");
             DataTable Resultado = LectorAvanzado("EXEC sp_tables @table_type = \"'TABLE'\"");           
-            List<string> Filas = new List<string>();
+            
+            var Tablas = from T in Resultado.AsEnumerable()
+                         select T.Field<string>("TABLE_NAME");
 
-            foreach (DataRow Fila in Resultado.Rows)
-            {
-                // La columna numero 3 es la que tiene el nombre de la tabla
-                Filas.Add((string)Fila.ItemArray[2]);
-            }
-
-            return Filas.ToArray();
+            return Tablas.ToArray();
         }
 
         public DataTable LeerTabla(string BaseDeDatos, string Tabla)
@@ -520,12 +505,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
             DataTable Descripcion = LectorAvanzado("EXEC sp_columns @table_name = " + Tabla);
-            List<string> ColumnasPermitidas = new List<string>();
 
-            foreach (DataRow Fila in Descripcion.Rows)
-            {
-                ColumnasPermitidas.Add(Fila[3] as string);
-            }
+            var ColumnasPermitidas = from D in Descripcion.AsEnumerable()
+                                     select D.Field<string>("COLUMN_NAME");            
 
             string Columnas = string.Join(", ", ColumnasPermitidas.ToArray());
 
@@ -543,7 +525,144 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
-            throw new NotImplementedException();
+            object Resultado = null;
+            string SQL = string.Empty;
+
+            /* 
+             * Por lo general, se procede a crear un "login" y luego un usuario asociado a ese "login".
+             * De esta forma:
+             * 
+             * CREATE LOGIN AbolrousHazem WITH PASSWORD = '340$Uuxwp7Mcxo7Khy';
+             * USE AdventureWorks2008R2;
+             * CREATE USER AbolrousHazem FOR LOGIN AbolrousHazem;
+             * GO 
+             * 
+             * CREATE LOGIN loginName { WITH <option_list1> | FROM <sources> }
+             * 
+             * <option_list1> ::= 
+             *      PASSWORD = { 'password' | hashed_password HASHED } [ MUST_CHANGE ]
+             *      [ , <option_list2> [ ,... ] ]
+             *      
+             * <option_list2> ::=  
+             *      SID = sid
+             *      | DEFAULT_DATABASE =database    
+             *      | DEFAULT_LANGUAGE =language
+             *      | CHECK_EXPIRATION = { ON | OFF}
+             *      | CHECK_POLICY = { ON | OFF}
+             *      | CREDENTIAL =credential_name <sources> ::=
+             *      WINDOWS [ WITH <windows_options>[ ,... ] ]
+             *      | CERTIFICATE certname
+             *      | ASYMMETRIC KEY asym_key_name<windows_options> ::=      
+             *      DEFAULT_DATABASE =database
+             *      | DEFAULT_LANGUAGE =language
+             * 
+             * CREATE USER user_name 
+             *      [   
+             *          { { FOR | FROM }
+             *          { 
+             *              LOGIN login_name 
+             *              | CERTIFICATE cert_name 
+             *              | ASYMMETRIC KEY asym_key_name
+             *          } 
+             *          | WITHOUT LOGIN
+             *      ] 
+             *      [ WITH DEFAULT_SCHEMA = schema_name ]
+             *
+             * GRANT { ALL [ PRIVILEGES ] }
+             *       | permission [ ( column [ ,...n ] ) ] [ ,...n ]
+             *       [ ON [ class :: ] securable ] TO principal [ ,...n ] 
+             *       [ WITH GRANT OPTION ] [ AS principal ]
+             *       
+             */
+
+            // 1) Determinamos los privilegios otorgados al nuevo usuario
+            List<string> PrivilegiosLista = new List<string>();
+
+            for (int i = 0; i < OrdenesComunes.Privilegios.Count; i++)
+            {
+                if ((Privilegios & (1 << i)) == 1)
+                {
+                    PrivilegiosLista.Add(OrdenesComunes.Privilegios[(1 << i)]);
+                }
+            }
+
+            // 2) Identificamos las columnas a las cuales se aplican estos privilegios
+            Dictionary<string, string> ColumnasDiccionario = new Dictionary<string, string>();
+
+            foreach (string S in Columnas)
+            {
+                string[] Columna = S.Split('\\');
+
+                string BD_Tabla = Columna[1] + "." + Columna[2];
+
+                if (ColumnasDiccionario.ContainsKey(BD_Tabla))
+                {
+                    ColumnasDiccionario[BD_Tabla] += ", " + Columna[3];
+                }
+                else
+                {
+                    ColumnasDiccionario.Add(BD_Tabla, Columna[3]);
+                }
+            }
+
+            try
+            {
+                // 3) Chequeamos a ver si ya existe el usuario en el sistema
+                SQL = "EXEC sp_helpuser";
+                DataTable UsuariosExistentes = LectorAvanzado(SQL);
+
+                if(UsuariosExistentes.Columns["UserNameAliasedTo"] != null)
+                    UsuariosExistentes.Columns["UserNameAliasedTo"].ColumnName = "UserName";
+                 
+                var UsuarioNetzuela = from U in UsuariosExistentes.AsEnumerable()
+                                      where U.Field<string>("UserName") == Usuario.ConvertirAUnsecureString()
+                                      select U;
+
+                // 4) Si es asi, se elimina
+                if (UsuarioNetzuela != null)
+                {
+                    SQL = "DROP USER " + Usuario.ConvertirAUnsecureString();
+                    EjecutarOrden(SQL);
+                }
+
+                // 5) Creamos el login (usuario + constraseña)
+                SQL = "CREATE LOGIN Login" + Usuario.ConvertirAUnsecureString() + " WITH PASSWORD '" 
+                    + Contrasena.ConvertirAUnsecureString() + "'";
+                EjecutarOrden(SQL);
+
+                // 6) Creamos un usuario nuevo y lo asociamos al login recien creado
+                SQL = "CREATE USER " + Usuario.ConvertirAUnsecureString() + " FOR LOGIN Login" 
+                    + Usuario.ConvertirAUnsecureString();
+                EjecutarOrden(SQL);
+                /*
+                // 6) Otorgamos los privilegios de columnas
+                foreach (KeyValuePair<string, string> Par in ColumnasLista)
+                {
+                    SQL = "GRANT ";
+
+                    for (int i = 0; i < PrivilegiosLista.Count; i++)
+                    {
+                        SQL += PrivilegiosLista[i] + " (" + Par.Value + ")";
+                        if ((i + 1) < PrivilegiosLista.Count)
+                        {
+                            SQL += ", ";
+                        }
+                    }
+
+                    SQL += " ON " + Par.Key + " TO '" + Usuario.ConvertirAUnsecureString() + "'@'localhost'";
+                    EjecutarOrden(SQL);
+                }
+
+                // 7) Actualizamos la cache de privilegios del servidor
+                EjecutarOrden("FLUSH PRIVILEGES");
+                 * */
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo crear el usuario especificado. Error MSSQL No. " + ex.Number.ToString(), ex);
+            }
+
+            return Resultado;
         }
 
         #endregion
@@ -578,6 +697,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #endregion
 
         #endregion
+
+        #endregion
+
+        #region Tipos anidados
+
+        public static class OrdenesComunes
+        {
+            public static Dictionary<int, string> Privilegios = new Dictionary<int, string>() 
+            {
+                { Constantes.Privilegios.NO_VALIDO, string.Empty },
+                { Constantes.Privilegios.SELECCIONAR, "SELECT" },
+                { Constantes.Privilegios.INSERTAR_FILAS, "INSERT" },
+                { Constantes.Privilegios.ACTUALIZAR, "UPDATE" },
+                { Constantes.Privilegios.BORRAR_FILAS, "DELETE" },
+                { Constantes.Privilegios.INDIZAR, "INDEX" },
+                { Constantes.Privilegios.ALTERAR, "ALTER" },
+                { Constantes.Privilegios.CREAR, "CREATE" },
+                { Constantes.Privilegios.DESTRUIR, "DROP" }
+            };
+        }
 
         #endregion
     }

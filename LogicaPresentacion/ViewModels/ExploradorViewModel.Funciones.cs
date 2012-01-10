@@ -88,6 +88,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
+            // Este es el retorno en caso de hacerse una llamada asincronica
             Retorno = (r, a) =>
             {
                 try
@@ -156,6 +157,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
+            // Este es el retorno en caso de hacerse una llamada asincronica
             Retorno = (r, a) =>
             {
                 try
@@ -236,6 +238,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
+            // Este es el retorno en caso de hacerse una llamada asincronica
             Retorno = (r, a) =>
             {
                 try

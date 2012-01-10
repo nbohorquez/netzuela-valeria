@@ -400,18 +400,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public string[] ListarBasesDeDatos()
         {
             string[] ResultadoBruto = LectorSimple("SHOW DATABASES");
-            List<string> ResultadoFinal = new List<string>();
 
-            // No podemos permitir que el usuario acceda a estas bases de datos privilegiadas
-            for(int i = 0; i < ResultadoBruto.Length; i++)
-            {
-                if (ResultadoBruto[i] != "information_schema" &&
-                    ResultadoBruto[i] != "mysql" &&
-                    ResultadoBruto[i] != "performance_schema")
-                {
-                    ResultadoFinal.Add(ResultadoBruto[i]);
-                }
-            }
+            var ResultadoFinal = from R in ResultadoBruto
+                                 where R != "information_schema" && R != "mysql" && R != "performance_schema"
+                                 select R;
 
             return ResultadoFinal.ToArray();
         }
@@ -430,13 +422,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
             Descripcion = LectorAvanzado("DESCRIBE " + Tabla);
-            List<string> ColumnasPermitidas = new List<string>();
 
-            foreach (DataRow Fila in Descripcion.Rows)
-            {
-                ColumnasPermitidas.Add(Fila[0] as string);
-            }
-
+            var ColumnasPermitidas = from D in Descripcion.AsEnumerable()
+                                     select D.Field<string>("Field");
+            
             string Columnas = string.Join(", ", ColumnasPermitidas.ToArray());
 
             /*

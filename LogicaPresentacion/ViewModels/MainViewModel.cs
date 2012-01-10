@@ -23,8 +23,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private ExploradorViewModel _ExploradorLocal;
         private ExploradorViewModel _ExploradorRemoto;
         private SincronizacionViewModel _LocalARemota;
-        private readonly PropertyObserver<ConexionLocalViewModel> _ObservadorConexionLocal;
-        private readonly PropertyObserver<ConexionRemotaViewModel> _ObservadorConexionRemota;
+        private readonly PropertyObserver<ConexionLocalViewModel> _ObservadorConexionLocalEstablecida;
+        private readonly PropertyObserver<ConexionRemotaViewModel> _ObservadorConexionRemotaEstablecida;
         private PropertyObserver<SincronizacionViewModel> _ObservadorSincronizacion;
 
         #endregion
@@ -35,12 +35,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             ConexionLocal = new ConexionLocalViewModel();
             ConexionRemota = new ConexionRemotaViewModel();
-
-            _ObservadorConexionLocal = new PropertyObserver<ConexionLocalViewModel>(this.ConexionLocal)
+            
+            _ObservadorConexionLocalEstablecida = new PropertyObserver<ConexionLocalViewModel>(this.ConexionLocal)
                 .RegisterHandler(n => n.Estado, this.ConexionLocalActiva);
 
-            _ObservadorConexionRemota = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
+            _ObservadorConexionRemotaEstablecida = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
+
+            AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
 
             _ConfiguracionLocal = new Configuracion();
 
@@ -70,7 +72,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ConexionRemotaViewModel ConexionRemota { get; private set; }
         public ConexionLocalViewModel ConexionLocal { get; private set; }
         
-        public ExploradorViewModel ExploradorLocal 
+        public ExploradorViewModel ExploradorLocal
         {
             get { return _ExploradorLocal; }
             private set
@@ -111,6 +113,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #endregion
 
+        #region Eventos
+
+        public event EventHandler<EventArgs> AmbasConexionesEstablecidas;
+
+        #endregion
+
         #region Funciones
 
         private void ConexionLocalActiva(ConexionLocalViewModel Conexion)
@@ -123,6 +131,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 };
 
                 ExploradorLocal = new ExploradorViewModel(NodosLocales, Conexion.Conexion);
+
+                if (ConexionRemota.Estado == ConnectionState.Open)
+                    DispararAmbasConexionesEstablecidas(new EventArgs());
             }
         }
 
@@ -137,6 +148,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 ExploradorRemoto = new ExploradorViewModel(NodosRemotos, Conexion.Conexion);
 
+                /*
                 // Leemos todas las tablas de todas las bases de datos del servidor remoto
                 ExploradorRemoto.ExpandirTodo();
 
@@ -144,9 +156,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 List<NodoViewModel> NodosCache = ExploradorRemoto.ObtenerNodosCache();
 
                 LocalARemota = new SincronizacionViewModel(NodosCache);
-
+                
                 _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
                     .RegisterHandler(n => n.Listo, this.SincronizacionLista);
+                 */
+
+                if (ConexionLocal.Estado == ConnectionState.Open)
+                    DispararAmbasConexionesEstablecidas(new EventArgs());
             }
         }
 
@@ -201,6 +217,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             
             MessageBox.Show("La sincronización se realizó correctamente");                
+        }
+
+        private void ManejarAmbasConexionesEstablecidas(object Remitente, EventArgs Args)
+        {
+            LocalARemota = new SincronizacionViewModel();
+
+            _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
+                .RegisterHandler(n => n.Listo, this.SincronizacionLista);
+        }
+
+        protected virtual void DispararAmbasConexionesEstablecidas(EventArgs e)
+        {
+            if (AmbasConexionesEstablecidas != null)
+            {
+                AmbasConexionesEstablecidas(this, e);
+            }
         }
 
         #endregion

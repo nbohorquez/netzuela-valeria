@@ -14,7 +14,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
     /// </summary>
-    public class Netzuela : IBaseDeDatos
+    public class Netzuela : EventosComunes, IBaseDeDatos
     {
         #region Variables
 
@@ -35,11 +35,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             _Cliente = new ClienteValeria();
 
             // Inicializamos los manejadores de eventos
-            _Cliente.ListarBasesDeDatosCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarListarBasesDeDatosCompletado);
-            _Cliente.ListarTablasCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarListarTablasCompletado);
-            _Cliente.LeerTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarLeerTablaCompletado);
-            _Cliente.EscribirTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarEscribirTablaCompletado);
-            _Cliente.CrearUsuarioCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(ManejarCrearUsuarioCompletado);
+            _Cliente.ListarBasesDeDatosCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarListarBasesDeDatosCompletado);
+            _Cliente.ListarTablasCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarListarTablasCompletado);
+            _Cliente.LeerTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarLeerTablaCompletado);
+            _Cliente.EscribirTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarEscribirTablaCompletado);
+            _Cliente.CrearUsuarioCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarCrearUsuarioCompletado);
             
             // Hay que ver como quito este pedazo de codigo tan feo
             _Estado = ConnectionState.Closed;
@@ -69,100 +69,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #endregion
 
-        #region Eventos
-
-        public event StateChangeEventHandler CambioDeEstado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarBasesDeDatosCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarTablasCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado;        
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado;
-        
-        #endregion
-
         #region Funciones
-
-        #region Métodos de eventos
-
-        private void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs Args)
-        {
-            DispararCambioDeEstado(Args);
-        }
-
-        private void ManejarListarBasesDeDatosCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
-        {
-            DispararListarBasesDeDatosCompletado(Args);
-        }
-
-        private void ManejarListarTablasCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
-        {
-            DispararListarTablasCompletado(Args);
-        }
-
-        private void ManejarLeerTablaCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
-        {
-            DispararLeerTablaCompletado(Args);
-        }
-
-        private void ManejarEscribirTablaCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
-        {
-            DispararEscribirTablaCompletado(Args);
-        }
-
-        private void ManejarCrearUsuarioCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
-        {
-            DispararCrearUsuarioCompletado(Args);
-        }
-
-        protected virtual void DispararCambioDeEstado(StateChangeEventArgs e)
-        {
-            if (CambioDeEstado != null)
-            {
-                CambioDeEstado(this, e);
-            }
-        }
-
-        protected virtual void DispararListarBasesDeDatosCompletado(EventoOperacionAsincCompletadaArgs e)
-        {
-            if (ListarBasesDeDatosCompletado != null)
-            {
-                ListarBasesDeDatosCompletado(this, e);
-            }
-        }
-
-        protected virtual void DispararListarTablasCompletado(EventoOperacionAsincCompletadaArgs e)
-        {
-            if (ListarTablasCompletado != null)
-            {
-                ListarTablasCompletado(this, e);
-            }
-        }
-
-        protected virtual void DispararLeerTablaCompletado(EventoOperacionAsincCompletadaArgs e)
-        {
-            if (LeerTablaCompletado != null)
-            {
-                LeerTablaCompletado(this, e);
-            }
-        }
-
-        protected virtual void DispararEscribirTablaCompletado(EventoOperacionAsincCompletadaArgs e)
-        {
-            if (EscribirTablaCompletado != null)
-            {
-                EscribirTablaCompletado(this, e);
-            }
-        }
-
-        protected virtual void DispararCrearUsuarioCompletado(EventoOperacionAsincCompletadaArgs e)
-        {
-            if (CrearUsuarioCompletado != null)
-            {
-                CrearUsuarioCompletado(this, e);
-            }
-        }
-
-        #endregion
 
         #region Métodos sincrónicos
 

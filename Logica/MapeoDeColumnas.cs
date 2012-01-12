@@ -17,6 +17,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     {
         #region Variables
 
+        private TablaMapeada _TablaPadre;
         private Nodo _ColumnaDestino;
         private Nodo _ColumnaOrigen;
 
@@ -28,6 +29,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// Crea un mapeo de columnas vacío.
         /// </summary>
         public MapeoDeColumnas() { }
+
+        public MapeoDeColumnas(TablaMapeada TablaPadre) 
+        {
+            this.TablaPadre = TablaPadre;
+        }
 
         /// <summary>
         /// Crea un mapeo de columnas especificando sólo la columna destino.
@@ -43,10 +49,22 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         /// <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
         /// <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
-        public MapeoDeColumnas(Nodo ColumnaDestino, Nodo ColumnaOrigen)
+        public MapeoDeColumnas(Nodo ColumnaOrigen, Nodo ColumnaDestino)
         {
-            this.ColumnaDestino = ColumnaDestino;
             this.ColumnaOrigen = ColumnaOrigen;
+            this.ColumnaDestino = ColumnaDestino;
+        }
+
+        public MapeoDeColumnas(TablaMapeada TablaPadre, Nodo ColumnaDestino)
+            : this(ColumnaDestino)
+        {
+            this.TablaPadre = TablaPadre;
+        }
+
+        public MapeoDeColumnas(TablaMapeada TablaPadre, Nodo ColumnaDestino, Nodo ColumnaOrigen)
+            : this(ColumnaOrigen, ColumnaDestino)
+        {
+            this.TablaPadre = TablaPadre;
         }
         
         ~MapeoDeColumnas()
@@ -57,6 +75,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         #endregion
 
         #region Propiedades
+
+        /// <summary>
+        /// Instancia de <see cref="TablaMapeada"/> asociada a esta clase.
+        /// </summary>
+        public TablaMapeada TablaPadre { get; set; }
 
         /// <summary>
         /// 
@@ -74,14 +97,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     _ColumnaOrigen = ValorNuevo;
 
                     DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
-                    /*
-                    if(CambioEnColumnas != null)
-                        CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));*/
                 }
                 else if (ValorNuevo != ColumnaDestino && ValorNuevo != _ColumnaOrigen)
                 {
                     if (ValorNuevo.Nivel != Constantes.NivelDeNodo.COLUMNA)
-                        throw new Exception("El nodo a asociar no es de tipo columna");
+                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "NodoOrigen");
 
                     if (TablaPadre != null)
                     {
@@ -91,9 +111,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                             _ColumnaOrigen = ValorNuevo;
 
                             DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
-                            /*
-                            if (CambioEnColumnas != null)
-                                CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));*/
                         }
                     }
                     else
@@ -102,9 +119,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                         _ColumnaOrigen = ValorNuevo;
 
                         DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
-                        /*
-                        if (CambioEnColumnas != null)
-                            CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));*/
                     }
                 }
             }
@@ -126,15 +140,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     _ColumnaDestino = ValorNuevo;
 
                     DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
-
-                    /*
-                    if(CambioEnColumnas != null)
-                        CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));*/
                 }
                 else if (ValorNuevo != ColumnaOrigen && ValorNuevo != _ColumnaDestino)
                 {
                     if (ValorNuevo.Nivel != Constantes.NivelDeNodo.COLUMNA)
-                        throw new Exception("El nodo a asociar no es de tipo columna");
+                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "NodoOrigen");
 
                     if (TablaPadre != null)
                     {
@@ -144,9 +154,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                             _ColumnaDestino = ValorNuevo;
 
                             DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
-                            /*
-                            if (CambioEnColumnas != null)
-                                CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));*/
                         }
                     }
                     else
@@ -155,19 +162,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                         _ColumnaDestino = ValorNuevo;
 
                         DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
-                        /*
-                        if (CambioEnColumnas != null)
-                            CambioEnColumnas(this, new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));*/
-                    }                 
+                    }
                 }
             }
         }
-
-        /// <summary>
-        /// Instancia de <see cref="TablaMapeada"/> asociada a esta clase.
-        /// </summary>
-        public TablaMapeada TablaPadre { get; set; }
-
+        
         #endregion
 
         #region Eventos
@@ -177,9 +176,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         #endregion
 
         #region Funciones
-
-        #region Métodos de eventos
-
+        
         protected virtual void DispararCambioEnColumnas(EventoCambioEnColumnasArgs Argumentos)
         {
             if(CambioEnColumnas != null)
@@ -187,9 +184,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 CambioEnColumnas(this, Argumentos);
             }
         }
-
-        #endregion
-
+        
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
             if (TablaPadre != null)

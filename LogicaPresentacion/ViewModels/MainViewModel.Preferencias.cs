@@ -17,8 +17,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void GuardarPreferencias()
         {
-            // Con codigo de 
-            // http://msdn.microsoft.com/es-es/library/system.configuration.configurationmanager%28v=VS.100%29.aspx
+            /* 
+             * Codigo importado
+             * ================
+             * 
+             * Autor: MSDN Microsoft
+             * Titulo: ConfigurationManager (Clase)
+             * Licencia: DESCONOCIDA
+             * Fuente: http://msdn.microsoft.com/es-es/library/system.configuration.configurationmanager%28v=VS.100%29.aspx
+             * 
+             * Tipo de uso
+             * ===========
+             * 
+             * Textual                                              []
+             * Adaptado                                             [X]
+             * Solo se cambiaron los nombres de las variables       []
+             * 
+             */
 
             Configuration AppConfig;
             ConexionesSection ConexionesGuardadas;

@@ -15,7 +15,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
     /// </summary>
     public class PasswordBoxVinculable : Decorator
     {
-        // Este codigo fue tomado de http://stackoverflow.com/questions/1097235/passwordbox-with-mvvm
+        /* 
+         * Codigo importado
+         * ================
+         * 
+         * Autor: Nir
+         * Titulo: PasswordBox with MVVM (Pregunta en el foro "stackoverflow") 
+         * Licencia: Creative Commons Attribution-ShareAlike 3.0 Unported
+         * Fuente: http://stackoverflow.com/questions/1097235/passwordbox-with-mvvm
+         * 
+         * Tipo de uso
+         * ===========
+         * 
+         * Textual                                              []
+         * Adaptado                                             []
+         * Solo se cambiaron los nombres de las variables       [X]
+         * 
+         */
 
         #region Variables
 
@@ -29,7 +45,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         public PasswordBoxVinculable()
         {
             Child = new PasswordBox();
-            ((PasswordBox)Child).PasswordChanged += PasswordBoxVinculable_PasswordChanged;
+            ((PasswordBox)Child).PasswordChanged += ManejarPasswordChanged;
         }
 
         #endregion
@@ -46,7 +62,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
         #region Funciones
 
-        void PasswordBoxVinculable_PasswordChanged(object sender, RoutedEventArgs e)
+        void ManejarPasswordChanged(object sender, RoutedEventArgs e)
         {
             SecurePassword = ((PasswordBox)Child).SecurePassword;
         }

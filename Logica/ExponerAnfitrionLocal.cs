@@ -15,7 +15,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public static List<ServidorLocal> DetectarServidoresLocales()
         {
-            return AnfitrionLocal.DetectarTodos();
+            return AnfitrionLocal.DetectarTodosLosServidores();
         }
     }
 }

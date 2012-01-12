@@ -14,7 +14,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Funciones
 
-        public static List<ServidorLocal> DetectarTodos()
+        public static List<ServidorLocal> DetectarTodosLosServidores()
         {
             List<ServidorLocal> Servidores = new List<ServidorLocal>();
 

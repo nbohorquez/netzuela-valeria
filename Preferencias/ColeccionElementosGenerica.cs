@@ -9,7 +9,25 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
     public class ColeccionElementosGenerica<T> : ConfigurationElementCollection, IEnumerable<T>, ICollection<T> where T : ConfigurationElement, new()
     {
-        // Con codigo de http://stackoverflow.com/questions/3935331/how-to-implement-a-configurationsection-with-a-configurationelementcollection
+        /* 
+         * Codigo importado
+         * ================
+         * 
+         * Autor: abatishchev
+         * Titulo: How to implement a ConfigurationSection with a ConfigurationElementCollection 
+         *      (pregunta en el foro "stackoverflow")
+         * Licencia: Creative Commons Attribution-ShareAlike 3.0 Unported
+         * Fuente: http://stackoverflow.com/questions/3935331/how-to-implement-a-configurationsection-with-a-configurationelementcollection
+         * 
+         * Tipo de uso
+         * ===========
+         * 
+         * Textual                                              []
+         * Adaptado                                             [X]
+         * Solo se cambiaron los nombres de las variables       []
+         * 
+         */
+
         #region Variables
 
         private List<T> _Elementos = new List<T>();

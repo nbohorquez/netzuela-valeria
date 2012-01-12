@@ -121,16 +121,21 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Funciones
 
+        private ExploradorViewModel CrearExplorador(ConexionViewModel Conexion)
+        {            
+            ObservableCollection<NodoViewModel> Nodos = new ObservableCollection<NodoViewModel>()
+            {
+                new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
+            };
+
+            return new ExploradorViewModel(Nodos, Conexion.Conexion);            
+        }
+
         private void ConexionLocalActiva(ConexionLocalViewModel Conexion)
         {
             if (Conexion.Estado == System.Data.ConnectionState.Open)
             {
-                ObservableCollection<NodoViewModel> NodosLocales = new ObservableCollection<NodoViewModel>()
-                {
-                    new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
-                };
-
-                ExploradorLocal = new ExploradorViewModel(NodosLocales, Conexion.Conexion);
+                ExploradorLocal = CrearExplorador(Conexion);
 
                 if (ConexionRemota.Estado == ConnectionState.Open)
                     DispararAmbasConexionesEstablecidas(new EventArgs());
@@ -141,26 +146,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             if (Conexion.Estado == System.Data.ConnectionState.Open)
             {
-                ObservableCollection<NodoViewModel> NodosRemotos = new ObservableCollection<NodoViewModel>()
-                {
-                    new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
-                };
-
-                ExploradorRemoto = new ExploradorViewModel(NodosRemotos, Conexion.Conexion);
-
-                /*
-                // Leemos todas las tablas de todas las bases de datos del servidor remoto
-                ExploradorRemoto.ExpandirTodo();
-
-                // Obtenemos todos los nodos que son indice de tablas en la cache
-                List<NodoViewModel> NodosCache = ExploradorRemoto.ObtenerNodosCache();
-
-                LocalARemota = new SincronizacionViewModel(NodosCache);
+                ExploradorRemoto = CrearExplorador(Conexion);
                 
-                _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
-                    .RegisterHandler(n => n.Listo, this.SincronizacionLista);
-                 */
-
                 if (ConexionLocal.Estado == ConnectionState.Open)
                     DispararAmbasConexionesEstablecidas(new EventArgs());
             }

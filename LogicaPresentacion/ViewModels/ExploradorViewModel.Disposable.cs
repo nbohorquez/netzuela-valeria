@@ -9,13 +9,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
     public partial class ExploradorViewModel : IDisposable
     {
-        #region Implementacion de interfaces
+        #region Funciones
 
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
             if (_CacheDeTablas != null)
             {
-                foreach(DataTable T in _CacheDeTablas.Values)
+                foreach (DataTable T in _CacheDeTablas.Values)
                 {
                     T.Clear();
                     T.Columns.Clear();
@@ -51,6 +51,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
+        #endregion
+
+        #region Implementacion de interfaces
+        
         public void Dispose()
         {
             Dispose(true);

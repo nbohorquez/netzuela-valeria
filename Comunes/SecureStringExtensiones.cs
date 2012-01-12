@@ -16,10 +16,23 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         #region Funciones
 
         /*
-         * Este codigo fue tomado de la pagina: 
-         * http://blogs.msdn.com/b/fpintos/archive/2009/06/12/how-to-properly-convert-securestring-to-string.aspx
+         * Codigo importado
+         * ================
+         * 
+         * Autor: Fabio Pintos
+         * Titulo: How to properly convert SecureString to String
+         * Licencia: DESCONOCIDA
+         * Fuente: http://blogs.msdn.com/b/fpintos/archive/2009/06/12/how-to-properly-convert-securestring-to-string.aspx
+         * 
+         * Tipo de uso
+         * ===========
+         * 
+         * Textual                                              []
+         * Adaptado                                             []
+         * Solo se cambiaron los nombres de las variables       [X]
+         * 
          */
-    
+
         /// <summary>
         /// 
         /// </summary>

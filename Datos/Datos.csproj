@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventoOperacionAsincCompletadaArgs.cs" />
+    <Compile Include="EventosComunes.cs" />
     <Compile Include="Web\ClienteValeria.Operaciones.cs">
       <SubType>Component</SubType>
     </Compile>

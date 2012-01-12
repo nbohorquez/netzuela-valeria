@@ -40,6 +40,11 @@
             
             </summary>
         </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.TablaPadre">
+            <summary>
+            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada"/> asociada a esta clase.
+            </summary>
+        </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaOrigen">
             <summary>
             
@@ -48,11 +53,6 @@
         <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaDestino">
             <summary>
             
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.TablaPadre">
-            <summary>
-            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada"/> asociada a esta clase.
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Conexion">

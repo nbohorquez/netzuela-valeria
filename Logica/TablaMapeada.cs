@@ -27,8 +27,8 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public TablaMapeada()
         {
-            MapasColumnas = new List<MapeoDeColumnas>();
             NodoTabla = new Nodo();
+            MapasColumnas = new List<MapeoDeColumnas>();            
         }
 
         /// <summary>
@@ -40,13 +40,15 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
-
+            if (Columnas == null)
+                throw new ArgumentNullException("Columnas");
+            
             this.NodoTabla = Tabla;
             this.MapasColumnas = new List<MapeoDeColumnas>();
 
             foreach (Nodo Columna in Columnas)
             {
-                MapeoDeColumnas MapCol = new MapeoDeColumnas(Columna);
+                MapeoDeColumnas MapCol = new MapeoDeColumnas(this, Columna);
                 AgregarMapa(MapCol);
             }
         }
@@ -66,11 +68,15 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         public Nodo NodoTabla
         {
             get { return _NodoTabla; }
-            private set
+            set
             {
-                Nodo Nuevo = value as Nodo;
-                if (Nuevo.Nivel == Constantes.NivelDeNodo.TABLA && Nuevo != _NodoTabla)
-                    _NodoTabla = Nuevo;
+                if (value != _NodoTabla)
+                {
+                    if (value.Nivel != Constantes.NivelDeNodo.TABLA)
+                        throw new ArgumentException("El nodo tiene que ser de nivel Tabla para poder crear una TablaMapeada", "NodoTabla");
+                    
+                    _NodoTabla = value;
+                }
             }
         }
 
@@ -121,9 +127,23 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
             if (NodoEsLegal(MapaDeColumna.ColumnaDestino) && NodoEsLegal(MapaDeColumna.ColumnaOrigen))
             {
-                MapaDeColumna.TablaPadre = this;
                 this.MapasColumnas.Add(MapaDeColumna);
                 return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool QuitarMapa(MapeoDeColumnas MapaDeColumna)
+        {
+            if (MapaDeColumna == null)
+                throw new ArgumentNullException("MapaDeColumna");
+
+            if (MapasColumnas.Contains(MapaDeColumna))
+            {
+                return this.MapasColumnas.Remove(MapaDeColumna);
             }
             else
             {

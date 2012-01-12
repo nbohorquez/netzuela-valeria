@@ -9,7 +9,7 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
     public class MapeoDeColumnasElement : ConfigurationElement
     {
-        // Con codigo de http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
+        // Referencia: http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
 
         #region Constructores
 

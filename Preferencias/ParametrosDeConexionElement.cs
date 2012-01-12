@@ -10,7 +10,7 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
     public class ParametrosDeConexionElement : ConfigurationElement
     {
-        // Con codigo de http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.asp
+        // Referencia: http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.asp
 
         #region Constructores
 

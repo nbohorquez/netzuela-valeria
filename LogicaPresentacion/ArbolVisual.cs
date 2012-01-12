@@ -15,11 +15,24 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
     {
         #region Funciones
 
-        /*
-         * Codigo tomado de:
-         * http://stackoverflow.com/questions/592373/select-treeview-node-on-right-click-before-displaying-contextmenu
+        /* 
+         * Codigo importado
+         * ================
+         * 
+         * Autor: alex2k8
+         * Titulo: Select TreeView Node on right click before displaying ContextMenu (Pregunta en el foro "stackoverflow") 
+         * Licencia: Creative Commons Attribution-ShareAlike 3.0 Unported
+         * Fuente: http://stackoverflow.com/questions/592373/select-treeview-node-on-right-click-before-displaying-contextmenu
+         * 
+         * Tipo de uso
+         * ===========
+         * 
+         * Textual                                              []
+         * Adaptado                                             []
+         * Solo se cambiaron los nombres de las variables       [X]
+         * 
          */
-
+        
         public static DependencyObject BusquedaHaciaArriba<T>(DependencyObject Origen)
         {
             while (Origen != null && Origen.GetType() != typeof(T))

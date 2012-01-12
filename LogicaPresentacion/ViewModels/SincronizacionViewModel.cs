@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;           // ObservableCollection
 using System.Data;                              // DataTable
 using System.Windows;                           // MessageBox
 using System.Windows.Input;                     // ICommand
+using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;       // TablaMapeada
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
@@ -46,7 +47,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                  * Creamos una TablaMapeada por cada Tabla listada en el servidor remoto.
                  * Posteriormente se agregaran MapeoDeColumnas a estas TablaMapeada.
                  */
-                Tablas.Add(Nodo.CrearTablaMapeada());
+                Tablas.Add(Nodo.CrearTablaDeMapas());
             }
         }
 
@@ -94,6 +95,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 NodoViewModel NodoOrigen = Argumento[0] as NodoViewModel;
                 NodoViewModel NodoDestino = Argumento[1] as NodoViewModel;
+                
+                if (NodoDestino.Padre.TablaDeMapas == null)
+                {
+                    Tablas.Add(NodoDestino.Padre.CrearTablaDeMapas());
+                }
 
                 NodoDestino.AsociarCon(NodoOrigen);
                 ActualizarTabla(NodoDestino);
@@ -109,7 +115,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             try
             {
                 NodoViewModel NodoDestino = Argumento as NodoViewModel;
-
+                
                 NodoDestino.Desasociarse();
                 ActualizarTabla(NodoDestino);
             }
@@ -158,7 +164,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
 
-            //DataTable TempTablaMapeada = new DataTable(Tabla.NodoTabla.BuscarEnRepositorio().RutaCompleta());
             DataTable TempTablaMapeada = new DataTable(Tabla.NodoTabla.Nombre);
 
             foreach (MapeoDeColumnas MapaCol in Tabla.MapasColumnas)

@@ -24,9 +24,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #endregion
 
         #region Constructores
-
-        // Con codigo de: http://www.codeproject.com/KB/cs/3ways_extend_class.aspx
-
+        
         private void InicializacionComun1()
         {
             this.Padre = null;
@@ -153,12 +151,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
 
         public NodoViewModel Padre { get; set; }
-        public ObservableCollection<NodoViewModel> Hijos { get; set; }
+        public ObservableCollection<NodoViewModel> Hijos { get; private set; }
         
         public MapeoDeColumnas MapaColumna
         {
             get { return _Nodo.MapaColumna; }
-            set { _Nodo.MapaColumna = value; }
+            private set { _Nodo.MapaColumna = value; }
+        }
+
+        public TablaMapeada TablaDeMapas
+        {
+            get { return _Nodo.TablaDeMapas; }
+            private set { _Nodo.TablaDeMapas = value; }
         }
 
         public ExploradorViewModel Explorador { get; set; }
@@ -172,7 +176,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             if (MapaColumna != null)
             {
-                MapaColumna.CambioEnColumnas -= this.EnCambioEnColumnas;
+                MapaColumna.CambioEnColumnas -= this.ManejarCambioEnColumnas;
 
                 if (_Nodo == MapaColumna.ColumnaDestino)
                 {
@@ -244,7 +248,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void EnCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
+        private void ManejarCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
         {
             RaisePropertyChanged("NombreParaMostrar");
         }
@@ -261,42 +265,39 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this.Hijos.Add(Nodo);
         }
 
-        public TablaMapeada CrearTablaMapeada()
+        public TablaMapeada CrearTablaDeMapas()
         {
             List<Nodo> Lista = new List<Nodo>();
 
-            foreach (NodoViewModel N in this.Hijos)
+            foreach (NodoViewModel N in Hijos)
             {
                 Lista.Add(N._Nodo);
             }
             
-            TablaMapeada T = new TablaMapeada(this._Nodo, Lista);
+            _Nodo.CrearTablaDeMapas(Lista);
 
-            foreach (NodoViewModel Hijo in this.Hijos)
+            foreach (NodoViewModel Hijo in Hijos)
             {
                 /*
                  * Quiero ser notificado cuando ocurra una cambio en ColumnaOrigen o 
                  * ColumnaDestino del MapeoDeColumnas asociado a este NodoViewModel.
                  */
-                Hijo.MapaColumna.CambioEnColumnas += Hijo.EnCambioEnColumnas;
+                Hijo.MapaColumna.CambioEnColumnas += Hijo.ManejarCambioEnColumnas;
             }
 
-            return T;
+            return TablaDeMapas;
         }
 
         public void AsociarCon(NodoViewModel NodoOrigen)
         {
-            if (NodoOrigen == null)
-                throw new ArgumentNullException("NodoOrigen");
-
             try
             {
-                /*
-                 * El nuevo nodo tambien quiere saber cuándo ocurre un cambio en las columnas 
-                 * mapeadas
-                 */
-                this.MapaColumna.CambioEnColumnas += NodoOrigen.EnCambioEnColumnas;
-                this.MapaColumna.FijarOrigen(NodoOrigen._Nodo);
+                if (NodoOrigen == null)
+                    throw new ArgumentNullException("NodoOrigen");                
+
+                // El nuevo nodo tambien quiere saber cuándo ocurre un cambio en las columnas 
+                this.MapaColumna.CambioEnColumnas += NodoOrigen.ManejarCambioEnColumnas;
+                _Nodo.AsociarCon(NodoOrigen._Nodo);                
             }
             catch (Exception ex)
             {
@@ -310,8 +311,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 NodoViewModel NodoOrigen = this.MapaColumna.ColumnaOrigen.BuscarEnRepositorio();
 
-                this.MapaColumna.QuitarOrigen();
-                this.MapaColumna.CambioEnColumnas -= NodoOrigen.EnCambioEnColumnas;
+                _Nodo.Desasociarse();
+                this.MapaColumna.CambioEnColumnas -= NodoOrigen.ManejarCambioEnColumnas;
             }
             catch (Exception ex)
             {

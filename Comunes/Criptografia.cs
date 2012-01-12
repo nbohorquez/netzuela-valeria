@@ -9,8 +9,24 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
     public static class Criptografia
     {
-        // Con codigo de
-        // http://weblogs.asp.net/jgalloway/archive/2008/04/13/encrypting-passwords-in-a-net-app-config-file.aspx
+        /* 
+         * Codigo importado
+         * ================
+         * 
+         * Autor: Jon Galloway
+         * Titulo: Encrypting Passwords in a .NET app.config File
+         * Licencia: All posted code is published under Public Domain license unless otherwise stated. 
+         *           All content is published under a Creative Commons Attribution License 
+         * Fuente: http://weblogs.asp.net/jgalloway/archive/2008/04/13/encrypting-passwords-in-a-net-app-config-file.aspx
+         * 
+         * Tipo de uso
+         * ===========
+         * 
+         * Textual                                              []
+         * Adaptado                                             []
+         * Solo se cambiaron los nombres de las variables       [X]
+         * 
+         */
 
         static byte[] _Entropia = Encoding.Unicode.GetBytes("Vos lo que sois es un muchacho");
 

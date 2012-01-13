@@ -11,7 +11,6 @@ using Zuliaworks.Netzuela.Paris.ContratoValeria;    // DataSetXML
 
 namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
-    //[Serializable]
     public class ProxyDinamico : IDisposable
     {
         // Con codigo de: http://blogs.msdn.com/b/vipulmodi/archive/2008/10/16/dynamic-proxy-and-memory-footprint.aspx
@@ -20,6 +19,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private DynamicProxyFactory _Fabrica;
         private DynamicProxy _ProxyDinamico;
+        private string _UriWsdlServicio;
+        private bool _UriWsdlServicioModificado;
 
         #endregion
 
@@ -28,7 +29,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         public ProxyDinamico() { }
 
         public ProxyDinamico(string UriWsdlServicio)
-            : this()
         {
             if (UriWsdlServicio == null)
                 throw new ArgumentNullException("UriWsdlServicio");
@@ -46,7 +46,23 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         #region Propiedades
 
-        public string UriWsdlServicio { get; set; }
+        public string UriWsdlServicio 
+        {
+            get { return _UriWsdlServicio; }
+            set
+            {
+                if (value != _UriWsdlServicio)
+                {
+                    if (_ProxyDinamico == null)
+                    {
+                        _UriWsdlServicio = value;
+                        _UriWsdlServicioModificado = true;
+                    }
+                    else
+                        throw new FieldAccessException("No se puede modificar UriWsdlServicio mientras la conexión este establecida");
+                }
+            }
+        }
 
         #endregion
 
@@ -74,17 +90,17 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         public void Conectar(string Contrato)
         {
-            if (Contrato == null)
-            {
-                throw new ArgumentNullException("Contrato");
-            }
+            Desconectar();
 
-            if (_Fabrica == null)
+            if (Contrato == null)
+                throw new ArgumentNullException("Contrato");
+
+            if (_UriWsdlServicioModificado)
             {
+                _UriWsdlServicioModificado = false;
+
                 if (UriWsdlServicio == null)
-                {
                     throw new ArgumentNullException("UriWsdlServicio");
-                }
 
                 CrearFabrica();
             }
@@ -96,6 +112,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 if (SE.Contract.Name.Contains(Contrato))
                 {
                     Endpoint = SE;
+                    break;
                 }
             }
 
@@ -128,9 +145,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                         MaxStringContentLength = 2147483647
                     }
                 };
-            }
 
-            _ProxyDinamico = _Fabrica.CreateProxy(Contrato);
+                _ProxyDinamico = _Fabrica.CreateProxy(Contrato);
+            }
         }
 
         public object InvocarMetodo(string Metodo, params object[] Argumentos)
@@ -161,9 +178,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 // http://stackoverflow.com/questions/2500280/invalidcastexception-for-two-objects-of-the-same-type
                 if (Resultado.GetType().FullName == typeof(DataSetXML).FullName)
                 {
-                    //object Temp = Resultado;
                     DataSetXMLDinamico SetXMLDinamico = new DataSetXMLDinamico(Resultado);
-
                     Resultado = new DataSetXML();
 
                     ((DataSetXML)Resultado).EsquemaXML = SetXMLDinamico.EsquemaXML;

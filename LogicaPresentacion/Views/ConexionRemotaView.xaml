@@ -25,7 +25,7 @@
         <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch">
             <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
                 <Label>Dirección URL</Label>
-                <TextBox Name="txt_Direccion" Text="{Binding Path=Parametros.Anfitrion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Name="txt_Direccion" IsEnabled="{Binding Path=PermitirModificaciones}" Text="{Binding Path=Parametros.Anfitrion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
             <Button Margin="0,15,0,0" Content="{Binding Path=BotonConectarDesconectar}" Command="{Binding Path=ConectarDesconectarOrden, Mode=OneTime}"/>

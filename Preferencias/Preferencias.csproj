@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutentificacionSection.cs" />
+    <Compile Include="CargarGuardar.cs" />
     <Compile Include="TablasMapeadasSection.cs" />
     <Compile Include="ColeccionElementosGenerica.cs" />
     <Compile Include="ConexionesSection.cs" />

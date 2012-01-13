@@ -15,14 +15,17 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
     /// </summary>
     public partial class ClienteValeria : Component
     {
-        // Ver primero: http://msdn.microsoft.com/en-us/library/bz33kx67.aspx
-        // Ver tambien: http://msdn.microsoft.com/en-us/library/wewwczdw.aspx
+        // Referencia 1: http://msdn.microsoft.com/en-us/library/bz33kx67.aspx
+        // Referencia 2: http://msdn.microsoft.com/en-us/library/wewwczdw.aspx
         
-        #region Variables
+        #region Variables y constantes
 
         private Random _Aleatorio;
         private ProxyDinamico _Proxy;
         private HybridDictionary _Hilos;
+        private string _UriWsdlServicio;
+
+        private const string CONTRATO_VALERIA = "IValeria";
 
         #endregion
 
@@ -43,30 +46,27 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 throw new ArgumentNullException("UriWsdlServicio");
 
             this.UriWsdlServicio = UriWsdlServicio;
-            CrearProxy();
         }
 
         #endregion
 
         #region Propiedades
 
-        public string UriWsdlServicio { get; set; }
+        public string UriWsdlServicio
+        {
+            get { return (_Proxy == null) ? _UriWsdlServicio : _Proxy.UriWsdlServicio; }
+            set
+            {
+                if (_Proxy == null)
+                    _UriWsdlServicio = value;
+                else
+                    _Proxy.UriWsdlServicio = value;
+            }
+        }
 
         #endregion
 
         #region Funciones
-
-        private void CrearProxy()
-        {
-            try
-            {
-                _Proxy = new ProxyDinamico(UriWsdlServicio);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error creando ProxyDinamico con argumento: \"" + UriWsdlServicio + "\"", ex);
-            }
-        }
 
         private bool TareaCancelada(object TareaID)
         {
@@ -84,6 +84,18 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             _Carpintero = new DelegadoComenzarOperacion(ComenzarOperacion);
         }
 
+        public void Armar()
+        {
+            try
+            {
+                _Proxy = new ProxyDinamico(UriWsdlServicio);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error creando ProxyDinamico con argumento: \"" + UriWsdlServicio + "\"", ex);
+            }
+        }
+
         public void Conectar()
         {
             if (_Proxy == null)
@@ -91,18 +103,16 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 if(UriWsdlServicio == null)
                     throw new ArgumentNullException("UriWsdlServicio");
 
-                CrearProxy();
+                Armar();
             }
 
-            _Proxy.Conectar("IValeria");            
+            _Proxy.Conectar(CONTRATO_VALERIA);            
         }
 
         public void Desconectar()
         {
             if (_Proxy != null)
-            {
                 _Proxy.Desconectar();
-            }
         }
 
         public void CancelarTarea(object TareaID)

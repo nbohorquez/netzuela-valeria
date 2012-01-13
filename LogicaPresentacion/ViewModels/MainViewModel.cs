@@ -6,6 +6,7 @@ using System.Text;
 using MvvmFoundation.Wpf;                                               // PropertyObserver<>, ObservableObject
 using System.Collections.ObjectModel;                                   // ObservableCollection
 using System.Data;                                                      // DataTable
+using System.Security;                                                  // SecureString
 using System.Windows;                                                   // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;                              // Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;                               // TablaMapeada
@@ -44,24 +45,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
 
-            _ConfiguracionLocal = new Configuracion();
+            _ConfiguracionLocal = Configuracion.CargarConfiguracion();
+            
+            ConexionLocal.Parametros = _ConfiguracionLocal.ParametrosConexionLocal;
+            ConexionRemota.Parametros = _ConfiguracionLocal.ParametrosConexionRemota;
 
-            if (CargarParametrosDeConexion())
-            {
-                ConexionLocal.Parametros = _ConfiguracionLocal.ParametrosConexionLocal;
-                ConexionRemota.Parametros = _ConfiguracionLocal.ParametrosConexionRemota;
-            }
-
-            if (CargarCredenciales())
-            {
+            if (_ConfiguracionLocal.UsuarioLocal != null && _ConfiguracionLocal.ContrasenaLocal != null)
                 ConexionLocal.Conectar(_ConfiguracionLocal.UsuarioLocal, _ConfiguracionLocal.ContrasenaLocal);
-                ConexionRemota.Conectar(_ConfiguracionLocal.UsuarioRemoto, _ConfiguracionLocal.ContrasenaRemota);
-            }
 
-            if (CargarTablas())
+            if (_ConfiguracionLocal.UsuarioRemoto != null && _ConfiguracionLocal.ContrasenaRemota != null)
+                ConexionRemota.Conectar(_ConfiguracionLocal.UsuarioRemoto, _ConfiguracionLocal.ContrasenaRemota);
+
+            // Si las dos conexiones estan establecidas...
+            if (LocalARemota != null)
             {
                 ExploradorLocal.ExpandirTodo();
-                LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, _ConfiguracionLocal.Mapas);                
+                //LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, _ConfiguracionLocal.Mapas);
             }
         }
 
@@ -193,11 +192,29 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             ExploradorLocalViejo.Dispose();
             ExploradorLocalViejo = null;
 
-            GuardarPreferencias();
+            _ConfiguracionLocal = new Configuracion();
+            _ConfiguracionLocal.ParametrosConexionLocal = ConexionLocal.Parametros;
+            _ConfiguracionLocal.ParametrosConexionRemota = ConexionRemota.Parametros;
+            _ConfiguracionLocal.UsuarioLocal = ConexionLocal.UsuarioNetzuela;
+            _ConfiguracionLocal.ContrasenaLocal = ConexionLocal.ContrasenaNetzuela;
+            // Esto esta aqui por joda... cuando tenga el servidor de Netzuela listo, aqui va 
+            // a haber una vaina seria.
+            _ConfiguracionLocal.UsuarioRemoto = "maricoerconio".ConvertirASecureString();
+            _ConfiguracionLocal.ContrasenaRemota = "1234".ConvertirASecureString();
+            _ConfiguracionLocal.Tablas = Sincronizacion.Tablas;
+
+            try
+            {
+                Configuracion.GuardarConfiguracion(_ConfiguracionLocal);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+            }
             
             // Este codigo deberia ejecutarse periodicamente y no solo cuando se termine de
             // configurar la sincronizacion de las instancias local y remota
-            Dictionary<NodoViewModel,DataTable> Tablas = LocalARemota.TablasAEnviar();
+            Dictionary<NodoViewModel, DataTable> Tablas = Sincronizacion.TablasAEnviar();
             foreach(KeyValuePair<NodoViewModel, DataTable> Par in Tablas)
             {
                 ExploradorRemoto.EscribirTabla(Par.Key, Par.Value);

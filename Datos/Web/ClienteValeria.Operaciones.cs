@@ -233,33 +233,49 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         public string[] ListarBasesDeDatos()
         {
-            return _Proxy.InvocarMetodo("ListarBasesDeDatos", null) as string[];
+            Conectar();
+            string[] Resultado = _Proxy.InvocarMetodo("ListarBasesDeDatos", null) as string[];
+            Desconectar();
+
+            return Resultado;
         }
 
         public string[] ListarTablas(string BaseDeDatos)
         {
-            return _Proxy.InvocarMetodo("ListarTablas", BaseDeDatos) as string[];
+            Conectar();
+            string[] Resultado = _Proxy.InvocarMetodo("ListarTablas", BaseDeDatos) as string[];
+            Desconectar();
+
+            return Resultado;
         }
 
         public DataTable LeerTabla(string BaseDeDatos, string Tabla)
         {
+            Conectar();
+
             object SetXML = _Proxy.InvocarMetodo("LeerTabla", BaseDeDatos, Tabla);
             DataSet Set = new DataSet();
 
             Set.ReadXmlSchema(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)SetXML).EsquemaXML)));
             Set.ReadXml(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)SetXML).XML)));
-            
+
+            Desconectar();
+
             return Set.Tables[0];
         }
 
         public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
         {
+            Conectar();
+
             DataSet Tablas = new DataSet(NombreTabla);
             Tablas.Tables.Add(Tabla);
-
             DataSetXML DatosAEnviar = new DataSetXML(Tablas.GetXmlSchema(), Tablas.GetXml());
+            bool Resultado = Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
 
-            return Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
+            Desconectar();
+
+            return Resultado;
         }
 
         public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)

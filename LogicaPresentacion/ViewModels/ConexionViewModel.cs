@@ -19,6 +19,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Variables
 
         private RelayCommand _ConectarDesconectarOrden;
+        private bool _PermitirModificaciones;
         protected Conexion _Conexion;
 
         #endregion
@@ -28,6 +29,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ConexionViewModel()
         {
             _Conexion = new Conexion();
+            PermitirModificaciones = true;
         }
 
         public ConexionViewModel(Conexion Conexion)
@@ -36,6 +38,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new ArgumentNullException("Conexion");
 
             _Conexion = Conexion;
+            PermitirModificaciones = true;
         }
 
         #endregion
@@ -100,6 +103,19 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
+        public bool PermitirModificaciones
+        {
+            get { return _PermitirModificaciones; }
+            protected set
+            {
+                if (value != _PermitirModificaciones)
+                {
+                    _PermitirModificaciones = value;
+                    RaisePropertyChanged("PermitirModificaciones");
+                }
+            }
+        }
+
         public string BotonConectarDesconectar
         {
             get { return (Estado == ConnectionState.Open) ? "Desconectar" : "Conectar"; }
@@ -128,6 +144,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
         {
+            switch (Estado)
+            {
+                case ConnectionState.Open:
+                    PermitirModificaciones = false;
+                    break;
+                case ConnectionState.Closed:
+                    PermitirModificaciones = true;
+                    break;
+            }
+            
             RaisePropertyChanged("Estado");                     // Para la gente de MainViewModel
             RaisePropertyChanged("EstadoString");               // Para la gente de BarraDeEstadoView
             RaisePropertyChanged("BotonConectarDesconectar");   // Para la gente de ConexionLocalView y ConexionRemotaView

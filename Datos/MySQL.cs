@@ -270,11 +270,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
-            if (_Conexion != null)
-                _Conexion.Close();
-
             try
             {
+                Desconectar();
+
                 _Conexion.ConnectionString = CrearRutaDeAcceso(DatosDeConexion, Usuario, Contrasena).ConvertirAUnsecureString();
                 _Conexion.Open();
             }
@@ -296,7 +295,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             try
             {
-                _Conexion.Close();
+                if (_Conexion != null)
+                    _Conexion.Close();
             }
             catch (Exception ex)
             {

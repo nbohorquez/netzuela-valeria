@@ -77,13 +77,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             try
             {
-                if (_Cliente != null)
-                {
-                    Desconectar();
-                }
+                Desconectar();
 
-                _Cliente.UriWsdlServicio = "http://localhost:4757/Servidor.svc?wsdl";
-                _Cliente.Conectar();
+                //_Cliente.UriWsdlServicio = "http://localhost:4757/Servidor.svc?wsdl";
+                _Cliente.UriWsdlServicio = DatosDeConexion.Anfitrion;
+                _Cliente.Armar();
                 
                 // Esto hay que borrarlo
                 Estado = ConnectionState.Open;
@@ -99,9 +97,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             try
             {
                 if (_Cliente != null)
-                {
                     _Cliente.Desconectar();
-                }
                 
                 // Esto hay que borrarlo
                 Estado = ConnectionState.Closed;

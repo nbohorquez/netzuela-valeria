@@ -79,7 +79,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             {
                 Desconectar();
 
-                //_Cliente.UriWsdlServicio = "http://localhost:4757/Servidor.svc?wsdl";
                 _Cliente.UriWsdlServicio = DatosDeConexion.Anfitrion;
                 _Cliente.Armar();
                 

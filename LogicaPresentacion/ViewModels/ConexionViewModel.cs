@@ -142,7 +142,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        public void EnCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
+        public void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
         {
             switch (Estado)
             {
@@ -164,7 +164,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             try
             {
                 ResolverDatosDeConexion();
-                _Conexion.CambioDeEstado += new StateChangeEventHandler(EnCambioDeEstado);
+                _Conexion.CambioDeEstado += new StateChangeEventHandler(ManejarCambioDeEstado);
                 _Conexion.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)

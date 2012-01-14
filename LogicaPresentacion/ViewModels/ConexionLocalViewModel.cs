@@ -145,23 +145,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 _UsuarioExterno = AutentificacionVM.Usuario.Copy();
                 _ContrasenaExterna = AutentificacionVM.Contrasena.Copy();
 
-                ConexionUsuario();
+                try
+                {
+                    ConexionUsuario();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                }
             }
         }
 
-        public override void ConectarDesconectar()
-        {
-            if (Estado == ConnectionState.Open)
-            {
-                base.Desconectar();
-            }
-            else
-            {
-                AbrirAutentificacion();
-            }
-        }
-
-        public void ConexionUsuario()
+        private void ConexionUsuario()
         {
             base.Conectar(_UsuarioExterno, _ContrasenaExterna);
 
@@ -179,10 +174,29 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 _ContrasenaExterna = null;
             }
         }
+
+        protected override void ConectarDesconectar()
+        {
+            if (Estado == ConnectionState.Open)
+            {
+                base.Desconectar();
+            }
+            else
+            {
+                AbrirAutentificacion();
+            }
+        }
             
         public void ConexionNetzuela()
         {
-            base.Conectar(UsuarioNetzuela, ContrasenaNetzuela);
+            try
+            {
+                base.Conectar(UsuarioNetzuela, ContrasenaNetzuela);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al tratar de establecer la conexión local con el usuario Netzuela", ex);
+            }
         }
         
         public void CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
@@ -197,7 +211,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                throw new Exception("Error al crear el usuario Netzuela", ex);
             }
         }
 

@@ -123,14 +123,26 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ICommand ConectarDesconectarOrden
         {
-            get { return _ConectarDesconectarOrden ?? (_ConectarDesconectarOrden = new RelayCommand(this.ConectarDesconectar)); }
+            get { return _ConectarDesconectarOrden ?? (_ConectarDesconectarOrden = new RelayCommand(this.ConectarDesconectarAccion)); }
         }
 
         #endregion
 
         #region Funciones
 
-        public virtual void ConectarDesconectar()
+        private void ConectarDesconectarAccion()
+        {
+            try
+            {
+                ConectarDesconectar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+            }
+        }
+
+        protected virtual void ConectarDesconectar()
         {
             if (Estado == ConnectionState.Open)
             {
@@ -139,7 +151,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             else
             {
                 Conectar(null, null);
-            }
+            }            
         }
 
         public void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
@@ -161,15 +173,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
+            ResolverDatosDeConexion();
+
             try
             {
-                ResolverDatosDeConexion();
                 _Conexion.CambioDeEstado += new StateChangeEventHandler(ManejarCambioDeEstado);
                 _Conexion.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                throw new Exception("Error de conexión", ex);
             }
         }
 
@@ -181,10 +194,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                throw new Exception("Error de desconexión", ex);
             }
         }
-        
+
         public void ResolverDatosDeConexion()
         {
             try
@@ -193,7 +206,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                throw new Exception("Error al tratar de resolver los datos de conexión", ex);
             }
         }
 

@@ -117,16 +117,21 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             string[] PasosDeLaRuta = Ruta.Split('\\');
 
-            for (int i = 0; i < (PasosDeLaRuta.Length - 1); i++)
+            int i = 0;
+            foreach(string Paso in PasosDeLaRuta)
             {
+                if (Paso == string.Empty)
+                    continue;
+
                 if (i == 0)
                 {
-                    Resultado = NodoViewModelExtensiones.BuscarNodo(PasosDeLaRuta[i], Arbol);
+                    Resultado = NodoViewModelExtensiones.BuscarNodo(Paso, Arbol);
                 }
                 else
                 {
-                    Resultado = NodoViewModelExtensiones.BuscarNodo(PasosDeLaRuta[i], Resultado.Hijos);
+                    Resultado = NodoViewModelExtensiones.BuscarNodo(Paso, Resultado.Hijos);
                 }
+                i++;
             }
 
             return Resultado;

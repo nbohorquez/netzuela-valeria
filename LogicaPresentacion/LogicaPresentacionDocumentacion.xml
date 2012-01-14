@@ -103,11 +103,6 @@
             Establece NodoActual
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView">
             <summary>
             Lógica de interacción para BarraDeEstadoView.xaml
@@ -199,6 +194,11 @@
             <summary>
             Esta propiedad es una fachada. Solo sirve para tomar el string desde el View y 
             convertirlo inmediatamente a SecureString en Usuario. No se puede leer
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ExploradorView">

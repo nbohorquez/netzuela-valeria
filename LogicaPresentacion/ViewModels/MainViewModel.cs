@@ -173,54 +173,66 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             // Guardamos el arbol de nodos de ExploradorLocal. Sera util unos pasos mas adelante
             ExploradorLocalViejo = ExploradorLocal;
 
-            // Creamos un usuario en la base de datos local con los privilegios necesarios 
-            // para leer las columnas de origen            
-            ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
-
-            // Cambiamos de usuario
-            ConexionLocal.Desconectar();
-            ConexionLocal.ConexionNetzuela();
-
-            // Expandimos todos los nodos locales para poder operar sobre ellos
-            ExploradorLocal.ExpandirTodo();
-
-            // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
-            Sincronizacion.RecargarTablasLocales(ExploradorLocal.Nodos);
-
-            // Ahora tenemos que borrar todos los nodos y tablas que no se van a utilizar mas. Para ello, 
-            // simplemente borramos todo el ExploradorLocal viejo.
-            ExploradorLocalViejo.Dispose();
-            ExploradorLocalViejo = null;
-
-            _ConfiguracionLocal = new Configuracion();
-            _ConfiguracionLocal.ParametrosConexionLocal = ConexionLocal.Parametros;
-            _ConfiguracionLocal.ParametrosConexionRemota = ConexionRemota.Parametros;
-            _ConfiguracionLocal.UsuarioLocal = ConexionLocal.UsuarioNetzuela;
-            _ConfiguracionLocal.ContrasenaLocal = ConexionLocal.ContrasenaNetzuela;
-            // Esto esta aqui por joda... cuando tenga el servidor de Netzuela listo, aqui va 
-            // a haber una vaina seria.
-            _ConfiguracionLocal.UsuarioRemoto = "maricoerconio".ConvertirASecureString();
-            _ConfiguracionLocal.ContrasenaRemota = "1234".ConvertirASecureString();
-            _ConfiguracionLocal.Tablas = Sincronizacion.Tablas;
-
             try
             {
+                // Creamos un usuario en la base de datos local con los privilegios necesarios 
+                // para leer las columnas de origen            
+                ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
+
+                // Cambiamos de usuario
+                ConexionLocal.Desconectar();
+                ConexionLocal.ConexionNetzuela();
+
+                // Expandimos los nodos locales para poder operar sobre ellos
+                HashSet<string> RutasDeTabla = new HashSet<string>();
+
+                foreach(string RutaDeColumna in NodosOrigen)
+                {
+                    // Servidor + Base de datos + tabla + columna + ""
+                    string[] PasosDeRuta = RutaDeColumna.Split('\\');
+
+                    // Servidor + Base de datos + tabla
+                    string RutaDeTabla = PasosDeRuta[0] + "\\" + PasosDeRuta[1] + "\\" + PasosDeRuta[2];
+
+                    if(RutasDeTabla.Add(RutaDeTabla))
+                        ExploradorLocal.ExpandirRuta(RutaDeTabla);
+                }
+            
+                // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
+                Sincronizacion.RecargarTablasLocales(ExploradorLocal.Nodos);            
+
+                // Ahora tenemos que borrar todos los nodos y tablas que no se van a utilizar mas. Para ello, 
+                // simplemente borramos todo el ExploradorLocal viejo.
+                ExploradorLocalViejo.Dispose();
+                ExploradorLocalViejo = null;
+
+                _ConfiguracionLocal = new Configuracion();
+                _ConfiguracionLocal.ParametrosConexionLocal = ConexionLocal.Parametros;
+                _ConfiguracionLocal.ParametrosConexionRemota = ConexionRemota.Parametros;
+                _ConfiguracionLocal.UsuarioLocal = ConexionLocal.UsuarioNetzuela;
+                _ConfiguracionLocal.ContrasenaLocal = ConexionLocal.ContrasenaNetzuela;
+                // Esto esta aqui por joda... cuando tenga el servidor de Netzuela listo, aqui va 
+                // a haber una vaina seria.
+                _ConfiguracionLocal.UsuarioRemoto = "maricoerconio".ConvertirASecureString();
+                _ConfiguracionLocal.ContrasenaRemota = "1234".ConvertirASecureString();
+                _ConfiguracionLocal.Tablas = Sincronizacion.Tablas;
+
                 Configuracion.GuardarConfiguracion(_ConfiguracionLocal);
+                        
+                // Este codigo deberia ejecutarse periodicamente y no solo cuando se termine de
+                // configurar la sincronizacion de las instancias local y remota
+                Dictionary<NodoViewModel, DataTable> Tablas = Sincronizacion.TablasAEnviar();
+                foreach(KeyValuePair<NodoViewModel, DataTable> Par in Tablas)
+                {
+                    ExploradorRemoto.EscribirTabla(Par.Key, Par.Value);
+                }
+            
+                MessageBox.Show("La sincronización se realizó correctamente");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
-            
-            // Este codigo deberia ejecutarse periodicamente y no solo cuando se termine de
-            // configurar la sincronizacion de las instancias local y remota
-            Dictionary<NodoViewModel, DataTable> Tablas = Sincronizacion.TablasAEnviar();
-            foreach(KeyValuePair<NodoViewModel, DataTable> Par in Tablas)
-            {
-                ExploradorRemoto.EscribirTabla(Par.Key, Par.Value);
-            }
-            
-            MessageBox.Show("La sincronización se realizó correctamente");                
         }
 
         private void ManejarAmbasConexionesEstablecidas(object Remitente, EventArgs Args)

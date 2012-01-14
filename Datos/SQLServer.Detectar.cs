@@ -64,7 +64,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 if (Valor1 == 0x01)
                 {
                     Metodo.Nombre = Constantes.MetodosDeConexion.MEMORIA_COMPARTIDA;
-                    Metodo.Valores = new List<string>() { "N/A" };                    
+                    Metodo.Valores = new List<string>() { "Por defecto" };                    
                 }
             }
 

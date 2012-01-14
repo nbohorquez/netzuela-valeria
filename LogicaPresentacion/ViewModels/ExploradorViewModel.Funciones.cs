@@ -294,6 +294,28 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             Item.Expandido = true;
         }
 
+        public void ExpandirRuta(string Ruta)
+        {
+            string[] PasosDeLaRuta = Ruta.Split('\\');
+
+            ObservableCollection<NodoViewModel> Lista = Nodos;
+            NodoViewModel Nodo = null;
+
+            foreach (string Paso in PasosDeLaRuta)
+            {
+                if (Paso == string.Empty)
+                    continue;
+
+                Nodo = NodoViewModelExtensiones.RutaANodo(Paso, Lista);
+
+                if (Nodo != null)
+                {
+                    Expandir(Nodo);
+                    Lista = Nodo.Hijos;
+                }
+            }
+        }
+
         /// <summary>
         /// Expande todos los nodos del árbol de nodos <see cref="Nodos"/> de este explorador.
         /// </summary>

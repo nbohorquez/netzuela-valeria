@@ -166,34 +166,41 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             DataTable TempTablaMapeada = new DataTable(Tabla.NodoTabla.Nombre);
 
-            foreach (MapeoDeColumnas MapaCol in Tabla.MapasColumnas)
+            try
             {
-                DataColumn TablaColSinTipo = new DataColumn(MapaCol.ColumnaDestino.Nombre);
-                TempTablaMapeada.Columns.Add(TablaColSinTipo);
-
-                if (MapaCol.ColumnaOrigen != null)
+                foreach (MapeoDeColumnas MapaCol in Tabla.MapasColumnas)
                 {
-                    NodoViewModel NodoCol = MapaCol.ColumnaOrigen.BuscarEnRepositorio();
+                    DataColumn TablaColSinTipo = new DataColumn(MapaCol.ColumnaDestino.Nombre);
+                    TempTablaMapeada.Columns.Add(TablaColSinTipo);
 
-                    DataTable Temp = NodoCol.Explorador.ObtenerTablaDeCache(NodoCol.Padre);
-                    DataColumn TempCol = Temp.Columns[MapaCol.ColumnaOrigen.Nombre];
-                    TempTablaMapeada.Columns.Remove(MapaCol.ColumnaDestino.Nombre);
-                    
-                    DataColumn TablaColConTipo = new DataColumn(MapaCol.ColumnaDestino.Nombre, TempCol.DataType);
-                    TempTablaMapeada.Columns.Add(TablaColConTipo);
-
-                    TablaColSinTipo.Dispose();
-
-                    for (int i = 0; i < Temp.Rows.Count; i++)
+                    if (MapaCol.ColumnaOrigen != null)
                     {
-                        if (TempTablaMapeada.Rows.Count < Temp.Rows.Count)
-                        {
-                            TempTablaMapeada.Rows.Add(TempTablaMapeada.NewRow());
-                        }
+                        NodoViewModel NodoCol = MapaCol.ColumnaOrigen.BuscarEnRepositorio();
 
-                        TempTablaMapeada.Rows[i][TablaColConTipo.ColumnName] = Temp.Rows[i][TempCol.ColumnName];
+                        DataTable Temp = NodoCol.Explorador.ObtenerTablaDeCache(NodoCol.Padre);
+                        DataColumn TempCol = Temp.Columns[MapaCol.ColumnaOrigen.Nombre];
+                        TempTablaMapeada.Columns.Remove(MapaCol.ColumnaDestino.Nombre);
+
+                        DataColumn TablaColConTipo = new DataColumn(MapaCol.ColumnaDestino.Nombre, TempCol.DataType);
+                        TempTablaMapeada.Columns.Add(TablaColConTipo);
+
+                        TablaColSinTipo.Dispose();
+
+                        for (int i = 0; i < Temp.Rows.Count; i++)
+                        {
+                            if (TempTablaMapeada.Rows.Count < Temp.Rows.Count)
+                            {
+                                TempTablaMapeada.Rows.Add(TempTablaMapeada.NewRow());
+                            }
+
+                            TempTablaMapeada.Rows[i][TablaColConTipo.ColumnName] = Temp.Rows[i][TempCol.ColumnName];
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al crear la tabla a partir de la TablaMapeada", ex);
             }
 
             return TempTablaMapeada;
@@ -206,13 +213,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             
             _CacheDeTablas.Clear();
 
-            foreach (string[] Mapa in Mapas)
+            try
             {
-                NodoOrigen = NodoViewModelExtensiones.RutaANodo(Mapa[0], NodosLocales);
-                NodoDestino = NodoViewModelExtensiones.RutaANodo(Mapa[1], NodosRemotos);
+                foreach (string[] Mapa in Mapas)
+                {
+                    NodoOrigen = NodoViewModelExtensiones.RutaANodo(Mapa[0], NodosLocales);
+                    NodoDestino = NodoViewModelExtensiones.RutaANodo(Mapa[1], NodosRemotos);
 
-                NodoDestino.AsociarCon(NodoOrigen);
-                ActualizarTabla(NodoDestino);
+                    NodoDestino.AsociarCon(NodoOrigen);
+                    ActualizarTabla(NodoDestino);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al sincronizar los arboles de nodos", ex);
             }
         }
 
@@ -228,22 +242,29 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             NodoViewModel NodoOrigen = null;
 
             _CacheDeTablas.Clear();
-            
-            foreach (TablaMapeada TM in Tablas)
-            {
-                foreach (MapeoDeColumnas MC in TM.MapasColumnas)
-                {
-                    if (MC.ColumnaOrigen == null)
-                        continue;
-                    
-                    RutaNodoOrigen = MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta();
-                    NodoOrigen = NodoViewModelExtensiones.RutaANodo(RutaNodoOrigen, NodosLocales);
-                    
-                    NodoDestino = MC.ColumnaDestino.BuscarEnRepositorio();
-                    NodoDestino.AsociarCon(NodoOrigen);
-                }
 
-                ActualizarTabla(NodoDestino);
+            try
+            {
+                foreach (TablaMapeada TM in Tablas)
+                {
+                    foreach (MapeoDeColumnas MC in TM.MapasColumnas)
+                    {
+                        if (MC.ColumnaOrigen == null)
+                            continue;
+
+                        RutaNodoOrigen = MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta();
+                        NodoOrigen = NodoViewModelExtensiones.RutaANodo(RutaNodoOrigen, NodosLocales);
+
+                        NodoDestino = MC.ColumnaDestino.BuscarEnRepositorio();
+                        NodoDestino.AsociarCon(NodoOrigen);
+                    }
+
+                    ActualizarTabla(NodoDestino);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al recargar las tablas locales", ex);
             }
         }
 

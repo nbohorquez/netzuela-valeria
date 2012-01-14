@@ -71,7 +71,6 @@
     <Compile Include="SeleccionarTodaLaColumna.cs" />
     <Compile Include="ViewModels\ExploradorViewModel.Disposable.cs" />
     <Compile Include="ViewModels\ExploradorViewModel.Funciones.cs" />
-    <Compile Include="ViewModels\MainViewModel.Preferencias.cs" />
     <Compile Include="ViewModels\AutentificacionViewModel.cs" />
     <Compile Include="ViewModels\ConexionLocalViewModel.cs" />
     <Compile Include="ViewModels\ConexionRemotaViewModel.cs" />

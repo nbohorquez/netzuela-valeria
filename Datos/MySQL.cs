@@ -243,7 +243,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
 
             // 3) Requerimos pooling
-            RutaDeConexion.AgregarString("Pooling=true;");
+            RutaDeConexion.AgregarString("Pooling=false;");
 
             // 4) Aumentamos la seguridad no permitiendo que se pueda leer la ruta de acceso
             RutaDeConexion.AgregarString("Persist Security Info=false;");

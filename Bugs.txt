@@ -1,0 +1,16 @@
+Bug 1: 
+======
+
+*- Sincroniza dos tablas.
+*- Cierra la conexion local.
+*- Vuelve a sincronizar.
+
+Cuando el programa trate de crear el usuario netzuela, se encontrara con que no puede eliminarlo 
+porque el usuario netzuela todavia esta conectado. 
+
+¿No sera porque tengo activado el pooling de conexiones?
+
+SOLUCION: Efectivamente es por el pooling. Si lo deshabilito ya no ocurre el error.
+
+Bug 2:
+======

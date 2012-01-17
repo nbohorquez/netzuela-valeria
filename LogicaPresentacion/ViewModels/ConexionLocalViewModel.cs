@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System; 
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +38,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ConexionLocalViewModel()
             : base() { }
+
+        public ConexionLocalViewModel(Conexion Conexion)
+            : base(Conexion) { }
+
+        public ConexionLocalViewModel(ParametrosDeConexion Parametros)
+            : base(Parametros) { }
 
         #endregion
 

@@ -25,6 +25,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Constructores
 
+        /*
         public ConexionRemotaViewModel()
             : base(new Conexion(new ParametrosDeConexion()
             {
@@ -32,7 +33,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 Servidor = Constantes.SGBDR.NETZUELA,
                 Instancia = "Isla Providencia"
             })) { }
-        
+        */
+
+        public ConexionRemotaViewModel()
+            : base() { }
+
+        public ConexionRemotaViewModel(Conexion Conexion)
+            : base(Conexion) { }
+
+        public ConexionRemotaViewModel(ParametrosDeConexion Parametros)
+            : base(Parametros) { }
+
         #endregion        
     }
 }

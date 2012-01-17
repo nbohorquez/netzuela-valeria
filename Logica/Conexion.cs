@@ -25,7 +25,14 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public Conexion()
         {
-            this.Parametros = new ParametrosDeConexion();
+            this.Parametros = new ParametrosDeConexion()
+            {
+                Anfitrion = string.Empty,
+                Servidor = Constantes.SGBDR.PREDETERMINADO,
+                Instancia = string.Empty,
+                ArgumentoDeConexion = string.Empty,
+                MetodoDeConexion = string.Empty
+            };
             this.BD = new ServidorPredeterminado(this.Parametros);
         }
 
@@ -109,23 +116,30 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         public void ResolverDatosDeConexion()
         {
-            switch (Parametros.Servidor)
+            if (BD != null && BD.DatosDeConexion.Servidor != Constantes.SGBDR.PREDETERMINADO)
             {
-                case Constantes.SGBDR.SQL_SERVER:
-                    BD = new SQLServer(Parametros);
-                    break;
-                case Constantes.SGBDR.ORACLE:
-                    BD = new Oracle(Parametros);
-                    break;
-                case Constantes.SGBDR.MYSQL:
-                    BD = new MySQL(Parametros);
-                    break;
-                case Constantes.SGBDR.NETZUELA:
-                    BD = new Datos.Netzuela(Parametros);
-                    break;
-                default:
-                    BD = new ServidorPredeterminado(Parametros);
-                    break;
+                BD.DatosDeConexion = Parametros;
+            }
+            else
+            {
+                switch (Parametros.Servidor)
+                {
+                    case Constantes.SGBDR.SQL_SERVER:
+                        BD = new SQLServer(Parametros);
+                        break;
+                    case Constantes.SGBDR.ORACLE:
+                        BD = new Oracle(Parametros);
+                        break;
+                    case Constantes.SGBDR.MYSQL:
+                        BD = new MySQL(Parametros);
+                        break;
+                    case Constantes.SGBDR.NETZUELA:
+                        BD = new Datos.Netzuela(Parametros);
+                        break;
+                    default:
+                        BD = new ServidorPredeterminado(Parametros);
+                        break;
+                }
             }
         }
 
@@ -138,11 +152,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             try
             {
-                if (BD == null)
-                {
-                    ResolverDatosDeConexion();
-                }
-
+                //ResolverDatosDeConexion();
                 BD.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)
@@ -158,8 +168,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             try
             {
-                if (BD != null)
-                    BD.Desconectar();
+                BD.Desconectar();
             }
             catch (Exception ex)
             {

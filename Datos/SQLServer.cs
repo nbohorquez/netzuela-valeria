@@ -318,7 +318,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             RutaDeConexion.AgregarString("Integrated Security=false;");
 
             // 3) Requerimos pooling
-            RutaDeConexion.AgregarString("Pooling=true;");
+            RutaDeConexion.AgregarString("Pooling=false;");
 
             // 4) Aumentamos la seguridad no permitiendo que se pueda leer la ruta de acceso
             RutaDeConexion.AgregarString("Persist Security Info=false;");
@@ -358,8 +358,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public void Conectar(SecureString Usuario, SecureString Contrasena) 
         {
-            if (_Conexion != null)
-                _Conexion.Close();
+            Desconectar();
 
             try
             {
@@ -388,7 +387,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             try
             {
-                _Conexion.Close();
+                if(_Conexion != null)
+                    _Conexion.Close();
             }
             catch (Exception ex)
             {
@@ -422,8 +422,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
             //DataTable Descripcion = LectorAvanzado("EXEC sp_columns @table_name = " + Tabla);
-            string[] Descripcion = LectorSimple("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + Tabla + "' ORDER BY ORDINAL_POSITION");
-
+            //string[] Descripcion = LectorSimple("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + Tabla + "' ORDER BY ORDINAL_POSITION");
+            string[] Descripcion = LectorSimple("SELECT subentity_name FROM fn_my_permissions('dbo." + Tabla + "', 'Object') WHERE permission_name = 'SELECT' AND datalength(subentity_name) > 0");
+            
             string Columnas = string.Join(", ", Descripcion.ToArray());
 
             /*

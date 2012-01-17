@@ -41,6 +41,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             PermitirModificaciones = true;
         }
 
+        public ConexionViewModel(ParametrosDeConexion Parametros)
+        {
+            if (Parametros == null)
+                throw new ArgumentNullException("Parametros");
+
+            _Conexion = new Conexion(Parametros);
+            PermitirModificaciones = true;
+        }
+
         #endregion
 
         #region Propiedades
@@ -174,10 +183,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
             ResolverDatosDeConexion();
-
+            
             try
             {
+                _Conexion.CambioDeEstado -= new StateChangeEventHandler(ManejarCambioDeEstado);
                 _Conexion.CambioDeEstado += new StateChangeEventHandler(ManejarCambioDeEstado);
+
                 _Conexion.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)

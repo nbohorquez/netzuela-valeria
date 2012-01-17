@@ -25,6 +25,8 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
             public const string ORACLE = "Oracle";
             public const string ACCESS = "Access";
             public const string DB2 = "DB2";
+            public const string DBISAM = "DBISAM";
+            public const string PREDETERMINADO = "Predeterminado";
         }
 
         /// <summary>
@@ -37,7 +39,7 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
             public const string TCP_IP = "TCP/IP";
             public const string VIA = "VIA";
         }
-
+        /*
         /// <summary>
         /// Credenciales
         /// </summary>
@@ -46,7 +48,7 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
             public const int CHIVO = 0;
             public const int NETZUELA = 1;
         }
-
+        */
         /// <summary>
         /// Credenciales
         /// </summary>

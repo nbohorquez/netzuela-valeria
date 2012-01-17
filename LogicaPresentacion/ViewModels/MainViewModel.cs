@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MvvmFoundation.Wpf;                                               // PropertyObserver<>, ObservableObject
-using System.Collections.ObjectModel;                                   // ObservableCollection
-using System.Data;                                                      // DataTable
-using System.Security;                                                  // SecureString
-using System.Windows;                                                   // MessageBox
-using Zuliaworks.Netzuela.Valeria.Comunes;                              // Constantes
-using Zuliaworks.Netzuela.Valeria.Logica;                               // TablaMapeada
+using MvvmFoundation.Wpf;                       // PropertyObserver<>, ObservableObject
+using System.Collections.ObjectModel;           // ObservableCollection
+using System.Data;                              // DataTable
+using System.Security;                          // SecureString
+using System.Windows;                           // MessageBox
+using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
+using Zuliaworks.Netzuela.Valeria.Logica;       // TablaMapeada
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -34,9 +34,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public MainViewModel()
         {
+            _ConfiguracionLocal = Configuracion.CargarConfiguracion();
+
             ConexionLocal = new ConexionLocalViewModel();
             ConexionRemota = new ConexionRemotaViewModel();
-            
+                       
             _ObservadorConexionLocalEstablecida = new PropertyObserver<ConexionLocalViewModel>(this.ConexionLocal)
                 .RegisterHandler(n => n.Estado, this.ConexionLocalActiva);
 
@@ -45,8 +47,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
 
-            _ConfiguracionLocal = Configuracion.CargarConfiguracion();
-            
             ConexionLocal.Parametros = _ConfiguracionLocal.ParametrosConexionLocal;
             ConexionRemota.Parametros = _ConfiguracionLocal.ParametrosConexionRemota;
 

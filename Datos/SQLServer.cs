@@ -386,13 +386,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public string[] ListarBasesDeDatos()
         {
+            //string[] ResultadoBruto = LectorSimple("EXEC sp_databases");
             string[] ResultadoBruto = LectorSimple("SELECT name FROM sys.databases ORDER BY name");
 
             var ResultadoFinal = from R in ResultadoBruto
                                  where R != "master" && R != "tempdb" && R != "model" && R != "msdb"
-                                 select R;
-
-            //string[] ResultadoBruto = LectorSimple("EXEC sp_databases");
+                                 select R;            
             /*
             List<string> ResultadoFinal = new List<string>();
 
@@ -527,20 +526,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 SQL = "CREATE LOGIN " + Usuario.ConvertirAUnsecureString() + " WITH PASSWORD = '" 
                     + Contrasena.ConvertirAUnsecureString() + "'";
                 EjecutarOrden(SQL);
-                /*
-                CambiarBaseDeDatos("master");
 
-                // 5) Chequeamos a ver si ya existe el usuario en "master" y, si es asi, lo eliminamos
-                SQL = "IF EXISTS (SELECT * FROM sys.database_principals WHERE name = '" + Usuario.ConvertirAUnsecureString() + "')"
-                      + " DROP USER " + Usuario.ConvertirAUnsecureString();
-                EjecutarOrden(SQL);
-
-                // 6) Creamos un usuario nuevo en "master" y lo asociamos al login recien creado
-                SQL = "CREATE USER " + Usuario.ConvertirAUnsecureString() + " FOR LOGIN "
-                    + Usuario.ConvertirAUnsecureString();
-                EjecutarOrden(SQL);
-                */
-                int i = 0;
                 foreach (KeyValuePair<string, string> Par in ColumnasLista)
                 {
                     string[] BD_Tabla = Par.Key.Split('.');
@@ -559,10 +545,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                     // 9) Otorgamos los privilegios de tablas/columnas para cada base de datos
                     SQL = "GRANT ";
-                    for (int j = 0; j < PrivilegiosLista.Count; j++)
+                    for (int i = 0; i < PrivilegiosLista.Count; i++)
                     {
-                        SQL += PrivilegiosLista[j] + " (" + Par.Value + ")";
-                        if ((j + 1) < PrivilegiosLista.Count)
+                        SQL += PrivilegiosLista[i] + " (" + Par.Value + ")";
+                        if ((i + 1) < PrivilegiosLista.Count)
                         {
                             SQL += ", ";
                         }
@@ -570,64 +556,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                     SQL += " ON OBJECT::dbo." + BD_Tabla[1] + " TO " + Usuario.ConvertirAUnsecureString();
                     EjecutarOrden(SQL);
-                    
-                    SQL = "GRANT VIEW DEFINITION TO " + Usuario.ConvertirAUnsecureString();
-                    EjecutarOrden(SQL);
-
-                    /*
-                    // Este paso es necesario para que pueda ejecutar sp_tables y sp_columns
-                    SQL = "GRANT SELECT ON SCHEMA::dbo TO " + Usuario.ConvertirAUnsecureString();
-                    EjecutarOrden(SQL);
-                                        
-                    // Creamos un "wrapper" de sp_databases
-                    SQL = "IF EXISTS (SELECT * FROM sys.objects WHERE name = 'sp_databases' AND type = 'P')"
-                          + "DROP PROCEDURE dbo.sp_databases";
-                    EjecutarOrden(SQL);
-                    
-                    SQL = "CREATE PROCEDURE dbo.sp_databases AS"
-                          + " EXEC sys.sp_databases";
-                    EjecutarOrden(SQL);
-
-                    CambiarBaseDeDatos("master");
-
-                    // Le damos privilegios al usuario para que ejecute este procedimiento
-                    SQL = "GRANT EXECUTE ON OBJECT::dbo.sp_databases TO " + Usuario.ConvertirAUnsecureString();
-                    EjecutarOrden(SQL);
-                                        
-                    SQL = "CREATE CERTIFICATE Certificado" + i.ToString() 
-                          + " ENCRYPTION BY PASSWORD = 'All you need is love'"
-                          + " WITH SUBJECT = 'Certificado para dbo.sp_databases',"
-                          + " START_DATE = '20110101', EXPIRY_DATE = '20210101'";
-                    EjecutarOrden(SQL);
-
-                    SQL = "CREATE USER UsuarioCertificado" + i.ToString() 
-                          + " FROM CERTIFICATE Certificado" + i.ToString();
-                    EjecutarOrden(SQL);
-
-                    SQL = "GRANT EXECUTE ON sys.sp_databases TO UsuarioCertificado" + i.ToString();
-                    EjecutarOrden(SQL);
-
-                    SQL = "ADD SIGNATURE TO OBJECT::dbo.sp_databases BY CERTIFICATE Certificado" + i.ToString()
-                          + " WITH PASSWORD = 'All you need is love'";
-                    EjecutarOrden(SQL);     
-                    */
-                    i++;
                 }
-
-                /*
-                // 10) Otorgamos privilegios para que pueda explorar el servidor y las bases de datos
-                CambiarBaseDeDatos("master");
-                SQL = "GRANT VIEW ANY DEFINITION TO " + Usuario.ConvertirAUnsecureString();
-                EjecutarOrden(SQL);
-                */
-                /*
-                SQL = "GRANT EXECUTE ON sp_databases TO " + Usuario.ConvertirAUnsecureString();
-                EjecutarOrden(SQL);
-                SQL = "GRANT EXECUTE ON sp_tables TO " + Usuario.ConvertirAUnsecureString();
-                EjecutarOrden(SQL);
-                SQL = "GRANT EXECUTE ON sp_columns TO " + Usuario.ConvertirAUnsecureString();
-                EjecutarOrden(SQL);
-                 * */
             }
             catch (SqlException ex)
             {

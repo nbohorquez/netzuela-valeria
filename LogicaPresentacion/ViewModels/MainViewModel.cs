@@ -191,9 +191,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     // Servidor + Base de datos + tabla + columna + ""
                     string[] PasosDeRuta = RutaDeColumna.Split('\\');
 
-                    // Servidor + Base de datos + tabla
+                    // Servidor + Base de datos + tabla - columna - ""
                     string RutaDeTabla = PasosDeRuta[0] + "\\" + PasosDeRuta[1] + "\\" + PasosDeRuta[2];
 
+                    // Si ya esa ruta fue expandida, no la expandamos otra vez
                     if(RutasDeTabla.Add(RutaDeTabla))
                         ExploradorLocal.ExpandirRuta(RutaDeTabla);
                 }

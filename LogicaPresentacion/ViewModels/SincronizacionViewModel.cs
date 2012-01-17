@@ -95,14 +95,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 NodoViewModel NodoOrigen = Argumento[0] as NodoViewModel;
                 NodoViewModel NodoDestino = Argumento[1] as NodoViewModel;
-                
-                if (NodoDestino.Padre.TablaDeMapas == null)
-                {
-                    Tablas.Add(NodoDestino.Padre.CrearTablaDeMapas());
-                }
 
-                NodoDestino.AsociarCon(NodoOrigen);
-                ActualizarTabla(NodoDestino);
+                Asociar(NodoOrigen, NodoDestino);
             }
             catch (Exception ex)
             {
@@ -115,9 +109,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             try
             {
                 NodoViewModel NodoDestino = Argumento as NodoViewModel;
-                
-                NodoDestino.Desasociarse();
-                ActualizarTabla(NodoDestino);
+                Desasociar(NodoDestino);
             }
             catch (Exception ex)
             {
@@ -135,6 +127,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
+        }
+
+        private void Asociar(NodoViewModel NodoOrigen, NodoViewModel NodoDestino)
+        {
+            if (NodoDestino.Padre.TablaDeMapas == null)
+            {
+                Tablas.Add(NodoDestino.Padre.CrearTablaDeMapas());
+            }
+
+            NodoDestino.AsociarCon(NodoOrigen);
+            ActualizarTabla(NodoDestino);
+        }
+
+        private void Desasociar(NodoViewModel NodoDestino)
+        {
+            NodoDestino.Desasociarse();
+            ActualizarTabla(NodoDestino);
         }
 
         private void ActualizarTabla(NodoViewModel Nodo)
@@ -220,8 +229,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     NodoOrigen = NodoViewModelExtensiones.RutaANodo(Mapa[0], NodosLocales);
                     NodoDestino = NodoViewModelExtensiones.RutaANodo(Mapa[1], NodosRemotos);
 
-                    NodoDestino.AsociarCon(NodoOrigen);
-                    ActualizarTabla(NodoDestino);
+                    Asociar(NodoOrigen, NodoDestino);
                 }
             }
             catch (Exception ex)

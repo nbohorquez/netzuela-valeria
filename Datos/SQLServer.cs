@@ -16,8 +16,20 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     public partial class SQLServer : EventosComunes, IBaseDeDatos
     {
         #region Variables
-                
+
         private SqlConnection _Conexion;
+        protected static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
+        {
+            { Constantes.Privilegios.NO_VALIDO, string.Empty },
+            { Constantes.Privilegios.SELECCIONAR, "SELECT" },
+            { Constantes.Privilegios.INSERTAR_FILAS, "INSERT" },
+            { Constantes.Privilegios.ACTUALIZAR, "UPDATE" },
+            { Constantes.Privilegios.BORRAR_FILAS, "DELETE" },
+            { Constantes.Privilegios.INDIZAR, "INDEX" },
+            { Constantes.Privilegios.ALTERAR, "ALTER" },
+            { Constantes.Privilegios.CREAR, "CREATE" },
+            { Constantes.Privilegios.DESTRUIR, "DROP" }
+        };
 
         #endregion
 
@@ -392,12 +404,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             var ResultadoFinal = from R in ResultadoBruto
                                  where R != "master" && R != "tempdb" && R != "model" && R != "msdb"
                                  select R;            
-            /*
-            List<string> ResultadoFinal = new List<string>();
 
-            foreach (string ResultadoParcial in ResultadoBruto)
-                ResultadoFinal.Add(ResultadoParcial);
-            */
             return ResultadoFinal.ToArray();
         }
 
@@ -431,9 +438,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
-        public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
-            object Resultado = null;
+            bool Resultado = false;
             string SQL = string.Empty;
 
             /* 
@@ -486,11 +493,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             // 1) Determinamos los privilegios otorgados al nuevo usuario
             List<string> PrivilegiosLista = new List<string>();
 
-            for (int i = 0; i < OrdenesComunes.Privilegios.Count; i++)
+            for (int i = 0; i < PrivilegiosAOrdenes.Count; i++)
             {
                 if ((Privilegios & (1 << i)) == 1)
                 {
-                    PrivilegiosLista.Add(OrdenesComunes.Privilegios[(1 << i)]);
+                    PrivilegiosLista.Add(PrivilegiosAOrdenes[(1 << i)]);
                 }
             }
 
@@ -556,6 +563,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                     SQL += " ON OBJECT::dbo." + BD_Tabla[1] + " TO " + Usuario.ConvertirAUnsecureString();
                     EjecutarOrden(SQL);
+
+                    Resultado = true;
                 }
             }
             catch (SqlException ex)
@@ -598,26 +607,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #endregion
 
         #endregion
-
-        #endregion
-
-        #region Tipos anidados
-
-        public static class OrdenesComunes
-        {
-            public static Dictionary<int, string> Privilegios = new Dictionary<int, string>() 
-            {
-                { Constantes.Privilegios.NO_VALIDO, string.Empty },
-                { Constantes.Privilegios.SELECCIONAR, "SELECT" },
-                { Constantes.Privilegios.INSERTAR_FILAS, "INSERT" },
-                { Constantes.Privilegios.ACTUALIZAR, "UPDATE" },
-                { Constantes.Privilegios.BORRAR_FILAS, "DELETE" },
-                { Constantes.Privilegios.INDIZAR, "INDEX" },
-                { Constantes.Privilegios.ALTERAR, "ALTER" },
-                { Constantes.Privilegios.CREAR, "CREATE" },
-                { Constantes.Privilegios.DESTRUIR, "DROP" }
-            };
-        }
 
         #endregion
     }

@@ -136,13 +136,19 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
         
         /// <summary>
-        /// Establece NodoActual
+        /// Establece NodoActual.
         /// </summary>
         public ICommand EstablecerNodoActualOrden
         {
             get { return _EstablecerNodoActualOrden ?? (_EstablecerNodoActualOrden = 
                 new RelayCommand<string>(Nombre => this.EstablecerNodoActualAccion(Nombre))); }
         }
+
+        /// <summary>
+        /// Establece el modo de las operaciones de lectura/escritura (sincróncias o asincrónicas)
+        /// sobre la fuente de datos subyacente.
+        /// </summary>
+        public bool OperacionAsincronica { get; set; }
 
         #endregion
     }

@@ -100,7 +100,13 @@
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.EstablecerNodoActualOrden">
             <summary>
-            Establece NodoActual
+            Establece NodoActual.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.OperacionAsincronica">
+            <summary>
+            Establece el modo de las operaciones de lectura/escritura (sincróncias o asincrónicas)
+            sobre la fuente de datos subyacente.
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.BarraDeEstadoView">

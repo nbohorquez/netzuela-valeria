@@ -15,7 +15,20 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     /// </summary>
     public partial class MySQL : EventosComunes, IBaseDeDatos
     {
-        #region Variables
+        #region Variables y constantes
+
+        protected static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
+        {
+            { Constantes.Privilegios.NO_VALIDO, string.Empty },
+            { Constantes.Privilegios.SELECCIONAR, "SELECT" },
+            { Constantes.Privilegios.INSERTAR_FILAS, "INSERT" },
+            { Constantes.Privilegios.ACTUALIZAR, "UPDATE" },
+            { Constantes.Privilegios.BORRAR_FILAS, "DELETE" },
+            { Constantes.Privilegios.INDIZAR, "INDEX" },
+            { Constantes.Privilegios.ALTERAR, "ALTER" },
+            { Constantes.Privilegios.CREAR, "CREATE" },
+            { Constantes.Privilegios.DESTRUIR, "DROP" }
+        };
 
         private MySqlConnection _Conexion;
         
@@ -342,9 +355,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
         }
 
-        public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
-            object Resultado = null;
+            bool Resultado = false;
             string SQL = string.Empty;
 
             /*
@@ -401,11 +414,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             // 1) Determinamos los privilegios otorgados al nuevo usuario
             List<string> PrivilegiosLista = new List<string>();
 
-            for (int i = 0; i < OrdenesComunes.Privilegios.Count; i++)
+            for (int i = 0; i < PrivilegiosAOrdenes.Count; i++)
             {
                 if ((Privilegios & (1 << i)) == 1)
                 {
-                    PrivilegiosLista.Add(OrdenesComunes.Privilegios[(1 << i)]);
+                    PrivilegiosLista.Add(PrivilegiosAOrdenes[(1 << i)]);
                 }
             }
 
@@ -468,6 +481,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                 // 7) Actualizamos la cache de privilegios del servidor
                 EjecutarOrden("FLUSH PRIVILEGES");
+
+                Resultado = true;
             }
             catch (MySqlException ex)
             {
@@ -515,26 +530,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #endregion
 
-        #endregion
-
-        #region Tipos anidados
-
-        public static class OrdenesComunes
-        {
-            public static Dictionary<int,string> Privilegios = new Dictionary<int,string>() 
-            {
-                { Constantes.Privilegios.NO_VALIDO, string.Empty },
-                { Constantes.Privilegios.SELECCIONAR, "SELECT" },
-                { Constantes.Privilegios.INSERTAR_FILAS, "INSERT" },
-                { Constantes.Privilegios.ACTUALIZAR, "UPDATE" },
-                { Constantes.Privilegios.BORRAR_FILAS, "DELETE" },
-                { Constantes.Privilegios.INDIZAR, "INDEX" },
-                { Constantes.Privilegios.ALTERAR, "ALTER" },
-                { Constantes.Privilegios.CREAR, "CREATE" },
-                { Constantes.Privilegios.DESTRUIR, "DROP" }
-            };
-        }
-
-        #endregion        
+        #endregion    
     }
 }

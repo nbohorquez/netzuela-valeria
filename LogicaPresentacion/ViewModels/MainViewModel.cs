@@ -59,8 +59,31 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             // Si las dos conexiones estan establecidas...
             if (LocalARemota != null)
             {
-                ExploradorLocal.ExpandirTodo();
-                //LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, _ConfiguracionLocal.Mapas);
+                bool AsincronicoLocal = ExploradorLocal.OperacionAsincronica;
+                bool AsincronicoRemoto = ExploradorRemoto.OperacionAsincronica;
+
+                ExploradorLocal.OperacionAsincronica = false;
+                ExploradorRemoto.OperacionAsincronica = false;
+
+                HashSet<string> RutasDeTablaLocales = new HashSet<string>();
+                HashSet<string> RutasDeTablaRemotas = new HashSet<string>();
+
+                foreach(string[] Mapa in _ConfiguracionLocal.Mapas)
+                {
+                    string RutaLocal = RutaColumnaARutaTabla(Mapa[0]);
+                    string RutaRemota = RutaColumnaARutaTabla(Mapa[1]);
+
+                    if (RutasDeTablaLocales.Add(RutaLocal))
+                        ExploradorLocal.ExpandirRuta(RutaLocal);
+
+                    if (RutasDeTablaRemotas.Add(RutaRemota))
+                        ExploradorRemoto.ExpandirRuta(RutaRemota);
+                }
+
+                ExploradorLocal.OperacionAsincronica = AsincronicoLocal;
+                ExploradorRemoto.OperacionAsincronica = AsincronicoRemoto;
+
+                LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, _ConfiguracionLocal.Mapas);
             }
         }
 
@@ -120,6 +143,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Funciones
 
+        private string RutaColumnaARutaTabla(string RutaColumna)
+        {
+            // PasosRutaColumna = Servidor + Base de datos + Tabla + Columna + ""
+            string[] PasosRutaColumna = RutaColumna.Split('\\');
+            // RutaTabla = Servidor + Base de datos + Tabla
+            string RutaTabla = PasosRutaColumna[0] + "\\" + PasosRutaColumna[1] + "\\" + PasosRutaColumna[2];
+
+            return RutaTabla;
+        }
+
         private ExploradorViewModel CrearExplorador(ConexionViewModel Conexion)
         {            
             ObservableCollection<NodoViewModel> Nodos = new ObservableCollection<NodoViewModel>()
@@ -135,6 +168,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Conexion.Estado == System.Data.ConnectionState.Open)
             {
                 ExploradorLocal = CrearExplorador(Conexion);
+                ExploradorLocal.OperacionAsincronica = false;
 
                 if (ConexionRemota.Estado == ConnectionState.Open)
                     DispararAmbasConexionesEstablecidas(new EventArgs());
@@ -146,6 +180,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Conexion.Estado == System.Data.ConnectionState.Open)
             {
                 ExploradorRemoto = CrearExplorador(Conexion);
+                ExploradorRemoto.OperacionAsincronica = true;
                 
                 if (ConexionLocal.Estado == ConnectionState.Open)
                     DispararAmbasConexionesEstablecidas(new EventArgs());
@@ -177,7 +212,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 // Creamos un usuario en la base de datos local con los privilegios necesarios 
                 // para leer las columnas de origen            
-                ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray());
+
+                if (!ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray()))
+                    throw new Exception("No se pudo crear el usuario Netzuela dentro de la base de datos local. La sincronización no puede proceder");
 
                 // Cambiamos de usuario
                 ConexionLocal.Desconectar();
@@ -188,11 +225,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 foreach(string RutaDeColumna in NodosOrigen)
                 {
-                    // Servidor + Base de datos + tabla + columna + ""
-                    string[] PasosDeRuta = RutaDeColumna.Split('\\');
-
-                    // Servidor + Base de datos + tabla - columna - ""
-                    string RutaDeTabla = PasosDeRuta[0] + "\\" + PasosDeRuta[1] + "\\" + PasosDeRuta[2];
+                    string RutaDeTabla = RutaColumnaARutaTabla(RutaDeColumna);
 
                     // Si ya esa ruta fue expandida, no la expandamos otra vez
                     if(RutasDeTabla.Add(RutaDeTabla))

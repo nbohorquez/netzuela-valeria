@@ -108,7 +108,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 // Aqui seria mejor revisar una variable de configuracion del usuario
                 // que indique si se deben realizan llamadas a los procedimientos 
                 // remotos/locales de forma asincronica o sincronica
-                if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
+                //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
+                if(OperacionAsincronica)
                 {
                     _Conexion.ListarBasesDeDatosCompletado += Retorno;
                     _Conexion.ListarBasesDeDatosAsinc();
@@ -177,7 +178,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 // Aqui seria mejor revisar una variable de configuracion del usuario
                 // que indique si se deben realizan llamadas a los procedimientos 
                 // remotos/locales de forma asincronica o sincronica
-                if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
+                //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
+                if(OperacionAsincronica)
                 {
                     _Conexion.ListarTablasCompletado += Retorno;
                     _Conexion.ListarTablasAsinc(Item.Nombre);
@@ -265,7 +267,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     // Aqui seria mejor revisar una variable de configuracion del usuario
                     // que indique si se deben realizan llamadas a los procedimientos 
                     // remotos/locales de forma asincronica o sincronica
-                    if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
+                    //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
+                    if(OperacionAsincronica)
                     {
                         _Conexion.LeerTablaCompletado += Retorno;
                         _Conexion.LeerTablaAsinc(Item.Padre.Nombre, Item.Nombre);

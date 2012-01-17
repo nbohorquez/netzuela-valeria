@@ -44,7 +44,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         string[] ListarTablas(string BaseDeDatos);
         DataTable LeerTabla(string BaseDeDatos, string Tabla);
         bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla);
-        object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios);
+        bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios);
 
         #endregion
 

@@ -231,16 +231,20 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             return Resultado;
         }
 
-        public void CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] ColumnasAutorizadas, int Privilegios)
+        public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] ColumnasAutorizadas, int Privilegios)
         {
+            bool Resultado = false;
+
             try
             {
-                BD.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
+                Resultado = BD.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
             }
             catch (Exception ex)
             {
                 throw new Exception("Error creando el usuario en la base de datos", ex);
             }
+
+            return Resultado;
         }
 
         #endregion

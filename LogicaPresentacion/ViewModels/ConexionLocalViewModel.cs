@@ -199,20 +199,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
         
-        public void CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
+        public bool CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
         {
+            bool Resultado = false;
             // ¿Será un problema de seguridad grave colocar el nombre "netzuela" asi tan a la vista?
             UsuarioNetzuela = "netzuela".ConvertirASecureString();
             ContrasenaNetzuela = RandomPassword.Generate(20).ConvertirASecureString();
 
             try
             {
-                _Conexion.CrearUsuario(UsuarioNetzuela, ContrasenaNetzuela, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
+                Resultado = _Conexion.CrearUsuario(UsuarioNetzuela, ContrasenaNetzuela, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al crear el usuario Netzuela", ex);
             }
+
+            return Resultado;
         }
 
         #endregion

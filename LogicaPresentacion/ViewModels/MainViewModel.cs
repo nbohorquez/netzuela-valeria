@@ -27,6 +27,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private readonly PropertyObserver<ConexionLocalViewModel> _ObservadorConexionLocalEstablecida;
         private readonly PropertyObserver<ConexionRemotaViewModel> _ObservadorConexionRemotaEstablecida;
         private PropertyObserver<SincronizacionViewModel> _ObservadorSincronizacion;
+        private string _TiendaID;
 
         #endregion
         
@@ -34,8 +35,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public MainViewModel()
         {
-            _ConfiguracionLocal = Configuracion.CargarConfiguracion();
-
             ConexionLocal = new ConexionLocalViewModel();
             ConexionRemota = new ConexionRemotaViewModel();
                        
@@ -47,43 +46,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
 
-            ConexionLocal.Parametros = _ConfiguracionLocal.ParametrosConexionLocal;
-            ConexionRemota.Parametros = _ConfiguracionLocal.ParametrosConexionRemota;
+            _ConfiguracionLocal = Configuracion.CargarConfiguracion();
 
-            if (_ConfiguracionLocal.UsuarioLocal != null && _ConfiguracionLocal.ContrasenaLocal != null)
-                ConexionLocal.Conectar(_ConfiguracionLocal.UsuarioLocal, _ConfiguracionLocal.ContrasenaLocal);
-
-            if (_ConfiguracionLocal.UsuarioRemoto != null && _ConfiguracionLocal.ContrasenaRemota != null)
-                ConexionRemota.Conectar(_ConfiguracionLocal.UsuarioRemoto, _ConfiguracionLocal.ContrasenaRemota);
+            InicializarConexiones();
 
             // Si las dos conexiones estan establecidas...
             if (LocalARemota != null)
             {
-                bool AsincronicoLocal = ExploradorLocal.OperacionAsincronica;
-                bool AsincronicoRemoto = ExploradorRemoto.OperacionAsincronica;
-
-                ExploradorLocal.OperacionAsincronica = false;
-                ExploradorRemoto.OperacionAsincronica = false;
-
-                HashSet<string> RutasDeTablaLocales = new HashSet<string>();
-                HashSet<string> RutasDeTablaRemotas = new HashSet<string>();
-
-                foreach(string[] Mapa in _ConfiguracionLocal.Mapas)
-                {
-                    string RutaLocal = RutaColumnaARutaTabla(Mapa[0]);
-                    string RutaRemota = RutaColumnaARutaTabla(Mapa[1]);
-
-                    if (RutasDeTablaLocales.Add(RutaLocal))
-                        ExploradorLocal.ExpandirRuta(RutaLocal);
-
-                    if (RutasDeTablaRemotas.Add(RutaRemota))
-                        ExploradorRemoto.ExpandirRuta(RutaRemota);
-                }
-
-                ExploradorLocal.OperacionAsincronica = AsincronicoLocal;
-                ExploradorRemoto.OperacionAsincronica = AsincronicoRemoto;
-
-                LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, _ConfiguracionLocal.Mapas);
+                InicializarSincronizacion();
+            }
+            else
+            {
+                LocalARemota = new SincronizacionViewModel();
             }
         }
 
@@ -143,8 +117,60 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Funciones
 
+        private void InicializarConexiones()
+        {
+            ConexionLocal.Parametros = _ConfiguracionLocal.ParametrosConexionLocal;
+            ConexionRemota.Parametros = _ConfiguracionLocal.ParametrosConexionRemota;
+
+            if (ConexionLocal.Parametros != null && _ConfiguracionLocal.UsuarioLocal != null && _ConfiguracionLocal.ContrasenaLocal != null)
+                ConexionLocal.Conectar(_ConfiguracionLocal.UsuarioLocal, _ConfiguracionLocal.ContrasenaLocal);
+
+            if (ConexionRemota.Parametros != null && _ConfiguracionLocal.UsuarioRemoto != null && _ConfiguracionLocal.ContrasenaRemota != null)
+                ConexionRemota.Conectar(_ConfiguracionLocal.UsuarioRemoto, _ConfiguracionLocal.ContrasenaRemota);
+        }
+
+        private void InicializarSincronizacion()
+        {
+            bool AsincronicoLocal = ExploradorLocal.OperacionAsincronica;
+            bool AsincronicoRemoto = ExploradorRemoto.OperacionAsincronica;
+
+            ExploradorLocal.OperacionAsincronica = false;
+            ExploradorRemoto.OperacionAsincronica = false;
+
+            HashSet<string> RutasDeTablaLocales = new HashSet<string>();
+            HashSet<string> RutasDeTablaRemotas = new HashSet<string>();
+            List<string[]> MapasValidos = new List<string[]>();
+
+            foreach (string[] Mapa in _ConfiguracionLocal.Mapas)
+            {
+                string RutaLocal = RutaColumnaARutaTabla(Mapa[0]);
+                string RutaRemota = RutaColumnaARutaTabla(Mapa[1]);
+
+                if (RutasDeTablaLocales.Add(RutaLocal))
+                    ExploradorLocal.ExpandirRuta(RutaLocal);
+
+                if (RutasDeTablaRemotas.Add(RutaRemota))
+                    ExploradorRemoto.ExpandirRuta(RutaRemota);
+
+                // Pueden haber espacios en blanco debido a que no todas las columnas destino estan apareadas
+                if (RutaLocal != string.Empty && RutaRemota != string.Empty)
+                    MapasValidos.Add(Mapa);
+            }
+
+            ExploradorLocal.OperacionAsincronica = AsincronicoLocal;
+            ExploradorRemoto.OperacionAsincronica = AsincronicoRemoto;
+
+            LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, MapasValidos);
+        }
+
         private string RutaColumnaARutaTabla(string RutaColumna)
         {
+            if (RutaColumna == null)
+                throw new ArgumentNullException("RutaColumna");
+
+            if (RutaColumna == string.Empty)
+                return string.Empty;
+
             // PasosRutaColumna = Servidor + Base de datos + Tabla + Columna + ""
             string[] PasosRutaColumna = RutaColumna.Split('\\');
             // RutaTabla = Servidor + Base de datos + Tabla
@@ -196,9 +222,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             ExploradorViewModel ExploradorLocalViejo;
 
             // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
-            foreach (TablaMapeada TM in Sincronizacion.Tablas)
+            foreach (TablaDeAsociaciones TM in Sincronizacion.Tablas)
             {
-                foreach (MapeoDeColumnas MC in TM.MapasColumnas)
+                foreach (AsociacionDeColumnas MC in TM.Sociedades)
                 {
                     if (MC.ColumnaOrigen != null)
                         NodosOrigen.Add(MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta());
@@ -211,8 +237,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             try
             {
                 // Creamos un usuario en la base de datos local con los privilegios necesarios 
-                // para leer las columnas de origen            
-
+                // para leer las columnas de origen
                 if (!ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray()))
                     throw new Exception("No se pudo crear el usuario Netzuela dentro de la base de datos local. La sincronización no puede proceder");
 
@@ -240,7 +265,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 ExploradorLocalViejo.Dispose();
                 ExploradorLocalViejo = null;
 
-                _ConfiguracionLocal = new Configuracion();
+                //_ConfiguracionLocal = new Configuracion();
                 _ConfiguracionLocal.ParametrosConexionLocal = ConexionLocal.Parametros;
                 _ConfiguracionLocal.ParametrosConexionRemota = ConexionRemota.Parametros;
                 _ConfiguracionLocal.UsuarioLocal = ConexionLocal.UsuarioNetzuela;
@@ -271,7 +296,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void ManejarAmbasConexionesEstablecidas(object Remitente, EventArgs Args)
         {
-            LocalARemota = new SincronizacionViewModel();
+            //LocalARemota = new SincronizacionViewModel();
 
             _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
                 .RegisterHandler(n => n.Listo, this.SincronizacionLista);

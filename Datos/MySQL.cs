@@ -50,15 +50,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         private void CambiarBaseDeDatos(string BaseDeDatos)
         {
-            try
-            {
-                if (_Conexion.Database != BaseDeDatos)
-                    _Conexion.ChangeDatabase(BaseDeDatos);
-            }
-            catch (MySqlException ex)
-            {
-                throw new Exception("Error al cambiar la base de datos.\nError MySQL No. " + ex.Number.ToString(), ex);
-            }
+            if (_Conexion.Database != BaseDeDatos)
+                _Conexion.ChangeDatabase(BaseDeDatos);
         }
 
         private void EjecutarOrden(string SQL)
@@ -66,15 +59,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             if (SQL == null)
                 throw new ArgumentNullException("SQL");
             
-            try
-            {
-                MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
-                Orden.ExecuteNonQuery();
-            }
-            catch (MySqlException ex)
-            {
-                throw new Exception("No se pudo ejecutar la orden.\nError MySQL No. " + ex.Number.ToString(), ex);
-            }
+            MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
+            Orden.ExecuteNonQuery();
         }
 
         private string[] LectorSimple(string SQL)
@@ -85,25 +71,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             MySqlDataReader Lector = null;
             List<string> Resultado = new List<string>();
 
-            try
-            {
-                MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
+            MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
 
-                Lector = Orden.ExecuteReader();
-                while (Lector.Read())
-                {
-                    Resultado.Add(Lector.GetString(0));
-                }
-            }
-            catch (MySqlException ex)
+            Lector = Orden.ExecuteReader();
+            while (Lector.Read())
             {
-                throw new Exception("No se pudo obtener la lista de elementos desde la base de datos.\nError MySQL No. " + ex.Number.ToString(), ex);
+                Resultado.Add(Lector.GetString(0));
             }
-            finally
-            {
-                if (Lector != null)
-                    Lector.Close();
-            }
+
+            Lector.Close();
 
             return Resultado.ToArray();
         }
@@ -115,19 +91,22 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             DataTable Resultado = new DataTable();
 
-            try
-            {
-                MySqlDataAdapter Adaptador = new MySqlDataAdapter(SQL, _Conexion);
-                MySqlCommandBuilder CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
+            MySqlDataAdapter Adaptador = new MySqlDataAdapter(SQL, _Conexion);
+            MySqlCommandBuilder CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
 
-                Adaptador.Fill(Resultado);
-            }
-            catch (MySqlException ex)
-            {
-                throw new Exception("No se pudo obtener la tabla la base de datos.\nError MySQL No. " + ex.Number.ToString(), ex);
-            }
+            Adaptador.Fill(Resultado);
 
             return Resultado;
+        }
+
+        private string DescribirTabla(string Tabla)
+        {
+            DataTable Descripcion = LectorAvanzado("DESCRIBE " + Tabla);
+
+            var ColumnasPermitidas = from D in Descripcion.AsEnumerable()
+                                     select D.Field<string>("Field");
+
+            return string.Join(", ", ColumnasPermitidas.ToArray());
         }
 
         /*
@@ -311,48 +290,121 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 if (_Conexion != null)
                     _Conexion.Close();
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
-                throw new Exception("Error al cerrar la conexión con la base de datos", ex);
+                throw new Exception("Error al cerrar la conexión con la base de datos. Error MySQL No. " + ex.Number.ToString(), ex);
             }
         }
 
         public string[] ListarBasesDeDatos()
         {
-            string[] ResultadoBruto = LectorSimple("SHOW DATABASES");
+            List<string> ResultadoFinal = null;
 
-            var ResultadoFinal = from R in ResultadoBruto
-                                 where R != "information_schema" && R != "mysql" && R != "performance_schema"
-                                 select R;
+            try
+            {
+                string[] ResultadoBruto = LectorSimple("SHOW DATABASES");
+
+                /*
+                var ResultadoFinal = from R in ResultadoBruto
+                                     where R != "information_schema" && R != "mysql" && R != "performance_schema"
+                                     select R;
+                */
+
+                ResultadoFinal = new List<string>();
+
+                foreach (string R in ResultadoBruto)
+                {
+                    if(R != "information_schema" && R != "mysql" && R != "performance_schema")
+                        ResultadoFinal.Add(R);
+                }
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception("Error al listar las bases de datos. Error MySQL No. " + ex.Number.ToString(), ex);
+            }
 
             return ResultadoFinal.ToArray();
         }
 
         public string[] ListarTablas(string BaseDeDatos)
         {
-            CambiarBaseDeDatos(BaseDeDatos);
-            return LectorSimple("SHOW TABLES");
+            List<string> Resultado = null;
+
+            try
+            {
+                CambiarBaseDeDatos(BaseDeDatos);
+
+                string[] ResultadoBruto = LectorSimple("SHOW TABLES");
+
+                Resultado = new List<string>();
+
+                foreach (string S in ResultadoBruto)
+                    Resultado.Add(S);
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception("Error al listar las tablas. Error MySQL No. " + ex.Number.ToString(), ex);
+            }
+
+            return Resultado.ToArray();
         }
 
         public DataTable LeerTabla(string BaseDeDatos, string Tabla)
         {
-            DataTable Descripcion = new DataTable();
+            DataTable TablaLeida = null;
 
-            CambiarBaseDeDatos(BaseDeDatos);
+            try
+            {
+                CambiarBaseDeDatos(BaseDeDatos);
 
-            // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
-            Descripcion = LectorAvanzado("DESCRIBE " + Tabla);
+                // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
+                string Columnas = DescribirTabla(Tabla);
 
-            var ColumnasPermitidas = from D in Descripcion.AsEnumerable()
-                                     select D.Field<string>("Field");
-            
-            string Columnas = string.Join(", ", ColumnasPermitidas.ToArray());
+                /*
+                 * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
+                 * generar un error si el usuario no tiene los privilegios suficientes
+                 */
+                TablaLeida = LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception("Error al leer la tabla. Error MySQL No. " + ex.Number.ToString(), ex);
+            }
 
-            /*
-             * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
-             * generar un error si el usuario no tiene los privilegios suficientes
-             */
-            return LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
+            return TablaLeida;
+        }
+
+        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        {
+            bool Resultado = false;
+
+            try
+            {
+                DataTable Temporal = new DataTable();
+
+                CambiarBaseDeDatos(BaseDeDatos);
+
+                // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
+                string Columnas = DescribirTabla(NombreTabla);
+
+                MySqlDataAdapter Adaptador = new MySqlDataAdapter("SELECT " + Columnas + " FROM " + NombreTabla, _Conexion);
+                MySqlCommandBuilder CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
+                
+                Adaptador.FillSchema(Temporal, SchemaType.Source);
+                Adaptador.Fill(Temporal);
+
+                Temporal.Merge(Tabla, true, MissingSchemaAction.Error);
+
+                Adaptador.Update(Temporal);
+                
+                Resultado = true;
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception("No se pudo escribir la tabla. Error MySQL No. " + ex.Number.ToString(), ex);
+            }
+
+            return Resultado;
         }
 
         public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
@@ -490,11 +542,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
 
             return Resultado;
-        }
-
-        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

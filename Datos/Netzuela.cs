@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Data;                                  // ConnectionState, DataTable
 using System.Security;                              // SecureString
-using Zuliaworks.Netzuela.Paris.ContratoValeria;    // DataSetXML
+using Zuliaworks.Netzuela.Spuria.Contrato;          // DataSetXML
 using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
 using Zuliaworks.Netzuela.Valeria.Datos.Web;        // ProxyDinamico
 
@@ -18,7 +18,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Variables
 
-        private ClienteValeria _Cliente;
+        private ClienteSpuria _Cliente;
 
         // ¡Temporal!
         private ConnectionState _Estado;
@@ -32,7 +32,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             DatosDeConexion = ServidorBD;
 
             // El argumento de ClienteValeria debe estar relacionado con DatosDeConexion
-            _Cliente = new ClienteValeria();
+            _Cliente = new ClienteSpuria();
 
             // Inicializamos los manejadores de eventos
             _Cliente.ListarBasesDeDatosCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarListarBasesDeDatosCompletado);

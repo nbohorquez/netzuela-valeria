@@ -25,7 +25,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             this.Nombre = null;
             this.Nivel = -1;
-            this.MapaColumna = null;
+            this.Sociedad = null;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             this.Nombre = Nombre;
             this.Nivel = -1;
-            this.MapaColumna = null;
+            this.Sociedad = null;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             this.Nombre = Nombre;
             this.Nivel = Nivel;
-            this.MapaColumna = null;
+            this.Sociedad = null;
         }
                     
         #endregion
@@ -57,18 +57,25 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         public string Nombre { get; set; }
         public int Nivel { get; set; }
-        public MapeoDeColumnas MapaColumna { get; set; }
-        public TablaMapeada TablaDeMapas { get; set; }
+        public AsociacionDeColumnas Sociedad { get; set; }
+        public TablaDeAsociaciones TablaDeSocios { get; set; }
 
         #endregion
 
         #region Funciones
 
-        public TablaMapeada CrearTablaDeMapas(List<Nodo> Columnas)
+        public TablaDeAsociaciones CrearTablaDeAsociaciones(List<Nodo> Columnas)
         {
-            TablaMapeada T = new TablaMapeada(this, Columnas);
-            TablaDeMapas = T;
-            return T;
+            try
+            {
+                TablaDeAsociaciones T = new TablaDeAsociaciones(this, Columnas);
+                TablaDeSocios = T;
+                return T;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void AsociarCon(Nodo NodoOrigen)
@@ -78,7 +85,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
             try
             {
-                MapaColumna.FijarOrigen(NodoOrigen);
+                Sociedad.FijarOrigen(NodoOrigen);
             }
             catch (Exception ex)
             {
@@ -90,7 +97,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             try
             {
-                MapaColumna.QuitarOrigen();
+                Sociedad.QuitarOrigen();
             }
             catch (Exception ex)
             {

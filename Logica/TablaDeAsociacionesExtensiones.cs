@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Zuliaworks.Netzuela.Valeria.Logica
 {
-    public static class TablaMapeadaExtensiones
+    public static class TablaDeAsociacionesExtensiones
     {
         #region Variables
 

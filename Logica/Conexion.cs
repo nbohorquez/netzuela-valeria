@@ -116,7 +116,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         public void ResolverDatosDeConexion()
         {
-            if (BD != null && BD.DatosDeConexion.Servidor != Constantes.SGBDR.PREDETERMINADO)
+            if (BD != null && BD.DatosDeConexion.Servidor == Parametros.Servidor)
             {
                 BD.DatosDeConexion = Parametros;
             }
@@ -152,7 +152,6 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             try
             {
-                //ResolverDatosDeConexion();
                 BD.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)

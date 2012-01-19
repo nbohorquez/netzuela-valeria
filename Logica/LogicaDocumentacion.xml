@@ -4,57 +4,6 @@
         <name>Logica</name>
     </assembly>
     <members>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas">
-            <summary>
-            Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
-            de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
-            empleada por <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada"/> como unidad básica de mapeo.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor">
-            <summary>
-            Crea un mapeo de columnas vacío.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            Crea un mapeo de columnas especificando sólo la columna destino.
-            </summary>
-            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            Crea un mapeo de columnas especificando la columna de orígen y la de destino.
-            </summary>
-            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
-            <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.FijarOrigen(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="ColumnaOrigen"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.QuitarOrigen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.TablaPadre">
-            <summary>
-            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada"/> asociada a esta clase.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaOrigen">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas.ColumnaDestino">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Conexion">
             <summary>
             Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
@@ -119,50 +68,101 @@
             <param name="Nombre"></param>
             <param name="Nivel"></param>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
+            <summary>
+            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas">
+            <summary>
+            Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
+            de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
+            empleada por <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones"/> como unidad básica de mapeo.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.#ctor">
+            <summary>
+            Crea un mapeo de columnas vacío.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            Crea un mapeo de columnas especificando sólo la columna destino.
+            </summary>
+            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            Crea un mapeo de columnas especificando la columna de orígen y la de destino.
+            </summary>
+            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
+            <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.FijarOrigen(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="ColumnaOrigen"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.QuitarOrigen">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.#ctor">
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.TablaPadre">
+            <summary>
+            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones"/> asociada a esta clase.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.ColumnaOrigen">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.ColumnaDestino">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
             <summary>
             
             </summary>
             <param name="Tabla"></param>
             <param name="Columnas"></param>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
             <summary>
             
             </summary>
             <param name="Nodo"></param>
             <returns></returns>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.MapeoDeColumnas)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas)">
             <summary>
             
             </summary>
             <param name="MapaDeColumna"></param>
             <returns></returns>
         </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.MapasColumnas">
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.Sociedades">
             <summary>
             
             </summary>
         </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaMapeada.NodoTabla">
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.NodoTabla">
             <summary>
             
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
-            <summary>
-            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
             </summary>
         </member>
     </members>

@@ -7,7 +7,7 @@ using WcfSamples.DynamicProxy;                      // DynamicProxyFactory
 using System.Data;                                  // DataSet
 using System.ServiceModel;                          // WSHttpBinding
 using System.ServiceModel.Description;              // ServiceEndpoint
-using Zuliaworks.Netzuela.Paris.ContratoValeria;    // DataSetXML
+using Zuliaworks.Netzuela.Spuria.Contrato;          // DataSetXML
 
 namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
@@ -15,7 +15,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
     {
         // Con codigo de: http://blogs.msdn.com/b/vipulmodi/archive/2008/10/16/dynamic-proxy-and-memory-footprint.aspx
 
-        #region Variable
+        #region Variables
 
         private DynamicProxyFactory _Fabrica;
         private DynamicProxy _ProxyDinamico;
@@ -162,6 +162,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                     if (Argumentos[i] is DataSetXML)
                     {
                         DataSetXMLDinamico DataSetDinamico = new DataSetXMLDinamico(_Fabrica.ProxyAssembly);
+                        DataSetDinamico.BaseDeDatos = ((DataSetXML)Argumentos[i]).BaseDeDatos;
+                        DataSetDinamico.NombreTabla = ((DataSetXML)Argumentos[i]).NombreTabla;
                         DataSetDinamico.EsquemaXML = ((DataSetXML)Argumentos[i]).EsquemaXML;
                         DataSetDinamico.XML = ((DataSetXML)Argumentos[i]).XML;
 
@@ -181,6 +183,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                     DataSetXMLDinamico SetXMLDinamico = new DataSetXMLDinamico(Resultado);
                     Resultado = new DataSetXML();
 
+                    ((DataSetXML)Resultado).BaseDeDatos = SetXMLDinamico.BaseDeDatos;
+                    ((DataSetXML)Resultado).NombreTabla = SetXMLDinamico.NombreTabla;
                     ((DataSetXML)Resultado).EsquemaXML = SetXMLDinamico.EsquemaXML;
                     ((DataSetXML)Resultado).XML = SetXMLDinamico.XML;
                 }

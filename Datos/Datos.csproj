@@ -41,9 +41,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Comunes\bin\Release\Comunes.dll</HintPath>
     </Reference>
-    <Reference Include="ContratoValeria">
-      <HintPath>..\..\Paris\ContratoValeria\bin\Debug\ContratoValeria.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    <Reference Include="Contrato">
+      <HintPath>..\..\Spuria\Contrato\bin\Debug\Contrato.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -75,9 +74,7 @@
     <Compile Include="DBISAM.cs" />
     <Compile Include="EventoOperacionAsincCompletadaArgs.cs" />
     <Compile Include="EventosComunes.cs" />
-    <Compile Include="Web\ClienteValeria.Operaciones.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Web\ClienteSpuria.Operaciones.cs" />
     <Compile Include="Web\ProxyDinamico.cs" />
     <Compile Include="IBaseDeDatos.cs" />
     <Compile Include="MySQL.cs" />
@@ -89,9 +86,7 @@
     <Compile Include="ServidorPredeterminado.cs" />
     <Compile Include="SQLServer.cs" />
     <Compile Include="SQLServer.Detectar.cs" />
-    <Compile Include="Web\ClienteValeria.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Web\ClienteSpuria.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -249,9 +249,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
-            if (_CacheDeTablas.ContainsKey(Item))
+            if (CacheDeTablas.ContainsKey(Item))
             {
-                Tabla = _CacheDeTablas[Item];
+                Tabla = CacheDeTablas[Item];
                 AjustarExplorador();
             }
             else
@@ -416,9 +416,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
             {
-                if (_CacheDeTablas.ContainsKey(Tabla))
+                if (CacheDeTablas.ContainsKey(Tabla))
                 {
-                    Resultado = _CacheDeTablas[Tabla];
+                    Resultado = CacheDeTablas[Tabla];
                 }
             }
 
@@ -432,7 +432,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             try
             {
-                _Conexion.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
+                if (OperacionAsincronica)
+                {
+                    _Conexion.EscribirTablaAsinc(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
+                }
+                else
+                {
+                    _Conexion.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
+                }
             }
             catch (Exception ex)
             {
@@ -446,7 +453,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// <returns>Lista de las tablas guardadas en la caché.</returns>
         public List<DataTable> ObtenerTablasCache()
         {
-            return _CacheDeTablas.Values.ToList();
+            return CacheDeTablas.Values.ToList();
         }
 
         /// <summary>
@@ -455,7 +462,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// <returns>Lista de los nodos de tablas guardados en la caché.</returns>
         public List<NodoViewModel> ObtenerNodosCache()
         {
-            return _CacheDeTablas.Keys.ToList();
+            return CacheDeTablas.Keys.ToList();
         }
 
         #endregion

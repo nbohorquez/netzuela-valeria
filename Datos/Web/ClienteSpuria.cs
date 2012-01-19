@@ -6,14 +6,13 @@ using System.Text;
 using System.Collections.Specialized;               // HybridDictionary
 using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
 using System.Threading;                             // Thread, SendOrPostCallback
-using Zuliaworks.Netzuela.Paris.ContratoValeria;    // DataSetXML
 
 namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
     /// <summary>
     /// 
     /// </summary>
-    public partial class ClienteValeria : Component
+    public partial class ClienteSpuria// : Component
     {
         // Referencia 1: http://msdn.microsoft.com/en-us/library/bz33kx67.aspx
         // Referencia 2: http://msdn.microsoft.com/en-us/library/wewwczdw.aspx
@@ -25,13 +24,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         private HybridDictionary _Hilos;
         private string _UriWsdlServicio;
 
-        private const string CONTRATO_VALERIA = "IValeria";
+        private const string CONTRATO_SPURIA = "ISpuria";
 
         #endregion
 
         #region Constructores
 
-        public ClienteValeria()
+        public ClienteSpuria()
         {
             InicializarDelegados();
 
@@ -39,7 +38,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             _Hilos = new HybridDictionary();
         }
 
-        public ClienteValeria(string UriWsdlServicio)
+        public ClienteSpuria(string UriWsdlServicio)
             : this()
         {
             if (UriWsdlServicio == null)
@@ -106,7 +105,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 Armar();
             }
 
-            _Proxy.Conectar(CONTRATO_VALERIA);            
+            _Proxy.Conectar(CONTRATO_SPURIA);
         }
 
         public void Desconectar()

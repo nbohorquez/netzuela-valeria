@@ -12,7 +12,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     /// <summary>
     /// 
     /// </summary>
-    public class TablaMapeada
+    public class TablaDeAsociaciones
     {
         #region Variables
 
@@ -25,10 +25,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// 
         /// </summary>
-        public TablaMapeada()
+        public TablaDeAsociaciones()
         {
             NodoTabla = new Nodo();
-            MapasColumnas = new List<MapeoDeColumnas>();            
+            Sociedades = new List<AsociacionDeColumnas>();            
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         /// <param name="Tabla"></param>
         /// <param name="Columnas"></param>
-        public TablaMapeada(Nodo Tabla, List<Nodo> Columnas)
+        public TablaDeAsociaciones(Nodo Tabla, List<Nodo> Columnas)
         {
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
@@ -44,12 +44,12 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 throw new ArgumentNullException("Columnas");
             
             this.NodoTabla = Tabla;
-            this.MapasColumnas = new List<MapeoDeColumnas>();
+            this.Sociedades = new List<AsociacionDeColumnas>();
 
             foreach (Nodo Columna in Columnas)
             {
-                MapeoDeColumnas MapCol = new MapeoDeColumnas(this, Columna);
-                AgregarMapa(MapCol);
+                AsociacionDeColumnas Sociedad = new AsociacionDeColumnas(this, Columna);
+                AgregarMapa(Sociedad);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// 
         /// </summary>
-        public List<MapeoDeColumnas> MapasColumnas { get; private set; }
+        public List<AsociacionDeColumnas> Sociedades { get; private set; }
 
         /// <summary>
         /// 
@@ -73,7 +73,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                 if (value != _NodoTabla)
                 {
                     if (value.Nivel != Constantes.NivelDeNodo.TABLA)
-                        throw new ArgumentException("El nodo tiene que ser de nivel Tabla para poder crear una TablaMapeada", "NodoTabla");
+                        throw new ArgumentException("El nodo tiene que ser de nivel Tabla para poder crear una TablaDeAsociaciones", "NodoTabla");
                     
                     _NodoTabla = value;
                 }
@@ -97,11 +97,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             {
                 if (Nodo.ExisteEnRepositorio())
                 {
-                    if (Nodo.MapaColumna.ColumnaOrigen == Nodo)
+                    if (Nodo.Sociedad.ColumnaOrigen == Nodo)
                     {
-                        Nodo.MapaColumna.QuitarOrigen();
+                        Nodo.Sociedad.QuitarOrigen();
                     }
-                    else if (Nodo.MapaColumna.ColumnaDestino == Nodo)
+                    else if (Nodo.Sociedad.ColumnaDestino == Nodo)
                     {
                         Resultado = false;
                     }
@@ -120,14 +120,14 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         /// <param name="MapaDeColumna"></param>
         /// <returns></returns>
-        public bool AgregarMapa(MapeoDeColumnas MapaDeColumna)
+        public bool AgregarMapa(AsociacionDeColumnas MapaDeColumna)
         {
             if (MapaDeColumna == null)
                 throw new ArgumentNullException("MapaDeColumna");
 
             if (NodoEsLegal(MapaDeColumna.ColumnaDestino) && NodoEsLegal(MapaDeColumna.ColumnaOrigen))
             {
-                this.MapasColumnas.Add(MapaDeColumna);
+                this.Sociedades.Add(MapaDeColumna);
                 return true;
             }
             else
@@ -136,14 +136,14 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             }
         }
 
-        public bool QuitarMapa(MapeoDeColumnas MapaDeColumna)
+        public bool QuitarMapa(AsociacionDeColumnas Sociedad)
         {
-            if (MapaDeColumna == null)
+            if (Sociedad == null)
                 throw new ArgumentNullException("MapaDeColumna");
 
-            if (MapasColumnas.Contains(MapaDeColumna))
+            if (Sociedades.Contains(Sociedad))
             {
-                return this.MapasColumnas.Remove(MapaDeColumna);
+                return this.Sociedades.Remove(Sociedad);
             }
             else
             {

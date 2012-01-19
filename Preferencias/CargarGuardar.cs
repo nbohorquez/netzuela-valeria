@@ -11,24 +11,18 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
     public static class CargarGuardar
     {
-        #region Variables
-
-        private static Configuration _AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-        #endregion
-
         #region Funciones
 
-        public static void GuardarParametrosDeConexion(ColeccionElementosGenerica<ParametrosDeConexionElement> ColeccionParametros)
+        public static void GuardarParametrosDeConexion(Configuration ArchivoConfig, ColeccionElementosGenerica<ParametrosDeConexionElement> ColeccionParametros)
         {
             try
             {
                 ConexionesSection ConexionesGuardadas = new ConexionesSection();
                 ConexionesGuardadas.ParametrosDeConexion = ColeccionParametros;
 
-                _AppConfig.Sections.Remove("conexionesGuardadas");
-                _AppConfig.Sections.Add("conexionesGuardadas", ConexionesGuardadas);
-                _AppConfig.Save(ConfigurationSaveMode.Modified);
+                ArchivoConfig.Sections.Remove("conexionesGuardadas");
+                ArchivoConfig.Sections.Add("conexionesGuardadas", ConexionesGuardadas);
+                ArchivoConfig.Save(ConfigurationSaveMode.Modified);
 
                 ConfigurationManager.RefreshSection("conexionesGuardadas");
             }
@@ -66,16 +60,23 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
             return Resultado;
         }
 
-        public static void GuardarCredenciales(ColeccionElementosGenerica<UsuarioContrasenaElement> ColeccionDeLlaves)
+        public static void GuardarCredenciales(Configuration ArchivoConfig, ColeccionElementosGenerica<UsuarioContrasenaElement> ColeccionDeLlaves)
         {
-            AutentificacionSection Credenciales = new AutentificacionSection();
-            Credenciales.LlavesDeAcceso = ColeccionDeLlaves;
+            try
+            {
+                AutentificacionSection Credenciales = new AutentificacionSection();
+                Credenciales.LlavesDeAcceso = ColeccionDeLlaves;
 
-            _AppConfig.Sections.Remove("credenciales");
-            _AppConfig.Sections.Add("credenciales", Credenciales);
-            _AppConfig.Save(ConfigurationSaveMode.Modified);
+                ArchivoConfig.Sections.Remove("credenciales");
+                ArchivoConfig.Sections.Add("credenciales", Credenciales);
+                ArchivoConfig.Save(ConfigurationSaveMode.Modified);
 
-            ConfigurationManager.RefreshSection("credenciales");
+                ConfigurationManager.RefreshSection("credenciales");
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error al guardar las credenciales en el archivo de configuración", ex);
+            }
         }
 
         public static SecureString[] CargarCredenciales(string ID)
@@ -109,16 +110,23 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
             return (Resultado != null) ? Resultado.ToArray() : null;
         }
 
-        public static void GuardarTablas(ColeccionElementosGenerica<TablaMapeadaElement> ColeccionTablas)
+        public static void GuardarTablas(Configuration ArchivoConfig, ColeccionElementosGenerica<TablaMapeadaElement> ColeccionTablas)
         {
-            TablasMapeadasSection Tablas = new TablasMapeadasSection();
-            Tablas.Tablas = ColeccionTablas;
+            try
+            {
+                TablasMapeadasSection Tablas = new TablasMapeadasSection();
+                Tablas.Tablas = ColeccionTablas;
 
-            _AppConfig.Sections.Remove("mapas");
-            _AppConfig.Sections.Add("mapas", Tablas);
-            _AppConfig.Save(ConfigurationSaveMode.Modified);
+                ArchivoConfig.Sections.Remove("mapas");
+                ArchivoConfig.Sections.Add("mapas", Tablas);
+                ArchivoConfig.Save(ConfigurationSaveMode.Modified);
 
-            ConfigurationManager.RefreshSection("mapas");
+                ConfigurationManager.RefreshSection("mapas");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al guardar los MapaColumnas en el archivo de configuración", ex);
+            }
         }
 
         public static List<string[]> CargarTablas()

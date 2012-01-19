@@ -54,12 +54,12 @@
   <ItemGroup>
     <Compile Include="EventoCambioEnColumnasArgs.cs" />
     <Compile Include="Conexion.cs" />
-    <Compile Include="MapeoDeColumnas.cs" />
-    <Compile Include="TablaMapeada.cs" />
+    <Compile Include="AsociacionDeColumnas.cs" />
+    <Compile Include="TablaDeAsociaciones.cs" />
     <Compile Include="Nodo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExponerAnfitrionLocal.cs" />
-    <Compile Include="TablaMapeadaExtensiones.cs" />
+    <Compile Include="TablaDeAsociacionesExtensiones.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

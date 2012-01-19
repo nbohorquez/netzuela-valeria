@@ -8,11 +8,11 @@ using System.Data;                                  // DataTable
 using System.IO;                                    // MemoryStream
 using System.Threading;                             // Thread, SendOrPostCallback
 using System.Security;                              // SecureString
-using Zuliaworks.Netzuela.Paris.ContratoValeria;    // DataSetXML
+using Zuliaworks.Netzuela.Spuria.Contrato;          // DataSetXML
 
 namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
-    public partial class ClienteValeria
+    public partial class ClienteSpuria
     {
         #region Variables
 
@@ -90,7 +90,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                             break;
                         case "CrearUsuario":
                             Resultados.Add(CrearUsuario(
-                                Parametros[0] as SecureString, 
+                                Parametros[0] as SecureString,
                                 Parametros[1] as SecureString,
                                 Parametros[2] as string[],
                                 Convert.ToInt16(Parametros[3])));
@@ -249,19 +249,19 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             return Resultado;
         }
 
-        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
+        public DataTable LeerTabla(string BaseDeDatos, string NombreTabla)
         {
             Conectar();
 
-            object SetXML = _Proxy.InvocarMetodo("LeerTabla", BaseDeDatos, Tabla);
-            DataSet Set = new DataSet();
+            object TablaXML = _Proxy.InvocarMetodo("LeerTabla", BaseDeDatos, NombreTabla);
+            DataSet Tabla = new DataSet();
 
-            Set.ReadXmlSchema(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)SetXML).EsquemaXML)));
-            Set.ReadXml(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)SetXML).XML)));
+            Tabla.ReadXmlSchema(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)TablaXML).EsquemaXML)));
+            Tabla.ReadXml(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)TablaXML).XML)));
 
             Desconectar();
 
-            return Set.Tables[0];
+            return Tabla.Tables[0];
         }
 
         public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
@@ -270,7 +270,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
             DataSet Tablas = new DataSet(NombreTabla);
             Tablas.Tables.Add(Tabla);
-            DataSetXML DatosAEnviar = new DataSetXML(Tablas.GetXmlSchema(), Tablas.GetXml());
+
+            DataSetXML DatosAEnviar = new DataSetXML(BaseDeDatos, NombreTabla, Tablas.GetXmlSchema(), Tablas.GetXml());
             bool Resultado = Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
 
             Desconectar();
@@ -374,9 +375,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         {
             throw new NotImplementedException();
         }
-        
+
         #endregion
 
         #endregion
     }
 }
+

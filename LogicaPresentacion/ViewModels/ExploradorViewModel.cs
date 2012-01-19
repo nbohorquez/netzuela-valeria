@@ -20,7 +20,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
+        //private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
         private Conexion _Conexion;
         private NodoViewModel _NodoActual;
         private RelayCommand<NodoViewModel> _ExpandirOrden;
@@ -36,7 +36,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ExploradorViewModel()
         {
             this.Nodos = new ObservableCollection<NodoViewModel>();
-            this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
+            this.CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
             this._Conexion = null;
@@ -55,7 +55,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this.Nodos = Nodos;
             AsignarEsteExploradorA(Nodos);
 
-            this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
+            this.CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
             this.NodoActual = Nodos[0];
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
@@ -75,23 +75,25 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// Representa la colección de nodos que conforman el arbol de datos.
         /// </summary>
         public ObservableCollection<NodoViewModel> Nodos { get; private set; }
+        
+        public Dictionary<NodoViewModel, DataTable> CacheDeTablas { get; set; }
 
         /// <summary>
         /// Lee o escribe la cache de tablas en la entrada especificada por <see cref="NodoTablaActual"/>.
         /// </summary>
         public DataTable TablaActual
         {
-            get { return _CacheDeTablas.ContainsKey(NodoTablaActual) ? _CacheDeTablas[NodoTablaActual] : null; }
+            get { return CacheDeTablas.ContainsKey(NodoTablaActual) ? CacheDeTablas[NodoTablaActual] : null; }
             set
             {
-                if (_CacheDeTablas.ContainsKey(NodoTablaActual))
+                if (CacheDeTablas.ContainsKey(NodoTablaActual))
                 {
-                    if (_CacheDeTablas[NodoTablaActual] != value)
-                        _CacheDeTablas[NodoTablaActual] = value;                        
+                    if (CacheDeTablas[NodoTablaActual] != value)
+                        CacheDeTablas[NodoTablaActual] = value;                        
                 }
                 else
                 {
-                    _CacheDeTablas.Add(NodoTablaActual, value);
+                    CacheDeTablas.Add(NodoTablaActual, value);
                 }
 
                 RaisePropertyChanged("TablaActual");

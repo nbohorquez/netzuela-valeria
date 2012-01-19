@@ -96,7 +96,7 @@
                     <GroupBox Grid.Column="4" Name="grp_Sincronizacion" Header="Sincronización" Style="{StaticResource est_Agrupador}" VerticalAlignment="Stretch">
                         <StackPanel Orientation="Vertical">
                             <Button HorizontalAlignment="Center" Width="70" Height="Auto" Padding="0,2" Margin="0,1" Content="Asociar"
-                                    Command="{Binding Path=LocalARemota.AsociarOrden}">
+                                    Command="{Binding Path=LocalARemota.AsociarOrden}" IsEnabled="{Binding Path=LocalARemota.PermitirModificaciones}">
                                 <Button.CommandParameter>
                                     <MultiBinding Converter="{StaticResource DosArgumentosAUno}">
                                         <Binding Path="ExploradorLocal.NodoActual"/>
@@ -106,25 +106,18 @@
                             </Button>
                             
                             <Button HorizontalAlignment="Center" Width="70" Height="Auto" Padding="0,2" Margin="0,1" Content="Desasociar"
+                                    IsEnabled="{Binding Path=LocalARemota.PermitirModificaciones}"
                                     Command="{Binding Path=LocalARemota.DesasociarOrden}"
                                     CommandParameter="{Binding Path=ExploradorRemoto.NodoActual}"/>
-                            
-                            <Button HorizontalAlignment="Center" Width="70" Height="Auto" Padding="0,2" Margin="0,1" Content="Listo"
+
+                            <Button HorizontalAlignment="Center" Width="70" Height="Auto" Padding="0,2" Margin="0,1" Content="{Binding Path=LocalARemota.BotonSincronizar}"
                                     Command="{Binding Path=LocalARemota.ListoOrden}"/>
                         </StackPanel>
                     </GroupBox>
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Sincronización de datos" Name="tab_Sincronizacion">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="Conexión Netzuela" Name="tab_ConexionNetzuela">
+            <TabItem Header="Opciones" Name="tab_Opciones">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

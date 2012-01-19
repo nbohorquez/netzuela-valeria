@@ -128,15 +128,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 string Resultado = this.Nombre;
 
-                if (this.MapaColumna != null)
+                if (this.Sociedad != null)
                 {
-                    if (this._Nodo == this.MapaColumna.ColumnaDestino)
+                    if (this._Nodo == this.Sociedad.ColumnaDestino)
                     {
-                        Resultado += (this.MapaColumna.ColumnaOrigen == null) ? "" : "<-" + this.MapaColumna.ColumnaOrigen.Nombre;
+                        Resultado += (this.Sociedad.ColumnaOrigen == null) ? "" : "<-" + this.Sociedad.ColumnaOrigen.Nombre;
                     }
-                    else if (this._Nodo == this.MapaColumna.ColumnaOrigen)
+                    else if (this._Nodo == this.Sociedad.ColumnaOrigen)
                     {
-                        Resultado += (this.MapaColumna.ColumnaDestino == null) ? "" : "->" + this.MapaColumna.ColumnaDestino.Nombre;
+                        Resultado += (this.Sociedad.ColumnaDestino == null) ? "" : "->" + this.Sociedad.ColumnaDestino.Nombre;
                     }
                 }
 
@@ -153,16 +153,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public NodoViewModel Padre { get; set; }
         public ObservableCollection<NodoViewModel> Hijos { get; private set; }
         
-        public MapeoDeColumnas MapaColumna
+        public AsociacionDeColumnas Sociedad
         {
-            get { return _Nodo.MapaColumna; }
-            private set { _Nodo.MapaColumna = value; }
+            get { return _Nodo.Sociedad; }
+            private set { _Nodo.Sociedad = value; }
         }
 
-        public TablaMapeada TablaDeMapas
+        public TablaDeAsociaciones TablaDeSocios
         {
-            get { return _Nodo.TablaDeMapas; }
-            private set { _Nodo.TablaDeMapas = value; }
+            get { return _Nodo.TablaDeSocios; }
+            private set { _Nodo.TablaDeSocios = value; }
         }
 
         public ExploradorViewModel Explorador { get; set; }
@@ -174,20 +174,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
-            if (MapaColumna != null)
+            if (Sociedad != null)
             {
-                MapaColumna.CambioEnColumnas -= this.ManejarCambioEnColumnas;
+                Sociedad.CambioEnColumnas -= this.ManejarCambioEnColumnas;
 
-                if (_Nodo == MapaColumna.ColumnaDestino)
+                if (_Nodo == Sociedad.ColumnaDestino)
                 {
-                    MapaColumna.QuitarDestino();
+                    Sociedad.QuitarDestino();
                 }
-                else if (_Nodo == MapaColumna.ColumnaOrigen)
+                else if (_Nodo == Sociedad.ColumnaOrigen)
                 {
-                    MapaColumna.QuitarOrigen();
+                    Sociedad.QuitarOrigen();
                 }
                 
-                MapaColumna = null;
+                Sociedad = null;
             }
 
             if (_Nodo != null)
@@ -265,7 +265,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this.Hijos.Add(Nodo);
         }
 
-        public TablaMapeada CrearTablaDeMapas()
+        public TablaDeAsociaciones CrearTablaDeAsociaciones()
         {
             List<Nodo> Lista = new List<Nodo>();
 
@@ -274,7 +274,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 Lista.Add(N._Nodo);
             }
             
-            _Nodo.CrearTablaDeMapas(Lista);
+            _Nodo.CrearTablaDeAsociaciones(Lista);
 
             foreach (NodoViewModel Hijo in Hijos)
             {
@@ -282,10 +282,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                  * Quiero ser notificado cuando ocurra una cambio en ColumnaOrigen o 
                  * ColumnaDestino del MapeoDeColumnas asociado a este NodoViewModel.
                  */
-                Hijo.MapaColumna.CambioEnColumnas += Hijo.ManejarCambioEnColumnas;
+                Hijo.Sociedad.CambioEnColumnas += Hijo.ManejarCambioEnColumnas;
             }
 
-            return TablaDeMapas;
+            return TablaDeSocios;
         }
 
         public void AsociarCon(NodoViewModel NodoOrigen)
@@ -296,7 +296,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     throw new ArgumentNullException("NodoOrigen");                
 
                 // El nuevo nodo tambien quiere saber cuándo ocurre un cambio en las columnas 
-                this.MapaColumna.CambioEnColumnas += NodoOrigen.ManejarCambioEnColumnas;
+                this.Sociedad.CambioEnColumnas += NodoOrigen.ManejarCambioEnColumnas;
                 _Nodo.AsociarCon(NodoOrigen._Nodo);                
             }
             catch (Exception ex)
@@ -309,10 +309,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             try
             {
-                NodoViewModel NodoOrigen = this.MapaColumna.ColumnaOrigen.BuscarEnRepositorio();
+                NodoViewModel NodoOrigen = this.Sociedad.ColumnaOrigen.BuscarEnRepositorio();
 
                 _Nodo.Desasociarse();
-                this.MapaColumna.CambioEnColumnas -= NodoOrigen.ManejarCambioEnColumnas;
+                this.Sociedad.CambioEnColumnas -= NodoOrigen.ManejarCambioEnColumnas;
             }
             catch (Exception ex)
             {

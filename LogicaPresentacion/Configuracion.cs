@@ -29,7 +29,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         public SecureString UsuarioRemoto { get; set; }
         public SecureString ContrasenaRemota { get; set; }
         public List<string[]> Mapas { get; set; }
-        public List<TablaMapeada> Tablas { get; set; }
+        public List<TablaDeAsociaciones> Tablas { get; set; }
 
         #endregion
 
@@ -84,6 +84,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
             try
             {
+                Configuration ArchivoConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
                 // Parametros de las conexiones
                 ColeccionElementosGenerica<ParametrosDeConexionElement> ColeccionParametros =
                     new ColeccionElementosGenerica<ParametrosDeConexionElement>();
@@ -95,7 +97,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
                 ColeccionParametros.Add(ParametrosLocales);
                 ColeccionParametros.Add(ParametrosRemotos);
-                CargarGuardar.GuardarParametrosDeConexion(ColeccionParametros);
+                CargarGuardar.GuardarParametrosDeConexion(ArchivoConfig, ColeccionParametros);
 
                 // Credenciales
                 ColeccionElementosGenerica<UsuarioContrasenaElement> ColeccionDeLlaves =
@@ -115,7 +117,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
                 ColeccionDeLlaves.Add(LlaveLocal);
                 ColeccionDeLlaves.Add(LlaveRemota);
-                CargarGuardar.GuardarCredenciales(ColeccionDeLlaves);
+                CargarGuardar.GuardarCredenciales(ArchivoConfig, ColeccionDeLlaves);
 
                 // Mapas de tablas
                 MapeoDeColumnasElement Columnas;
@@ -124,12 +126,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                 ColeccionElementosGenerica<TablaMapeadaElement> ColeccionTablas =
                     new ColeccionElementosGenerica<TablaMapeadaElement>();
 
-                foreach (TablaMapeada T in Preferencias.Tablas)
+                foreach (TablaDeAsociaciones T in Preferencias.Tablas)
                 {
                     ColeccionElementosGenerica<MapeoDeColumnasElement> ColeccionColumnas =
                         new ColeccionElementosGenerica<MapeoDeColumnasElement>();
 
-                    foreach (MapeoDeColumnas MP in T.MapasColumnas)
+                    foreach (AsociacionDeColumnas MP in T.Sociedades)
                     {
                         Columnas = new MapeoDeColumnasElement();
                         Columnas.NodoDestino = MP.ColumnaDestino.BuscarEnRepositorio().RutaCompleta();
@@ -146,12 +148,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                     ColeccionTablas.Add(Tabla);
                 }
 
-                CargarGuardar.GuardarTablas(ColeccionTablas);
+                CargarGuardar.GuardarTablas(ArchivoConfig, ColeccionTablas);
             }
             catch (Exception ex)
             {
-                throw ex;
-                //MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                throw new Exception("Error al guardar los parametros de configuración en el archivo de configuración", ex);
             }
         }
 

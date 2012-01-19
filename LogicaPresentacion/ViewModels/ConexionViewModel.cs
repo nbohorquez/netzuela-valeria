@@ -29,7 +29,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ConexionViewModel()
         {
             _Conexion = new Conexion();
-            PermitirModificaciones = true;
         }
 
         public ConexionViewModel(Conexion Conexion)
@@ -38,7 +37,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new ArgumentNullException("Conexion");
 
             _Conexion = Conexion;
-            PermitirModificaciones = true;
         }
 
         public ConexionViewModel(ParametrosDeConexion Parametros)
@@ -47,7 +45,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new ArgumentNullException("Parametros");
 
             _Conexion = new Conexion(Parametros);
-            PermitirModificaciones = true;
         }
 
         #endregion
@@ -114,15 +111,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public bool PermitirModificaciones
         {
-            get { return _PermitirModificaciones; }
-            protected set
-            {
-                if (value != _PermitirModificaciones)
-                {
-                    _PermitirModificaciones = value;
-                    RaisePropertyChanged("PermitirModificaciones");
-                }
-            }
+            get { return (Estado == ConnectionState.Open) ? false : true; }
         }
 
         public string BotonConectarDesconectar
@@ -164,20 +153,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
 
         public void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
-        {
-            switch (Estado)
-            {
-                case ConnectionState.Open:
-                    PermitirModificaciones = false;
-                    break;
-                case ConnectionState.Closed:
-                    PermitirModificaciones = true;
-                    break;
-            }
-            
+        {            
             RaisePropertyChanged("Estado");                     // Para la gente de MainViewModel
             RaisePropertyChanged("EstadoString");               // Para la gente de BarraDeEstadoView
             RaisePropertyChanged("BotonConectarDesconectar");   // Para la gente de ConexionLocalView y ConexionRemotaView
+            RaisePropertyChanged("PermitirModificaciones");     // Para la gente de ConexionLocalView y ConexionRemotaView
         }
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
@@ -186,6 +166,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             
             try
             {
+                // Esto es para evitar que aparezca registrado el mismo manejador dos veces
                 _Conexion.CambioDeEstado -= new StateChangeEventHandler(ManejarCambioDeEstado);
                 _Conexion.CambioDeEstado += new StateChangeEventHandler(ManejarCambioDeEstado);
 

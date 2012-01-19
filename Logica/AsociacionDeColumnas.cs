@@ -11,13 +11,13 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
     /// <summary>
     /// Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
     /// de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
-    /// empleada por <see cref="TablaMapeada"/> como unidad básica de mapeo.
+    /// empleada por <see cref="TablaDeAsociaciones"/> como unidad básica de mapeo.
     /// </summary>
-    public class MapeoDeColumnas : IDisposable
+    public class AsociacionDeColumnas : IDisposable
     {
         #region Variables
 
-        private TablaMapeada _TablaPadre;
+        private TablaDeAsociaciones _TablaPadre;
         private Nodo _ColumnaDestino;
         private Nodo _ColumnaOrigen;
 
@@ -28,9 +28,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// Crea un mapeo de columnas vacío.
         /// </summary>
-        public MapeoDeColumnas() { }
+        public AsociacionDeColumnas() { }
 
-        public MapeoDeColumnas(TablaMapeada TablaPadre) 
+        public AsociacionDeColumnas(TablaDeAsociaciones TablaPadre) 
         {
             this.TablaPadre = TablaPadre;
         }
@@ -39,7 +39,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// Crea un mapeo de columnas especificando sólo la columna destino.
         /// </summary>
         /// <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
-        public MapeoDeColumnas(Nodo ColumnaDestino)
+        public AsociacionDeColumnas(Nodo ColumnaDestino)
         {
             this.ColumnaDestino = ColumnaDestino;
         }
@@ -49,25 +49,25 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         /// <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
         /// <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
-        public MapeoDeColumnas(Nodo ColumnaOrigen, Nodo ColumnaDestino)
+        public AsociacionDeColumnas(Nodo ColumnaOrigen, Nodo ColumnaDestino)
         {
             this.ColumnaOrigen = ColumnaOrigen;
             this.ColumnaDestino = ColumnaDestino;
         }
 
-        public MapeoDeColumnas(TablaMapeada TablaPadre, Nodo ColumnaDestino)
+        public AsociacionDeColumnas(TablaDeAsociaciones TablaPadre, Nodo ColumnaDestino)
             : this(ColumnaDestino)
         {
             this.TablaPadre = TablaPadre;
         }
 
-        public MapeoDeColumnas(TablaMapeada TablaPadre, Nodo ColumnaDestino, Nodo ColumnaOrigen)
+        public AsociacionDeColumnas(TablaDeAsociaciones TablaPadre, Nodo ColumnaDestino, Nodo ColumnaOrigen)
             : this(ColumnaOrigen, ColumnaDestino)
         {
             this.TablaPadre = TablaPadre;
         }
         
-        ~MapeoDeColumnas()
+        ~AsociacionDeColumnas()
         {
             Dispose(false);
         }
@@ -77,9 +77,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         #region Propiedades
 
         /// <summary>
-        /// Instancia de <see cref="TablaMapeada"/> asociada a esta clase.
+        /// Instancia de <see cref="TablaDeAsociaciones"/> asociada a esta clase.
         /// </summary>
-        public TablaMapeada TablaPadre { get; set; }
+        public TablaDeAsociaciones TablaPadre { get; set; }
 
         /// <summary>
         /// 
@@ -107,7 +107,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     {
                         if (TablaPadre.NodoEsLegal(ValorNuevo))
                         {
-                            ValorNuevo.MapaColumna = this;
+                            ValorNuevo.Sociedad = this;
                             _ColumnaOrigen = ValorNuevo;
 
                             DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
@@ -115,7 +115,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     }
                     else
                     {
-                        ValorNuevo.MapaColumna = this;
+                        ValorNuevo.Sociedad = this;
                         _ColumnaOrigen = ValorNuevo;
 
                         DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
@@ -150,7 +150,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     {
                         if (TablaPadre.NodoEsLegal(ValorNuevo))
                         {
-                            ValorNuevo.MapaColumna = this;
+                            ValorNuevo.Sociedad = this;
                             _ColumnaDestino = ValorNuevo;
 
                             DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
@@ -158,7 +158,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
                     }
                     else
                     {
-                        ValorNuevo.MapaColumna = this;
+                        ValorNuevo.Sociedad = this;
                         _ColumnaDestino = ValorNuevo;
 
                         DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
@@ -189,7 +189,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             if (TablaPadre != null)
             {
-                TablaPadre.MapasColumnas.Remove(this);
+                TablaPadre.Sociedades.Remove(this);
                 TablaPadre = null;
             }
 
@@ -229,7 +229,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             if (this.ColumnaOrigen != null)
             {
-                this.ColumnaOrigen.MapaColumna = null;
+                this.ColumnaOrigen.Sociedad = null;
                 this.ColumnaOrigen = null;
             }
         }
@@ -238,7 +238,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             if (this.ColumnaDestino != null)
             {
-                this.ColumnaDestino.MapaColumna = null;
+                this.ColumnaDestino.Sociedad = null;
                 this.ColumnaDestino = null;
             }
         }

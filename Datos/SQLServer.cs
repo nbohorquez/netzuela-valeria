@@ -51,15 +51,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         private void CambiarBaseDeDatos(string BaseDeDatos)
         {
-            try
-            {
-                if (_Conexion.Database != BaseDeDatos)
-                    _Conexion.ChangeDatabase(BaseDeDatos);
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception("Error al cambiar la base de datos. Error MSSQL No. " + ex.Number.ToString(), ex);
-            }
+            if (_Conexion.Database != BaseDeDatos)
+                _Conexion.ChangeDatabase(BaseDeDatos);
         }
 
         private void EjecutarOrden(string SQL)
@@ -67,15 +60,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             if (SQL == null)
                 throw new ArgumentNullException("SQL");
 
-            try
-            {
-                SqlCommand Orden = new SqlCommand(SQL, _Conexion);
-                Orden.ExecuteNonQuery();
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception("No se pudo ejecutar la orden. Error MSSQL No. " + ex.Number.ToString(), ex);
-            }
+            SqlCommand Orden = new SqlCommand(SQL, _Conexion);
+            Orden.ExecuteNonQuery();
         }
 
         private string[] LectorSimple(string SQL)
@@ -86,25 +72,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             SqlDataReader Lector = null;
             List<string> Resultado = new List<string>();
 
-            try
-            {
-                SqlCommand Orden = new SqlCommand(SQL, _Conexion);
+            SqlCommand Orden = new SqlCommand(SQL, _Conexion);
 
-                Lector = Orden.ExecuteReader();
-                while (Lector.Read())
-                {
-                    Resultado.Add(Lector.GetString(0));
-                }
-            }
-            catch (SqlException ex)
+            Lector = Orden.ExecuteReader();
+            while (Lector.Read())
             {
-                throw new Exception("No se pudo obtener la lista de elementos desde la base de datos. Error MSSQL No. " + ex.Number.ToString(), ex);
+                Resultado.Add(Lector.GetString(0));
             }
-            finally
-            {
-                if (Lector != null)
-                    Lector.Close();
-            }
+            
+            Lector.Close();
 
             return Resultado.ToArray();
         }
@@ -116,19 +92,19 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             DataTable Resultado = new DataTable();
 
-            try
-            {
-                SqlDataAdapter Adaptador = new SqlDataAdapter(SQL, _Conexion);
-                SqlCommandBuilder CreadorDeOrden = new SqlCommandBuilder(Adaptador);
+            SqlDataAdapter Adaptador = new SqlDataAdapter(SQL, _Conexion);
+            SqlCommandBuilder CreadorDeOrden = new SqlCommandBuilder(Adaptador);
 
-                Adaptador.Fill(Resultado);
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception("No se pudo obtener la tabla la base de datos. Error MSSQL No. " + ex.Number.ToString(), ex);
-            }
+            Adaptador.Fill(Resultado);
 
             return Resultado;
+        }
+
+        private string DescribirTabla(string Tabla)
+        {
+            string[] Descripcion = LectorSimple("SELECT subentity_name FROM fn_my_permissions('dbo." + Tabla + "', 'Object') WHERE permission_name = 'SELECT' AND datalength(subentity_name) > 0");
+
+            return string.Join(", ", Descripcion.ToArray());
         }
 
         private string RutaServidorFormatoTCPIP(ParametrosDeConexion Seleccion)
@@ -358,10 +334,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public void Conectar(SecureString Usuario, SecureString Contrasena) 
         {
-            Desconectar();
-
             try
             {
+                Desconectar();
+
                 _Conexion.ConnectionString = CrearRutaDeAcceso(DatosDeConexion, Usuario, Contrasena).ConvertirAUnsecureString();
                 _Conexion.Open();
             }
@@ -398,40 +374,80 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public string[] ListarBasesDeDatos()
         {
-            //string[] ResultadoBruto = LectorSimple("EXEC sp_databases");
-            string[] ResultadoBruto = LectorSimple("SELECT name FROM sys.databases ORDER BY name");
+            List<string> ResultadoFinal = null;
 
-            var ResultadoFinal = from R in ResultadoBruto
-                                 where R != "master" && R != "tempdb" && R != "model" && R != "msdb"
-                                 select R;            
+            try
+            {
+                //string[] ResultadoBruto = LectorSimple("EXEC sp_databases");
+                string[] ResultadoBruto = LectorSimple("SELECT name FROM sys.databases ORDER BY name");
+                /*
+                var ResultadoFinal = from R in ResultadoBruto
+                                     where R != "master" && R != "tempdb" && R != "model" && R != "msdb"
+                                     select R;
+                */
+                ResultadoFinal = new List<string>();
+
+                foreach (string R in ResultadoBruto)
+                {
+                    if(R != "master" && R != "tempdb" && R != "model" && R != "msdb")
+                        ResultadoFinal.Add(R);
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al listar las bases de datos. Error MSSQL No. " + ex.Number.ToString(), ex);
+            }
 
             return ResultadoFinal.ToArray();
         }
 
         public string[] ListarTablas(string BaseDeDatos)
         {
-            CambiarBaseDeDatos(BaseDeDatos);
-            string[] Resultado = LectorSimple("SELECT name FROM " + BaseDeDatos + "..sysobjects WHERE xtype = 'U' ORDER BY name");
+            List<string> Resultado = null;
+
+            try
+            {
+                CambiarBaseDeDatos(BaseDeDatos);
+                string[] ResultadoBruto = LectorSimple("SELECT name FROM " + BaseDeDatos + "..sysobjects WHERE xtype = 'U' ORDER BY name");
+
+                Resultado = new List<string>();
+
+                foreach (string S in ResultadoBruto)
+                    Resultado.Add(S);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al listar las tablas. Error MSSQL No. " + ex.Number.ToString(), ex);
+            }
 
             return Resultado.ToArray();
         }
 
         public DataTable LeerTabla(string BaseDeDatos, string Tabla)
         {
-            CambiarBaseDeDatos(BaseDeDatos);
+            DataTable TablaLeida = null;
 
-            // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
-            //DataTable Descripcion = LectorAvanzado("EXEC sp_columns @table_name = " + Tabla);
-            //string[] Descripcion = LectorSimple("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + Tabla + "' ORDER BY ORDINAL_POSITION");
-            string[] Descripcion = LectorSimple("SELECT subentity_name FROM fn_my_permissions('dbo." + Tabla + "', 'Object') WHERE permission_name = 'SELECT' AND datalength(subentity_name) > 0");
-            
-            string Columnas = string.Join(", ", Descripcion.ToArray());
+            try
+            {
+                CambiarBaseDeDatos(BaseDeDatos);
 
-            /*
-             * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
-             * generar un error si el usuario no tiene los privilegios suficientes
-             */
-            return LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
+                // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
+                //DataTable Descripcion = LectorAvanzado("EXEC sp_columns @table_name = " + Tabla);
+                //string[] Descripcion = LectorSimple("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + Tabla + "' ORDER BY ORDINAL_POSITION");
+                string Columnas = DescribirTabla(Tabla);
+
+                /*
+                 * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
+                 * generar un error si el usuario no tiene los privilegios suficientes
+                 */
+                TablaLeida = LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al leer la tabla. Error MSSQL No. " + ex.Number.ToString(), ex);
+            }
+
+            return TablaLeida;
         }
 
         public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)

@@ -399,11 +399,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Adaptador.DeleteCommand = new MySqlCommand("Borrar");
                 Adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
 
-                /*
-                Adaptador.InsertCommand = new MySqlCommand("SELECT Insertar(@VariableDeEntrada) INTO @VariableDeSalida");
-                Adaptador.UpdateCommand = new MySqlCommand("SELECT Actualizar(@VariableDeEntrada) INTO @VariableDeSalida");
-                Adaptador.DeleteCommand = new MySqlCommand("SELECT Borrar(@VariableDeEntrada) INTO @VariableDeSalida");
-                */
                 string VariableDeEntrada = string.Empty;
 
                 MySqlParameter VariableDeEntradaSQL = new MySqlParameter("a_Parametros", VariableDeEntrada);
@@ -413,49 +408,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Adaptador.UpdateCommand.Parameters.Add(VariableDeEntradaSQL);
                 Adaptador.DeleteCommand.Parameters.Add(VariableDeEntradaSQL);
 
-                /*
-                object ParametrosInsertar = null;
-                object ParametrosActualizar = null;
-                object ParametrosBorrar = null;
-
-                int ResultadoInsertar = new int();
-                int ResultadoActualizar = new int();
-                int ResultadoBorrar = new int();
-
-                MySqlParameter ParametrosInsertarSQL = new MySqlParameter("@Parametros", ParametrosInsertar);
-                ParametrosInsertarSQL.Direction = ParameterDirection.Input;
-
-                MySqlParameter ParametrosActualizarSQL = new MySqlParameter("@Parametros", ParametrosActualizar);
-                ParametrosActualizarSQL.Direction = ParameterDirection.Input;
-
-                MySqlParameter ParametrosBorrarSQL = new MySqlParameter("@Parametros", ParametrosBorrar);
-                ParametrosBorrarSQL.Direction = ParameterDirection.Input;
-
-                MySqlParameter ResultadoInsertarSQL = new MySqlParameter("@Resultado", ResultadoInsertar);
-                ResultadoInsertarSQL.Direction = ParameterDirection.Output;
-
-                MySqlParameter ResultadoActualizarSQL = new MySqlParameter("@Resultado", ResultadoActualizar);
-                ResultadoActualizarSQL.Direction = ParameterDirection.Output;
-
-                MySqlParameter ResultadoBorrarSQL = new MySqlParameter("@Resultado", ResultadoBorrar);
-                ResultadoBorrarSQL.Direction = ParameterDirection.Output;
-
-                Adaptador.InsertCommand.Parameters.Add(ParametrosInsertarSQL);
-                Adaptador.InsertCommand.Parameters.Add(ResultadoInsertarSQL);
-
-                Adaptador.UpdateCommand.Parameters.Add(ParametrosActualizarSQL);
-                Adaptador.UpdateCommand.Parameters.Add(ResultadoActualizarSQL);
-
-                Adaptador.DeleteCommand.Parameters.Add(ParametrosBorrarSQL);
-                Adaptador.DeleteCommand.Parameters.Add(ResultadoBorrarSQL);
-                
-                */
                 Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
-                /*
-                DataTable Insertados = Temporal.GetChanges(DataRowState.Added);
-                DataTable Modificados = Temporal.GetChanges(DataRowState.Modified);
-                DataTable Eliminados = Temporal.GetChanges(DataRowState.Deleted);
-                */
+
                 MySqlRowUpdatingEventHandler ActualizandoFila = (r, a) =>
                 {
                     List<string> Parametros = new List<string>();

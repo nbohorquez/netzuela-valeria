@@ -43,34 +43,45 @@
             Proveedor de datos creado a partir de las especificaciones de conexión.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Nodo">
-            <summary>
-            Implementación de la unidad básica de información de una estructura de datos 
-            en forma de árbol. Se usa para representar la organizacion interna de las 
-            bases de datos.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.#ctor">
             <summary>
             
             </summary>
-            <param name="Nombre"></param>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String,System.Int32)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
             <summary>
             
             </summary>
-            <param name="Nombre"></param>
-            <param name="Nivel"></param>
+            <param name="Tabla"></param>
+            <param name="Columnas"></param>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
             <summary>
-            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
+            
+            </summary>
+            <param name="Nodo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas)">
+            <summary>
+            
+            </summary>
+            <param name="MapaDeColumna"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.Sociedades">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.NodoTabla">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas">
@@ -124,45 +135,34 @@
             
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Nodo">
+            <summary>
+            Implementación de la unidad básica de información de una estructura de datos 
+            en forma de árbol. Se usa para representar la organizacion interna de las 
+            bases de datos.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.#ctor">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String)">
             <summary>
             
             </summary>
+            <param name="Nombre"></param>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String,System.Int32)">
             <summary>
             
             </summary>
-            <param name="Tabla"></param>
-            <param name="Columnas"></param>
+            <param name="Nombre"></param>
+            <param name="Nivel"></param>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
             <summary>
-            
-            </summary>
-            <param name="Nodo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas)">
-            <summary>
-            
-            </summary>
-            <param name="MapaDeColumna"></param>
-            <returns></returns>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.Sociedades">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.NodoTabla">
-            <summary>
-            
+            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
             </summary>
         </member>
     </members>

@@ -268,8 +268,17 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         {
             Conectar();
 
-            DataSet Tablas = new DataSet(NombreTabla);
-            Tablas.Tables.Add(Tabla);
+            DataSet Tablas = null;
+
+            if (Tabla.DataSet != null)
+            {
+                Tablas = Tabla.DataSet;
+            }
+            else
+            {
+                Tablas = new DataSet(NombreTabla);
+                Tablas.Tables.Add(Tabla);                
+            }
 
             DataSetXML DatosAEnviar = new DataSetXML(BaseDeDatos, NombreTabla, Tablas.GetXmlSchema(), Tablas.GetXml());
             bool Resultado = Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));

@@ -102,8 +102,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 try
                 {
                     _Conexion.ListarBasesDeDatosCompletado -= Retorno;
-                    BasesDeDatos = a.Resultado as string[];
-                    CrearNodos();
+
+                    if (a.Error != null)
+                    {
+                        throw a.Error;
+                    }
+                    else if (a.Cancelled)
+                    {
+                        MessageBox.Show("Operacion LeerTablaAsinc cancelada");
+                    }
+                    else if (a.Resultado != null)
+                    {
+                        BasesDeDatos = a.Resultado as string[];
+                        CrearNodos();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -115,7 +127,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             // que indique si se deben realizan llamadas a los procedimientos 
             // remotos/locales de forma asincronica o sincronica
             //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
-            if(OperacionAsincronica)
+            if (OperacionAsincronica)
             {
                 _Conexion.ListarBasesDeDatosCompletado += Retorno;
                 _Conexion.ListarBasesDeDatosAsinc();
@@ -165,8 +177,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 try
                 {
                     _Conexion.ListarTablasCompletado -= Retorno;
-                    Tablas = a.Resultado as string[];
-                    CrearNodos();
+
+                    if (a.Error != null)
+                    {
+                        throw a.Error;
+                    }
+                    else if (a.Cancelled)
+                    {
+                        MessageBox.Show("Operacion LeerTablaAsinc cancelada");
+                    }
+                    else if (a.Resultado != null)
+                    {
+                        Tablas = a.Resultado as string[];
+                        CrearNodos();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -178,7 +202,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             // que indique si se deben realizan llamadas a los procedimientos 
             // remotos/locales de forma asincronica o sincronica
             //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
-            if(OperacionAsincronica)
+            if (OperacionAsincronica)
             {
                 _Conexion.ListarTablasCompletado += Retorno;
                 _Conexion.ListarTablasAsinc(Item.Nombre);
@@ -240,8 +264,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 try
                 {
                     _Conexion.LeerTablaCompletado -= Retorno;
-                    Tabla = a.Resultado as DataTable;
-                    CrearNodos();
+
+                    if (a.Error != null)
+                    {
+                        throw a.Error;
+                    }
+                    else if (a.Cancelled)
+                    {
+                        MessageBox.Show("Operacion LeerTablaAsinc cancelada");
+                    }
+                    else if (a.Resultado != null)
+                    {
+                        Tabla = a.Resultado as DataTable;
+                        CrearNodos();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -260,7 +296,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 // que indique si se deben realizan llamadas a los procedimientos 
                 // remotos/locales de forma asincronica o sincronica
                 //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
-                if(OperacionAsincronica)
+                if (OperacionAsincronica)
                 {
                     _Conexion.LeerTablaCompletado += Retorno;
                     _Conexion.LeerTablaAsinc(Item.Padre.Nombre, Item.Nombre);
@@ -425,26 +461,64 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             return Resultado;
         }
 
-        public void EscribirTabla(NodoViewModel Nodo, DataTable Tabla)
+        public bool EscribirTabla(NodoViewModel Nodo, DataTable Tabla)
         {
             if (Nodo.Nivel != Constantes.NivelDeNodo.TABLA)
-                return;
+                return false;
+
+            bool Resultado = false;
+            EventHandler<EventoOperacionAsincCompletadaArgs> Retorno = null;
+
+            Retorno = (r, a) =>
+            {
+                // Esto va metido entre try/cath porque se ejecuta solo
+                try
+                {
+                    bool R = false;
+                    string Mensaje = string.Empty;
+
+                    _Conexion.EscribirTablaCompletado -= Retorno;
+
+                    if (a.Error != null)
+                    {
+                        throw a.Error;
+                    }
+                    else if (a.Cancelled)
+                    {
+                        Mensaje += "Operacion EscribirTablaAsinc cancelada";
+                    }
+                    else if (a.Resultado != null)
+                    {
+                        R = Convert.ToBoolean(a.Resultado);
+                        Mensaje += "El resultado de la operacion EscribirTablaAsinc fue: " + R.ToString();
+                    }
+
+                    MessageBox.Show(Mensaje);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                }
+            };
 
             try
             {
                 if (OperacionAsincronica)
                 {
                     _Conexion.EscribirTablaAsinc(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
+                    _Conexion.EscribirTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(Retorno);
                 }
                 else
                 {
-                    _Conexion.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
+                    Resultado = _Conexion.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+
+            return Resultado;
         }
 
         /// <summary>

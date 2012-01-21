@@ -25,23 +25,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Constructores
         
-        private void InicializacionComun1()
-        {
-            this.Padre = null;
-            this.Hijos = new ObservableCollection<NodoViewModel>();
-            this.Expandido = false;
-            this.Explorador = null;
-            _Nodo.AgregarARepositorio(this);
-        }
-
-        private void InicializacionComun2(NodoViewModel Padre)
-        {
-            Padre.AgregarHijo(this);
-            this.Hijos = new ObservableCollection<NodoViewModel>();
-            this.Expandido = false;
-            _Nodo.AgregarARepositorio(this);
-        }
-
         private NodoViewModel(Nodo Nodo)
         {
             _Nodo = Nodo;
@@ -172,6 +155,28 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Funciones
 
+        private void InicializacionComun1()
+        {
+            this.Padre = null;
+            this.Hijos = new ObservableCollection<NodoViewModel>();
+            this.Expandido = false;
+            this.Explorador = null;
+            _Nodo.AgregarARepositorio(this);
+        }
+
+        private void InicializacionComun2(NodoViewModel Padre)
+        {
+            Padre.AgregarHijo(this);
+            this.Hijos = new ObservableCollection<NodoViewModel>();
+            this.Expandido = false;
+            _Nodo.AgregarARepositorio(this);
+        }
+
+        private void ManejarCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
+        {
+            RaisePropertyChanged("NombreParaMostrar");
+        }
+
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
             if (Sociedad != null)
@@ -246,12 +251,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     Hijos = null;
                 }
             }
-        }
-
-        private void ManejarCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
-        {
-            RaisePropertyChanged("NombreParaMostrar");
-        }
+        }        
 
         public void AgregarHijo(NodoViewModel Nodo)
         {

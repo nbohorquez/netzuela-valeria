@@ -380,11 +380,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             {
                 //string[] ResultadoBruto = LectorSimple("EXEC sp_databases");
                 string[] ResultadoBruto = LectorSimple("SELECT name FROM sys.databases ORDER BY name");
-                /*
-                var ResultadoFinal = from R in ResultadoBruto
-                                     where R != "master" && R != "tempdb" && R != "model" && R != "msdb"
-                                     select R;
-                */
+
                 ResultadoFinal = new List<string>();
 
                 foreach (string R in ResultadoBruto)
@@ -433,7 +429,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                 // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
                 //DataTable Descripcion = LectorAvanzado("EXEC sp_columns @table_name = " + Tabla);
-                //string[] Descripcion = LectorSimple("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + Tabla + "' ORDER BY ORDINAL_POSITION");
                 string Columnas = DescribirTabla(Tabla);
 
                 /*

@@ -281,6 +281,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 // Este codigo deberia ejecutarse periodicamente y no solo cuando se termine de
                 // configurar la sincronizacion de las instancias local y remota
                 Dictionary<NodoViewModel, DataTable> Tablas = Sincronizacion.TablasAEnviar();
+
                 foreach(KeyValuePair<NodoViewModel, DataTable> Par in Tablas)
                 {
                     ExploradorRemoto.EscribirTabla(Par.Key, Par.Value);

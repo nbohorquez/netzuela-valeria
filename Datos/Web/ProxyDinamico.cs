@@ -77,15 +77,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void CrearFabrica()
         {
-            try
-            {
-                // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
-                _Fabrica = new DynamicProxyFactory(UriWsdlServicio);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error creando DynamicProxyFactory con argumento: \"" + UriWsdlServicio + "\"", ex);
-            }
+            // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
+            _Fabrica = new DynamicProxyFactory(UriWsdlServicio);
         }
 
         public void Conectar(string Contrato)
@@ -95,29 +88,29 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             if (Contrato == null)
                 throw new ArgumentNullException("Contrato");
 
-            if (_UriWsdlServicioModificado)
+            try
             {
-                _UriWsdlServicioModificado = false;
-
-                if (UriWsdlServicio == null)
-                    throw new ArgumentNullException("UriWsdlServicio");
-
-                CrearFabrica();
-            }
-            
-            ServiceEndpoint Endpoint = null;
-
-            foreach (ServiceEndpoint SE in _Fabrica.Endpoints)
-            {
-                if (SE.Contract.Name.Contains(Contrato))
+                if (_UriWsdlServicioModificado)
                 {
-                    Endpoint = SE;
-                    break;
-                }
-            }
+                    _UriWsdlServicioModificado = false;
 
-            if (Endpoint != null)
-            {
+                    if (UriWsdlServicio == null)
+                        throw new ArgumentNullException("UriWsdlServicio");
+
+                    CrearFabrica();
+                }
+
+                ServiceEndpoint Endpoint = null;
+
+                foreach (ServiceEndpoint SE in _Fabrica.Endpoints)
+                {
+                    if (SE.Contract.Name.Contains(Contrato))
+                    {
+                        Endpoint = SE;
+                        break;
+                    }
+                }
+
                 // Al usar WSHttpBinding se pierde la capacidad de enviar los datos en un flujo sin fin 
                 // (streaming). Por lo que se hace obligatorio el uso de intermedios (buffers) para enviar
                 // archivos o datos extensos.
@@ -147,6 +140,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 };
 
                 _ProxyDinamico = _Fabrica.CreateProxy(Contrato);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error conectando ProxyDinamico", ex);
             }
         }
 
@@ -199,10 +196,17 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         public void Desconectar()
         {
-            if (_ProxyDinamico != null)
+            try
             {
-                _ProxyDinamico.Close();
-                _ProxyDinamico = null;
+                if (_ProxyDinamico != null)
+                {
+                    _ProxyDinamico.Close();
+                    _ProxyDinamico = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error desconectando a ProxyDinamico", ex);
             }
         }
         

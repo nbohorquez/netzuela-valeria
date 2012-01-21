@@ -304,12 +304,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             {
                 string[] ResultadoBruto = LectorSimple("SHOW DATABASES");
 
-                /*
-                var ResultadoFinal = from R in ResultadoBruto
-                                     where R != "information_schema" && R != "mysql" && R != "performance_schema"
-                                     select R;
-                */
-
                 ResultadoFinal = new List<string>();
 
                 foreach (string R in ResultadoBruto)
@@ -356,14 +350,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             try
             {
                 CambiarBaseDeDatos(BaseDeDatos);
-
-                // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
-                string Columnas = DescribirTabla(Tabla);
-
                 /*
-                 * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
-                 * generar un error si el usuario no tiene los privilegios suficientes
+                 * Tenemos que ver primero cuales son las columnas a las que tenemos acceso. Un "SELECT * 
+                 * FROM ..." podria generar un error si el usuario no tiene los privilegios suficientes.
                  */
+                string Columnas = DescribirTabla(Tabla);
                 TablaLeida = LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
             }
             catch (MySqlException ex)
@@ -380,6 +371,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             try
             {
+                /*
+                 * Es necesario hacer toda esta parafernalia porque MySQL no puede editar una vista (VIEW) 
+                 * directamente. 
+                 * 
+                 * Mas informacion sobre la "updatability" de una vista (VIEW): 
+                 * http://dev.mysql.com/doc/refman/5.1/en/view-updatability.html
+                 */
+
                 DataTable Temporal = new DataTable();
 
                 CambiarBaseDeDatos(BaseDeDatos);
@@ -393,10 +392,101 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Adaptador.FillSchema(Temporal, SchemaType.Source);
                 Adaptador.Fill(Temporal);
 
-                Temporal.Merge(Tabla, true, MissingSchemaAction.Error);
+                Adaptador.InsertCommand = new MySqlCommand("Insertar");
+                Adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
+                Adaptador.UpdateCommand = new MySqlCommand("Actualizar");
+                Adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
+                Adaptador.DeleteCommand = new MySqlCommand("Borrar");
+                Adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
 
-                Adaptador.Update(Temporal);
+                /*
+                Adaptador.InsertCommand = new MySqlCommand("SELECT Insertar(@VariableDeEntrada) INTO @VariableDeSalida");
+                Adaptador.UpdateCommand = new MySqlCommand("SELECT Actualizar(@VariableDeEntrada) INTO @VariableDeSalida");
+                Adaptador.DeleteCommand = new MySqlCommand("SELECT Borrar(@VariableDeEntrada) INTO @VariableDeSalida");
+                */
+                string VariableDeEntrada = string.Empty;
+
+                MySqlParameter VariableDeEntradaSQL = new MySqlParameter("a_Parametros", VariableDeEntrada);
+                VariableDeEntradaSQL.Direction = ParameterDirection.Input;
+
+                Adaptador.InsertCommand.Parameters.Add(VariableDeEntradaSQL);
+                Adaptador.UpdateCommand.Parameters.Add(VariableDeEntradaSQL);
+                Adaptador.DeleteCommand.Parameters.Add(VariableDeEntradaSQL);
+
+                /*
+                object ParametrosInsertar = null;
+                object ParametrosActualizar = null;
+                object ParametrosBorrar = null;
+
+                int ResultadoInsertar = new int();
+                int ResultadoActualizar = new int();
+                int ResultadoBorrar = new int();
+
+                MySqlParameter ParametrosInsertarSQL = new MySqlParameter("@Parametros", ParametrosInsertar);
+                ParametrosInsertarSQL.Direction = ParameterDirection.Input;
+
+                MySqlParameter ParametrosActualizarSQL = new MySqlParameter("@Parametros", ParametrosActualizar);
+                ParametrosActualizarSQL.Direction = ParameterDirection.Input;
+
+                MySqlParameter ParametrosBorrarSQL = new MySqlParameter("@Parametros", ParametrosBorrar);
+                ParametrosBorrarSQL.Direction = ParameterDirection.Input;
+
+                MySqlParameter ResultadoInsertarSQL = new MySqlParameter("@Resultado", ResultadoInsertar);
+                ResultadoInsertarSQL.Direction = ParameterDirection.Output;
+
+                MySqlParameter ResultadoActualizarSQL = new MySqlParameter("@Resultado", ResultadoActualizar);
+                ResultadoActualizarSQL.Direction = ParameterDirection.Output;
+
+                MySqlParameter ResultadoBorrarSQL = new MySqlParameter("@Resultado", ResultadoBorrar);
+                ResultadoBorrarSQL.Direction = ParameterDirection.Output;
+
+                Adaptador.InsertCommand.Parameters.Add(ParametrosInsertarSQL);
+                Adaptador.InsertCommand.Parameters.Add(ResultadoInsertarSQL);
+
+                Adaptador.UpdateCommand.Parameters.Add(ParametrosActualizarSQL);
+                Adaptador.UpdateCommand.Parameters.Add(ResultadoActualizarSQL);
+
+                Adaptador.DeleteCommand.Parameters.Add(ParametrosBorrarSQL);
+                Adaptador.DeleteCommand.Parameters.Add(ResultadoBorrarSQL);
                 
+                */
+                Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
+                /*
+                DataTable Insertados = Temporal.GetChanges(DataRowState.Added);
+                DataTable Modificados = Temporal.GetChanges(DataRowState.Modified);
+                DataTable Eliminados = Temporal.GetChanges(DataRowState.Deleted);
+                */
+                MySqlRowUpdatingEventHandler ActualizandoFila = (r, a) =>
+                {
+                    List<string> Parametros = new List<string>();
+
+                    foreach (object Dato in a.Row.ItemArray)
+                    {
+                        Parametros.Add(Dato.ToString().Replace(",", "."));
+                    }
+
+                    VariableDeEntrada = string.Join(",", Parametros.ToArray());
+                    a.Command.Parameters[0].Value = VariableDeEntrada;
+                };
+                
+                MySqlRowUpdatedEventHandler FilaActualizada = (r, a) =>
+                {
+                    if (a.Errors != null)
+                    {
+                        throw a.Errors;
+                    }
+                };
+                
+                Adaptador.RowUpdating += new MySqlRowUpdatingEventHandler(ActualizandoFila);
+                Adaptador.RowUpdated += new MySqlRowUpdatedEventHandler(FilaActualizada);
+
+                // Primero actualizamos los borrados
+                Adaptador.Update(Temporal.Select(null, null, DataViewRowState.Deleted));
+                // Luego los modificados
+                Adaptador.Update(Temporal.Select(null, null, DataViewRowState.ModifiedCurrent));
+                // Y por ultimo los agregados
+                Adaptador.Update(Temporal.Select(null, null, DataViewRowState.Added));
+
                 Resultado = true;
             }
             catch (MySqlException ex)

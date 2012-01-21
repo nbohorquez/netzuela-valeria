@@ -55,6 +55,7 @@
     <Compile Include="Constantes.cs" />
     <Compile Include="Criptografia.cs" />
     <Compile Include="IEnumerableExtensiones.cs" />
+    <Compile Include="PasswordGenerator.cs" />
     <Compile Include="SecureStringExtensiones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParametrosDeConexion.cs" />

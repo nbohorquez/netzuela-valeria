@@ -97,33 +97,54 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         public void Conectar()
         {
-            if (_Proxy == null)
+            try
             {
-                if(UriWsdlServicio == null)
-                    throw new ArgumentNullException("UriWsdlServicio");
+                if (_Proxy == null)
+                {
+                    if (UriWsdlServicio == null)
+                        throw new ArgumentNullException("UriWsdlServicio");
 
-                Armar();
+                    Armar();
+                }
+
+                _Proxy.Conectar(CONTRATO_SPURIA);
             }
-
-            _Proxy.Conectar(CONTRATO_SPURIA);
+            catch (Exception ex)
+            {
+                throw new Exception("Error conectando con servidor remoto Spuria", ex);
+            }
         }
 
         public void Desconectar()
         {
-            if (_Proxy != null)
-                _Proxy.Desconectar();
+            try
+            {
+                if (_Proxy != null)
+                    _Proxy.Desconectar();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error desconectando de servidor remoto Spuria", ex);
+            }
         }
 
         public void CancelarTarea(object TareaID)
         {
-            AsyncOperation Asincronico = _Hilos[TareaID] as AsyncOperation;
-
-            if (Asincronico != null)
+            try
             {
-                lock (_Hilos.SyncRoot)
+                AsyncOperation Asincronico = _Hilos[TareaID] as AsyncOperation;
+
+                if (Asincronico != null)
                 {
-                    _Hilos.Remove(TareaID);
+                    lock (_Hilos.SyncRoot)
+                    {
+                        _Hilos.Remove(TareaID);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error cancelando la tarea " + TareaID.ToString(), ex);
             }
         }
 

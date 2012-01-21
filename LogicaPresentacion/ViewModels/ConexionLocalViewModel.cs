@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MvvmFoundation.Wpf;                       // RelayCommand, ObservableObject
-using ObviexGeneradorContrasenas;               // RandomPassword
-using System.Data;                              // DataTable, ConnectionState
-using System.Security;                          // SecureString
-using System.Windows;                           // MessageBox
-using System.Windows.Input;                     // ICommand
-using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
-using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
-using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
+using MvvmFoundation.Wpf;                                   // RelayCommand, ObservableObject
+using System.Data;                                          // DataTable, ConnectionState
+using System.Security;                                      // SecureString
+using System.Windows;                                       // MessageBox
+using System.Windows.Input;                                 // ICommand
+using Zuliaworks.Netzuela.Valeria.Comunes;                  // DatosDeConexion, PasswordGenerator
+using Zuliaworks.Netzuela.Valeria.Datos;                    // IBaseDeDatos
+using Zuliaworks.Netzuela.Valeria.Logica;                   // Conexion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -22,6 +21,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
+        private PasswordGenerator _GeneradorDeContrasenas;
         private RelayCommand _DetectarOrden;
         private bool _MostrarAutentificacionView;
         private bool _MostrarDetectarServidoresLocalesView;
@@ -37,13 +37,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #region Contructores
 
         public ConexionLocalViewModel()
-            : base() { }
+            : base() 
+        {
+            InicializarGeneradorDeContrasenas();
+        }
 
         public ConexionLocalViewModel(Conexion Conexion)
-            : base(Conexion) { }
+            : base(Conexion) 
+        {
+            InicializarGeneradorDeContrasenas();
+        }
 
         public ConexionLocalViewModel(ParametrosDeConexion Parametros)
-            : base(Parametros) { }
+            : base(Parametros) 
+        {
+            InicializarGeneradorDeContrasenas();
+        }
 
         #endregion
 
@@ -112,6 +121,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #endregion
 
         #region Funciones
+
+        private void InicializarGeneradorDeContrasenas()
+        {
+            _GeneradorDeContrasenas = new PasswordGenerator();
+            _GeneradorDeContrasenas.ConsecutiveCharacters = false;
+            _GeneradorDeContrasenas.RepeatCharacters = false;
+            _GeneradorDeContrasenas.Maximum = 20;
+            _GeneradorDeContrasenas.Minimum = 18;
+        }
 
         private void AbrirDetectarServidores()
         {
@@ -210,7 +228,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             bool Resultado = false;
             // ¿Será un problema de seguridad grave colocar el nombre "netzuela" asi tan a la vista?
             UsuarioNetzuela = "netzuela".ConvertirASecureString();
-            ContrasenaNetzuela = RandomPassword.Generate(20).ConvertirASecureString();
+            ContrasenaNetzuela = _GeneradorDeContrasenas.Generate().ConvertirASecureString();
 
             try
             {

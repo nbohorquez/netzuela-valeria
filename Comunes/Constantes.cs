@@ -39,19 +39,7 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
             public const string TCP_IP = "TCP/IP";
             public const string VIA = "VIA";
         }
-        /*
-        /// <summary>
-        /// Credenciales
-        /// </summary>
-        public class Credenciales
-        {
-            public const int CHIVO = 0;
-            public const int NETZUELA = 1;
-        }
-        */
-        /// <summary>
-        /// Credenciales
-        /// </summary>
+        
         public class NivelDeNodo
         {
             public const int NULO = -1;

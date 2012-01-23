@@ -64,7 +64,6 @@
     <Compile Include="ManejoDeExcepciones.cs" />
     <Compile Include="DosArgumentosAUno.cs" />
     <Compile Include="PasswordBoxVinculable.cs" />
-    <Compile Include="PasswordGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleccionarTodaLaColumna.cs" />
     <Compile Include="ViewModels\ExploradorViewModel.Disposable.cs" />

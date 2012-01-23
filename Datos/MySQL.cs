@@ -409,7 +409,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Adaptador.DeleteCommand.Parameters.Add(VariableDeEntradaSQL);
 
                 Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
-
+                
                 MySqlRowUpdatingEventHandler ActualizandoFila = (r, a) =>
                 {
                     List<string> Parametros = new List<string>();

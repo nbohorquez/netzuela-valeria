@@ -240,7 +240,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 if (Tabla != null)
                 {
-                    Tabla.TableName = Item.RutaCompleta();
+                    //Tabla.TableName = Item.RutaCompleta();
+                    Tabla.TableName = Item.Nombre;
 
                     foreach (NodoViewModel N in Item.Hijos)
                     {

@@ -6,7 +6,9 @@
         xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;assembly=LogicaPresentacion"
         Title="Netzuela - Monitor de tienda"
         Height="600" MinHeight="568"
-        Width="800" MinWidth="757">
+        Width="800" MinWidth="757"
+        Closing="ManejarVentanaCerrandose" StateChanged="ManejarCambioDeEstado" 
+        IsVisibleChanged="ManejarCambioDeVisibilidad">
 
     <Window.DataContext>
         <ViewModels:MainViewModel/>

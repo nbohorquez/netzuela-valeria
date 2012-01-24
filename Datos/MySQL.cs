@@ -409,7 +409,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Adaptador.UpdateCommand.Parameters.Add(VariableDeEntradaSQL);
                 Adaptador.DeleteCommand.Parameters.Add(VariableDeEntradaSQL);
 
-                Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
+                //Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
                 
                 MySqlRowUpdatingEventHandler ActualizandoFila = (r, a) =>
                 {
@@ -439,11 +439,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Adaptador.RowUpdated += FilaActualizada;
 
                 // Primero actualizamos los borrados
-                Adaptador.Update(Temporal.Select(null, null, DataViewRowState.Deleted));
+                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Deleted));
                 // Luego los modificados
-                Adaptador.Update(Temporal.Select(null, null, DataViewRowState.ModifiedCurrent));
+                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.ModifiedCurrent));
                 // Y por ultimo los agregados
-                Adaptador.Update(Temporal.Select(null, null, DataViewRowState.Added));
+                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Added));
 
                 Resultado = true;
             }

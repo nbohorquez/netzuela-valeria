@@ -183,34 +183,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             ActualizarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
         }
 
-        private void ActualizarTabla(NodoViewModel Nodo)
+        private void ActualizarTabla(DataTable Tabla, TablaDeAsociaciones TabAso)
         {
-            if (Nodo == null)
-                throw new ArgumentNullException("Nodo");
-            if (Nodo.Nivel != Constantes.NivelDeNodo.TABLA)
-                throw new ArgumentException("El nodo tiene que ser de nivel Tabla");
-
             // Como borrar la referencia del DataGrid a un DataTable:
             // http://social.msdn.microsoft.com/Forums/en/wpf/thread/a5767cf4-8d26-4f72-b1b1-feca26bb6b2e
 
-
-            DataTable T = Nodo.Explorador.TablaActual;
-            Nodo.Explorador.TablaActual = CrearTabla(Nodo.Sociedad.TablaPadre);
-
-            if (_CacheDeTablas.ContainsKey(Nodo.Padre))
-                _CacheDeTablas.Remove(Nodo.Padre);
-
-            T.Clear();
-            T.Columns.Clear();
-            T.DefaultView.Dispose();
-            T.Dispose();
-            T = null;
-            
-            _CacheDeTablas[Nodo.Padre] = Nodo.Explorador.TablaActual;             
-        }
-
-        private void ActualizarTabla(DataTable Tabla, TablaDeAsociaciones TabAso)
-        {
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
             if (TabAso == null)
@@ -346,7 +323,56 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             // Creamos una copia solamente. De esta forma, las modificaciones externas no afectaran 
             // al objeto interno
-            return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
+            //return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
+            return _CacheDeTablas;
+        }
+
+        public string[] RutasDeNodosDeOrigen()
+        {
+            List<string> NodosOrigen = new List<string>();
+
+            try
+            {
+                // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
+                foreach (TablaDeAsociaciones TM in Tablas)
+                {
+                    foreach (AsociacionDeColumnas MC in TM.Sociedades)
+                    {
+                        if (MC.ColumnaOrigen != null)
+                            NodosOrigen.Add(MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las rutas de los nodos de origen", ex);
+            }
+
+            return NodosOrigen.ToArray();
+        }
+
+        public string[] RutasDeNodosDeDestino()
+        {
+            List<string> NodosDestino = new List<string>();
+
+            try
+            {
+                // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
+                foreach (TablaDeAsociaciones TM in Tablas)
+                {
+                    foreach (AsociacionDeColumnas MC in TM.Sociedades)
+                    {
+                        if (MC.ColumnaDestino != null)
+                            NodosDestino.Add(MC.ColumnaDestino.BuscarEnRepositorio().RutaCompleta());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las rutas de los nodos de destino", ex);
+            }
+
+            return NodosDestino.ToArray();
         }
 
         #endregion

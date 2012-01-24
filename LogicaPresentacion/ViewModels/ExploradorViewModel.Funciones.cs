@@ -100,19 +100,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     {
                         NodoViewModel N = new NodoViewModel(BD, Item);
                     }
-
-                    /*
-                    foreach (NodoViewModel N in Item.Hijos)
-                    {
-                        N.Dispose();
-                    }
-
-                    Item.Hijos.Clear();
-
-                    foreach (string BdD in BasesDeDatos)
-                    {
-                        NodoViewModel Nodo = new NodoViewModel(BdD, Item);
-                    }*/
                 }
             };
 
@@ -144,10 +131,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
-            // Aqui seria mejor revisar una variable de configuracion del usuario
-            // que indique si se deben realizan llamadas a los procedimientos 
-            // remotos/locales de forma asincronica o sincronica
-            //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
             if (OperacionAsincronica)
             {
                 _Conexion.ListarBasesDeDatosCompletado -= Retorno;
@@ -198,20 +181,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     {
                         NodoViewModel N = new NodoViewModel(Tabla, Item);
                     }
-
-                    /*
-
-                    foreach (NodoViewModel N in Item.Hijos)
-                    {
-                        N.Dispose();
-                    }
-
-                    Item.Hijos.Clear();
-
-                    foreach (string Tabla in Tablas)
-                    {
-                        NodoViewModel Nodo = new NodoViewModel(Tabla, Item);
-                    }*/
                 }
             };
 
@@ -242,10 +211,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
-            // Aqui seria mejor revisar una variable de configuracion del usuario
-            // que indique si se deben realizan llamadas a los procedimientos 
-            // remotos/locales de forma asincronica o sincronica
-            //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
             if (OperacionAsincronica)
             {
                 _Conexion.ListarTablasCompletado -= Retorno;
@@ -346,10 +311,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
             else
             {
-                // Aqui seria mejor revisar una variable de configuracion del usuario
-                // que indique si se deben realizan llamadas a los procedimientos 
-                // remotos/locales de forma asincronica o sincronica
-                //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
                 if (OperacionAsincronica)
                 {
                     _Conexion.LeerTablaCompletado -= Retorno;

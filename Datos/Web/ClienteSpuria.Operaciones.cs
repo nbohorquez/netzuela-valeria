@@ -258,7 +258,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
             Tabla.ReadXmlSchema(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)TablaXML).EsquemaXML)));
             Tabla.ReadXml(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)TablaXML).XML)));
-
+            Tabla.Tables[0].AcceptChanges();
+            
             Desconectar();
 
             return Tabla.Tables[0];
@@ -267,7 +268,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
         {
             Conectar();
-
             DataSet Tablas = null;
 
             if (Tabla.DataSet != null)
@@ -281,18 +281,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             }
 
             DataSetXML DatosAEnviar = new DataSetXML(BaseDeDatos, NombreTabla, Tablas.GetXmlSchema(), Tablas.GetXml());
-
-            List<DataSetXML.EstadoFila> EstadoFilas = new List<DataSetXML.EstadoFila>();
+            List<DataRowState> EstadoFilas = new List<DataRowState>();
 
             foreach(DataRow Fila in Tabla.Rows)
             {
-                EstadoFilas.Add((DataSetXML.EstadoFila)Fila.RowState);
+                EstadoFilas.Add(Fila.RowState);
             }
 
             DatosAEnviar.EstadoFilas = EstadoFilas.ToArray();
-
             bool Resultado = Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
-
             Desconectar();
 
             return Resultado;

@@ -65,7 +65,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             _Temporizador = new DispatcherTimer()
             {
                 Interval = new TimeSpan(0, 0, 5),
-                IsEnabled = true,
             };
 
             _Temporizador.Stop();
@@ -232,27 +231,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 return;
             }
 
-            List<string> NodosOrigen = new List<string>();
-            ExploradorViewModel ExploradorLocalViejo;
-
-            // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
-            foreach (TablaDeAsociaciones TM in Sincronizacion.Tablas)
-            {
-                foreach (AsociacionDeColumnas MC in TM.Sociedades)
-                {
-                    if (MC.ColumnaOrigen != null)
-                        NodosOrigen.Add(MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta());
-                }
-            }
-            
-            // Guardamos el arbol de nodos de ExploradorLocal. Sera util unos pasos mas adelante
-            ExploradorLocalViejo = ExploradorLocal;
-
             try
             {
+                string[] NodosOrigen = Sincronizacion.RutasDeNodosDeOrigen();
+
+                // Guardamos el arbol de nodos de ExploradorLocal. Sera util unos pasos mas adelante
+                ExploradorViewModel ExploradorLocalViejo = ExploradorLocal;
+
                 // Creamos un usuario en la base de datos local con los privilegios necesarios 
                 // para leer las columnas de origen
-                if (!ConexionLocal.CrearUsuarioNetzuela(NodosOrigen.ToArray()))
+                if (!ConexionLocal.CrearUsuarioNetzuela(NodosOrigen))
                     throw new Exception("No se pudo crear el usuario Netzuela dentro de la base de datos local. La sincronización no puede proceder");
 
                 // Cambiamos de usuario
@@ -328,17 +316,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 //_Temporizador.Stop();
 
-                List<string> NodosOrigen = new List<string>();
-
-                // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
-                foreach (TablaDeAsociaciones TM in LocalARemota.Tablas)
-                {
-                    foreach (AsociacionDeColumnas MC in TM.Sociedades)
-                    {
-                        if (MC.ColumnaOrigen != null)
-                            NodosOrigen.Add(MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta());
-                    }
-                }
+                string[] NodosOrigen = LocalARemota.RutasDeNodosDeOrigen();
 
                 // Expandimos los nodos locales para poder operar sobre ellos
                 HashSet<string> RutasDeTabla = new HashSet<string>();
@@ -356,7 +334,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 foreach (KeyValuePair<NodoViewModel, DataTable> Par in LocalARemota.TablasAEnviar())
                 {
-                    ExploradorRemoto.EscribirTabla(Par.Key, Par.Value);
+                    DataTable T = Par.Value.GetChanges();
+                    ExploradorRemoto.EscribirTabla(Par.Key, T);
+                    T.Dispose();
+                    Par.Value.AcceptChanges();
                 }
             }
             catch (Exception ex)

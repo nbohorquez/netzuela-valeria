@@ -163,6 +163,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                         DataSetDinamico.NombreTabla = ((DataSetXML)Argumentos[i]).NombreTabla;
                         DataSetDinamico.EsquemaXML = ((DataSetXML)Argumentos[i]).EsquemaXML;
                         DataSetDinamico.XML = ((DataSetXML)Argumentos[i]).XML;
+                        DataSetDinamico.EstadoFilas = ((DataSetXML)Argumentos[i]).EstadoFilas;
 
                         Argumentos[i] = DataSetDinamico.ObjectInstance;
                     }
@@ -184,6 +185,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                     ((DataSetXML)Resultado).NombreTabla = SetXMLDinamico.NombreTabla;
                     ((DataSetXML)Resultado).EsquemaXML = SetXMLDinamico.EsquemaXML;
                     ((DataSetXML)Resultado).XML = SetXMLDinamico.XML;
+                    ((DataSetXML)Resultado).EstadoFilas = SetXMLDinamico.EstadoFilas;
                 }
             }
             catch (Exception ex)

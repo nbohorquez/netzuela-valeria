@@ -167,8 +167,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             try
             {
                 // Esto es para evitar que aparezca registrado el mismo manejador dos veces
-                _Conexion.CambioDeEstado -= new StateChangeEventHandler(ManejarCambioDeEstado);
-                _Conexion.CambioDeEstado += new StateChangeEventHandler(ManejarCambioDeEstado);
+                _Conexion.CambioDeEstado -= ManejarCambioDeEstado;
+                _Conexion.CambioDeEstado += ManejarCambioDeEstado;
 
                 _Conexion.Conectar(Usuario, Contrasena);
             }

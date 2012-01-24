@@ -41,7 +41,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             DatosDeConexion = ServidorBD;
 
             _Conexion = new MySqlConnection();
-            _Conexion.StateChange += new StateChangeEventHandler(base.ManejarCambioDeEstado);
+            _Conexion.StateChange -= base.ManejarCambioDeEstado;
+            _Conexion.StateChange += base.ManejarCambioDeEstado;
         }
 
         #endregion
@@ -430,9 +431,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                         throw a.Errors;
                     }
                 };
-                
-                Adaptador.RowUpdating += new MySqlRowUpdatingEventHandler(ActualizandoFila);
-                Adaptador.RowUpdated += new MySqlRowUpdatedEventHandler(FilaActualizada);
+
+                Adaptador.RowUpdating -= ActualizandoFila;
+                Adaptador.RowUpdating += ActualizandoFila;
+
+                Adaptador.RowUpdated -= FilaActualizada;
+                Adaptador.RowUpdated += FilaActualizada;
 
                 // Primero actualizamos los borrados
                 Adaptador.Update(Temporal.Select(null, null, DataViewRowState.Deleted));

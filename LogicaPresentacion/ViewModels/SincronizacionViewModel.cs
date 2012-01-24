@@ -38,10 +38,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
 
         public SincronizacionViewModel(List<NodoViewModel> Nodos)
+            : base()
         {
-            Tablas = new List<TablaDeAsociaciones>();
-            _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
-
             foreach (NodoViewModel Nodo in Nodos)
             {
                 /*
@@ -67,8 +65,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     _Listo = value;
                     RaisePropertyChanged("Listo");
-                    RaisePropertyChanged("BotonSincronizar");
-                    RaisePropertyChanged("PermitirModificaciones");
                 }
             }
         }
@@ -95,7 +91,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public ICommand ListoOrden
         {
-            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(() => Listo = !Listo)); }
+            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(() => ListoAccion())); }
         }
 
         #endregion
@@ -130,11 +126,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        private void SincronizacionListaAccion()
+        private void ListoAccion()
         {
             try
             {
-                Listo = true;
+                Listo = !Listo;
+                RaisePropertyChanged("BotonSincronizar");
+                RaisePropertyChanged("PermitirModificaciones");
             }
             catch (Exception ex)
             {
@@ -148,17 +146,31 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new ArgumentNullException("NodoOrigen");
             if (NodoDestino == null)
                 throw new ArgumentNullException("NodoDestino");
-            
-            if (NodoDestino.Padre.TablaDeSocios == null)
+
+            DataTable TablaOrigen = NodoOrigen.Explorador.ObtenerTablaDeCache(NodoOrigen.Padre);
+            DataTable TablaDestino = NodoDestino.Explorador.ObtenerTablaDeCache(NodoDestino.Padre);
+
+            System.Type TipoOrigen = TablaOrigen.Columns[NodoOrigen.Nombre].DataType;
+            System.Type TipoDestino = TablaDestino.Columns[NodoDestino.Nombre].DataType;
+
+            if (TipoOrigen != TipoDestino)
             {
-                Tablas.Add(NodoDestino.Padre.CrearTablaDeAsociaciones());
+                throw new Exception("Los tipos de datos de ambas columnas tienen que ser iguales. "
+                                    + TipoOrigen.ToString() + " != " + TipoDestino.ToString());
             }
 
-            NodoDestino.AsociarCon(NodoOrigen);
+            // Si es la primera vez que asociamos un nodo de esta tabla, agregamos a Tablas
+            // una nueva AsociacionDeColumnas cuya ColumnaDestino sea NodoDestino.
+            if (NodoDestino.Padre.TablaDeSocios == null)
+                Tablas.Add(NodoDestino.Padre.CrearTablaDeAsociaciones());
 
-            //ActualizarTabla(NodoDestino.Padre);
-            ActualizarTabla(NodoDestino.Explorador.CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
-            _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.CacheDeTablas[NodoDestino.Padre];
+            // Agregamos la DataTable a la cache local de tablas si ya no esta agregada
+            if (!_CacheDeTablas.ContainsKey(NodoDestino.Padre))
+                _CacheDeTablas[NodoDestino.Padre] = TablaDestino;
+
+            NodoDestino.AsociarCon(NodoOrigen);
+            
+            ActualizarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
         }
 
         private void Desasociar(NodoViewModel NodoDestino)
@@ -167,9 +179,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new ArgumentNullException("NodoDestino");
 
             NodoDestino.Desasociarse();
-            //ActualizarTabla(NodoDestino.Padre);
-            ActualizarTabla(NodoDestino.Explorador.CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
-            _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.CacheDeTablas[NodoDestino.Padre];
+
+            ActualizarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
         }
 
         private void ActualizarTabla(NodoViewModel Nodo)
@@ -211,14 +222,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     NodoViewModel ColumnaOrigen = Sociedad.ColumnaOrigen.BuscarEnRepositorio();
                     NodoViewModel ColumnaDestino = Sociedad.ColumnaDestino.BuscarEnRepositorio();
+
                     DataTable Temp = ColumnaOrigen.Explorador.ObtenerTablaDeCache(ColumnaOrigen.Padre);
-
-                    System.Type TipoOrigen = Temp.Columns[ColumnaOrigen.Nombre].DataType;
-                    System.Type TipoDestino = Tabla.Columns[ColumnaDestino.Nombre].DataType;
-
-                    if (TipoOrigen != TipoDestino)
-                        throw new Exception("Los tipos de datos de ambas columnas tienen que ser iguales. " 
-                                            + TipoOrigen.ToString() + " != " + TipoDestino.ToString());
 
                     for (int i = 0; i < Temp.Rows.Count; i++)
                     {
@@ -325,14 +330,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                         RutaNodoOrigen = MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta();
                         NodoOrigen = NodoViewModelExtensiones.RutaANodo(RutaNodoOrigen, NodosLocales);
-
                         NodoDestino = MC.ColumnaDestino.BuscarEnRepositorio();
-                        NodoDestino.AsociarCon(NodoOrigen);
-                    }
 
-                    //ActualizarTabla(NodoDestino);
-                    ActualizarTabla(NodoDestino.Explorador.CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
-                    _CacheDeTablas[NodoDestino.Padre] = NodoDestino.Explorador.CacheDeTablas[NodoDestino.Padre];
+                        Asociar(NodoOrigen, NodoDestino);
+                    }
                 }
             }
             catch (Exception ex)

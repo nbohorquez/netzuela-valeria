@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;           // ObservableCollection
 using System.Data;                              // DataTable
 using System.Security;                          // SecureString
 using System.Windows;                           // MessageBox
+using System.Windows.Threading;                 // DispatcherTimer
 using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
 using Zuliaworks.Netzuela.Valeria.Logica;       // TablaMapeada
 
@@ -27,6 +28,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private readonly PropertyObserver<ConexionLocalViewModel> _ObservadorConexionLocalEstablecida;
         private readonly PropertyObserver<ConexionRemotaViewModel> _ObservadorConexionRemotaEstablecida;
         private PropertyObserver<SincronizacionViewModel> _ObservadorSincronizacion;
+        private DispatcherTimer _Temporizador;
         private string _TiendaID;
 
         #endregion
@@ -49,7 +51,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             _ConfiguracionLocal = Configuracion.CargarConfiguracion();
 
             InicializarConexiones();
-
+            
             // Si las dos conexiones estan establecidas...
             if (LocalARemota != null)
             {
@@ -59,6 +61,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 LocalARemota = new SincronizacionViewModel();
             }
+            
+            _Temporizador = new DispatcherTimer()
+            {
+                Interval = new TimeSpan(0, 0, 5),
+                IsEnabled = true,
+            };
+
+            _Temporizador.Stop();
+            _Temporizador.Tick += new EventHandler(AlarmaTemporizador);
         }
 
         #endregion
@@ -216,7 +227,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private void SincronizacionLista(SincronizacionViewModel Sincronizacion)
         {
             if (Sincronizacion.Listo == false)
+            {
+                _Temporizador.Stop();
                 return;
+            }
 
             List<string> NodosOrigen = new List<string>();
             ExploradorViewModel ExploradorLocalViejo;
@@ -258,41 +272,38 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             
                 // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
-                Sincronizacion.RecargarTablasLocales(ExploradorLocal.Nodos);            
+                Sincronizacion.RecargarTablasLocales(ExploradorLocal.Nodos);
 
                 // Ahora tenemos que borrar todos los nodos y tablas que no se van a utilizar mas. Para ello, 
                 // simplemente borramos todo el ExploradorLocal viejo.
                 ExploradorLocalViejo.Dispose();
                 ExploradorLocalViejo = null;
 
-                //_ConfiguracionLocal = new Configuracion();
-                _ConfiguracionLocal.ParametrosConexionLocal = ConexionLocal.Parametros;
-                _ConfiguracionLocal.ParametrosConexionRemota = ConexionRemota.Parametros;
-                _ConfiguracionLocal.UsuarioLocal = ConexionLocal.UsuarioNetzuela;
-                _ConfiguracionLocal.ContrasenaLocal = ConexionLocal.ContrasenaNetzuela;
-                // Esto esta aqui por joda... cuando tenga el servidor de Netzuela listo, aqui va 
-                // a haber una vaina seria.
-                _ConfiguracionLocal.UsuarioRemoto = "maricoerconio".ConvertirASecureString();
-                _ConfiguracionLocal.ContrasenaRemota = "1234".ConvertirASecureString();
-                _ConfiguracionLocal.Tablas = Sincronizacion.Tablas;
+                GuardarConfiguracion(Sincronizacion.Tablas);
 
-                Configuracion.GuardarConfiguracion(_ConfiguracionLocal);
-                        
-                // Este codigo deberia ejecutarse periodicamente y no solo cuando se termine de
-                // configurar la sincronizacion de las instancias local y remota
-                Dictionary<NodoViewModel, DataTable> Tablas = Sincronizacion.TablasAEnviar();
-
-                foreach(KeyValuePair<NodoViewModel, DataTable> Par in Tablas)
-                {
-                    ExploradorRemoto.EscribirTabla(Par.Key, Par.Value);
-                }
-            
+                _Temporizador.Start();
+                
                 MessageBox.Show("La sincronización se realizó correctamente");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
+        }
+
+        private void GuardarConfiguracion(List<TablaDeAsociaciones> Tablas)
+        {
+            _ConfiguracionLocal.ParametrosConexionLocal = ConexionLocal.Parametros;
+            _ConfiguracionLocal.ParametrosConexionRemota = ConexionRemota.Parametros;
+            _ConfiguracionLocal.UsuarioLocal = ConexionLocal.UsuarioNetzuela;
+            _ConfiguracionLocal.ContrasenaLocal = ConexionLocal.ContrasenaNetzuela;
+            // Esto esta aqui por joda... cuando tenga el servidor de Netzuela listo, aqui va 
+            // a haber una vaina seria.
+            _ConfiguracionLocal.UsuarioRemoto = "maricoerconio".ConvertirASecureString();
+            _ConfiguracionLocal.ContrasenaRemota = "1234".ConvertirASecureString();
+            _ConfiguracionLocal.Tablas = Tablas;
+
+            Configuracion.GuardarConfiguracion(_ConfiguracionLocal);
         }
 
         private void ManejarAmbasConexionesEstablecidas(object Remitente, EventArgs Args)
@@ -308,6 +319,49 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (AmbasConexionesEstablecidas != null)
             {
                 AmbasConexionesEstablecidas(this, e);
+            }
+        }
+
+        protected virtual void AlarmaTemporizador(object Remitente, EventArgs Argumentos)
+        {
+            try
+            {
+                //_Temporizador.Stop();
+
+                List<string> NodosOrigen = new List<string>();
+
+                // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
+                foreach (TablaDeAsociaciones TM in LocalARemota.Tablas)
+                {
+                    foreach (AsociacionDeColumnas MC in TM.Sociedades)
+                    {
+                        if (MC.ColumnaOrigen != null)
+                            NodosOrigen.Add(MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta());
+                    }
+                }
+
+                // Expandimos los nodos locales para poder operar sobre ellos
+                HashSet<string> RutasDeTabla = new HashSet<string>();
+
+                foreach (string RutaDeColumna in NodosOrigen)
+                {
+                    string RutaDeTabla = RutaColumnaARutaTabla(RutaDeColumna);
+
+                    // Si ya esa ruta fue expandida, no la expandamos otra vez
+                    if (RutasDeTabla.Add(RutaDeTabla))
+                        ExploradorLocal.Reexpandir(NodoViewModelExtensiones.RutaANodo(RutaDeTabla, ExploradorLocal.Nodos));
+                }
+
+                LocalARemota.RecargarTablasLocales(ExploradorLocal.Nodos);
+
+                foreach (KeyValuePair<NodoViewModel, DataTable> Par in LocalARemota.TablasAEnviar())
+                {
+                    ExploradorRemoto.EscribirTabla(Par.Key, Par.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
         }
 

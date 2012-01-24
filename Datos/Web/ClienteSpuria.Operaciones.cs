@@ -281,6 +281,16 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             }
 
             DataSetXML DatosAEnviar = new DataSetXML(BaseDeDatos, NombreTabla, Tablas.GetXmlSchema(), Tablas.GetXml());
+
+            List<DataSetXML.EstadoFila> EstadoFilas = new List<DataSetXML.EstadoFila>();
+
+            foreach(DataRow Fila in Tabla.Rows)
+            {
+                EstadoFilas.Add((DataSetXML.EstadoFila)Fila.RowState);
+            }
+
+            DatosAEnviar.EstadoFilas = EstadoFilas.ToArray();
+
             bool Resultado = Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
 
             Desconectar();

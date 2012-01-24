@@ -35,11 +35,20 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             _Cliente = new ClienteSpuria();
 
             // Inicializamos los manejadores de eventos
-            _Cliente.ListarBasesDeDatosCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarListarBasesDeDatosCompletado);
-            _Cliente.ListarTablasCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarListarTablasCompletado);
-            _Cliente.LeerTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarLeerTablaCompletado);
-            _Cliente.EscribirTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarEscribirTablaCompletado);
-            _Cliente.CrearUsuarioCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(base.ManejarCrearUsuarioCompletado);
+            _Cliente.ListarBasesDeDatosCompletado -= base.ManejarListarBasesDeDatosCompletado;
+            _Cliente.ListarBasesDeDatosCompletado += base.ManejarListarBasesDeDatosCompletado;
+
+            _Cliente.ListarTablasCompletado -= base.ManejarListarTablasCompletado;
+            _Cliente.ListarTablasCompletado += base.ManejarListarTablasCompletado;
+
+            _Cliente.LeerTablaCompletado -= base.ManejarLeerTablaCompletado;
+            _Cliente.LeerTablaCompletado += base.ManejarLeerTablaCompletado;
+
+            _Cliente.EscribirTablaCompletado -= base.ManejarEscribirTablaCompletado;
+            _Cliente.EscribirTablaCompletado += base.ManejarEscribirTablaCompletado;
+
+            _Cliente.CrearUsuarioCompletado -= base.ManejarCrearUsuarioCompletado;
+            _Cliente.CrearUsuarioCompletado += base.ManejarCrearUsuarioCompletado;
             
             // Hay que ver como quito este pedazo de codigo tan feo
             _Estado = ConnectionState.Closed;

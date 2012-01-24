@@ -45,7 +45,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         public PasswordBoxVinculable()
         {
             Child = new PasswordBox();
-            ((PasswordBox)Child).PasswordChanged += ManejarPasswordChanged;
+            ((PasswordBox)Child).PasswordChanged += new RoutedEventHandler(ManejarPasswordChanged);
         }
 
         #endregion

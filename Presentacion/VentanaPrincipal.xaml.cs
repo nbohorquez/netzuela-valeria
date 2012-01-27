@@ -67,7 +67,8 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
             _IconoDeBandeja.BalloonTipText = "La aplicación ha sido minimizada. Haga clic en el ícono para restaurar la ventana";
             _IconoDeBandeja.BalloonTipTitle = "Netzuela";
             _IconoDeBandeja.Text = "Netzuela";
-            _IconoDeBandeja.Icon = new Icon("D:\\Netzuela\\Valeria\\Presentacion\\sharethis.ico");
+            _IconoDeBandeja.Icon = new Icon(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Zuliaworks.Netzuela.Valeria.Presentacion.sharethis.ico"));
+
             _IconoDeBandeja.Click += new EventHandler(ClicSobreIcono);
         }
 

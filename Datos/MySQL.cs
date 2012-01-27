@@ -95,6 +95,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             MySqlDataAdapter Adaptador = new MySqlDataAdapter(SQL, _Conexion);
             MySqlCommandBuilder CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
 
+            Adaptador.FillSchema(Resultado, SchemaType.Source);
             Adaptador.Fill(Resultado);
 
             return Resultado;

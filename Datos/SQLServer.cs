@@ -96,6 +96,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             SqlDataAdapter Adaptador = new SqlDataAdapter(SQL, _Conexion);
             SqlCommandBuilder CreadorDeOrden = new SqlCommandBuilder(Adaptador);
 
+            Adaptador.FillSchema(Resultado, SchemaType.Source);
             Adaptador.Fill(Resultado);
 
             return Resultado;

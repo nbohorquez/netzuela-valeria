@@ -48,6 +48,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
 
+            _Temporizador = new DispatcherTimer()
+            {
+                Interval = new TimeSpan(0, 0, 5),
+            };
+
+            _Temporizador.Stop();
+            _Temporizador.Tick += new EventHandler(ManejarAlarmaTemporizador);
+
             _ConfiguracionLocal = Configuracion.CargarConfiguracion();
 
             InicializarConexiones();
@@ -56,19 +64,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (LocalARemota != null)
             {
                 InicializarSincronizacion();
+                _Temporizador.Start();
             }
             else
             {
                 LocalARemota = new SincronizacionViewModel();
-            }
-            
-            _Temporizador = new DispatcherTimer()
-            {
-                Interval = new TimeSpan(0, 0, 5),
-            };
-
-            _Temporizador.Stop();
-            _Temporizador.Tick += new EventHandler(AlarmaTemporizador);
+            }            
         }
 
         #endregion
@@ -310,34 +311,37 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
-        protected virtual void AlarmaTemporizador(object Remitente, EventArgs Argumentos)
+        protected virtual void ManejarAlarmaTemporizador(object Remitente, EventArgs Argumentos)
         {
             try
             {
-                //_Temporizador.Stop();
+                _Temporizador.Stop();
 
-                string[] NodosOrigen = LocalARemota.RutasDeNodosDeOrigen();
+                NodoViewModel[] NodosOrigen = LocalARemota.NodosDeOrigen();
 
-                // Expandimos los nodos locales para poder operar sobre ellos
-                HashSet<string> RutasDeTabla = new HashSet<string>();
+                // Expandimos nuevamente los nodos locales para verificar cambios
+                HashSet<NodoViewModel> Tablas = new HashSet<NodoViewModel>();
 
-                foreach (string RutaDeColumna in NodosOrigen)
+                foreach (NodoViewModel NodoColumna in NodosOrigen)
                 {
-                    string RutaDeTabla = RutaColumnaARutaTabla(RutaDeColumna);
-
-                    // Si ya esa ruta fue expandida, no la expandamos otra vez
-                    if (RutasDeTabla.Add(RutaDeTabla))
-                        ExploradorLocal.Reexpandir(NodoViewModelExtensiones.RutaANodo(RutaDeTabla, ExploradorLocal.Nodos));
+                    // Si ya esta tabla fue expandida, no la expandamos otra vez
+                    if (Tablas.Add(NodoColumna.Padre))
+                        ExploradorLocal.Reexpandir(NodoColumna.Padre);
                 }
 
-                LocalARemota.RecargarTablasLocales(ExploradorLocal.Nodos);
+                LocalARemota.ActualizarTodasLasTablas();
 
                 foreach (KeyValuePair<NodoViewModel, DataTable> Par in LocalARemota.TablasAEnviar())
                 {
                     DataTable T = Par.Value.GetChanges();
-                    ExploradorRemoto.EscribirTabla(Par.Key, T);
-                    T.Dispose();
-                    Par.Value.AcceptChanges();
+
+                    if (T != null)
+                    {
+                        ExploradorRemoto.EscribirTabla(Par.Key, T);
+                        T.Dispose();
+                        Par.Value.AcceptChanges();
+                    }
+                    
                 }
             }
             catch (Exception ex)

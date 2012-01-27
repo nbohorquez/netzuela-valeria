@@ -18,7 +18,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 foreach (DataTable T in _CacheDeTablas.Values)
                 {
                     T.Clear();
-                    T.Columns.Clear();
+                    T.Rows.Clear();
                     T.DefaultView.Dispose();
                     T.Dispose();
                 }

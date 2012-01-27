@@ -156,16 +156,17 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             {
                 for (int i = 0; i < Argumentos.Length; i++)
                 {
-                    if (Argumentos[i] is DataSetXML)
+                    if (Argumentos[i] is DataTableXML)
                     {
-                        DataSetXMLDinamico DataSetDinamico = new DataSetXMLDinamico(_Fabrica.ProxyAssembly);
-                        DataSetDinamico.BaseDeDatos = ((DataSetXML)Argumentos[i]).BaseDeDatos;
-                        DataSetDinamico.NombreTabla = ((DataSetXML)Argumentos[i]).NombreTabla;
-                        DataSetDinamico.EsquemaXML = ((DataSetXML)Argumentos[i]).EsquemaXML;
-                        DataSetDinamico.XML = ((DataSetXML)Argumentos[i]).XML;
-                        DataSetDinamico.EstadoFilas = ((DataSetXML)Argumentos[i]).EstadoFilas;
+                        DataTableXMLDinamico DataTableDinamico = new DataTableXMLDinamico(_Fabrica.ProxyAssembly);
+                        DataTableDinamico.BaseDeDatos = ((DataTableXML)Argumentos[i]).BaseDeDatos;
+                        DataTableDinamico.NombreTabla = ((DataTableXML)Argumentos[i]).NombreTabla;
+                        DataTableDinamico.EsquemaXML = ((DataTableXML)Argumentos[i]).EsquemaXML;
+                        DataTableDinamico.XML = ((DataTableXML)Argumentos[i]).XML;
+                        DataTableDinamico.EstadoFilas = ((DataTableXML)Argumentos[i]).EstadoFilas;
+                        DataTableDinamico.ClavePrimaria = ((DataTableXML)Argumentos[i]).ClavePrimaria;
 
-                        Argumentos[i] = DataSetDinamico.ObjectInstance;
+                        Argumentos[i] = DataTableDinamico.ObjectInstance;
                     }
                 }
             }
@@ -176,16 +177,18 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 
                 // No puedo hacer "if(Resultado is DataSetXML)" por que ocurre este error:
                 // http://stackoverflow.com/questions/2500280/invalidcastexception-for-two-objects-of-the-same-type
-                if (Resultado.GetType().FullName == typeof(DataSetXML).FullName)
+                
+                if (Resultado.GetType().FullName == typeof(DataTableXML).FullName)
                 {
-                    DataSetXMLDinamico SetXMLDinamico = new DataSetXMLDinamico(Resultado);
-                    Resultado = new DataSetXML();
+                    DataTableXMLDinamico DataTableDinamico = new DataTableXMLDinamico(Resultado);
+                    Resultado = new DataTableXML();
 
-                    ((DataSetXML)Resultado).BaseDeDatos = SetXMLDinamico.BaseDeDatos;
-                    ((DataSetXML)Resultado).NombreTabla = SetXMLDinamico.NombreTabla;
-                    ((DataSetXML)Resultado).EsquemaXML = SetXMLDinamico.EsquemaXML;
-                    ((DataSetXML)Resultado).XML = SetXMLDinamico.XML;
-                    ((DataSetXML)Resultado).EstadoFilas = SetXMLDinamico.EstadoFilas;
+                    ((DataTableXML)Resultado).BaseDeDatos = DataTableDinamico.BaseDeDatos;
+                    ((DataTableXML)Resultado).NombreTabla = DataTableDinamico.NombreTabla;
+                    ((DataTableXML)Resultado).EsquemaXML = DataTableDinamico.EsquemaXML;
+                    ((DataTableXML)Resultado).XML = DataTableDinamico.XML;
+                    ((DataTableXML)Resultado).EstadoFilas = DataTableDinamico.EstadoFilas;
+                    ((DataTableXML)Resultado).ClavePrimaria = DataTableDinamico.ClavePrimaria;
                 }
             }
             catch (Exception ex)

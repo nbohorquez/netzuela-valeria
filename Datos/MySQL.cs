@@ -398,7 +398,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
                 Adaptador.UpdateCommand = new MySqlCommand("Actualizar");
                 Adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
-                Adaptador.DeleteCommand = new MySqlCommand("Borrar");
+                Adaptador.DeleteCommand = new MySqlCommand("Eliminar");
                 Adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
 
                 string VariableDeEntrada = string.Empty;

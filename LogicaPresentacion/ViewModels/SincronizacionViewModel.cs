@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MvvmFoundation.Wpf;                       // RelayCommand
-using System.Collections.ObjectModel;           // ObservableCollection
-using System.Data;                              // DataTable
-using System.Windows;                           // MessageBox
-using System.Windows.Input;                     // ICommand
-using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
-using Zuliaworks.Netzuela.Valeria.Logica;       // TablaMapeada
+using MvvmFoundation.Wpf;                               // RelayCommand
+using System.Collections.ObjectModel;                   // ObservableCollection
+using System.Data;                                      // DataTable
+using System.Windows;                                   // MessageBox
+using System.Windows.Input;                             // ICommand
+using Zuliaworks.Netzuela.Valeria.Comunes;              // Constantes
+using Zuliaworks.Netzuela.Valeria.Logica;               // TablaMapeada
+using Zuliaworks.Netzuela.Valeria.LogicaPresentacion;   // ManipuladorDeTablas
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
@@ -106,8 +107,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 NodoViewModel NodoDestino = Argumento[1] as NodoViewModel;
 
                 Asociar(NodoOrigen, NodoDestino);
-                //ActualizarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
-                IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
+                ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
             }
             catch (Exception ex)
             {
@@ -122,8 +122,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 NodoViewModel NodoDestino = Argumento as NodoViewModel;
                 
                 Desasociar(NodoDestino);
-                //ActualizarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
-                IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
+                ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
             }
             catch (Exception ex)
             {
@@ -174,8 +173,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 _CacheDeTablas[NodoDestino.Padre] = TablaDestino;
 
             NodoDestino.AsociarCon(NodoOrigen);
-            
-            //ActualizarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
         }
 
         private void Desasociar(NodoViewModel NodoDestino)
@@ -184,33 +181,15 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new ArgumentNullException("NodoDestino");
 
             NodoDestino.Desasociarse();
-
-            //ActualizarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
         }
-
-        private void ActualizarTabla(DataTable Tabla, TablaDeAsociaciones TabAso)
-        {
-            // Como borrar la referencia del DataGrid a un DataTable:
-            // http://social.msdn.microsoft.com/Forums/en/wpf/thread/a5767cf4-8d26-4f72-b1b1-feca26bb6b2e
-
-            if (Tabla == null)
-                throw new ArgumentNullException("Tabla");
-            if (TabAso == null)
-                throw new ArgumentNullException("TabAso");
-
-            DataTable Temp = CrearTabla(TabAso);
-            Tabla.Merge(Temp, false, MissingSchemaAction.Error);
-            Temp.Dispose();
-            Temp = null;
-        }
-
+        
         public void ActualizarTodasLasTablas()
         {
             try
             {
                 foreach (TablaDeAsociaciones TM in Tablas)
                 {
-                    ActualizarTabla(_CacheDeTablas[TM.NodoTabla.BuscarEnRepositorio()], TM);
+                     ManipuladorDeTablas.ActualizarTabla(_CacheDeTablas[TM.NodoTabla.BuscarEnRepositorio()], TM);
                 }
             }
             catch (Exception ex)
@@ -218,93 +197,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new Exception("Error al actualizar las tablas", ex);
             }
         }
-
-        public void IntegrarTabla(DataTable Tabla, TablaDeAsociaciones TabAso)
-        {
-            if (Tabla == null)
-                throw new ArgumentNullException("Tabla");
-            if (TabAso == null)
-                throw new ArgumentNullException("TabAso");
-
-            foreach (AsociacionDeColumnas Sociedad in TabAso.Sociedades)
-            {
-                if (Sociedad.ColumnaOrigen != null)
-                {
-                    NodoViewModel ColumnaOrigen = Sociedad.ColumnaOrigen.BuscarEnRepositorio();
-                    NodoViewModel ColumnaDestino = Sociedad.ColumnaDestino.BuscarEnRepositorio();
-
-                    DataTable TablaOrigen = ColumnaOrigen.Explorador.ObtenerTablaDeCache(ColumnaOrigen.Padre);
-
-                    for (int i = 0; i < TablaOrigen.Rows.Count; i++)
-                    {
-                        if (Tabla.Rows.Count < TablaOrigen.Rows.Count)
-                        {
-                            DataRow FilaNueva = Tabla.NewRow();
-                            FilaNueva[ColumnaDestino.Nombre] = TablaOrigen.Rows[i][ColumnaOrigen.Nombre];
-                            Tabla.Rows.Add(FilaNueva);
-                        }
-                        else
-                        {
-                            Tabla.Rows[i][ColumnaDestino.Nombre] = TablaOrigen.Rows[i][ColumnaOrigen.Nombre];
-                        }
-                    }
-                }
-            }
-
-            Tabla.AcceptChanges();
-        }
-
-        public DataTable CrearTabla(TablaDeAsociaciones Tabla)
-        {
-            if (Tabla == null)
-                throw new ArgumentNullException("Tabla");
-
-            NodoViewModel NodoTablaDestino = Tabla.NodoTabla.BuscarEnRepositorio();
-            DataTable TablaDestino = NodoTablaDestino.Explorador.ObtenerTablaDeCache(NodoTablaDestino);
-            DataTable Resultado = new DataTable(Tabla.NodoTabla.Nombre);
-
-            NodoTablaDestino = null;
-
-            try
-            {
-                foreach (AsociacionDeColumnas Sociedad in Tabla.Sociedades)
-                {
-                    DataColumn ColDestino = new DataColumn(Sociedad.ColumnaDestino.Nombre, TablaDestino.Columns[Sociedad.ColumnaDestino.Nombre].DataType);
-                    Resultado.Columns.Add(ColDestino);
-
-                    ColDestino = null;
-                    
-                    if (Sociedad.ColumnaOrigen != null)
-                    {
-                        NodoViewModel NodoColOrigen = Sociedad.ColumnaOrigen.BuscarEnRepositorio();
-                        DataTable TablaOrigen = NodoColOrigen.Explorador.ObtenerTablaDeCache(NodoColOrigen.Padre);
-                        
-                        for (int i = 0; i < TablaOrigen.Rows.Count; i++)
-                        {
-                            if (Resultado.Rows.Count < TablaOrigen.Rows.Count)
-                            {
-                                Resultado.Rows.Add(Resultado.NewRow());
-                            }
-
-                            Resultado.Rows[i][Sociedad.ColumnaDestino.Nombre] = TablaOrigen.Rows[i][Sociedad.ColumnaOrigen.Nombre];
-                        }
-
-                        NodoColOrigen = null;
-                        TablaOrigen = null;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al crear la tabla a partir de la TablaDeAsociaciones", ex);
-            }
-
-            Resultado.AcceptChanges();
-
-            return Resultado;
-        }
-
-        public void Sincronizar(ObservableCollection<NodoViewModel> NodosLocales, ObservableCollection<NodoViewModel> NodosRemotos, List<string[]> Mapas)
+        
+        public void Sincronizar(ObservableCollection<NodoViewModel> NodosLocales, ObservableCollection<NodoViewModel> NodosRemotos, List<string[]> Asociaciones)
         {
             NodoViewModel NodoOrigen = null;
             NodoViewModel NodoDestino = null;
@@ -313,14 +207,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             try
             {
-                foreach (string[] Mapa in Mapas)
+                foreach (string[] Asociacion in Asociaciones)
                 {
-                    NodoOrigen = NodoViewModelExtensiones.RutaANodo(Mapa[0], NodosLocales);
-                    NodoDestino = NodoViewModelExtensiones.RutaANodo(Mapa[1], NodosRemotos);
+                    NodoOrigen = NodoViewModelExtensiones.RutaANodo(Asociacion[0], NodosLocales);
+                    NodoDestino = NodoViewModelExtensiones.RutaANodo(Asociacion[1], NodosRemotos);
 
                     Asociar(NodoOrigen, NodoDestino);
-                    //ActualizarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
-                    IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
+                    ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
                 }
             }
             catch (Exception ex)
@@ -358,8 +251,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                         Asociar(NodoOrigen, NodoDestino);
                     }
 
-                    //ActualizarTabla(_CacheDeTablas[TM.NodoTabla.BuscarEnRepositorio()], TM);
-                    IntegrarTabla(_CacheDeTablas[TM.NodoTabla.BuscarEnRepositorio()], TM);
+                    ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[TM.NodoTabla.BuscarEnRepositorio()], TM);
                 }
             }
             catch (Exception ex)
@@ -454,7 +346,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             try
             {
-                // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
+                // Obtenemos las columnas de destino que son utilizadas en la sincronizacion
                 foreach (TablaDeAsociaciones TM in Tablas)
                 {
                     foreach (AsociacionDeColumnas MC in TM.Sociedades)

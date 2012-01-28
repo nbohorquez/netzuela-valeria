@@ -50,7 +50,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             _Temporizador = new DispatcherTimer()
             {
-                Interval = new TimeSpan(0, 0, 5),
+                Interval = new TimeSpan(0, 1, 0),
             };
 
             _Temporizador.Stop();
@@ -315,7 +315,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             try
             {
-                _Temporizador.Stop();
+                //_Temporizador.Stop();
 
                 NodoViewModel[] NodosOrigen = LocalARemota.NodosDeOrigen();
 
@@ -334,14 +334,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 foreach (KeyValuePair<NodoViewModel, DataTable> Par in LocalARemota.TablasAEnviar())
                 {
                     DataTable T = Par.Value.GetChanges();
-
+                    /*
                     if (T != null)
                     {
                         ExploradorRemoto.EscribirTabla(Par.Key, T);
                         T.Dispose();
                         Par.Value.AcceptChanges();
-                    }
-                    
+                    }*/
+                    Par.Value.AcceptChanges();
                 }
             }
             catch (Exception ex)

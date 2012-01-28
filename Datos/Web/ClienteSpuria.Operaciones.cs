@@ -256,43 +256,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             object TablaXML = _Proxy.InvocarMetodo("LeerTabla", BaseDeDatos, NombreTabla);
             DataTable Tabla = ((DataTableXML)TablaXML).XmlADataTable();
 
-            /*
-            DataSet SetTemporal = new DataSet();
-            DataTable Tabla = null;
-
-            SetTemporal.ReadXmlSchema(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)TablaXML).EsquemaXML)));
-            SetTemporal.ReadXml(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)TablaXML).XML)));
-
-            Tabla = SetTemporal.Tables[0];
-            Tabla.AcceptChanges();
-
-            DataRowCollection Fila = Tabla.Rows;
-
-            for (int i = 0; i < Fila.Count; i++)
-            {
-                switch (((DataSetXML)TablaXML).EstadoFilas[i])
-                {
-                    case DataRowState.Added:
-                        Fila[i].SetAdded();
-                        break;
-                    case DataRowState.Deleted:
-                        Fila[i].Delete();
-                        break;
-                    case DataRowState.Detached:
-                        //Fila[i].Delete();
-                        break;
-                    case DataRowState.Modified:
-                        Fila[i].SetModified();
-                        break;
-                    case DataRowState.Unchanged:
-                        break;
-                    default:
-                        throw new Exception("No se reconoce el estado de la fila");
-                }
-            }
-
-            Tabla.PrimaryKey = ((DataSetXML)TablaXML).ClavePrimaria;
-             */
             Desconectar();
 
             return Tabla;
@@ -301,32 +264,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
         {
             Conectar();
-            /*
-            DataSet Tablas = null;
-
-            if (Tabla.DataSet != null)
-            {
-                Tablas = Tabla.DataSet;
-            }
-            else
-            {
-                Tablas = new DataSet(NombreTabla);
-                Tablas.Tables.Add(Tabla);                
-            }
-
-            DataSetXML DatosAEnviar = new DataSetXML(BaseDeDatos, NombreTabla, Tablas.GetXmlSchema(), Tablas.GetXml());
             
-            List<DataRowState> EstadoFilas = new List<DataRowState>();
-            foreach(DataRow Fila in Tabla.Rows)
-            {
-                EstadoFilas.Add(Fila.RowState);
-            }
-            DatosAEnviar.EstadoFilas = EstadoFilas.ToArray();
-            DatosAEnviar.ClavePrimaria = Tabla.PrimaryKey;
-            */
-
             DataTableXML DatosAEnviar = Tabla.DataTableAXml(BaseDeDatos, NombreTabla);
             bool Resultado = Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
+            
             Desconectar();
 
             return Resultado;

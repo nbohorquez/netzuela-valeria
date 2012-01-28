@@ -43,13 +43,13 @@
   <ItemGroup>
     <Compile Include="AutentificacionSection.cs" />
     <Compile Include="CargarGuardar.cs" />
-    <Compile Include="TablasMapeadasSection.cs" />
+    <Compile Include="TablasDeAsociacionesSection.cs" />
     <Compile Include="ColeccionElementosGenerica.cs" />
     <Compile Include="ConexionesSection.cs" />
-    <Compile Include="MapeoDeColumnasElement.cs" />
+    <Compile Include="AsociacionDeColumnasElement.cs" />
     <Compile Include="ParametrosDeConexionElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TablaMapeadaElement.cs" />
+    <Compile Include="TablaDeAsociacionesElement.cs" />
     <Compile Include="UsuarioContrasenaElement.cs" />
   </ItemGroup>
   <ItemGroup>

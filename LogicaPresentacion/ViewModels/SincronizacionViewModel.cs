@@ -134,14 +134,31 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             try
             {
-                Listo = !Listo;
-                RaisePropertyChanged("BotonSincronizar");
-                RaisePropertyChanged("PermitirModificaciones");
+                ConmutarListo();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
+        }
+
+        private void ConmutarListo()
+        {
+            Listo = !Listo;
+            RaisePropertyChanged("BotonSincronizar");
+            RaisePropertyChanged("PermitirModificaciones");
+        }
+
+        private void ListoTrue()
+        {
+            if (Listo == false)
+                ConmutarListo();
+        }
+
+        private void ListoFalse()
+        {
+            if (Listo == true)
+                ConmutarListo();
         }
 
         private void Asociar(NodoViewModel NodoOrigen, NodoViewModel NodoDestino)
@@ -213,8 +230,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     NodoDestino = NodoViewModelExtensiones.RutaANodo(Asociacion[1], NodosRemotos);
 
                     Asociar(NodoOrigen, NodoDestino);
-                    ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
                 }
+
+                ListoTrue();
             }
             catch (Exception ex)
             {
@@ -250,8 +268,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                         Asociar(NodoOrigen, NodoDestino);
                     }
-
-                    ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[TM.NodoTabla.BuscarEnRepositorio()], TM);
                 }
             }
             catch (Exception ex)
@@ -264,8 +280,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             // Creamos una copia solamente. De esta forma, las modificaciones externas no afectaran 
             // al objeto interno
-            //return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
-            return _CacheDeTablas;
+            return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
+            //return _CacheDeTablas;
         }
 
         public List<NodoViewModel> ObtenerNodosCache()

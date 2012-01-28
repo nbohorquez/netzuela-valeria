@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -70,9 +70,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                 
                 if (Eliminadas.Count > 0)
                 {
-                    // ¿Por que cuando llamo a Delete() pasa de una vez al estado Detached en lugar de Deleted?
+                    // �Por que cuando llamo a Delete() pasa de una vez al estado Detached en lugar de Deleted?
                     // http://social.msdn.microsoft.com/Forums/en-US/adodotnetdataproviders/thread/cf1b16ef-a980-427f-9e4a-ceccd962b046/
-
 
                     List<DataRow> MarcarComoEliminadas = (from Fila in Tabla.AsEnumerable()
                                                           from Eliminada in Eliminadas

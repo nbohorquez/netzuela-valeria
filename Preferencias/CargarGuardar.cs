@@ -110,11 +110,11 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
             return (Resultado != null) ? Resultado.ToArray() : null;
         }
 
-        public static void GuardarTablas(Configuration ArchivoConfig, ColeccionElementosGenerica<TablaMapeadaElement> ColeccionTablas)
+        public static void GuardarTablas(Configuration ArchivoConfig, ColeccionElementosGenerica<TablaDeAsociacionesElement> ColeccionTablas)
         {
             try
             {
-                TablasMapeadasSection Tablas = new TablasMapeadasSection();
+                TablasDeAsociacionesSection Tablas = new TablasDeAsociacionesSection();
                 Tablas.Tablas = ColeccionTablas;
 
                 ArchivoConfig.Sections.Remove("mapas");
@@ -135,15 +135,15 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
 
             try
             {
-                TablasMapeadasSection Tablas = ConfigurationManager.GetSection("mapas") as TablasMapeadasSection;
+                TablasDeAsociacionesSection Tablas = ConfigurationManager.GetSection("mapas") as TablasDeAsociacionesSection;
 
                 if (Tablas != null)
                 {
                     Resultado = new List<string[]>();
 
-                    foreach (TablaMapeadaElement Tabla in Tablas.Tablas)
+                    foreach (TablaDeAsociacionesElement Tabla in Tablas.Tablas)
                     {
-                        foreach (MapeoDeColumnasElement Columnas in Tabla.TablaMapeada)
+                        foreach (AsociacionDeColumnasElement Columnas in Tabla.TablaMapeada)
                         {
                             string[] Nodos = new string[] 
                             {

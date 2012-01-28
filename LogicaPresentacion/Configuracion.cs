@@ -28,7 +28,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         public SecureString ContrasenaLocal { get; set; }
         public SecureString UsuarioRemoto { get; set; }
         public SecureString ContrasenaRemota { get; set; }
-        public List<string[]> Mapas { get; set; }
+        public List<string[]> Asociaciones { get; set; }
         public List<TablaDeAsociaciones> Tablas { get; set; }
 
         #endregion
@@ -57,7 +57,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                 Resultado.ContrasenaRemota = (SecureString)Credenciales[1];
             }
 
-            Resultado.Mapas = CargarGuardar.CargarTablas();
+            Resultado.Asociaciones = CargarGuardar.CargarTablas();
 
             return Resultado;
         }
@@ -120,20 +120,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                 CargarGuardar.GuardarCredenciales(ArchivoConfig, ColeccionDeLlaves);
 
                 // Mapas de tablas
-                MapeoDeColumnasElement Columnas;
-                TablaMapeadaElement Tabla;
+                AsociacionDeColumnasElement Columnas;
+                TablaDeAsociacionesElement Tabla;
 
-                ColeccionElementosGenerica<TablaMapeadaElement> ColeccionTablas =
-                    new ColeccionElementosGenerica<TablaMapeadaElement>();
+                ColeccionElementosGenerica<TablaDeAsociacionesElement> ColeccionTablas =
+                    new ColeccionElementosGenerica<TablaDeAsociacionesElement>();
 
                 foreach (TablaDeAsociaciones T in Preferencias.Tablas)
                 {
-                    ColeccionElementosGenerica<MapeoDeColumnasElement> ColeccionColumnas =
-                        new ColeccionElementosGenerica<MapeoDeColumnasElement>();
+                    ColeccionElementosGenerica<AsociacionDeColumnasElement> ColeccionColumnas =
+                        new ColeccionElementosGenerica<AsociacionDeColumnasElement>();
 
                     foreach (AsociacionDeColumnas MP in T.Sociedades)
                     {
-                        Columnas = new MapeoDeColumnasElement();
+                        Columnas = new AsociacionDeColumnasElement();
                         Columnas.NodoDestino = MP.ColumnaDestino.BuscarEnRepositorio().RutaCompleta();
                         if (MP.ColumnaOrigen != null)
                             Columnas.NodoOrigen = MP.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta();
@@ -141,7 +141,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                         ColeccionColumnas.Add(Columnas);
                     }
 
-                    Tabla = new TablaMapeadaElement();
+                    Tabla = new TablaDeAsociacionesElement();
                     Tabla.ID = T.NodoTabla.Nombre;
                     Tabla.TablaMapeada = ColeccionColumnas;
 

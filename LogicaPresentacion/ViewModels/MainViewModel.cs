@@ -25,6 +25,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private ExploradorViewModel _ExploradorLocal;
         private ExploradorViewModel _ExploradorRemoto;
         private SincronizacionViewModel _LocalARemota;
+        private bool _SistemaConfigurado;
         private readonly PropertyObserver<ConexionLocalViewModel> _ObservadorConexionLocalEstablecida;
         private readonly PropertyObserver<ConexionRemotaViewModel> _ObservadorConexionRemotaEstablecida;
         private PropertyObserver<SincronizacionViewModel> _ObservadorSincronizacion;
@@ -37,6 +38,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public MainViewModel()
         {
+            InicializarTemporizador();
+
             ConexionLocal = new ConexionLocalViewModel();
             ConexionRemota = new ConexionRemotaViewModel();
                        
@@ -47,29 +50,19 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
 
             AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
-
-            _Temporizador = new DispatcherTimer()
-            {
-                Interval = new TimeSpan(0, 1, 0),
-            };
-
-            _Temporizador.Stop();
-            _Temporizador.Tick += new EventHandler(ManejarAlarmaTemporizador);
-
+                  
             _ConfiguracionLocal = Configuracion.CargarConfiguracion();
-
             InicializarConexiones();
             
             // Si las dos conexiones estan establecidas...
             if (LocalARemota != null)
             {
                 InicializarSincronizacion();
-                _Temporizador.Start();
             }
             else
             {
                 LocalARemota = new SincronizacionViewModel();
-            }            
+            }
         }
 
         #endregion
@@ -128,6 +121,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Funciones
 
+        private void InicializarTemporizador()
+        {
+            _Temporizador = new DispatcherTimer();
+            _Temporizador.Stop();
+            _Temporizador.Interval = new TimeSpan(0, 0, 20);
+            _Temporizador.Tick += new EventHandler(ManejarAlarmaTemporizador);
+        }
+
         private void InicializarConexiones()
         {
             ConexionLocal.Parametros = _ConfiguracionLocal.ParametrosConexionLocal;
@@ -150,12 +151,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             HashSet<string> RutasDeTablaLocales = new HashSet<string>();
             HashSet<string> RutasDeTablaRemotas = new HashSet<string>();
-            List<string[]> MapasValidos = new List<string[]>();
+            List<string[]> AsociacionesValidas = new List<string[]>();
 
-            foreach (string[] Mapa in _ConfiguracionLocal.Mapas)
+            foreach (string[] Asociacion in _ConfiguracionLocal.Asociaciones)
             {
-                string RutaLocal = RutaColumnaARutaTabla(Mapa[0]);
-                string RutaRemota = RutaColumnaARutaTabla(Mapa[1]);
+                string RutaLocal = RutaColumnaARutaTabla(Asociacion[0]);
+                string RutaRemota = RutaColumnaARutaTabla(Asociacion[1]);
 
                 if (RutasDeTablaLocales.Add(RutaLocal))
                     ExploradorLocal.ExpandirRuta(RutaLocal);
@@ -165,13 +166,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 // Pueden haber espacios en blanco debido a que no todas las columnas destino estan apareadas
                 if (RutaLocal != string.Empty && RutaRemota != string.Empty)
-                    MapasValidos.Add(Mapa);
+                    AsociacionesValidas.Add(Asociacion);
             }
 
             ExploradorLocal.OperacionAsincronica = AsincronicoLocal;
             ExploradorRemoto.OperacionAsincronica = AsincronicoRemoto;
 
-            LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, MapasValidos);
+            _SistemaConfigurado = true;
+            LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, AsociacionesValidas);
         }
 
         private string RutaColumnaARutaTabla(string RutaColumna)
@@ -229,55 +231,68 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Sincronizacion.Listo == false)
             {
                 _Temporizador.Stop();
-                return;
             }
-
-            try
+            else
             {
-                string[] NodosOrigen = Sincronizacion.RutasDeNodosDeOrigen();
-
-                // Guardamos el arbol de nodos de ExploradorLocal. Sera util unos pasos mas adelante
-                ExploradorViewModel ExploradorLocalViejo = ExploradorLocal;
-
-                // Creamos un usuario en la base de datos local con los privilegios necesarios 
-                // para leer las columnas de origen
-                if (!ConexionLocal.CrearUsuarioNetzuela(NodosOrigen))
-                    throw new Exception("No se pudo crear el usuario Netzuela dentro de la base de datos local. La sincronización no puede proceder");
-
-                // Cambiamos de usuario
-                ConexionLocal.Desconectar();
-                ConexionLocal.ConexionNetzuela();
-
-                // Expandimos los nodos locales para poder operar sobre ellos
-                HashSet<string> RutasDeTabla = new HashSet<string>();
-
-                foreach(string RutaDeColumna in NodosOrigen)
+                if (_SistemaConfigurado == false)
                 {
-                    string RutaDeTabla = RutaColumnaARutaTabla(RutaDeColumna);
+                    try
+                    {
+                        ConfigurarSistema();
+                        _SistemaConfigurado = true;
+                        _Temporizador.Start();
 
-                    // Si ya esa ruta fue expandida, no la expandamos otra vez
-                    if(RutasDeTabla.Add(RutaDeTabla))
-                        ExploradorLocal.ExpandirRuta(RutaDeTabla);
+                        MessageBox.Show("El sistema se configuró correctamente");                        
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                    }
                 }
-            
-                // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
-                Sincronizacion.RecargarTablasLocales(ExploradorLocal.Nodos);
-
-                // Ahora tenemos que borrar todos los nodos y tablas que no se van a utilizar mas. Para ello, 
-                // simplemente borramos todo el ExploradorLocal viejo.
-                ExploradorLocalViejo.Dispose();
-                ExploradorLocalViejo = null;
-
-                GuardarConfiguracion(Sincronizacion.Tablas);
-
-                _Temporizador.Start();
-                
-                MessageBox.Show("La sincronización se realizó correctamente");
+                else
+                {
+                    _Temporizador.Start();
+                }
             }
-            catch (Exception ex)
+        }
+
+        private void ConfigurarSistema()
+        {
+            string[] NodosOrigen = LocalARemota.RutasDeNodosDeOrigen();
+
+            // Guardamos el arbol de nodos de ExploradorLocal. Sera util unos pasos mas adelante
+            ExploradorViewModel ExploradorLocalViejo = ExploradorLocal;
+
+            // Creamos un usuario en la base de datos local con los privilegios necesarios 
+            // para leer las columnas de origen
+            if (!ConexionLocal.CrearUsuarioNetzuela(NodosOrigen))
+                throw new Exception("No se pudo crear el usuario Netzuela dentro de la base de datos local. La sincronización no puede proceder");
+
+            // Cambiamos de usuario
+            ConexionLocal.Desconectar();
+            ConexionLocal.ConexionNetzuela();
+
+            // Expandimos los nodos locales para poder operar sobre ellos
+            HashSet<string> RutasDeTabla = new HashSet<string>();
+
+            foreach (string RutaDeColumna in NodosOrigen)
             {
-                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+                string RutaDeTabla = RutaColumnaARutaTabla(RutaDeColumna);
+
+                // Si ya esa ruta fue expandida, no la expandamos otra vez
+                if (RutasDeTabla.Add(RutaDeTabla))
+                    ExploradorLocal.ExpandirRuta(RutaDeTabla);
             }
+
+            // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
+            LocalARemota.RecargarTablasLocales(ExploradorLocal.Nodos);
+
+            // Ahora tenemos que borrar todos los nodos y tablas que no se van a utilizar mas. Para ello, 
+            // simplemente borramos todo el ExploradorLocal viejo.
+            ExploradorLocalViejo.Dispose();
+            ExploradorLocalViejo = null;
+
+            GuardarConfiguracion(LocalARemota.Tablas);
         }
 
         private void GuardarConfiguracion(List<TablaDeAsociaciones> Tablas)
@@ -297,8 +312,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void ManejarAmbasConexionesEstablecidas(object Remitente, EventArgs Args)
         {
-            //LocalARemota = new SincronizacionViewModel();
-
             _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
                 .RegisterHandler(n => n.Listo, this.SincronizacionLista);
         }

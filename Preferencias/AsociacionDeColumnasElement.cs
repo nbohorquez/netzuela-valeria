@@ -7,13 +7,13 @@ using System.Configuration;         // ConfigurationElement
 
 namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
-    public class MapeoDeColumnasElement : ConfigurationElement
+    public class AsociacionDeColumnasElement : ConfigurationElement
     {
         // Referencia: http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
 
         #region Constructores
 
-        public MapeoDeColumnasElement() { }
+        public AsociacionDeColumnasElement() { }
 
         #endregion
 

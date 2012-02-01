@@ -211,7 +211,14 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             if (ColumnaOrigen == null)
                 throw new ArgumentNullException("ColumnaOrigen");
 
-            this.ColumnaOrigen = ColumnaOrigen;
+            try
+            {
+                this.ColumnaOrigen = ColumnaOrigen;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo fijar la columna de origen en esta AsociacionDeColumnas", ex);
+            }
         }
 
         public void FijarDestino(Nodo ColumnaDestino)
@@ -219,7 +226,14 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             if (ColumnaDestino == null)
                 throw new ArgumentNullException("ColumnaDestino");
 
-            this.ColumnaDestino = ColumnaDestino;
+            try
+            {
+                this.ColumnaDestino = ColumnaDestino;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo fijar la columna de destino en esta AsociacionDeColumnas", ex);
+            }
         }
 
         /// <summary>
@@ -227,19 +241,27 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public void QuitarOrigen()
         {
-            if (this.ColumnaOrigen != null)
+            try
             {
                 this.ColumnaOrigen.Sociedad = null;
                 this.ColumnaOrigen = null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo quitar la columna de origen de esta AsociacionDeColumnas", ex);
             }
         }
 
         public void QuitarDestino()
         {
-            if (this.ColumnaDestino != null)
+            try
             {
                 this.ColumnaDestino.Sociedad = null;
                 this.ColumnaDestino = null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo quitar la columna de destino de esta AsociacionDeColumnas", ex);
             }
         }
 

@@ -6,7 +6,9 @@
         xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;assembly=LogicaPresentacion"
         Title="Netzuela - Monitor de tienda"
         Height="600" MinHeight="568"
-        Width="800" MinWidth="757">
+        Width="800" MinWidth="757"
+        Closing="ManejarVentanaCerrandose" StateChanged="ManejarCambioDeEstado" 
+        IsVisibleChanged="ManejarCambioDeVisibilidad">
 
     <Window.DataContext>
         <ViewModels:MainViewModel/>
@@ -64,7 +66,7 @@
         </Border>
 
         <TabControl Grid.Column="0" Grid.Row="1" Style="{StaticResource est_Archivador}">
-            <TabItem Header="Conexión base de datos" Name="tab_ConexionBD">
+            <TabItem Header="Principal" Name="tab_Principal">
                 <Grid DockPanel.Dock="Top">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>

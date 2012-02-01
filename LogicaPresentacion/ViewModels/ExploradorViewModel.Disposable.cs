@@ -13,18 +13,18 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
-            if (CacheDeTablas != null)
+            if (_CacheDeTablas != null)
             {
-                foreach (DataTable T in CacheDeTablas.Values)
+                foreach (DataTable T in _CacheDeTablas.Values)
                 {
                     T.Clear();
-                    T.Columns.Clear();
+                    T.Rows.Clear();
                     T.DefaultView.Dispose();
                     T.Dispose();
                 }
 
-                CacheDeTablas.Clear();
-                CacheDeTablas = null;
+                _CacheDeTablas.Clear();
+                _CacheDeTablas = null;
             }
 
             if (_Conexion != null)

@@ -254,35 +254,20 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             Conectar();
 
             object TablaXML = _Proxy.InvocarMetodo("LeerTabla", BaseDeDatos, NombreTabla);
-            DataSet Tabla = new DataSet();
-
-            Tabla.ReadXmlSchema(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)TablaXML).EsquemaXML)));
-            Tabla.ReadXml(new MemoryStream(Encoding.Unicode.GetBytes(((DataSetXML)TablaXML).XML)));
+            DataTable Tabla = ((DataTableXML)TablaXML).XmlADataTable();
 
             Desconectar();
 
-            return Tabla.Tables[0];
+            return Tabla;
         }
 
         public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
         {
             Conectar();
-
-            DataSet Tablas = null;
-
-            if (Tabla.DataSet != null)
-            {
-                Tablas = Tabla.DataSet;
-            }
-            else
-            {
-                Tablas = new DataSet(NombreTabla);
-                Tablas.Tables.Add(Tabla);                
-            }
-
-            DataSetXML DatosAEnviar = new DataSetXML(BaseDeDatos, NombreTabla, Tablas.GetXmlSchema(), Tablas.GetXml());
+            
+            DataTableXML DatosAEnviar = Tabla.DataTableAXml(BaseDeDatos, NombreTabla);
             bool Resultado = Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
-
+            
             Desconectar();
 
             return Resultado;

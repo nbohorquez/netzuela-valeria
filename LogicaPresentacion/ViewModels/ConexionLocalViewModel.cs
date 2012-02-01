@@ -143,10 +143,17 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void CerrarDetectarServidores(DetectarServidoresLocalesViewModel ServidoresVM)
         {
-            if (ServidoresVM.MostrarView == false)
+            try
             {
-                MostrarDetectarServidoresLocalesView = false;
-                Parametros = ServidoresVM.Parametros.Clonar();
+                if (ServidoresVM.MostrarView == false)
+                {
+                    MostrarDetectarServidoresLocalesView = false;
+                    Parametros = ServidoresVM.Parametros.Clonar();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
         }
 
@@ -162,22 +169,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void CerrarAutentificacion(AutentificacionViewModel AutentificacionVM)
         {
-            if (AutentificacionVM.MostrarView == false)
+            try
             {
-                MostrarAutentificacionView = false;
-
-                _UsuarioExterno = AutentificacionVM.Usuario.Copy();
-                _ContrasenaExterna = AutentificacionVM.Contrasena.Copy();
-
-                try
+                if (AutentificacionVM.MostrarView == false)
                 {
+                    MostrarAutentificacionView = false;
+
+                    _UsuarioExterno = AutentificacionVM.Usuario.Copy();
+                    _ContrasenaExterna = AutentificacionVM.Contrasena.Copy();
+                                    
                     ConexionUsuario();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.MostrarPilaDeExcepciones());
-                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+            }            
         }
 
         private void ConexionUsuario()

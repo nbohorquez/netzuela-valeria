@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 {
-    public static class ManejoDeExcepciones
+    public static class ManejadorDeExcepciones
     {
         public static string MostrarPilaDeExcepciones(this Exception ex)
         {

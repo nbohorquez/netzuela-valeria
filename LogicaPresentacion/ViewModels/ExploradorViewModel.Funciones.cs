@@ -81,16 +81,24 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     Item.Expandido = true;
 
-                    foreach (NodoViewModel N in Item.Hijos)
+                    var Eliminar = from Hijo in Item.Hijos
+                                   where !(from BD in BasesDeDatos
+                                           select BD).Contains(Hijo.Nombre)
+                                   select Hijo;
+
+                    var Agregar = from BD in BasesDeDatos
+                                  where !(from Hijo in Item.Hijos
+                                          select Hijo.Nombre).Contains(BD)
+                                  select BD;
+
+                    foreach (var Hijo in Eliminar)
                     {
-                        N.Dispose();
+                        Hijo.Dispose();
                     }
 
-                    Item.Hijos.Clear();
-
-                    foreach (string BdD in BasesDeDatos)
+                    foreach (var BD in Agregar)
                     {
-                        NodoViewModel Nodo = new NodoViewModel(BdD, Item);
+                        NodoViewModel N = new NodoViewModel(BD, Item);
                     }
                 }
             };
@@ -123,12 +131,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
-            // Aqui seria mejor revisar una variable de configuracion del usuario
-            // que indique si se deben realizan llamadas a los procedimientos 
-            // remotos/locales de forma asincronica o sincronica
-            //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
             if (OperacionAsincronica)
             {
+                _Conexion.ListarBasesDeDatosCompletado -= Retorno;
                 _Conexion.ListarBasesDeDatosCompletado += Retorno;
                 _Conexion.ListarBasesDeDatosAsinc();
             }
@@ -157,16 +162,24 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     Item.Expandido = true;
 
-                    foreach (NodoViewModel N in Item.Hijos)
+                    var Eliminar = from Hijo in Item.Hijos
+                                   where !(from Tabla in Tablas
+                                           select Tabla).Contains(Hijo.Nombre)
+                                   select Hijo;
+
+                    var Agregar = from Tabla in Tablas
+                                  where !(from Hijo in Item.Hijos
+                                          select Hijo.Nombre).Contains(Tabla)
+                                  select Tabla;
+
+                    foreach (var Hijo in Eliminar)
                     {
-                        N.Dispose();
+                        Hijo.Dispose();
                     }
 
-                    Item.Hijos.Clear();
-
-                    foreach (string Tabla in Tablas)
+                    foreach (var Tabla in Agregar)
                     {
-                        NodoViewModel Nodo = new NodoViewModel(Tabla, Item);
+                        NodoViewModel N = new NodoViewModel(Tabla, Item);
                     }
                 }
             };
@@ -198,12 +211,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
-            // Aqui seria mejor revisar una variable de configuracion del usuario
-            // que indique si se deben realizan llamadas a los procedimientos 
-            // remotos/locales de forma asincronica o sincronica
-            //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
             if (OperacionAsincronica)
             {
+                _Conexion.ListarTablasCompletado -= Retorno;
                 _Conexion.ListarTablasCompletado += Retorno;
                 _Conexion.ListarTablasAsinc(Item.Nombre);
             }
@@ -243,18 +253,26 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     //Tabla.TableName = Item.RutaCompleta();
                     Tabla.TableName = Item.Nombre;
 
-                    foreach (NodoViewModel N in Item.Hijos)
+                    var Eliminar = from Hijo in Item.Hijos
+                                   where !(from Columna in Tabla.Columns.Cast<DataColumn>()
+                                           select Columna.ColumnName).Contains(Hijo.Nombre)
+                                   select Hijo;
+
+                    var Agregar = from Columna in Tabla.Columns.Cast<DataColumn>()
+                                  where !(from Hijo in Item.Hijos
+                                          select Hijo.Nombre).Contains(Columna.ColumnName)
+                                  select Columna;
+
+                    foreach (var Hijo in Eliminar)
                     {
-                        N.Dispose();
+                        Hijo.Dispose();
                     }
 
-                    Item.Hijos.Clear();
-
-                    foreach (DataColumn Columna in Tabla.Columns)
+                    foreach (var Columna in Agregar)
                     {
                         NodoViewModel N = new NodoViewModel(Columna.ColumnName, Item);
                     }
-
+                                        
                     AjustarExplorador();
                 }
             };
@@ -286,19 +304,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
-            if (CacheDeTablas.ContainsKey(Item))
+            if (_CacheDeTablas.ContainsKey(Item))
             {
-                Tabla = CacheDeTablas[Item];
+                Tabla = _CacheDeTablas[Item];
                 AjustarExplorador();
             }
             else
             {
-                // Aqui seria mejor revisar una variable de configuracion del usuario
-                // que indique si se deben realizan llamadas a los procedimientos 
-                // remotos/locales de forma asincronica o sincronica
-                //if (_Conexion.Parametros.Servidor == Constantes.SGBDR.NETZUELA)
                 if (OperacionAsincronica)
                 {
+                    _Conexion.LeerTablaCompletado -= Retorno;
                     _Conexion.LeerTablaCompletado += Retorno;
                     _Conexion.LeerTablaAsinc(Item.Padre.Nombre, Item.Nombre);
                 }
@@ -433,34 +448,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
         }
 
+        public void Reexpandir(NodoViewModel Item)
+        {
+            if (Item == null)
+                throw new ArgumentNullException("Item");
+
+            Item.Expandido = false;
+
+            if (_CacheDeTablas.ContainsKey(Item))
+                _CacheDeTablas.Remove(Item);
+
+            Expandir(Item);
+        }
+
         #endregion
 
         #region Funciones de tablas
-
-        /// <summary>
-        /// Lee la tabla especificada desde el proveedor de datos.
-        /// </summary>
-        /// <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
-        /// <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
-        /// <exception cref="ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
-        /// nula.</exception>
-        public DataTable ObtenerTablaDeCache(NodoViewModel Tabla)
-        {
-            DataTable Resultado = null;
-
-            if (Tabla == null)
-                throw new ArgumentNullException("Tabla");
-
-            if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
-            {
-                if (CacheDeTablas.ContainsKey(Tabla))
-                {
-                    Resultado = CacheDeTablas[Tabla];
-                }
-            }
-
-            return Resultado;
-        }
 
         public bool EscribirTabla(NodoViewModel Nodo, DataTable Tabla)
         {
@@ -506,8 +509,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 if (OperacionAsincronica)
                 {
-                    _Conexion.EscribirTablaAsinc(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
-                    _Conexion.EscribirTablaCompletado += new EventHandler<EventoOperacionAsincCompletadaArgs>(Retorno);
+                    _Conexion.EscribirTablaCompletado -= Retorno;
+                    _Conexion.EscribirTablaCompletado += Retorno;
+                    _Conexion.EscribirTablaAsinc(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);                    
                 }
                 else
                 {
@@ -523,12 +527,37 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         }
 
         /// <summary>
+        /// Lee la tabla especificada desde el proveedor de datos.
+        /// </summary>
+        /// <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
+        /// <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
+        /// <exception cref="ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
+        /// nula.</exception>
+        public DataTable ObtenerTablaDeCache(NodoViewModel Tabla)
+        {
+            DataTable Resultado = null;
+
+            if (Tabla == null)
+                throw new ArgumentNullException("Tabla");
+
+            if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
+            {
+                if (_CacheDeTablas.ContainsKey(Tabla))
+                {
+                    Resultado = _CacheDeTablas[Tabla];
+                }
+            }
+
+            return Resultado;
+        }
+
+        /// <summary>
         /// Devuelve las tablas presentes en la caché de tablas.
         /// </summary>
         /// <returns>Lista de las tablas guardadas en la caché.</returns>
         public List<DataTable> ObtenerTablasCache()
         {
-            return CacheDeTablas.Values.ToList();
+            return _CacheDeTablas.Values.ToList();
         }
 
         /// <summary>
@@ -537,7 +566,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// <returns>Lista de los nodos de tablas guardados en la caché.</returns>
         public List<NodoViewModel> ObtenerNodosCache()
         {
-            return CacheDeTablas.Keys.ToList();
+            return _CacheDeTablas.Keys.ToList();
         }
 
         #endregion

@@ -7,20 +7,20 @@ using System.Configuration;         // ConfigurationElement
 
 namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
-    public class TablasMapeadasSection : ConfigurationSection
+    public class TablasDeAsociacionesSection : ConfigurationSection
     {
         #region Constructores
 
-        public TablasMapeadasSection() { }
+        public TablasDeAsociacionesSection() { }
 
         #endregion
 
         #region Propiedades
 
         [ConfigurationProperty("tablas")]
-        public ColeccionElementosGenerica<TablaMapeadaElement> Tablas
+        public ColeccionElementosGenerica<TablaDeAsociacionesElement> Tablas
         {
-            get { return (ColeccionElementosGenerica<TablaMapeadaElement>)this["tablas"]; }
+            get { return (ColeccionElementosGenerica<TablaDeAsociacionesElement>)this["tablas"]; }
             set { this["tablas"] = value; }
         }
 

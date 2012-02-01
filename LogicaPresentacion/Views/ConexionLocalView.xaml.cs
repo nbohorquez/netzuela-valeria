@@ -21,15 +21,23 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
     /// </summary>
     public partial class ConexionLocalView : UserControl
     {
+        #region Constructores
+
         public ConexionLocalView()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Funciones
 
         private void AutentificacionView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             view_Autentificacion.txt_Usuario.Text = string.Empty;
             ((PasswordBox)view_Autentificacion.pwd_Contrasena.Child).Password = string.Empty;
         }
+
+        #endregion
     }
 }

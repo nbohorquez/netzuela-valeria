@@ -41,7 +41,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             DatosDeConexion = ServidorBD;
 
             _Conexion = new MySqlConnection();
-            _Conexion.StateChange += new StateChangeEventHandler(base.ManejarCambioDeEstado);
+            _Conexion.StateChange -= base.ManejarCambioDeEstado;
+            _Conexion.StateChange += base.ManejarCambioDeEstado;
         }
 
         #endregion
@@ -94,6 +95,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             MySqlDataAdapter Adaptador = new MySqlDataAdapter(SQL, _Conexion);
             MySqlCommandBuilder CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
 
+            Adaptador.FillSchema(Resultado, SchemaType.Source);
             Adaptador.Fill(Resultado);
 
             return Resultado;
@@ -396,7 +398,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
                 Adaptador.UpdateCommand = new MySqlCommand("Actualizar");
                 Adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
-                Adaptador.DeleteCommand = new MySqlCommand("Borrar");
+                Adaptador.DeleteCommand = new MySqlCommand("Eliminar");
                 Adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
 
                 string VariableDeEntrada = string.Empty;
@@ -408,7 +410,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 Adaptador.UpdateCommand.Parameters.Add(VariableDeEntradaSQL);
                 Adaptador.DeleteCommand.Parameters.Add(VariableDeEntradaSQL);
 
-                Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
+                //Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
                 
                 MySqlRowUpdatingEventHandler ActualizandoFila = (r, a) =>
                 {
@@ -430,16 +432,19 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                         throw a.Errors;
                     }
                 };
-                
-                Adaptador.RowUpdating += new MySqlRowUpdatingEventHandler(ActualizandoFila);
-                Adaptador.RowUpdated += new MySqlRowUpdatedEventHandler(FilaActualizada);
+
+                Adaptador.RowUpdating -= ActualizandoFila;
+                Adaptador.RowUpdating += ActualizandoFila;
+
+                Adaptador.RowUpdated -= FilaActualizada;
+                Adaptador.RowUpdated += FilaActualizada;
 
                 // Primero actualizamos los borrados
-                Adaptador.Update(Temporal.Select(null, null, DataViewRowState.Deleted));
+                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Deleted));
                 // Luego los modificados
-                Adaptador.Update(Temporal.Select(null, null, DataViewRowState.ModifiedCurrent));
+                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.ModifiedCurrent));
                 // Y por ultimo los agregados
-                Adaptador.Update(Temporal.Select(null, null, DataViewRowState.Added));
+                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Added));
 
                 Resultado = true;
             }

@@ -42,7 +42,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             _Conexion = new SqlConnection();
 
             // Registramos el manejador de eventos por defecto. Este sirve como repetidor del evento subyacente.
-            _Conexion.StateChange += new StateChangeEventHandler(ManejarCambioDeEstado);
+            _Conexion.StateChange -= base.ManejarCambioDeEstado;
+            _Conexion.StateChange += base.ManejarCambioDeEstado;
         }
 
         #endregion
@@ -95,6 +96,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             SqlDataAdapter Adaptador = new SqlDataAdapter(SQL, _Conexion);
             SqlCommandBuilder CreadorDeOrden = new SqlCommandBuilder(Adaptador);
 
+            Adaptador.FillSchema(Resultado, SchemaType.Source);
             Adaptador.Fill(Resultado);
 
             return Resultado;
@@ -332,7 +334,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         
         #region Métodos sincrónicos
 
-        public void Conectar(SecureString Usuario, SecureString Contrasena) 
+        public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
             try
             {
@@ -404,6 +406,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             try
             {
                 CambiarBaseDeDatos(BaseDeDatos);
+                //string[] ResultadoBruto = LectorSimple("EXEC sp_tables");
                 string[] ResultadoBruto = LectorSimple("SELECT name FROM " + BaseDeDatos + "..sysobjects WHERE xtype = 'U' ORDER BY name");
 
                 Resultado = new List<string>();

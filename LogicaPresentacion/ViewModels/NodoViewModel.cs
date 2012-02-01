@@ -172,7 +172,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             _Nodo.AgregarARepositorio(this);
         }
 
-        private void ManejarCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
+        protected virtual void ManejarCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
         {
             RaisePropertyChanged("NombreParaMostrar");
         }
@@ -258,31 +258,47 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Nodo == null)
                 throw new ArgumentNullException("Nodo");
 
-            Nodo.Padre = this;
-            Nodo.Nivel = this.Nivel + 1;
-            Nodo.Explorador = this.Explorador;
+            try
+            {
+                Nodo.Padre = this;
+                Nodo.Nivel = this.Nivel + 1;
+                Nodo.Explorador = this.Explorador;
 
-            this.Hijos.Add(Nodo);
+                this.Hijos.Add(Nodo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("No se pudo agregar el hijo \"" + Nodo.Nombre + "\" al NodoViewModel \"" + this.Nombre + "\"", ex);
+            }
         }
 
         public TablaDeAsociaciones CrearTablaDeAsociaciones()
         {
-            List<Nodo> Lista = new List<Nodo>();
-
-            foreach (NodoViewModel N in Hijos)
+            try
             {
-                Lista.Add(N._Nodo);
+                List<Nodo> Lista = new List<Nodo>();
+
+                foreach (NodoViewModel N in Hijos)
+                {
+                    Lista.Add(N._Nodo);
+                }
+
+                _Nodo.CrearTablaDeAsociaciones(Lista);
+
+                foreach (NodoViewModel Hijo in Hijos)
+                {
+                    /*
+                     * Quiero ser notificado cuando ocurra una cambio en ColumnaOrigen o 
+                     * ColumnaDestino del MapeoDeColumnas asociado a este NodoViewModel.
+                     */
+                    Hijo.Sociedad.CambioEnColumnas -= Hijo.ManejarCambioEnColumnas;
+                    Hijo.Sociedad.CambioEnColumnas += Hijo.ManejarCambioEnColumnas;
+                }
+
             }
-            
-            _Nodo.CrearTablaDeAsociaciones(Lista);
-
-            foreach (NodoViewModel Hijo in Hijos)
+            catch (Exception ex)
             {
-                /*
-                 * Quiero ser notificado cuando ocurra una cambio en ColumnaOrigen o 
-                 * ColumnaDestino del MapeoDeColumnas asociado a este NodoViewModel.
-                 */
-                Hijo.Sociedad.CambioEnColumnas += Hijo.ManejarCambioEnColumnas;
+                throw new Exception("No se pudo crear la TablaDeAsociaciones sobre el NodoViewModel \"" + this.Nombre + "\"", ex);
             }
 
             return TablaDeSocios;
@@ -295,8 +311,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 if (NodoOrigen == null)
                     throw new ArgumentNullException("NodoOrigen");                
 
-                // El nuevo nodo tambien quiere saber cuándo ocurre un cambio en las columnas 
+                // El nuevo nodo tambien quiere saber cuándo ocurre un cambio en las columnas
+                this.Sociedad.CambioEnColumnas -= NodoOrigen.ManejarCambioEnColumnas;
                 this.Sociedad.CambioEnColumnas += NodoOrigen.ManejarCambioEnColumnas;
+
                 _Nodo.AsociarCon(NodoOrigen._Nodo);                
             }
             catch (Exception ex)

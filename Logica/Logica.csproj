@@ -35,14 +35,6 @@
     <DocumentationFile>LogicaDocumentacion.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Comunes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Datos\bin\Release\Comunes.dll</HintPath>
-    </Reference>
-    <Reference Include="Datos, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Datos\bin\Release\Datos.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -61,7 +53,16 @@
     <Compile Include="ExponerAnfitrionLocal.cs" />
     <Compile Include="TablaDeAsociacionesExtensiones.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Comunes\Comunes.csproj">
+      <Project>{9EFCF5AD-5A96-4726-8385-807552BA1497}</Project>
+      <Name>Comunes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Datos\Datos.csproj">
+      <Project>{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}</Project>
+      <Name>Datos</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -37,10 +37,6 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Comunes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Comunes\bin\Release\Comunes.dll</HintPath>
-    </Reference>
     <Reference Include="Contrato">
       <HintPath>..\..\Spuria\Contrato\bin\Debug\Contrato.dll</HintPath>
     </Reference>
@@ -88,7 +84,12 @@
     <Compile Include="SQLServer.Detectar.cs" />
     <Compile Include="Web\ClienteSpuria.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Comunes\Comunes.csproj">
+      <Project>{9EFCF5AD-5A96-4726-8385-807552BA1497}</Project>
+      <Name>Comunes</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

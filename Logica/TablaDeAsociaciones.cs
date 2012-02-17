@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Collections.ObjectModel;           // ObservableCollection
-using System.Collections;
-using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
-
-namespace Zuliaworks.Netzuela.Valeria.Logica
+﻿namespace Zuliaworks.Netzuela.Valeria.Logica
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;           // ObservableCollection
+    using System.Linq;
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
+
     /// <summary>
     /// 
     /// </summary>
-    public class TablaDeAsociaciones
+    public class TablaDeAsociaciones : Desechable
     {
         #region Variables
 
-        private Nodo _NodoTabla;
+        private Nodo nodoTabla;
 
         #endregion
 
@@ -27,30 +27,40 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public TablaDeAsociaciones()
         {
-            NodoTabla = new Nodo();
-            Sociedades = new List<AsociacionDeColumnas>();            
+            this.NodoTabla = new Nodo();
+            this.Sociedades = new List<AsociacionDeColumnas>();            
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Tabla"></param>
-        /// <param name="Columnas"></param>
-        public TablaDeAsociaciones(Nodo Tabla, List<Nodo> Columnas)
+        /// <param name="tabla"></param>
+        /// <param name="columnas"></param>
+        public TablaDeAsociaciones(Nodo tabla, List<Nodo> columnas)
         {
-            if (Tabla == null)
-                throw new ArgumentNullException("Tabla");
-            if (Columnas == null)
-                throw new ArgumentNullException("Columnas");
+            if (tabla == null)
+            {
+                throw new ArgumentNullException("tabla");
+            }
+
+            if (columnas == null)
+            {
+                throw new ArgumentNullException("columnas");
+            }
             
-            this.NodoTabla = Tabla;
+            this.NodoTabla = tabla;
             this.Sociedades = new List<AsociacionDeColumnas>();
 
-            foreach (Nodo Columna in Columnas)
+            foreach (Nodo columna in columnas)
             {
-                AsociacionDeColumnas Sociedad = new AsociacionDeColumnas(this, Columna);
-                AgregarMapa(Sociedad);
+                AsociacionDeColumnas sociedad = new AsociacionDeColumnas(this, columna);
+                this.AgregarMapa(sociedad);
             }
+        }
+
+        ~TablaDeAsociaciones()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -67,15 +77,24 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public Nodo NodoTabla
         {
-            get { return _NodoTabla; }
+            get 
+            { 
+                return this.nodoTabla; 
+            }
+
             set
             {
-                if (value != _NodoTabla)
+                if (value != this.nodoTabla)
                 {
-                    if (value.Nivel != Constantes.NivelDeNodo.TABLA)
-                        throw new ArgumentException("El nodo tiene que ser de nivel Tabla para poder crear una TablaDeAsociaciones", "NodoTabla");
-                    
-                    _NodoTabla = value;
+                    if (value != null)
+                    {
+                        if (value.Nivel != NivelDeNodo.Tabla)
+                        {
+                            throw new ArgumentException("El nodo tiene que ser de nivel Tabla para poder crear una TablaDeAsociaciones", "NodoTabla");
+                        }
+                    }
+
+                    this.nodoTabla = value;
                 }
             }
         }
@@ -87,47 +106,49 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Nodo"></param>
+        /// <param name="nodo"></param>
         /// <returns></returns>
-        public bool NodoEsLegal(Nodo Nodo)
+        public bool NodoEsLegal(Nodo nodo)
         {
-            bool Resultado = true;
+            bool resultado = true;
 
-            if (Nodo != null)
+            if (nodo != null)
             {
-                if (Nodo.ExisteEnRepositorio())
+                if (nodo.ExisteEnRepositorio())
                 {
-                    if (Nodo.Sociedad.ColumnaOrigen == Nodo)
+                    if (nodo.Sociedad.ColumnaOrigen == nodo)
                     {
-                        Nodo.Sociedad.QuitarOrigen();
+                        nodo.Sociedad.QuitarOrigen();
                     }
-                    else if (Nodo.Sociedad.ColumnaDestino == Nodo)
+                    else if (nodo.Sociedad.ColumnaDestino == nodo)
                     {
-                        Resultado = false;
+                        resultado = false;
                     }
                 }
                 else
                 {
-                    Nodo.AgregarARepositorio();
+                    nodo.AgregarARepositorio();
                 }
             }
                         
-            return Resultado;
+            return resultado;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="MapaDeColumna"></param>
+        /// <param name="mapaDeColumna"></param>
         /// <returns></returns>
-        public bool AgregarMapa(AsociacionDeColumnas MapaDeColumna)
+        public bool AgregarMapa(AsociacionDeColumnas mapaDeColumna)
         {
-            if (MapaDeColumna == null)
-                throw new ArgumentNullException("MapaDeColumna");
-
-            if (NodoEsLegal(MapaDeColumna.ColumnaDestino) && NodoEsLegal(MapaDeColumna.ColumnaOrigen))
+            if (mapaDeColumna == null)
             {
-                this.Sociedades.Add(MapaDeColumna);
+                throw new ArgumentNullException("mapaDeColumna");
+            }
+
+            if (this.NodoEsLegal(mapaDeColumna.ColumnaDestino) && this.NodoEsLegal(mapaDeColumna.ColumnaOrigen))
+            {
+                this.Sociedades.Add(mapaDeColumna);
                 return true;
             }
             else
@@ -136,18 +157,42 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             }
         }
 
-        public bool QuitarMapa(AsociacionDeColumnas Sociedad)
+        public bool QuitarMapa(AsociacionDeColumnas sociedad)
         {
-            if (Sociedad == null)
-                throw new ArgumentNullException("MapaDeColumna");
-
-            if (Sociedades.Contains(Sociedad))
+            if (sociedad == null)
             {
-                return this.Sociedades.Remove(Sociedad);
+                throw new ArgumentNullException("sociedad");
+            }
+
+            if (this.Sociedades.Contains(sociedad))
+            {
+                return this.Sociedades.Remove(sociedad);
             }
             else
             {
                 return false;
+            }
+        }
+
+        protected override void Dispose(bool borrarCodigoAdministrado)
+        {
+            this.NodoTabla = null;
+
+            if (borrarCodigoAdministrado)
+            {
+                if (this.Sociedades != null)
+                {
+                    for (int i = 0; i < this.Sociedades.Count; i++)
+                    {
+                        if (this.Sociedades[i] != null)
+                        {
+                            this.Sociedades[i].Dispose();
+                        }
+                    }
+
+                    this.Sociedades.Clear();
+                    this.Sociedades = null;
+                }
             }
         }
 

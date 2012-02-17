@@ -196,7 +196,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {            
             ObservableCollection<NodoViewModel> Nodos = new ObservableCollection<NodoViewModel>()
             {
-                new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", Constantes.NivelDeNodo.SERVIDOR)
+                new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", NivelDeNodo.Servidor)
             };
 
             return new ExploradorViewModel(Nodos, Conexion.Conexion);            
@@ -272,7 +272,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             ConexionLocal.Desconectar();
             ConexionLocal.ConexionNetzuela();
 
-            // Expandimos los nodos locales para poder operar sobre ellos
+            // Expandimos los nodos locales en la nueva conexion para poder operar sobre ellos
             HashSet<string> RutasDeTabla = new HashSet<string>();
 
             foreach (string RutaDeColumna in NodosOrigen)
@@ -282,6 +282,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 // Si ya esa ruta fue expandida, no la expandamos otra vez
                 if (RutasDeTabla.Add(RutaDeTabla))
                     ExploradorLocal.ExpandirRuta(RutaDeTabla);
+            }
+
+            // Borramos cada una de las tablas de destino para llenarlas nuevamente en el evento del temporizador
+            NodoViewModel[] NodosDestino = LocalARemota.NodosDeDestino();
+            HashSet<NodoViewModel> Tablas = new HashSet<NodoViewModel>();
+
+            foreach (NodoViewModel Columna in NodosDestino)
+            {
+                // Si ya esta tabla fue expandida, no la expandamos otra vez
+                if (Tablas.Add(Columna.Padre))
+                {
+                    DataTable t = ExploradorRemoto.ObtenerTablaDeCache(Columna.Padre);
+                    t.Rows.Clear();
+                }
             }
 
             // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
@@ -312,6 +326,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         private void ManejarAmbasConexionesEstablecidas(object Remitente, EventArgs Args)
         {
+            if (LocalARemota == null)
+            {
+                LocalARemota = new SincronizacionViewModel();
+            }
+
             _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
                 .RegisterHandler(n => n.Listo, this.SincronizacionLista);
         }
@@ -347,14 +366,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 foreach (KeyValuePair<NodoViewModel, DataTable> Par in LocalARemota.TablasAEnviar())
                 {
                     DataTable T = Par.Value.GetChanges();
-                    /*
+
                     if (T != null)
                     {
                         ExploradorRemoto.EscribirTabla(Par.Key, T);
                         T.Dispose();
                         Par.Value.AcceptChanges();
-                    }*/
-                    Par.Value.AcceptChanges();
+                    }
                 }
             }
             catch (Exception ex)

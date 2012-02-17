@@ -19,15 +19,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         protected static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
         {
-            { Constantes.Privilegios.NO_VALIDO, string.Empty },
-            { Constantes.Privilegios.SELECCIONAR, "SELECT" },
-            { Constantes.Privilegios.INSERTAR_FILAS, "INSERT" },
-            { Constantes.Privilegios.ACTUALIZAR, "UPDATE" },
-            { Constantes.Privilegios.BORRAR_FILAS, "DELETE" },
-            { Constantes.Privilegios.INDIZAR, "INDEX" },
-            { Constantes.Privilegios.ALTERAR, "ALTER" },
-            { Constantes.Privilegios.CREAR, "CREATE" },
-            { Constantes.Privilegios.DESTRUIR, "DROP" }
+            { Privilegios.NoValido, string.Empty },
+            { Privilegios.Seleccionar, "SELECT" },
+            { Privilegios.InsertarFilas, "INSERT" },
+            { Privilegios.Actualizar, "UPDATE" },
+            { Privilegios.BorrarFilas, "DELETE" },
+            { Privilegios.Indizar, "INDEX" },
+            { Privilegios.Alterar, "ALTER" },
+            { Privilegios.Crear, "CREATE" },
+            { Privilegios.Destruir, "DROP" }
         };
 
         private MySqlConnection _Conexion;
@@ -45,9 +45,24 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             _Conexion.StateChange += base.ManejarCambioDeEstado;
         }
 
+        ~MySQL()
+        {
+            Dispose(false);
+        }
+
         #endregion
 
         #region Funciones
+
+        protected void Dispose(bool BorrarCodigoAdministrado)
+        {
+            this.DatosDeConexion = null;
+
+            if (BorrarCodigoAdministrado)
+            {
+                this._Conexion.Dispose();
+            }
+        }
 
         private void CambiarBaseDeDatos(string BaseDeDatos)
         {
@@ -207,15 +222,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             // 2) Metodo de conexion
             switch (Seleccion.MetodoDeConexion)
             {
-                case Constantes.MetodosDeConexion.TCP_IP:
+                case MetodosDeConexion.TcpIp:
                     RutaDeConexion.AgregarString("Protocol=\"tcp\";");
                     RutaDeConexion.AgregarString("Port=" + Seleccion.ArgumentoDeConexion + ";");
                     break;
-                case Constantes.MetodosDeConexion.CANALIZACIONES_CON_NOMBRE:
+                case MetodosDeConexion.CanalizacionesConNombre:
                     RutaDeConexion.AgregarString("Protocol=\"pipe\";");
                     RutaDeConexion.AgregarString("Pipe=" + Seleccion.ArgumentoDeConexion + ";");
                     break;
-                case Constantes.MetodosDeConexion.MEMORIA_COMPARTIDA:
+                case MetodosDeConexion.MemoriaCompartida:
                     RutaDeConexion.AgregarString("Protocol=\"memory\";");
                     RutaDeConexion.AgregarString("Shared Memory Name=" + Seleccion.ArgumentoDeConexion + ";");
                     break;
@@ -593,6 +608,24 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado;
         }
 
+        public DataTable Consultar(string baseDeDatos, string Sql)
+        {
+            DataTable resultado = null;
+
+            CambiarBaseDeDatos(baseDeDatos);
+
+            try
+            {
+                resultado = LectorAvanzado(Sql);
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception("No se pudo realizar la consulta. Error MySQL No. " + ex.Number.ToString(), ex);
+            }
+
+            return resultado;
+        }
+
         #endregion
 
         #region Métodos asincrónicos
@@ -622,10 +655,30 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
-        #endregion
+        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 
-        #endregion    
+        #region IDisposable
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
+        #endregion
+
+        #endregion
     }
 }

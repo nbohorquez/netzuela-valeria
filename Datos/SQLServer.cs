@@ -20,15 +20,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         private SqlConnection _Conexion;
         protected static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
         {
-            { Constantes.Privilegios.NO_VALIDO, string.Empty },
-            { Constantes.Privilegios.SELECCIONAR, "SELECT" },
-            { Constantes.Privilegios.INSERTAR_FILAS, "INSERT" },
-            { Constantes.Privilegios.ACTUALIZAR, "UPDATE" },
-            { Constantes.Privilegios.BORRAR_FILAS, "DELETE" },
-            { Constantes.Privilegios.INDIZAR, "INDEX" },
-            { Constantes.Privilegios.ALTERAR, "ALTER" },
-            { Constantes.Privilegios.CREAR, "CREATE" },
-            { Constantes.Privilegios.DESTRUIR, "DROP" }
+            { Privilegios.NoValido, string.Empty },
+            { Privilegios.Seleccionar, "SELECT" },
+            { Privilegios.InsertarFilas, "INSERT" },
+            { Privilegios.Actualizar, "UPDATE" },
+            { Privilegios.BorrarFilas, "DELETE" },
+            { Privilegios.Indizar, "INDEX" },
+            { Privilegios.Alterar, "ALTER" },
+            { Privilegios.Crear, "CREATE" },
+            { Privilegios.Destruir, "DROP" }
         };
 
         #endregion
@@ -46,9 +46,24 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             _Conexion.StateChange += base.ManejarCambioDeEstado;
         }
 
+        ~SQLServer()
+        {
+            Dispose(false);
+        }
+
         #endregion
 
         #region Funciones
+
+        protected void Dispose(bool BorrarCodigoAdministrado)
+        {
+            this.DatosDeConexion = null;
+
+            if (BorrarCodigoAdministrado)
+            {
+                this._Conexion.Dispose();
+            }
+        }
 
         private void CambiarBaseDeDatos(string BaseDeDatos)
         {
@@ -115,13 +130,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             
             switch (Seleccion.MetodoDeConexion)
             {
-                case Constantes.MetodosDeConexion.TCP_IP:
+                case MetodosDeConexion.TcpIp:
                     RutaDeConexion.Add("tcp:");
                     break;
-                case Constantes.MetodosDeConexion.MEMORIA_COMPARTIDA:
+                case MetodosDeConexion.MemoriaCompartida:
                     RutaDeConexion.Add("lpc:");
                     break;
-                case Constantes.MetodosDeConexion.VIA:
+                case MetodosDeConexion.Via:
                     RutaDeConexion.Add("via:");
                     break;
                 default:
@@ -139,7 +154,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         private string RutaServidorFormatoCanalizaciones(ParametrosDeConexion Seleccion)
         {
-            if(Seleccion.MetodoDeConexion != Constantes.MetodosDeConexion.CANALIZACIONES_CON_NOMBRE)
+            if(Seleccion.MetodoDeConexion != MetodosDeConexion.CanalizacionesConNombre)
                 throw new Exception("No se reconoce el metodo de conexion: \"" + Seleccion.MetodoDeConexion + "\"");
 
             return "np:" + Seleccion.ArgumentoDeConexion;;
@@ -281,13 +296,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             // 1) Servidor
             RutaDeConexion.AgregarString("Server=");
             
-            if((Seleccion.MetodoDeConexion == Constantes.MetodosDeConexion.TCP_IP) ||
-                (Seleccion.MetodoDeConexion == Constantes.MetodosDeConexion.MEMORIA_COMPARTIDA) ||
-                (Seleccion.MetodoDeConexion == Constantes.MetodosDeConexion.VIA))
+            if((Seleccion.MetodoDeConexion == MetodosDeConexion.TcpIp) ||
+                (Seleccion.MetodoDeConexion == MetodosDeConexion.MemoriaCompartida) ||
+                (Seleccion.MetodoDeConexion == MetodosDeConexion.Via))
             {
                 RutaDeConexion.AgregarString(RutaServidorFormatoTCPIP(Seleccion) + ";");
             }
-            else if (Seleccion.MetodoDeConexion == Constantes.MetodosDeConexion.CANALIZACIONES_CON_NOMBRE)
+            else if (Seleccion.MetodoDeConexion == MetodosDeConexion.CanalizacionesConNombre)
             {
                 RutaDeConexion.AgregarString(RutaServidorFormatoCanalizaciones(Seleccion) + ";");
             }
@@ -407,7 +422,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             {
                 CambiarBaseDeDatos(BaseDeDatos);
                 //string[] ResultadoBruto = LectorSimple("EXEC sp_tables");
-                string[] ResultadoBruto = LectorSimple("SELECT name FROM " + BaseDeDatos + "..sysobjects WHERE xtype = 'U' ORDER BY name");
+                string[] ResultadoBruto = LectorSimple("SELECT name FROM " + BaseDeDatos + "..sysobjects WHERE xtype = 'U' OR xtype = 'V' ORDER BY name");
 
                 Resultado = new List<string>();
 
@@ -450,7 +465,91 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
         {
-            throw new NotImplementedException();
+            bool Resultado = false;
+
+            try
+            {
+                /*
+                 * Es necesario hacer toda esta parafernalia porque MySQL no puede editar una vista (VIEW) 
+                 * directamente. 
+                 * 
+                 * Mas informacion sobre la "updatability" de una vista (VIEW): 
+                 * http://dev.mysql.com/doc/refman/5.1/en/view-updatability.html
+                 */
+
+                DataTable Temporal = new DataTable();
+
+                CambiarBaseDeDatos(BaseDeDatos);
+
+                // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
+                string Columnas = DescribirTabla(NombreTabla);
+
+                SqlDataAdapter Adaptador = new SqlDataAdapter("SELECT " + Columnas + " FROM " + NombreTabla, _Conexion);
+                SqlCommandBuilder CreadorDeOrden = new SqlCommandBuilder(Adaptador);
+
+                Adaptador.FillSchema(Temporal, SchemaType.Source);
+                Adaptador.Fill(Temporal);
+
+                Adaptador.InsertCommand = new SqlCommand("Insertar");
+                Adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
+                Adaptador.UpdateCommand = new SqlCommand("Actualizar");
+                Adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
+                Adaptador.DeleteCommand = new SqlCommand("Eliminar");
+                Adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
+
+                string VariableDeEntrada = string.Empty;
+
+                SqlParameter VariableDeEntradaSQL = new SqlParameter("a_Parametros", VariableDeEntrada);
+                VariableDeEntradaSQL.Direction = ParameterDirection.Input;
+
+                Adaptador.InsertCommand.Parameters.Add(VariableDeEntradaSQL);
+                Adaptador.UpdateCommand.Parameters.Add(VariableDeEntradaSQL);
+                Adaptador.DeleteCommand.Parameters.Add(VariableDeEntradaSQL);
+
+                //Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
+
+                SqlRowUpdatingEventHandler ActualizandoFila = (r, a) =>
+                {
+                    List<string> Parametros = new List<string>();
+
+                    foreach (object Dato in a.Row.ItemArray)
+                    {
+                        Parametros.Add(Dato.ToString().Replace(",", "."));
+                    }
+
+                    VariableDeEntrada = string.Join(",", Parametros.ToArray());
+                    a.Command.Parameters[0].Value = VariableDeEntrada;
+                };
+
+                SqlRowUpdatedEventHandler FilaActualizada = (r, a) =>
+                {
+                    if (a.Errors != null)
+                    {
+                        throw a.Errors;
+                    }
+                };
+
+                Adaptador.RowUpdating -= ActualizandoFila;
+                Adaptador.RowUpdating += ActualizandoFila;
+
+                Adaptador.RowUpdated -= FilaActualizada;
+                Adaptador.RowUpdated += FilaActualizada;
+
+                // Primero actualizamos los borrados
+                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Deleted));
+                // Luego los modificados
+                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.ModifiedCurrent));
+                // Y por ultimo los agregados
+                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Added));
+
+                Resultado = true;
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo escribir la tabla. Error MSSQL No. " + ex.Number.ToString(), ex);
+            }
+
+            return Resultado;
         }
 
         public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
@@ -590,6 +689,24 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado;
         }
 
+        public DataTable Consultar(string baseDeDatos, string Sql)
+        {
+            DataTable resultado = null;
+
+            CambiarBaseDeDatos(baseDeDatos);
+
+            try
+            {
+                resultado = LectorAvanzado(Sql);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("No se pudo realizar la consulta. Error MSSQL No. " + ex.Number.ToString(), ex);
+            }
+
+            return resultado;
+        }
+
         #endregion
 
         #region Métodos asincrónicos
@@ -617,6 +734,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
             throw new NotImplementedException();
+        }
+
+        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

@@ -5,7 +5,6 @@ using System.Text;
 
 using System.Data;                                  // ConnectionState, DataTable
 using System.Security;                              // SecureString
-using Zuliaworks.Netzuela.Spuria.Contrato;          // DataSetXML
 using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
 using Zuliaworks.Netzuela.Valeria.Datos.Web;        // ProxyDinamico
 
@@ -52,6 +51,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             
             // Hay que ver como quito este pedazo de codigo tan feo
             _Estado = ConnectionState.Closed;
+        }
+
+        ~Netzuela()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
+        #region Funciones
+
+        protected void Dispose(bool BorrarCodigoAdministrado)
+        {
+            this.DatosDeConexion = null;
+            
+            if (BorrarCodigoAdministrado)
+            {
+                this._Cliente.Dispose();
+                this._Cliente = null;
+            }
         }
 
         #endregion
@@ -186,6 +205,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
+        public DataTable Consultar(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Métodos asincrónicos
@@ -242,6 +266,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
             throw new NotImplementedException();
+        }
+
+        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

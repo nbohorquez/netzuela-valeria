@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Zuliaworks.Netzuela.Valeria.Logica
+﻿namespace Zuliaworks.Netzuela.Valeria.Logica
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class EventoCambioEnColumnasArgs : EventArgs
     {
         #region Constructores
 
-        public EventoCambioEnColumnasArgs(string Columna, Nodo ValorAnterior, Nodo ValorActual)
+        public EventoCambioEnColumnasArgs(string columna, Nodo valorAnterior, Nodo valorActual)
         {
-            this.Columna = Columna;
-            this.ValorAnterior = ValorAnterior;
-            this.ValorActual = ValorActual;
+            this.Columna = columna;
+            this.ValorAnterior = valorAnterior;
+            this.ValorActual = valorActual;
         }
 
         #endregion
@@ -21,7 +21,9 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         #region Propiedades
 
         public string Columna { get; private set; }
+
         public Nodo ValorAnterior { get; private set; }
+
         public Nodo ValorActual { get; private set; }
 
         #endregion

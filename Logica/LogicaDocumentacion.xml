@@ -19,8 +19,8 @@
             <summary>
             Crea una conexión con el servidor especificado.
             </summary>
-            <param name="Parametros">Datos de configuración de la conexión con el servidor.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Parametros"/> es una referencia 
+            <param name="parametros">Datos de configuración de la conexión con el servidor.</param>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="parametros"/> es una referencia 
             nula.</exception>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
@@ -57,21 +57,21 @@
             <summary>
             
             </summary>
-            <param name="Tabla"></param>
-            <param name="Columnas"></param>
+            <param name="tabla"></param>
+            <param name="columnas"></param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
             <summary>
             
             </summary>
-            <param name="Nodo"></param>
+            <param name="nodo"></param>
             <returns></returns>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas)">
             <summary>
             
             </summary>
-            <param name="MapaDeColumna"></param>
+            <param name="mapaDeColumna"></param>
             <returns></returns>
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.Sociedades">
@@ -100,20 +100,20 @@
             <summary>
             Crea un mapeo de columnas especificando sólo la columna destino.
             </summary>
-            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
+            <param name="columnaDestino">Nodo que representa la columna destino.</param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
             <summary>
             Crea un mapeo de columnas especificando la columna de orígen y la de destino.
             </summary>
-            <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
-            <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
+            <param name="columnaDestino">Nodo que representa la columna destino.</param>
+            <param name="columnaOrigen">Nodo que representa la columna orígen.</param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.FijarOrigen(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
             <summary>
             
             </summary>
-            <param name="ColumnaOrigen"></param>
+            <param name="columnaOrigen"></param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.QuitarOrigen">
             <summary>
@@ -151,14 +151,14 @@
             <summary>
             
             </summary>
-            <param name="Nombre"></param>
+            <param name="nombre"></param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String,System.Int32)">
             <summary>
             
             </summary>
-            <param name="Nombre"></param>
-            <param name="Nivel"></param>
+            <param name="nombre"></param>
+            <param name="nivel"></param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
             <summary>

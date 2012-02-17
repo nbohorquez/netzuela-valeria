@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Configuration;
-
-namespace Zuliaworks.Netzuela.Valeria.Preferencias
+﻿namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Text;
+
     public class ColeccionElementosGenerica<T> : ConfigurationElementCollection, IEnumerable<T>, ICollection<T> where T : ConfigurationElement, new()
     {
         /* 
@@ -30,38 +29,48 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
 
         #region Variables
 
-        private List<T> _Elementos = new List<T>();
+        private List<T> elementos = new List<T>();
 
         #endregion
 
+        public new bool IsReadOnly
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public ConfigurationElement this[int indice]
+        {
+            get
+            {
+                return (T)this.BaseGet(indice);
+            }
+
+            set
+            {
+                if (this.BaseGet(indice) != null)
+                {
+                    this.BaseRemoveAt(indice);
+                }
+
+                this.BaseAdd(indice, value);
+            }
+        }
+        
         #region Funciones
-
-        protected override ConfigurationElement CreateNewElement()
-        {
-            T Nuevo = new T();
-            _Elementos.Add(Nuevo);
-            return Nuevo;
-        }
-
-        protected override object GetElementKey(ConfigurationElement Elemento)
-        {
-            // Cualquier verga...
-            return Elemento.GetHashCode();
-        }
 
         public new IEnumerator<T> GetEnumerator()
         {
-            return _Elementos.GetEnumerator();
+            return this.elementos.GetEnumerator();
         }
 
         public void Add(T item)
         {
-            BaseAdd(item);
+            this.BaseAdd(item);
         }
 
         public void Clear()
         {
-            BaseClear();
+            this.BaseClear();
         }
 
         public bool Contains(T item)
@@ -73,37 +82,32 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
         {
             throw new NotImplementedException();
         }
-
-        public new bool IsReadOnly
-        {
-            get { throw new NotImplementedException(); }
-        }
-
+        
         public bool Remove(T item)
         {
-            bool Resultado = false;
-            T Nuevo = _Elementos.Find(e => e.Equals(item));
+            bool resultado = false;
+            T nuevo = this.elementos.Find(e => e.Equals(item));
 
-            if (Nuevo != null)
+            if (nuevo != null)
             {
-                BaseRemove(Nuevo);
-                Resultado = true;
+                BaseRemove(nuevo);
+                resultado = true;
             }
 
-            return Resultado;
+            return resultado;
+        }        
+
+        protected override ConfigurationElement CreateNewElement()
+        {
+            T nuevo = new T();
+            this.elementos.Add(nuevo);
+            return nuevo;
         }
 
-        public ConfigurationElement this[int Indice]
+        protected override object GetElementKey(ConfigurationElement elemento)
         {
-            get { return (T)base.BaseGet(Indice); }
-            set
-            {
-                if (base.BaseGet(Indice) != null)
-                {
-                    base.BaseRemoveAt(Indice);
-                }
-                base.BaseAdd(Indice, value);
-            }
+            // Cualquier verga...
+            return elemento.GetHashCode();
         }
 
         #endregion

@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Collections.ObjectModel;               // ObservableCollection
-using System.ComponentModel;                        // INotifyPropertyChanged
-using System.Data;                                  // ConnectionState
-using System.Security;                              // SecureString
-using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
-using Zuliaworks.Netzuela.Valeria.Datos;            // SQLServer, MySQL, Oracle y Netzuela
-
-namespace Zuliaworks.Netzuela.Valeria.Logica
+﻿namespace Zuliaworks.Netzuela.Valeria.Logica
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;               // ObservableCollection
+    using System.ComponentModel;                        // INotifyPropertyChanged
+    using System.Data;                                  // ConnectionState
+    using System.Linq;
+    using System.Security;                              // SecureString
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
+    using Zuliaworks.Netzuela.Valeria.Datos;            // SQLServer, MySQL, Oracle y Netzuela
+
     /// <summary>
     /// Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
     /// de forma transparente para el programador.
     /// </summary>
-    public class Conexion
+    public class Conexion : Desechable
     {
         #region Constructores
 
@@ -28,27 +28,75 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             this.Parametros = new ParametrosDeConexion()
             {
                 Anfitrion = string.Empty,
-                Servidor = Constantes.SGBDR.PREDETERMINADO,
+                Servidor = SGBDR.Predeterminado,
                 Instancia = string.Empty,
                 ArgumentoDeConexion = string.Empty,
                 MetodoDeConexion = string.Empty
             };
+
             this.BD = new ServidorPredeterminado(this.Parametros);
         }
 
         /// <summary>
         /// Crea una conexión con el servidor especificado.
         /// </summary>
-        /// <param name="Parametros">Datos de configuración de la conexión con el servidor.</param>
-        /// <exception cref="ArgumentNullException">Si <paramref name="Parametros"/> es una referencia 
+        /// <param name="parametros">Datos de configuración de la conexión con el servidor.</param>
+        /// <exception cref="ArgumentNullException">Si <paramref name="parametros"/> es una referencia 
         /// nula.</exception>
-        public Conexion(ParametrosDeConexion Parametros)
+        public Conexion(ParametrosDeConexion parametros)
         {
-            if (Parametros == null)
-                throw new ArgumentNullException("Parametros");
+            if (parametros == null)
+            {
+                throw new ArgumentNullException("parametros");
+            }
 
-            this.Parametros = Parametros;
-            ResolverDatosDeConexion();
+            this.Parametros = parametros;
+            this.ResolverDatosDeConexion();
+        }
+
+        ~Conexion()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Eventos
+
+        public event StateChangeEventHandler CambioDeEstado
+        {
+            add { this.BD.CambioDeEstado += value; }
+            remove { this.BD.CambioDeEstado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarBasesDeDatosCompletado
+        {
+            add { this.BD.ListarBasesDeDatosCompletado += value; }
+            remove { this.BD.ListarBasesDeDatosCompletado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarTablasCompletado
+        {
+            add { this.BD.ListarTablasCompletado += value; }
+            remove { this.BD.ListarTablasCompletado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado
+        {
+            add { this.BD.LeerTablaCompletado += value; }
+            remove { this.BD.LeerTablaCompletado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado
+        {
+            add { this.BD.EscribirTablaCompletado += value; }
+            remove { this.BD.EscribirTablaCompletado -= value; }
+        }
+
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado
+        {
+            add { this.BD.CrearUsuarioCompletado += value; }
+            remove { this.BD.CrearUsuarioCompletado -= value; }
         }
 
         #endregion
@@ -67,47 +115,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         public ConnectionState Estado 
         { 
-            get { return BD.Estado; }
-        }
-
-        #endregion
-
-        #region Eventos
-
-        public event StateChangeEventHandler CambioDeEstado
-        {
-            add { BD.CambioDeEstado += value; }
-            remove { BD.CambioDeEstado -= value; }
-        }
-
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarBasesDeDatosCompletado
-        {
-            add { BD.ListarBasesDeDatosCompletado += value; }
-            remove { BD.ListarBasesDeDatosCompletado -= value; }
-        }
-
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarTablasCompletado
-        {
-            add { BD.ListarTablasCompletado += value; }
-            remove { BD.ListarTablasCompletado -= value; }
-        }
-
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado
-        {
-            add { BD.LeerTablaCompletado += value; }
-            remove { BD.LeerTablaCompletado -= value; }
-        }
-
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado
-        {
-            add { BD.EscribirTablaCompletado += value; }
-            remove { BD.EscribirTablaCompletado -= value; }
-        }
-
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado
-        {
-            add { BD.CrearUsuarioCompletado += value; }
-            remove { BD.CrearUsuarioCompletado -= value; }
+            get { return this.BD.Estado; }
         }
 
         #endregion
@@ -116,28 +124,28 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         public void ResolverDatosDeConexion()
         {
-            if (BD != null && BD.DatosDeConexion.Servidor == Parametros.Servidor)
+            if (this.BD != null && this.BD.DatosDeConexion.Servidor == this.Parametros.Servidor)
             {
-                BD.DatosDeConexion = Parametros;
+                this.BD.DatosDeConexion = this.Parametros;
             }
             else
             {
-                switch (Parametros.Servidor)
+                switch (this.Parametros.Servidor)
                 {
-                    case Constantes.SGBDR.SQL_SERVER:
-                        BD = new SQLServer(Parametros);
+                    case SGBDR.SqlServer:
+                        this.BD = new SQLServer(this.Parametros);
                         break;
-                    case Constantes.SGBDR.ORACLE:
-                        BD = new Oracle(Parametros);
+                    case SGBDR.Oracle:
+                        this.BD = new Oracle(this.Parametros);
                         break;
-                    case Constantes.SGBDR.MYSQL:
-                        BD = new MySQL(Parametros);
+                    case SGBDR.MySQL:
+                        this.BD = new MySQL(this.Parametros);
                         break;
-                    case Constantes.SGBDR.NETZUELA:
-                        BD = new Datos.Netzuela(Parametros);
+                    case SGBDR.Netzuela:
+                        this.BD = new Datos.Netzuela(this.Parametros);
                         break;
                     default:
-                        BD = new ServidorPredeterminado(Parametros);
+                        this.BD = new ServidorPredeterminado(this.Parametros);
                         break;
                 }
             }
@@ -148,11 +156,11 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// Abre la conexión con el servidor especificado en <see cref="Parametros"/>.
         /// </summary>
-        public void Conectar(SecureString Usuario, SecureString Contrasena)
+        public void Conectar(SecureString usuario, SecureString contrasena)
         {
             try
             {
-                BD.Conectar(Usuario, Contrasena);
+                this.BD.Conectar(usuario, contrasena);
             }
             catch (Exception ex)
             {
@@ -167,7 +175,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             try
             {
-                BD.Desconectar();
+                this.BD.Desconectar();
             }
             catch (Exception ex)
             {
@@ -177,82 +185,98 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
 
         public string[] ListarBasesDeDatos()
         {
-            string[] Resultado = null;
+            string[] resultado = null;
 
             try
             {
-                Resultado = BD.ListarBasesDeDatos();
+                resultado = this.BD.ListarBasesDeDatos();
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al listar las bases de datos", ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public string[] ListarTablas(string BaseDeDatos)
+        public string[] ListarTablas(string baseDeDatos)
         {
-            string[] Resultado = null;
+            string[] resultado = null;
 
             try
             {
-                Resultado = BD.ListarTablas(BaseDeDatos);
+                resultado = this.BD.ListarTablas(baseDeDatos);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al listar las tablas de la base de datos \"" + BaseDeDatos + "\"", ex);
+                throw new Exception("Error al listar las tablas de la base de datos \"" + baseDeDatos + "\"", ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
+        public DataTable LeerTabla(string baseDeDatos, string tabla)
         {
-            DataTable Resultado = null;
+            DataTable resultado = null;
 
             try
             {
-                Resultado = BD.LeerTabla(BaseDeDatos, Tabla);
+                resultado = this.BD.LeerTabla(baseDeDatos, tabla);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al leer la tabla \"" + Tabla + "\" de la base de datos \"" + BaseDeDatos + "\"", ex);
+                throw new Exception("Error al leer la tabla \"" + tabla + "\" de la base de datos \"" + baseDeDatos + "\"", ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
-            bool Resultado = false;
+            bool resultado = false;
 
             try
             {
-                Resultado = BD.EscribirTabla(BaseDeDatos, NombreTabla, Tabla);
+                resultado = this.BD.EscribirTabla(baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al escribir la tabla \"" + Tabla + "\" en la base de datos \"" + BaseDeDatos + "\"", ex);
+                throw new Exception("Error al escribir la tabla \"" + tabla + "\" en la base de datos \"" + baseDeDatos + "\"", ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] ColumnasAutorizadas, int Privilegios)
+        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnasAutorizadas, int privilegios)
         {
-            bool Resultado = false;
+            bool resultado = false;
 
             try
             {
-                Resultado = BD.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
+                resultado = this.BD.CrearUsuario(usuario, contrasena, columnasAutorizadas, Privilegios.Seleccionar);
             }
             catch (Exception ex)
             {
                 throw new Exception("Error creando el usuario en la base de datos", ex);
             }
 
-            return Resultado;
+            return resultado;
+        }
+
+        public DataTable Consultar(string baseDeDatos, string sql)
+        {
+            DataTable resultado = null;
+
+            try
+            {
+                resultado = this.BD.Consultar(baseDeDatos, sql);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al consultar la base de datos", ex);
+            }
+
+            return resultado;
         }
 
         #endregion
@@ -263,7 +287,7 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             try
             {
-                BD.ListarBasesDeDatosAsinc();
+                this.BD.ListarBasesDeDatosAsinc();
             }
             catch (Exception ex)
             {
@@ -271,56 +295,78 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             }
         }
 
-        public void ListarTablasAsinc(string BaseDeDatos)
+        public void ListarTablasAsinc(string baseDeDatos)
         {
             try
             {
-                BD.ListarTablasAsinc(BaseDeDatos);
+                this.BD.ListarTablasAsinc(baseDeDatos);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al listar las tablas de la base de datos \"" + BaseDeDatos + "\"", ex);
+                throw new Exception("Error al listar las tablas de la base de datos \"" + baseDeDatos + "\"", ex);
             }
         }
 
-        public void LeerTablaAsinc(string BaseDeDatos, string Tabla)
+        public void LeerTablaAsinc(string baseDeDatos, string tabla)
         {
             try
             {
-                BD.LeerTablaAsinc(BaseDeDatos, Tabla);
+                this.BD.LeerTablaAsinc(baseDeDatos, tabla);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al leer la tabla \"" + Tabla + "\" de la base de datos \"" + BaseDeDatos + "\"", ex);
+                throw new Exception("Error al leer la tabla \"" + tabla + "\" de la base de datos \"" + baseDeDatos + "\"", ex);
             }
         }
 
-        public void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
             try
             {
-                BD.EscribirTablaAsinc(BaseDeDatos, NombreTabla, Tabla);
+                this.BD.EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al escribir la tabla \"" + Tabla + "\" en la base de datos \"" + BaseDeDatos + "\"", ex);
+                throw new Exception("Error al escribir la tabla \"" + tabla + "\" en la base de datos \"" + baseDeDatos + "\"", ex);
             }
         }
 
-        public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
             try
             {
-                BD.CrearUsuarioAsinc(Usuario, Contrasena, Columnas, Privilegios);
+                this.BD.CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios);
             }
             catch (Exception ex)
             {
                 throw new Exception("Error creando el usuario en la base de datos", ex);
             }
         }
-        
-        #endregion
 
+        public void ConsultarAsinc(string baseDeDatos, string sql)
+        {
+            try
+            {
+                this.BD.ConsultarAsinc(baseDeDatos, sql);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al consultar la base de datos", ex);
+            }
+        }
+
+        #endregion
+        
+        protected override void Dispose(bool borrarCodigoAdministrado)
+        {
+            this.Parametros = null;
+
+            if (borrarCodigoAdministrado)
+            {
+                this.BD.Dispose();
+            }
+        }
+        
         #endregion
     }
 }

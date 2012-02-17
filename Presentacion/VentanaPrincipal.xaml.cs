@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Drawing;           // Icon
-using System.Windows.Forms;     // NotifyIcon
-
-namespace Zuliaworks.Netzuela.Valeria.Presentacion
+﻿namespace Zuliaworks.Netzuela.Valeria.Presentacion
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;                   // Icon
+    using System.Linq;
+    using System.Text;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+    using System.Windows.Documents;
+    using System.Windows.Forms;             // NotifyIcon
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Navigation;
+    using System.Windows.Shapes;
+
     /// <summary>
     /// Ventana de inicio del programa.
     /// </summary>
@@ -42,8 +41,8 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
         #region Variables
 
-        private NotifyIcon _IconoDeBandeja;
-        private WindowState _EstadoDeLaVentana;
+        private NotifyIcon iconoDeBandeja;
+        private WindowState estadoDeLaVentana;
 
         #endregion
 
@@ -51,10 +50,10 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
 
         public VentanaPrincipal()
         {
-            InitializeComponent();
-            InicializarIconoDeBandeja();
+            this.InitializeComponent();
+            this.InicializarIconoDeBandeja();
 
-            _EstadoDeLaVentana = WindowState.Normal;
+            this.estadoDeLaVentana = WindowState.Normal;
         }
 
         #endregion
@@ -63,45 +62,50 @@ namespace Zuliaworks.Netzuela.Valeria.Presentacion
         
         private void InicializarIconoDeBandeja()
         {
-            _IconoDeBandeja = new NotifyIcon();
-            _IconoDeBandeja.BalloonTipText = "La aplicación ha sido minimizada. Haga clic en el ícono para restaurar la ventana";
-            _IconoDeBandeja.BalloonTipTitle = "Netzuela";
-            _IconoDeBandeja.Text = "Netzuela";
-            _IconoDeBandeja.Icon = new Icon(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Zuliaworks.Netzuela.Valeria.Presentacion.sharethis.ico"));
+            this.iconoDeBandeja = new NotifyIcon();
+            this.iconoDeBandeja.BalloonTipText = "La aplicación ha sido minimizada. Haga clic en el ícono para restaurar la ventana";
+            this.iconoDeBandeja.BalloonTipTitle = "Netzuela";
+            this.iconoDeBandeja.Text = "Netzuela";
+            this.iconoDeBandeja.Icon = new Icon(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Zuliaworks.Netzuela.Valeria.Presentacion.sharethis.ico"));
 
-            _IconoDeBandeja.Click += new EventHandler(ClicSobreIcono);
+            this.iconoDeBandeja.Click += new EventHandler(this.ClicSobreIcono);
         }
 
-        private void ManejarVentanaCerrandose(object Remitente, System.ComponentModel.CancelEventArgs Argumentos)
+        private void ManejarVentanaCerrandose(object remitente, System.ComponentModel.CancelEventArgs argumentos)
         {
-            _IconoDeBandeja.Dispose();
-            _IconoDeBandeja = null;
+            this.iconoDeBandeja.Dispose();
+            this.iconoDeBandeja = null;
         }
 
-        private void ManejarCambioDeEstado(object Remitente, EventArgs Argumentos)
+        private void ManejarCambioDeEstado(object remitente, EventArgs argumentos)
         {
             if (WindowState == WindowState.Minimized)
             {
                 Hide();
-                if (_IconoDeBandeja != null)
-                    _IconoDeBandeja.ShowBalloonTip(2000);
+
+                if (this.iconoDeBandeja != null)
+                {
+                    this.iconoDeBandeja.ShowBalloonTip(2000);
+                }
             }
             else
             {
-                _EstadoDeLaVentana = WindowState;
+                this.estadoDeLaVentana = WindowState;
             }
         }
 
-        private void ManejarCambioDeVisibilidad(object Remitente, DependencyPropertyChangedEventArgs Argumentos)
+        private void ManejarCambioDeVisibilidad(object remitente, DependencyPropertyChangedEventArgs argumentos)
         {
-            if (_IconoDeBandeja != null)
-                _IconoDeBandeja.Visible = !IsVisible;
+            if (this.iconoDeBandeja != null)
+            {
+                this.iconoDeBandeja.Visible = !IsVisible;
+            }
         }
 
-        private void ClicSobreIcono(object Remitente, EventArgs Argumentos)
+        private void ClicSobreIcono(object remitente, EventArgs argumentos)
         {
             Show();
-            WindowState = _EstadoDeLaVentana;
+            WindowState = this.estadoDeLaVentana;
         }
 
         #endregion

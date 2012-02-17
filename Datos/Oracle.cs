@@ -27,9 +27,23 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             DatosDeConexion = ServidorBD;
         }
 
+        ~Oracle()
+        {
+            Dispose(false);
+        }
+
         #endregion
 
         #region Funciones
+
+        protected void Dispose(bool BorrarCodigoAdministrado)
+        {
+            this.DatosDeConexion = null;
+
+            if (BorrarCodigoAdministrado)
+            {
+            }
+        }
 
         public static ServidorLocal DetectarServidor()
         {
@@ -43,7 +57,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             List<ServidorLocal.Instancia> Instancias = new List<ServidorLocal.Instancia>();
 
             ServidorLocal Serv = new ServidorLocal();
-            Serv.Nombre = Constantes.SGBDR.ORACLE;
+            Serv.Nombre = SGBDR.Oracle;
             Serv.Instancias = Instancias;
             return Serv;
         }
@@ -98,6 +112,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
+        public DataTable Consultar(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion 
 
         #region Métodos asincrónicos
@@ -125,6 +144,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
             throw new NotImplementedException();
+        }
+
+        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

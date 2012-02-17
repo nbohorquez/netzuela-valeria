@@ -5,18 +5,22 @@ Documentacion/
 
 Comunes/bin/
 Comunes/obj/
+Comunes/StyleCop.Cache
 
 Datos/bin/
 Datos/obj/
 
 Logica/bin/
 Logica/obj/
+Logica/StyleCop.Cache
 
 LogicaPresentacion/bin/
 LogicaPresentacion/obj/
 
 Preferencias/bin/
 Preferencias/obj/
+Preferencias/StyleCop.Cache
 
 Presentacion/bin/
 Presentacion/obj/
+Presentacion/StyleCop.Cache

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Runtime.InteropServices;           // unsafe
-using System.Security;                          // SecureString
-
-namespace Zuliaworks.Netzuela.Valeria.Comunes
+﻿namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.InteropServices;           // unsafe
+    using System.Security;                          // SecureString
+    using System.Text;
+
     /// <summary>
     /// Contiene funciones adicionales para los tipos SecureString.
     /// </summary>
@@ -34,37 +33,41 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
          */
 
         /// <summary>
-        /// 
+        /// Convierte una SecureString a una string simple de forma segura.
         /// </summary>
-        /// <param name="StringSegura"></param>
-        /// <returns></returns>
-        public static string ConvertirAUnsecureString(this SecureString StringSegura)
+        /// <param name="stringSegura">Cadena de caracteres segura a convertir.</param>
+        /// <returns>Cadena de caracteres convertida.</returns>
+        public static string ConvertirAUnsecureString(this SecureString stringSegura)
         {
-            if (StringSegura == null)
-                throw new ArgumentNullException("StringSegura");
+            if (stringSegura == null)
+            {
+                throw new ArgumentNullException("stringSegura");
+            }
 
-            IntPtr StringNoSegura = IntPtr.Zero;
+            IntPtr stringNoSegura = IntPtr.Zero;
 
             try
             {
-                StringNoSegura = Marshal.SecureStringToGlobalAllocUnicode(StringSegura);
-                return Marshal.PtrToStringUni(StringNoSegura);
+                stringNoSegura = Marshal.SecureStringToGlobalAllocUnicode(stringSegura);
+                return Marshal.PtrToStringUni(stringNoSegura);
             }
             finally
             {
-                Marshal.ZeroFreeGlobalAllocUnicode(StringNoSegura);
+                Marshal.ZeroFreeGlobalAllocUnicode(stringNoSegura);
             }
         }
 
         /// <summary>
-        /// 
+        /// Convierte una string simple a una SecureString de forma segura.
         /// </summary>
-        /// <param name="StringNoSegura"></param>
-        /// <returns></returns>
-        public static SecureString ConvertirASecureString(this string StringNoSegura)
+        /// <param name="stringNoSegura">Cadena de caracteres no seguros a convertir.</param>
+        /// <returns>Cadena de caracteres convertida.</returns>
+        public static SecureString ConvertirASecureString(this string stringNoSegura)
         {
-            if (StringNoSegura == null)
-                throw new ArgumentNullException("StringNoSegura");
+            if (stringNoSegura == null)
+            {
+                throw new ArgumentNullException("stringNoSegura");
+            }
 
             /*
              * Uso de la instruccion fixed
@@ -81,36 +84,46 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
 
             unsafe
             {
-                fixed (char* Apuntador = StringNoSegura)
+                fixed (char* apuntador = stringNoSegura)
                 {
-                    var StringSegura = new SecureString(Apuntador, StringNoSegura.Length);
-                    StringSegura.MakeReadOnly();
-                    return StringSegura;
+                    var stringSegura = new SecureString(apuntador, stringNoSegura.Length);
+                    stringSegura.MakeReadOnly();
+                    return stringSegura;
                 }
             }
         }
 
-        public static void AgregarString(this SecureString StringSegura, string StringAgregada)
+        public static void AgregarString(this SecureString stringSegura, string stringAgregada)
         {
-            if (StringAgregada == null)
-                throw new ArgumentNullException("StringAgregada");
-            if (StringSegura == null)
-                throw new ArgumentNullException("StringSegura");
-
-            for (int i = 0; i < StringAgregada.Length; i++)
+            if (stringAgregada == null)
             {
-                StringSegura.AppendChar(StringAgregada[i]);
+                throw new ArgumentNullException("stringAgregada");
+            }
+
+            if (stringSegura == null)
+            {
+                throw new ArgumentNullException("stringSegura");
+            }
+
+            for (int i = 0; i < stringAgregada.Length; i++)
+            {
+                stringSegura.AppendChar(stringAgregada[i]);
             }
         }
 
-        public static void AgregarSecureString(this SecureString StringSegura, SecureString StringAgregada)
+        public static void AgregarSecureString(this SecureString stringSegura, SecureString stringAgregada)
         {
-            if (StringAgregada == null)
-                throw new ArgumentNullException("StringAgregada");
-            if (StringSegura == null)
-                throw new ArgumentNullException("StringSegura");
+            if (stringAgregada == null)
+            {
+                throw new ArgumentNullException("stringAgregada");
+            }
 
-            StringSegura.AgregarString(StringAgregada.ConvertirAUnsecureString());
+            if (stringSegura == null)
+            {
+                throw new ArgumentNullException("stringSegura");
+            }
+
+            stringSegura.AgregarString(stringAgregada.ConvertirAUnsecureString());
         }
 
         #endregion

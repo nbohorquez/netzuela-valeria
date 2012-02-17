@@ -39,7 +39,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
 
         private void tvi_Item_ClicBotonIzqRaton(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem Item = ArbolVisual.BusquedaHaciaArriba<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            TreeViewItem Item = (TreeViewItem)ArbolVisual.BusquedaHaciaArriba<TreeViewItem>((DependencyObject)e.OriginalSource);
 
             if (Item != null)
             {
@@ -51,7 +51,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
 
         private void tvi_Item_MouseEncima(object sender, MouseEventArgs e)
         {
-            TreeViewItem Item = ArbolVisual.BusquedaHaciaArriba<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            TreeViewItem Item = (TreeViewItem)ArbolVisual.BusquedaHaciaArriba<TreeViewItem>((DependencyObject)e.OriginalSource);
 
             if (Item != null)
                 Item.FontStyle = System.Windows.FontStyles.Italic;
@@ -59,7 +59,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
 
         private void tvi_Item_MouseAfuera(object sender, MouseEventArgs e)
         {
-            TreeViewItem Item = ArbolVisual.BusquedaHaciaArriba<TreeViewItem>(e.OriginalSource as DependencyObject) as TreeViewItem;
+            TreeViewItem Item = (TreeViewItem)ArbolVisual.BusquedaHaciaArriba<TreeViewItem>((DependencyObject)e.OriginalSource);
 
             if (Item != null)
                 Item.FontStyle = System.Windows.FontStyles.Normal;
@@ -67,7 +67,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views
 
         private void dgr_Tabla_DestinoActualizado(object sender, DataTransferEventArgs e)
         {
-            DataGrid Grilla = ArbolVisual.BusquedaHaciaArriba<DataGrid>(e.OriginalSource as DependencyObject) as DataGrid;
+            DataGrid Grilla = (DataGrid)ArbolVisual.BusquedaHaciaArriba<DataGrid>((DependencyObject)e.OriginalSource);
 
             // Codigo tomado del proyecto publicado en 
             // http://social.msdn.microsoft.com/Forums/en/wpf/thread/a5767cf4-8d26-4f72-b1b1-feca26bb6b2e

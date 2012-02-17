@@ -25,16 +25,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #region Constructores
 
-        /*
-        public ConexionRemotaViewModel()
-            : base(new Conexion(new ParametrosDeConexion()
-            {
-                Anfitrion = string.Empty,
-                Servidor = Constantes.SGBDR.NETZUELA,
-                Instancia = "Isla Providencia"
-            })) { }
-        */
-
         public ConexionRemotaViewModel()
             : base() { }
 

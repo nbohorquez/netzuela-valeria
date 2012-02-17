@@ -11,7 +11,7 @@ using Zuliaworks.Netzuela.Valeria.Datos;        // EventoEnviarTablasCompletadoA
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
-    public partial class ExploradorViewModel
+    public partial class ExploradorViewModel : IDisposable
     {
         #region Funciones
 
@@ -121,7 +121,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
                     else if (a.Resultado != null)
                     {
-                        BasesDeDatos = a.Resultado as string[];
+                        BasesDeDatos = (string[])a.Resultado;
                         CrearNodos();
                     }
                 }
@@ -201,7 +201,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
                     else if (a.Resultado != null)
                     {
-                        Tablas = a.Resultado as string[];
+                        Tablas = (string[])a.Resultado;
                         CrearNodos();
                     }
                 }
@@ -294,7 +294,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
                     else if (a.Resultado != null)
                     {
-                        Tabla = a.Resultado as DataTable;
+                        Tabla = (DataTable)a.Resultado;
                         CrearNodos();
                     }
                 }
@@ -424,16 +424,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 switch (Item.Nivel)
                 {
-                    case Constantes.NivelDeNodo.SERVIDOR:
+                    case NivelDeNodo.Servidor:
                         ExpandirServidor(Item);
                         break;
-                    case Constantes.NivelDeNodo.BASE_DE_DATOS:
+                    case NivelDeNodo.BaseDeDatos:
                         ExpandirBaseDeDatos(Item);
                         break;
-                    case Constantes.NivelDeNodo.TABLA:
+                    case NivelDeNodo.Tabla:
                         ExpandirTabla(Item);
                         break;
-                    case Constantes.NivelDeNodo.COLUMNA:
+                    case NivelDeNodo.Columna:
                         ExpandirColumna(Item);
                         break;
                     default:
@@ -467,7 +467,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         public bool EscribirTabla(NodoViewModel Nodo, DataTable Tabla)
         {
-            if (Nodo.Nivel != Constantes.NivelDeNodo.TABLA)
+            if (Nodo.Nivel != NivelDeNodo.Tabla)
                 return false;
 
             bool Resultado = false;
@@ -540,36 +540,99 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
 
-            if (Tabla.Nivel == Constantes.NivelDeNodo.TABLA)
+            try
             {
-                if (_CacheDeTablas.ContainsKey(Tabla))
-                {
-                    Resultado = _CacheDeTablas[Tabla];
-                }
+                Resultado = _CacheDeTablas[Tabla];
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener tabla de la cache", ex);
             }
 
             return Resultado;
         }
 
-        /// <summary>
-        /// Devuelve las tablas presentes en la caché de tablas.
-        /// </summary>
-        /// <returns>Lista de las tablas guardadas en la caché.</returns>
-        public List<DataTable> ObtenerTablasCache()
+        public bool BorrarTablaDeCache(NodoViewModel Tabla)
         {
-            return _CacheDeTablas.Values.ToList();
-        }
+            bool resultado = false;
 
-        /// <summary>
-        /// Devuelve los nodos asociados a las tablas de la caché de tablas.
-        /// </summary>
-        /// <returns>Lista de los nodos de tablas guardados en la caché.</returns>
-        public List<NodoViewModel> ObtenerNodosCache()
-        {
-            return _CacheDeTablas.Keys.ToList();
+            if (Tabla == null)
+            {
+                throw new ArgumentNullException("Tabla");
+            }
+
+            try
+            {
+                resultado = _CacheDeTablas.Remove(Tabla);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al borrar tabla de la cache", ex);
+            }
+
+            return resultado;
         }
 
         #endregion
+
+        #region Desechable
+
+        protected void Dispose(bool BorrarCodigoAdministrado)
+        {
+            if (_CacheDeTablas != null)
+            {
+                foreach (DataTable T in _CacheDeTablas.Values)
+                {
+                    T.Clear();
+                    T.Rows.Clear();
+                    T.DefaultView.Dispose();
+                    T.Dispose();
+                }
+
+                _CacheDeTablas.Clear();
+                _CacheDeTablas = null;
+            }
+
+            if (_Conexion != null)
+                _Conexion = null;
+
+            if (_NodoActual != null)
+                _NodoActual = null;
+
+            if (NodoTablaActual != null)
+                NodoTablaActual = null;
+
+            if (BorrarCodigoAdministrado)
+            {
+                if (Nodos != null)
+                {
+                    foreach (NodoViewModel N in Nodos)
+                    {
+                        N.Dispose();
+                    }
+
+                    Nodos.Clear();
+                    Nodos = null;
+                }
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Implementacion de interfaces
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         #endregion
     }

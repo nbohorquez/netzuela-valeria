@@ -37,8 +37,8 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Contrato">
-      <HintPath>..\..\Spuria\Contrato\bin\Debug\Contrato.dll</HintPath>
+    <Reference Include="Api">
+      <HintPath>..\..\Spuria\API\bin\Debug\Api.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -62,8 +62,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WcfSamples.DynamicProxy">
-      <HintPath>..\Bibliotecas\WCFDynamicProxy\src\bin\Debug\WcfSamples.DynamicProxy.dll</HintPath>
+    <Reference Include="WcfSamples.DynamicProxy, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bibliotecas\WCFDynamicProxy\src\bin\Debug\WcfSamples.DynamicProxy.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

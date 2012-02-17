@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Security;      // SecureString
-
-namespace Zuliaworks.Netzuela.Valeria.Comunes
+﻿namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security;      // SecureString
+    using System.Text;
+
     public static class Criptografia
     {
         /* 
@@ -28,28 +27,28 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
          * 
          */
 
-        static byte[] _Entropia = Encoding.Unicode.GetBytes("Vos lo que sois es un muchacho");
+        private static byte[] entropia = Encoding.Unicode.GetBytes("Vos lo que sois es un muchacho");
 
-        public static string Encriptar(this SecureString Entrada)
+        public static string Encriptar(this SecureString entrada)
         {
-            byte[] Encriptado = System.Security.Cryptography.ProtectedData.Protect(
-                Encoding.Unicode.GetBytes(Entrada.ConvertirAUnsecureString()),
-                _Entropia,
+            byte[] encriptado = System.Security.Cryptography.ProtectedData.Protect(
+                Encoding.Unicode.GetBytes(entrada.ConvertirAUnsecureString()),
+                entropia,
                 System.Security.Cryptography.DataProtectionScope.CurrentUser);
 
-            return Convert.ToBase64String(Encriptado);
+            return Convert.ToBase64String(encriptado);
         }
 
-        public static SecureString Desencriptar(this string Entrada)
+        public static SecureString Desencriptar(this string entrada)
         {
             try
             {
-                byte[] Desencriptado = System.Security.Cryptography.ProtectedData.Unprotect(
-                    Convert.FromBase64String(Entrada),
-                    _Entropia,
+                byte[] desencriptado = System.Security.Cryptography.ProtectedData.Unprotect(
+                    Convert.FromBase64String(entrada),
+                    entropia,
                     System.Security.Cryptography.DataProtectionScope.CurrentUser);
 
-                return System.Text.Encoding.Unicode.GetString(Desencriptado).ConvertirASecureString();
+                return System.Text.Encoding.Unicode.GetString(desencriptado).ConvertirASecureString();
             }
             catch
             {

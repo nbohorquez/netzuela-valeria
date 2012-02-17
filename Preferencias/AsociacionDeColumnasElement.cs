@@ -1,19 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Configuration;         // ConfigurationElement
-
-namespace Zuliaworks.Netzuela.Valeria.Preferencias
+﻿namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;         // ConfigurationElement
+    using System.Linq;
+    using System.Text;
+
     public class AsociacionDeColumnasElement : ConfigurationElement
     {
-        // Referencia: http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
+        /*
+         * Referencia: http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
+         */
 
         #region Constructores
 
-        public AsociacionDeColumnasElement() { }
+        public AsociacionDeColumnasElement() 
+        { 
+        }
 
         #endregion
 

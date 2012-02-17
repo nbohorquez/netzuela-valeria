@@ -3,20 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using WcfSamples.DynamicProxy;                      // DynamicProxyFactory
-using System.Data;                                  // DataSet
-using System.ServiceModel;                          // WSHttpBinding
-using System.ServiceModel.Description;              // ServiceEndpoint
-using Zuliaworks.Netzuela.Spuria.Contrato;          // DataSetXML
+using WcfSamples.DynamicProxy;                          // DynamicProxyFactory
+using System.Data;                                      // DataSet
+using System.Security.Cryptography.X509Certificates;    // StoreLocation, StoreName, X509FindType
+using System.ServiceModel;                              // WSHttpBinding
+using System.ServiceModel.Description;                  // ServiceEndpoint
+using System.ServiceModel.Dispatcher;                   // ClienRuntime
+using System.ServiceModel.Security;                     // X509CertificateValidationMode
+using Zuliaworks.Netzuela.Spuria.Api;                   // DataSetXml
 
 namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
     public class ProxyDinamico : IDisposable
     {
-        // Con codigo de: http://blogs.msdn.com/b/vipulmodi/archive/2008/10/16/dynamic-proxy-and-memory-footprint.aspx
+        /*
+         * Con codigo de: http://blogs.msdn.com/b/vipulmodi/archive/2008/10/16/dynamic-proxy-and-memory-footprint.aspx
+         */
 
         #region Variables
 
+        private readonly WSHttpBinding _Vinculacion;
+        private readonly WSHttpSecurity _Seguridad;
         private DynamicProxyFactory _Fabrica;
         private DynamicProxy _ProxyDinamico;
         private string _UriWsdlServicio;
@@ -35,6 +42,34 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
             this.UriWsdlServicio = UriWsdlServicio;
             CrearFabrica();
+
+            _Seguridad = new WSHttpSecurity()
+            {
+                Mode = SecurityMode.Message,
+                Message = { ClientCredentialType = MessageCredentialType.UserName }
+            };
+
+            _Vinculacion = new WSHttpBinding()
+            {
+                Name = "VinculacionConAutentificacion",
+                Namespace = "http://netzuela.zuliaworks.com/spuria/api_publica",
+                OpenTimeout = TimeSpan.Parse("00:00:30"),
+                CloseTimeout = TimeSpan.Parse("00:00:30"),
+                SendTimeout = TimeSpan.Parse("00:00:45"),
+                ReceiveTimeout = TimeSpan.Parse("00:00:45"),
+                MaxBufferPoolSize = 2147483647,
+                MaxReceivedMessageSize = 2147483647,
+                Security = _Seguridad,
+                ReaderQuotas =
+                {
+                    MaxArrayLength = 2147483647,
+                    MaxBytesPerRead = 2147483647,
+                    MaxDepth = 32,
+                    MaxNameTableCharCount = 16384,
+                    MaxStringContentLength = 2147483647
+                }
+            };
+
         }
 
         ~ProxyDinamico()
@@ -59,7 +94,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                         _UriWsdlServicioModificado = true;
                     }
                     else
+                    {
                         throw new FieldAccessException("No se puede modificar UriWsdlServicio mientras la conexión este establecida");
+                    }
                 }
             }
         }
@@ -70,15 +107,23 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void Dispose(bool BorrarCodigoAdministrado)
         {
-            Desconectar();
+            this._Fabrica = null;
+            this.Desconectar();
 
-            if (BorrarCodigoAdministrado) { }
+            if (BorrarCodigoAdministrado) 
+            { 
+            }
         }
 
         private void CrearFabrica()
         {
             // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
             _Fabrica = new DynamicProxyFactory(UriWsdlServicio);
+        }
+
+        private void Abortar()
+        {
+            _ProxyDinamico.CallMethod("Abort");
         }
 
         public void Conectar(string Contrato)
@@ -120,26 +165,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 // segun http://social.msdn.microsoft.com/Forums/en-AU/wcf/thread/dcc46d86-87a5-4694-aa88-3568fddf159f.
                 // Es necesario crear un nuevo binding del lado del cliente con las opciones de configuracion deseadas.
 
-                Endpoint.Binding = new WSHttpBinding()
-                {
-                    Name = "bnd_GranTamano",
-                    OpenTimeout = TimeSpan.Parse("00:00:30"),
-                    CloseTimeout = TimeSpan.Parse("00:00:30"),
-                    SendTimeout = TimeSpan.Parse("00:00:45"),
-                    ReceiveTimeout = TimeSpan.Parse("00:00:45"),
-                    MaxBufferPoolSize = 2147483647,
-                    MaxReceivedMessageSize = 2147483647,
-                    ReaderQuotas =
-                    {
-                        MaxArrayLength = 2147483647,
-                        MaxBytesPerRead = 2147483647,
-                        MaxDepth = 32,
-                        MaxNameTableCharCount = 16384,
-                        MaxStringContentLength = 2147483647
-                    }
-                };
-
+                Endpoint.Binding = _Vinculacion;
                 _ProxyDinamico = _Fabrica.CreateProxy(Contrato);
+
+                var Credenciales = (ClientCredentials)_ProxyDinamico.GetProperty("ClientCredentials");
+                Credenciales.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
+                
+                // Esto es unicamente para las pruebas
+                Credenciales.UserName.UserName = "molleja@abc.com";
+                Credenciales.UserName.Password = "41ssdas#ASX";
             }
             catch (Exception ex)
             {
@@ -156,15 +190,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             {
                 for (int i = 0; i < Argumentos.Length; i++)
                 {
-                    if (Argumentos[i] is DataTableXML)
+                    if (Argumentos[i] is DataTableXml)
                     {
-                        DataTableXMLDinamico DataTableDinamico = new DataTableXMLDinamico(_Fabrica.ProxyAssembly);
-                        DataTableDinamico.BaseDeDatos = ((DataTableXML)Argumentos[i]).BaseDeDatos;
-                        DataTableDinamico.NombreTabla = ((DataTableXML)Argumentos[i]).NombreTabla;
-                        DataTableDinamico.EsquemaXML = ((DataTableXML)Argumentos[i]).EsquemaXML;
-                        DataTableDinamico.XML = ((DataTableXML)Argumentos[i]).XML;
-                        DataTableDinamico.EstadoFilas = ((DataTableXML)Argumentos[i]).EstadoFilas;
-                        DataTableDinamico.ClavePrimaria = ((DataTableXML)Argumentos[i]).ClavePrimaria;
+                        DataTableXmlDinamico DataTableDinamico = new DataTableXmlDinamico(_Fabrica.ProxyAssembly);
+                        DataTableDinamico.BaseDeDatos = ((DataTableXml)Argumentos[i]).BaseDeDatos;
+                        DataTableDinamico.NombreTabla = ((DataTableXml)Argumentos[i]).NombreTabla;
+                        DataTableDinamico.EsquemaXml = ((DataTableXml)Argumentos[i]).EsquemaXml;
+                        DataTableDinamico.Xml = ((DataTableXml)Argumentos[i]).Xml;
+                        DataTableDinamico.EstadoFilas = ((DataTableXml)Argumentos[i]).EstadoFilas;
+                        DataTableDinamico.ClavePrimaria = ((DataTableXml)Argumentos[i]).ClavePrimaria;
 
                         Argumentos[i] = DataTableDinamico.ObjectInstance;
                     }
@@ -178,21 +212,22 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 // No puedo hacer "if(Resultado is DataSetXML)" por que ocurre este error:
                 // http://stackoverflow.com/questions/2500280/invalidcastexception-for-two-objects-of-the-same-type
                 
-                if (Resultado.GetType().FullName == typeof(DataTableXML).FullName)
+                if (Resultado.GetType().FullName == typeof(DataTableXml).FullName)
                 {
-                    DataTableXMLDinamico DataTableDinamico = new DataTableXMLDinamico(Resultado);
-                    Resultado = new DataTableXML();
+                    DataTableXmlDinamico DataTableDinamico = new DataTableXmlDinamico(Resultado);
+                    Resultado = new DataTableXml();
 
-                    ((DataTableXML)Resultado).BaseDeDatos = DataTableDinamico.BaseDeDatos;
-                    ((DataTableXML)Resultado).NombreTabla = DataTableDinamico.NombreTabla;
-                    ((DataTableXML)Resultado).EsquemaXML = DataTableDinamico.EsquemaXML;
-                    ((DataTableXML)Resultado).XML = DataTableDinamico.XML;
-                    ((DataTableXML)Resultado).EstadoFilas = DataTableDinamico.EstadoFilas;
-                    ((DataTableXML)Resultado).ClavePrimaria = DataTableDinamico.ClavePrimaria;
+                    ((DataTableXml)Resultado).BaseDeDatos = DataTableDinamico.BaseDeDatos;
+                    ((DataTableXml)Resultado).NombreTabla = DataTableDinamico.NombreTabla;
+                    ((DataTableXml)Resultado).EsquemaXml = DataTableDinamico.EsquemaXml;
+                    ((DataTableXml)Resultado).Xml = DataTableDinamico.Xml;
+                    ((DataTableXml)Resultado).EstadoFilas = DataTableDinamico.EstadoFilas;
+                    ((DataTableXml)Resultado).ClavePrimaria = DataTableDinamico.ClavePrimaria;
                 }
             }
             catch (Exception ex)
             {
+                Abortar();
                 throw new Exception("Error invocando el metodo \"" + Metodo + "\" en el servidor remoto", ex);
             }
 
@@ -214,6 +249,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 throw new Exception("Error desconectando a ProxyDinamico", ex);
             }
         }
+
+        
         
         #endregion
 

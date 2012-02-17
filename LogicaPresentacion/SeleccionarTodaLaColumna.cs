@@ -25,7 +25,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
             for (int i = 0; i < Grilla.Columns.Count; i++)
             {
-                if (NombreNodoActual == Grilla.Columns[i].Header as string)
+                if (NombreNodoActual == (string)Grilla.Columns[i].Header)
                 {
                     Columna = i;
                     break;

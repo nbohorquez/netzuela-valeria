@@ -43,7 +43,7 @@
             Obtiene el contenido del nodo especificado desde el proveedor de datos.
             </summary>
             <param name="Item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
-            especificados en <see cref="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes.NivelDeNodo"/>.</param>
+            especificados en <see cref="!:Constantes.NivelDeNodo"/>.</param>
             <exception cref="T:System.ArgumentNullException">Si <paramref name="Item"/> es una referencia 
             nula.</exception>
         </member>
@@ -55,18 +55,6 @@
             <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
             <exception cref="T:System.ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
             nula.</exception>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTablasCache">
-            <summary>
-            Devuelve las tablas presentes en la caché de tablas.
-            </summary>
-            <returns>Lista de las tablas guardadas en la caché.</returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerNodosCache">
-            <summary>
-            Devuelve los nodos asociados a las tablas de la caché de tablas.
-            </summary>
-            <returns>Lista de los nodos de tablas guardados en la caché.</returns>
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Nodos">
             <summary>
@@ -143,6 +131,15 @@
             cuando se actualizan las tablas de origen desde el servidor local.
             </summary>
             <param name="NodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel.ObtenerTablaDeCache(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
+            <summary>
+            Lee la tabla especificada desde el proveedor de datos.
+            </summary>
+            <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
+            <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
+            nula.</exception>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.AutentificacionView">
             <summary>

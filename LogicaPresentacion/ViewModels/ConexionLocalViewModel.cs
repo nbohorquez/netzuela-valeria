@@ -239,7 +239,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             try
             {
-                Resultado = _Conexion.CrearUsuario(UsuarioNetzuela, ContrasenaNetzuela, ColumnasAutorizadas, Constantes.Privilegios.SELECCIONAR);
+                Resultado = _Conexion.CrearUsuario(UsuarioNetzuela, ContrasenaNetzuela, ColumnasAutorizadas, Privilegios.Seleccionar);
             }
             catch (Exception ex)
             {

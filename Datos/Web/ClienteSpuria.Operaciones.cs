@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
-using System.Data;                                  // DataTable
-using System.IO;                                    // MemoryStream
-using System.Threading;                             // Thread, SendOrPostCallback
-using System.Security;                              // SecureString
-using Zuliaworks.Netzuela.Spuria.Contrato;          // DataSetXML
+using System.ComponentModel;                // ProgressChangedEventArgs, AsyncOperation
+using System.Data;                          // DataTable
+using System.IO;                            // MemoryStream
+using System.Threading;                     // Thread, SendOrPostCallback
+using System.Security;                      // SecureString
+using Zuliaworks.Netzuela.Spuria.Api;       // DataSetXml
 
 namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
@@ -23,6 +23,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         private SendOrPostCallback _DelegadoDispararLeerTablaCompletado;
         private SendOrPostCallback _DelegadoDispararEscribirTablaCompletado;
         private SendOrPostCallback _DelegadoDispararCrearUsuarioCompletado;
+        private SendOrPostCallback _DelegadoDispararConsultarCompletado;
         private DelegadoComenzarOperacion _Carpintero;
 
         #endregion
@@ -35,6 +36,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         public event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado;
         public event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado;
         public event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado;
+        public event EventHandler<EventoOperacionAsincCompletadaArgs> ConsultarCompletado;
 
         #endregion
 
@@ -77,23 +79,28 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                             Resultados.Add(ListarBasesDeDatos());
                             break;
                         case "ListarTablas":
-                            Resultados.Add(ListarTablas(Parametros[0] as string));
+                            Resultados.Add(ListarTablas((string)Parametros[0]));
                             break;
                         case "LeerTabla":
-                            Resultados.Add(LeerTabla(Parametros[0] as string, Parametros[1] as string));
+                            Resultados.Add(LeerTabla((string)Parametros[0], (string)Parametros[1]));
                             break;
                         case "EscribirTabla":
                             Resultados.Add(EscribirTabla(
-                                Parametros[0] as string,
-                                Parametros[1] as string,
-                                Parametros[2] as DataTable));
+                                (string)Parametros[0],
+                                (string)Parametros[1],
+                                (DataTable)Parametros[2]));
                             break;
                         case "CrearUsuario":
                             Resultados.Add(CrearUsuario(
-                                Parametros[0] as SecureString,
-                                Parametros[1] as SecureString,
-                                Parametros[2] as string[],
+                                (SecureString)Parametros[0],
+                                (SecureString)Parametros[1],
+                                (string[])Parametros[2],
                                 Convert.ToInt16(Parametros[3])));
+                            break;
+                        case "Consultar":
+                            Resultados.Add(Consultar(
+                                (string)Parametros[0],
+                                (string)Parametros[1]));
                             break;
                         default:
                             break;
@@ -138,6 +145,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 case "CrearUsuario":
                     Asincronico.PostOperationCompleted(_DelegadoDispararCrearUsuarioCompletado, e);
                     break;
+                case "Consultar":
+                    Asincronico.PostOperationCompleted(_DelegadoDispararConsultarCompletado, e);
+                    break;
                 default:
                     break;
             }
@@ -145,7 +155,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararCambioEnProgresoDeOperacion(object Estado)
         {
-            ProgressChangedEventArgs e = Estado as ProgressChangedEventArgs;
+            ProgressChangedEventArgs e = (ProgressChangedEventArgs)Estado;
             DispararCambioEnProgresoDeOperacion(e);
         }
 
@@ -159,7 +169,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararListarBDsCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = EstadoOperacion as EventoOperacionAsincCompletadaArgs;
+            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
             DispararListarBDsCompletado(e);
         }
 
@@ -173,7 +183,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararListarTablasCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = EstadoOperacion as EventoOperacionAsincCompletadaArgs;
+            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
             DispararListarTablasCompletado(e);
         }
 
@@ -187,7 +197,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararLeerTablaCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = EstadoOperacion as EventoOperacionAsincCompletadaArgs;
+            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
             DispararLeerTablaCompletado(e);
         }
 
@@ -201,7 +211,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararEscribirTablaCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = EstadoOperacion as EventoOperacionAsincCompletadaArgs;
+            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
             DispararEscribirTablaCompletado(e);
         }
 
@@ -215,7 +225,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararCrearUsuarioCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = EstadoOperacion as EventoOperacionAsincCompletadaArgs;
+            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
             DispararCrearUsuarioCompletado(e);
         }
 
@@ -227,6 +237,20 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             }
         }
 
+        private void AntesDeDispararConsultarCompletado(object EstadoOperacion)
+        {
+            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
+            DispararConsultarCompletado(e);
+        }
+
+        protected virtual void DispararConsultarCompletado(EventoOperacionAsincCompletadaArgs e)
+        {
+            if (ConsultarCompletado != null)
+            {
+                ConsultarCompletado(this, e);
+            }
+        }
+
         #endregion
 
         #region Métodos sincrónicos
@@ -234,7 +258,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         public string[] ListarBasesDeDatos()
         {
             Conectar();
-            string[] Resultado = _Proxy.InvocarMetodo("ListarBasesDeDatos", null) as string[];
+            string[] Resultado = (string[])_Proxy.InvocarMetodo("ListarBasesDeDatos", null);
             Desconectar();
 
             return Resultado;
@@ -243,7 +267,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         public string[] ListarTablas(string BaseDeDatos)
         {
             Conectar();
-            string[] Resultado = _Proxy.InvocarMetodo("ListarTablas", BaseDeDatos) as string[];
+            string[] Resultado = (string[])_Proxy.InvocarMetodo("ListarTablas", BaseDeDatos);
             Desconectar();
 
             return Resultado;
@@ -254,7 +278,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             Conectar();
 
             object TablaXML = _Proxy.InvocarMetodo("LeerTabla", BaseDeDatos, NombreTabla);
-            DataTable Tabla = ((DataTableXML)TablaXML).XmlADataTable();
+            DataTable Tabla = ((DataTableXml)TablaXML).XmlADataTable();
 
             Desconectar();
 
@@ -264,8 +288,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
         {
             Conectar();
-            
-            DataTableXML DatosAEnviar = Tabla.DataTableAXml(BaseDeDatos, NombreTabla);
+
+            DataTableXml DatosAEnviar = Tabla.DataTableAXml(BaseDeDatos, NombreTabla);
             bool Resultado = Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
             
             Desconectar();
@@ -273,7 +297,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             return Resultado;
         }
 
-        public object CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataTable Consultar(string baseDeDatos, string Sql)
         {
             throw new NotImplementedException();
         }
@@ -305,6 +334,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
             CrearUsuarioAsinc(Usuario, Contrasena, Columnas, Privilegios, _Aleatorio.Next());
+        }
+
+        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        {
+            ConsultarAsinc(baseDeDatos, Sql, _Aleatorio.Next());
         }
 
         public void ListarBasesDeDatosAsinc(object TareaID)
@@ -367,7 +401,32 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios, object TareaID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                object[] Parametros = new object[4] { Usuario, Contrasena, Columnas, Privilegios };
+
+                AsyncOperation Asincronico = CrearOperacionAsincronica(TareaID);
+                _Carpintero.BeginInvoke(Asincronico, "CrearUsuario", Parametros, null, null);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al iniciar la operacion asincrónica \"" + "CrearUsuarioAsinc\"", ex);
+            }
+        }
+
+        public void ConsultarAsinc(string baseDeDatos, string Sql, object TareaID)
+        {
+            try
+            {
+                object[] Parametros = new object[2] { baseDeDatos, Sql };
+
+                AsyncOperation Asincronico = CrearOperacionAsincronica(TareaID);
+                _Carpintero.BeginInvoke(Asincronico, "Consultar", Parametros, null, null);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al iniciar la operacion asincrónica \"" + "ConsultarAsinc\"", ex);
+            }
         }
 
         #endregion

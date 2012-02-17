@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Zuliaworks.Netzuela.Valeria.Comunes;        // ServidorLocal
-using Zuliaworks.Netzuela.Valeria.Datos;          // AnfitrionLocal
-
-namespace Zuliaworks.Netzuela.Valeria.Logica
+﻿namespace Zuliaworks.Netzuela.Valeria.Logica
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;        // ServidorLocal
+    using Zuliaworks.Netzuela.Valeria.Datos;          // AnfitrionLocal
+
     public static class ExponerAnfitrionLocal
     {
         /// <summary>

@@ -43,7 +43,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     Valor2 = Valor2.Replace(" ", string.Empty);
                     string[] Valores = Valor2.Split(',').ToArray();
 
-                    Metodo.Nombre = Constantes.MetodosDeConexion.CANALIZACIONES_CON_NOMBRE;
+                    Metodo.Nombre = MetodosDeConexion.CanalizacionesConNombre;
                     Metodo.Valores = Valores.ToList();
                 }
             }
@@ -63,7 +63,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                 if (Valor1 == 0x01)
                 {
-                    Metodo.Nombre = Constantes.MetodosDeConexion.MEMORIA_COMPARTIDA;
+                    Metodo.Nombre = MetodosDeConexion.MemoriaCompartida;
                     Metodo.Valores = new List<string>() { "Por defecto" };                    
                 }
             }
@@ -87,7 +87,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     Valor2 = Valor2.Replace(" ", string.Empty);
                     string[] Valores = Valor2.Split(',').ToArray();
 
-                    Metodo.Nombre = Constantes.MetodosDeConexion.VIA;
+                    Metodo.Nombre = MetodosDeConexion.Via;
                     Metodo.Valores = Valores.ToList();
                 }
             }
@@ -145,7 +145,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                         }
                     }
 
-                    Metodo.Nombre = Constantes.MetodosDeConexion.TCP_IP;
+                    Metodo.Nombre = MetodosDeConexion.TcpIp;
                     Metodo.Valores = Valores.ToList();
                 }
             }
@@ -226,7 +226,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
 
             ServidorLocal Serv = new ServidorLocal();
-            Serv.Nombre = Constantes.SGBDR.SQL_SERVER;
+            Serv.Nombre = SGBDR.SqlServer;
             Serv.Instancias = ListaDeInstancias;
 
             return Serv;

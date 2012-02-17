@@ -4,17 +4,12 @@
         <name>Comunes</name>
     </assembly>
     <members>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes">
-            <summary>
-            Define constantes empleadas por todas las capas de Valeria
-            </summary>    
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes.SGBDR">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.SGBDR">
             <summary>
             SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.Constantes.MetodosDeConexion">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.MetodosDeConexion">
             <summary>
             Métodos de conexión
             </summary>        
@@ -34,7 +29,7 @@
             Convierte un tipo IEnumerable a ObservableCollection
             </summary>
             <typeparam name="T">Tipo de IEnumerable</typeparam>
-            <param name="Enumerable">Coleccion de objetos</param>
+            <param name="enumerable">Coleccion de objetos</param>
             <returns>ObservableColeccion de objetos tipo T</returns>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ParametrosDeConexion">
@@ -49,17 +44,22 @@
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones.ConvertirAUnsecureString(System.Security.SecureString)">
             <summary>
-            
+            Convierte una SecureString a una string simple de forma segura.
             </summary>
-            <param name="StringSegura"></param>
-            <returns></returns>
+            <param name="stringSegura">Cadena de caracteres segura a convertir.</param>
+            <returns>Cadena de caracteres convertida.</returns>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones.ConvertirASecureString(System.String)">
             <summary>
-            
+            Convierte una string simple a una SecureString de forma segura.
             </summary>
-            <param name="StringNoSegura"></param>
-            <returns></returns>
+            <param name="stringNoSegura">Cadena de caracteres no seguros a convertir.</param>
+            <returns>Cadena de caracteres convertida.</returns>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.Desechable">
+            <summary>
+            Esta clase implementa un modelo de IDisposable.
+            </summary>
         </member>
     </members>
 </doc>

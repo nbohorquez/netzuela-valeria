@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Configuration;         // ConfigurationElement
-
-namespace Zuliaworks.Netzuela.Valeria.Preferencias
+﻿namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;         // ConfigurationElement
+    using System.Linq;
+    using System.Text;
+
     public class TablasDeAsociacionesSection : ConfigurationSection
     {
         #region Constructores
 
-        public TablasDeAsociacionesSection() { }
+        public TablasDeAsociacionesSection() 
+        { 
+        }
 
         #endregion
 

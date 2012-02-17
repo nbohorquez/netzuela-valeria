@@ -183,6 +183,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 Sociedad.CambioEnColumnas -= this.ManejarCambioEnColumnas;
 
+                /*
                 if (_Nodo == Sociedad.ColumnaDestino)
                 {
                     Sociedad.QuitarDestino();
@@ -193,12 +194,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
                 
                 Sociedad = null;
-            }
-
-            if (_Nodo != null)
-            {
-                _Nodo.QuitarDeRepositorio();
-                _Nodo = null;
+                 */
             }
 
             if (Explorador != null)
@@ -206,6 +202,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             if (BorrarCodigoAdministrado)
             {
+                if (_Nodo != null)
+                {
+                    _Nodo.QuitarDeRepositorio();
+                    _Nodo.Dispose();
+                    _Nodo = null;
+                }
+
                 if (Padre != null)
                 {
                     /* Si escribo aqui: -----Padre.Hijos.Remove(this)------ ocurre un "bug" muy dificil 
@@ -251,7 +254,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     Hijos = null;
                 }
             }
-        }        
+        }
 
         public void AgregarHijo(NodoViewModel Nodo)
         {

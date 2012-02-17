@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Security.Cryptography;     // RNGCryptoServiceProvider
-
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
+﻿namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Cryptography;     // RNGCryptoServiceProvider
+    using System.Text;
+
     public class PasswordGenerator
     {
         /* 
@@ -40,9 +39,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         private bool hasConsecutive;
         private bool hasSymbols;
         private string exclusionSet;
-        // Modifique pwdCharArray para que no incluya: coma (,), comillas dobles ("),  
-        // comillas simples ('), vaina loca (`), punto y coma (;), dos puntos (:), 
-        // barra (\), punto (.)
+
+        /* 
+         * Modifique pwdCharArray para que no incluya: coma (,), comillas dobles ("),  
+         * comillas simples ('), vaina loca (`), punto y coma (;), dos puntos (:), 
+         * barra (\), punto (.)
+         */
         private char[] pwdCharArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()-_=+[]{}|<>/?".ToCharArray();
 
         #endregion
@@ -58,7 +60,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
             this.ExcludeSymbols = false;
             this.Exclusions = null;
 
-            rng = new RNGCryptoServiceProvider();
+            this.rng = new RNGCryptoServiceProvider();
         }
 
         #endregion
@@ -73,7 +75,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
         public int Minimum
         {
-            get { return this.minSize; }
+            get 
+            { 
+                return this.minSize; 
+            }
+
             set
             {
                 this.minSize = value;
@@ -86,7 +92,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
         public int Maximum
         {
-            get { return this.maxSize; }
+            get 
+            { 
+                return this.maxSize; 
+            }
+
             set
             {
                 this.maxSize = value;
@@ -119,49 +129,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
         #region Funciones
 
-        protected int GetCryptographicRandomNumber(int lBound, int uBound)
-        {
-            // Assumes lBound >= 0 && lBound < uBound
-            // returns an int >= lBound and < uBound
-            uint urndnum;
-            byte[] rndnum = new Byte[4];
-            if (lBound == uBound - 1)
-            {
-                // test for degenerate case where only lBound can be returned   
-                return lBound;
-            }
-
-            uint xcludeRndBase = (uint.MaxValue - (uint.MaxValue % (uint)(uBound - lBound)));
-
-            do
-            {
-                rng.GetBytes(rndnum);
-                urndnum = System.BitConverter.ToUInt32(rndnum, 0);
-            } while (urndnum >= xcludeRndBase);
-
-            return (int)(urndnum % (uBound - lBound)) + lBound;
-        }
-
-        protected char GetRandomCharacter()
-        {
-            int upperBound = pwdCharArray.GetUpperBound(0);
-
-            if (true == this.ExcludeSymbols)
-            {
-                upperBound = PasswordGenerator.UBoundDigit;
-            }
-
-            int randomCharPosition = GetCryptographicRandomNumber(pwdCharArray.GetLowerBound(0), upperBound);
-
-            char randomChar = pwdCharArray[randomCharPosition];
-
-            return randomChar;
-        }
-
         public string Generate()
         {
             // Pick random length between minimum and maximum   
-            int pwdLength = GetCryptographicRandomNumber(this.Minimum, this.Maximum);
+            int pwdLength = this.GetCryptographicRandomNumber(this.Minimum, this.Maximum);
 
             StringBuilder pwdBuffer = new StringBuilder();
             pwdBuffer.Capacity = this.Maximum;
@@ -174,13 +145,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
             for (int i = 0; i < pwdLength; i++)
             {
-                nextCharacter = GetRandomCharacter();
+                nextCharacter = this.GetRandomCharacter();
 
                 if (false == this.ConsecutiveCharacters)
                 {
                     while (lastCharacter == nextCharacter)
                     {
-                        nextCharacter = GetRandomCharacter();
+                        nextCharacter = this.GetRandomCharacter();
                     }
                 }
 
@@ -190,16 +161,16 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                     int duplicateIndex = temp.IndexOf(nextCharacter);
                     while (-1 != duplicateIndex)
                     {
-                        nextCharacter = GetRandomCharacter();
+                        nextCharacter = this.GetRandomCharacter();
                         duplicateIndex = temp.IndexOf(nextCharacter);
                     }
                 }
 
-                if ((null != this.Exclusions))
+                if (null != this.Exclusions)
                 {
                     while (-1 != this.Exclusions.IndexOf(nextCharacter))
                     {
-                        nextCharacter = GetRandomCharacter();
+                        nextCharacter = this.GetRandomCharacter();
                     }
                 }
 
@@ -213,11 +184,50 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
             }
             else
             {
-                return String.Empty;
+                return string.Empty;
             }
+        }
+
+        protected int GetCryptographicRandomNumber(int lowerBound, int upperBound)
+        {
+            // Assumes lBound >= 0 && lBound < uBound
+            // returns an int >= lBound and < uBound
+            uint urndnum;
+            byte[] rndnum = new byte[4];
+            if (lowerBound == upperBound - 1)
+            {
+                // test for degenerate case where only lBound can be returned   
+                return lowerBound;
+            }
+
+            uint xcludeRndBase = uint.MaxValue - (uint.MaxValue % (uint)(upperBound - lowerBound));
+
+            do
+            {
+                this.rng.GetBytes(rndnum);
+                urndnum = System.BitConverter.ToUInt32(rndnum, 0);
+            } 
+            while (urndnum >= xcludeRndBase);
+
+            return (int)(urndnum % (upperBound - lowerBound)) + lowerBound;
+        }
+
+        protected char GetRandomCharacter()
+        {
+            int upperBound = this.pwdCharArray.GetUpperBound(0);
+
+            if (true == this.ExcludeSymbols)
+            {
+                upperBound = PasswordGenerator.UBoundDigit;
+            }
+
+            int randomCharPosition = this.GetCryptographicRandomNumber(this.pwdCharArray.GetLowerBound(0), upperBound);
+
+            char randomChar = this.pwdCharArray[randomCharPosition];
+
+            return randomChar;
         }
 
         #endregion
     }
 }
-

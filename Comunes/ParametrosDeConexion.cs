@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿//-----------------------------------------------------------------------
+// <copyright file="ParametrosDeConexion.cs" company="Zuliaworks">
+//     Copyright (c) Zuliaworks. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     /// <summary>
     /// Esta clase se usa en todas partes.
     /// </summary>
@@ -14,11 +20,11 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
 
         public ParametrosDeConexion() 
         {
-            Anfitrion = string.Empty;
-            Servidor = string.Empty;
-            Instancia = string.Empty;
-            MetodoDeConexion = string.Empty;
-            ArgumentoDeConexion = string.Empty;
+            this.Anfitrion = string.Empty;
+            this.Servidor = string.Empty;
+            this.Instancia = string.Empty;
+            this.MetodoDeConexion = string.Empty;
+            this.ArgumentoDeConexion = string.Empty;
         }
 
         #endregion
@@ -26,9 +32,13 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         #region Propiedades
 
         public string Anfitrion { get; set; }
+
         public string Servidor { get; set; }
+
         public string Instancia { get; set; }
+
         public string MetodoDeConexion { get; set; }
+
         public string ArgumentoDeConexion { get; set; }
 
         #endregion
@@ -37,24 +47,34 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
 
         public ParametrosDeConexion Clonar()
         {
-            ParametrosDeConexion Resultado = new ParametrosDeConexion();
+            ParametrosDeConexion resultado = new ParametrosDeConexion();
 
-            if(this.Anfitrion != null)
-                Resultado.Anfitrion = string.Copy(this.Anfitrion);
+            if (this.Anfitrion != null)
+            {
+                resultado.Anfitrion = string.Copy(this.Anfitrion);
+            }
 
-            if(this.Servidor != null)
-                Resultado.Servidor = string.Copy(this.Servidor);
+            if (this.Servidor != null)
+            {
+                resultado.Servidor = string.Copy(this.Servidor);
+            }
 
-            if(this.Instancia != null)
-                Resultado.Instancia = string.Copy(this.Instancia);
+            if (this.Instancia != null)
+            {
+                resultado.Instancia = string.Copy(this.Instancia);
+            }
 
-            if(this.MetodoDeConexion != null)
-                Resultado.MetodoDeConexion = string.Copy(this.MetodoDeConexion);
+            if (this.MetodoDeConexion != null)
+            {
+                resultado.MetodoDeConexion = string.Copy(this.MetodoDeConexion);
+            }
 
-            if(this.ArgumentoDeConexion != null)
-                Resultado.ArgumentoDeConexion = string.Copy(this.ArgumentoDeConexion);
+            if (this.ArgumentoDeConexion != null)
+            {
+                resultado.ArgumentoDeConexion = string.Copy(this.ArgumentoDeConexion);
+            }
 
-            return Resultado;
+            return resultado;
         }
 
         #endregion   

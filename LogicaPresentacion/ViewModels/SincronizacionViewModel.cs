@@ -103,8 +103,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             try
             {
-                NodoViewModel NodoOrigen = Argumento[0] as NodoViewModel;
-                NodoViewModel NodoDestino = Argumento[1] as NodoViewModel;
+                NodoViewModel NodoOrigen = (NodoViewModel)Argumento[0];
+                NodoViewModel NodoDestino = (NodoViewModel)Argumento[1];
 
                 Asociar(NodoOrigen, NodoDestino);
                 ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
@@ -119,7 +119,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             try
             {
-                NodoViewModel NodoDestino = Argumento as NodoViewModel;
+                NodoViewModel NodoDestino = (NodoViewModel)Argumento;
                 
                 Desasociar(NodoDestino);
                 ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
@@ -180,14 +180,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                                     + TipoOrigen.ToString() + " != " + TipoDestino.ToString());
             }
 
-            // Si es la primera vez que asociamos un nodo de esta tabla, agregamos a Tablas
-            // una nueva AsociacionDeColumnas cuya ColumnaDestino sea NodoDestino.
+            /*
+             * Si es la primera vez que asociamos un nodo de esta tabla, agregamos a Tablas
+             * una nueva AsociacionDeColumnas cuya ColumnaDestino sea NodoDestino.
+             */
             if (NodoDestino.Padre.TablaDeSocios == null)
+            {
                 Tablas.Add(NodoDestino.Padre.CrearTablaDeAsociaciones());
+            }
 
             // Agregamos la DataTable a la cache local de tablas si ya no esta agregada
             if (!_CacheDeTablas.ContainsKey(NodoDestino.Padre))
+            {
                 _CacheDeTablas[NodoDestino.Padre] = TablaDestino;
+            }
 
             NodoDestino.AsociarCon(NodoOrigen);
         }
@@ -198,6 +204,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new ArgumentNullException("NodoDestino");
 
             NodoDestino.Desasociarse();
+        }
+
+        private void BorrarCacheDeTablas()
+        {
+            DataTable[] tablas = _CacheDeTablas.Values.ToArray();
+
+            for (int i = 0; i < tablas.Length; i++)
+            {
+                tablas[i].Dispose();
+                tablas[i] = null;
+            }
+
+            tablas = null;
+            _CacheDeTablas.Clear();
         }
         
         public void ActualizarTodasLasTablas()
@@ -219,8 +239,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             NodoViewModel NodoOrigen = null;
             NodoViewModel NodoDestino = null;
-            
-            _CacheDeTablas.Clear();
+
+            BorrarCacheDeTablas();
 
             try
             {
@@ -251,7 +271,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             NodoViewModel NodoDestino = null;
             NodoViewModel NodoOrigen = null;
 
-            _CacheDeTablas.Clear();
+            BorrarCacheDeTablas();
 
             try
             {
@@ -282,16 +302,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             // al objeto interno
             return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
             //return _CacheDeTablas;
-        }
-
-        public List<NodoViewModel> ObtenerNodosCache()
-        {
-            return _CacheDeTablas.Keys.ToList();
-        }
-
-        public List<DataTable> ObtenerTablasCache()
-        {
-            return _CacheDeTablas.Values.ToList();
         }
 
         public string[] RutasDeNodosDeOrigen()
@@ -378,6 +388,53 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
 
             return NodosDestino.ToArray();
+        }
+
+        /// <summary>
+        /// Lee la tabla especificada desde el proveedor de datos.
+        /// </summary>
+        /// <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
+        /// <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
+        /// <exception cref="ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
+        /// nula.</exception>
+        public DataTable ObtenerTablaDeCache(NodoViewModel Tabla)
+        {
+            DataTable Resultado = null;
+
+            if (Tabla == null)
+                throw new ArgumentNullException("Tabla");
+
+            try
+            {
+                Resultado = _CacheDeTablas[Tabla];
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener tabla de la cache", ex);
+            }
+
+            return Resultado;
+        }
+
+        public bool BorrarTablaDeCache(NodoViewModel Tabla)
+        {
+            bool resultado = false;
+
+            if (Tabla == null)
+            {
+                throw new ArgumentNullException("Tabla");
+            }
+
+            try
+            {
+                resultado = _CacheDeTablas.Remove(Tabla);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al borrar tabla de la cache", ex);
+            }
+
+            return resultado;
         }
 
         #endregion

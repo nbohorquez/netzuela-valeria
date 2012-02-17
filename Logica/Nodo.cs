@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Collections.ObjectModel;           // ObservableCollection
-using System.ComponentModel;                    // INotifyPropertyChanged
-using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
-
-namespace Zuliaworks.Netzuela.Valeria.Logica
+﻿namespace Zuliaworks.Netzuela.Valeria.Logica
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;           // ObservableCollection
+    using System.ComponentModel;                    // INotifyPropertyChanged
+    using System.Linq;
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
+
     /// <summary>
     /// Implementación de la unidad básica de información de una estructura de datos 
     /// en forma de árbol. Se usa para representar la organizacion interna de las 
     /// bases de datos.
     /// </summary>
-    public class Nodo
+    public class Nodo : Desechable
     {
         #region Constructores
 
@@ -31,10 +31,10 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Nombre"></param>
-        public Nodo(string Nombre)
+        /// <param name="nombre"></param>
+        public Nodo(string nombre)
         {
-            this.Nombre = Nombre;
+            this.Nombre = nombre;
             this.Nivel = -1;
             this.Sociedad = null;
         }
@@ -42,35 +42,43 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Nombre"></param>
-        /// <param name="Nivel"></param>
-        public Nodo(string Nombre, int Nivel)
+        /// <param name="nombre"></param>
+        /// <param name="nivel"></param>
+        public Nodo(string nombre, int nivel)
         {
-            this.Nombre = Nombre;
-            this.Nivel = Nivel;
+            this.Nombre = nombre;
+            this.Nivel = nivel;
             this.Sociedad = null;
         }
-                    
+                  
+        ~Nodo()
+        {
+            this.Dispose(false);
+        }
+
         #endregion
 
         #region Propiedades
 
         public string Nombre { get; set; }
+
         public int Nivel { get; set; }
+
         public AsociacionDeColumnas Sociedad { get; set; }
+
         public TablaDeAsociaciones TablaDeSocios { get; set; }
 
         #endregion
 
         #region Funciones
 
-        public TablaDeAsociaciones CrearTablaDeAsociaciones(List<Nodo> Columnas)
+        public TablaDeAsociaciones CrearTablaDeAsociaciones(List<Nodo> columnas)
         {
             try
             {
-                TablaDeAsociaciones T = new TablaDeAsociaciones(this, Columnas);
-                TablaDeSocios = T;
-                return T;
+                TablaDeAsociaciones t = new TablaDeAsociaciones(this, columnas);
+                this.TablaDeSocios = t;
+                return t;
             }
             catch (Exception ex)
             {
@@ -78,14 +86,16 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             }
         }
 
-        public void AsociarCon(Nodo NodoOrigen)
+        public void AsociarCon(Nodo nodoOrigen)
         {
-            if (NodoOrigen == null)
-                throw new ArgumentNullException("NodoOrigen");
+            if (nodoOrigen == null)
+            {
+                throw new ArgumentNullException("nodoOrigen");
+            }
 
             try
             {
-                Sociedad.FijarOrigen(NodoOrigen);
+                this.Sociedad.FijarOrigen(nodoOrigen);
             }
             catch (Exception ex)
             {
@@ -97,11 +107,39 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         {
             try
             {
-                Sociedad.QuitarOrigen();
+                if (this == this.Sociedad.ColumnaDestino)
+                {
+                    this.Sociedad.QuitarDestino();
+                }
+                else if (this == this.Sociedad.ColumnaOrigen)
+                {
+                    this.Sociedad.QuitarOrigen();
+                }
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        protected override void Dispose(bool borrarCodigoAdministrado)
+        {
+            this.QuitarDeRepositorio();
+            this.Nombre = null;
+
+            if (this.Sociedad != null)
+            {
+                this.Desasociarse();
+            }
+
+            if (this.TablaDeSocios != null)
+            {
+                this.TablaDeSocios.Dispose();
+                this.TablaDeSocios = null;
+            }
+
+            if (borrarCodigoAdministrado)
+            {
             }
         }
 

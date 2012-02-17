@@ -1,28 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Configuration;                         // ConfigurationElement
-using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
-
-namespace Zuliaworks.Netzuela.Valeria.Preferencias
+﻿namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;                         // ConfigurationElement
+    using System.Linq;
+    using System.Text;
+        
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
+
     public class ParametrosDeConexionElement : ConfigurationElement
     {
-        // Referencia: http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.asp
+        /*
+         * Referencia: http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
+         */
 
         #region Constructores
 
-        public ParametrosDeConexionElement() { }
+        public ParametrosDeConexionElement() 
+        { 
+        }
 
-        public ParametrosDeConexionElement(ParametrosDeConexion Parametros)
+        public ParametrosDeConexionElement(ParametrosDeConexion parametros)
         {
-            this.Anfitrion = Parametros.Anfitrion;
-            this.Servidor = Parametros.Servidor;
-            this.Instancia = Parametros.Instancia;
-            this.MetodoDeConexion = Parametros.MetodoDeConexion;
-            this.ArgumentoDeConexion = Parametros.ArgumentoDeConexion;
+            this.Anfitrion = parametros.Anfitrion;
+            this.Servidor = parametros.Servidor;
+            this.Instancia = parametros.Instancia;
+            this.MetodoDeConexion = parametros.MetodoDeConexion;
+            this.ArgumentoDeConexion = parametros.ArgumentoDeConexion;
         }
 
         #endregion
@@ -77,18 +81,17 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
 
         public ParametrosDeConexion ConvertirAParametrosDeConexion()
         {
-            ParametrosDeConexion Resultado = new ParametrosDeConexion();
+            ParametrosDeConexion resultado = new ParametrosDeConexion();
 
-            Resultado.Anfitrion = this.Anfitrion;
-            Resultado.Servidor = this.Servidor;
-            Resultado.Instancia = this.Instancia;
-            Resultado.MetodoDeConexion = this.MetodoDeConexion;
-            Resultado.ArgumentoDeConexion = this.ArgumentoDeConexion;
+            resultado.Anfitrion = this.Anfitrion;
+            resultado.Servidor = this.Servidor;
+            resultado.Instancia = this.Instancia;
+            resultado.MetodoDeConexion = this.MetodoDeConexion;
+            resultado.ArgumentoDeConexion = this.ArgumentoDeConexion;
 
-            return Resultado;
+            return resultado;
         }
 
         #endregion
     }
 }
-

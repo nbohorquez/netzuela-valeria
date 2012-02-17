@@ -28,6 +28,24 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             _Estado = ConnectionState.Closed;
         }
 
+        ~ServidorPredeterminado()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
+        #region Funciones
+
+        protected void Dispose(bool BorrarCodigoAdministrado)
+        {
+            this.DatosDeConexion = null;
+            
+            if (BorrarCodigoAdministrado)
+            {
+            }
+        }
+
         #endregion
 
         #region Implementaciones de interfaces
@@ -76,6 +94,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
+        public DataTable Consultar(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Métodos asincrónicos
@@ -103,6 +126,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
         {
             throw new NotImplementedException();
+        }
+
+        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

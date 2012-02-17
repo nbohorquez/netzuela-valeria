@@ -52,7 +52,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constantes.cs" />
+    <Compile Include="Desechable.cs" />
+    <Compile Include="MetodosDeConexion.cs" />
+    <Compile Include="NivelDeNodo.cs" />
+    <Compile Include="Privilegios.cs" />
+    <Compile Include="Repositorio.cs" />
+    <Compile Include="SGBDR.cs" />
     <Compile Include="Criptografia.cs" />
     <Compile Include="IEnumerableExtensiones.cs" />
     <Compile Include="PasswordGenerator.cs" />
@@ -62,6 +67,7 @@
     <Compile Include="ServidorLocal.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

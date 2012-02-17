@@ -14,7 +14,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     /// Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
     /// a las bases de datos.
     /// </summary>    
-    public interface IBaseDeDatos
+    public interface IBaseDeDatos : IDisposable
     {
         #region Propiedades
 
@@ -38,23 +38,25 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Métodos sincrónicos
 
-        void Conectar(SecureString Usuario, SecureString Contrasena);
+        void Conectar(SecureString usuario, SecureString contrasena);
         void Desconectar();
         string[] ListarBasesDeDatos();
-        string[] ListarTablas(string BaseDeDatos);
-        DataTable LeerTabla(string BaseDeDatos, string Tabla);
-        bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla);
-        bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios);
+        string[] ListarTablas(string baseDeDatos);
+        DataTable LeerTabla(string baseDeDatos, string tabla);
+        bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla);
+        bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios);
+        DataTable Consultar(string baseDeDatos, string Sql);
 
         #endregion
 
         #region Métodos asincrónicos
 
         void ListarBasesDeDatosAsinc();
-        void ListarTablasAsinc(string BaseDeDatos);
-        void LeerTablaAsinc(string BaseDeDatos, string Tabla);
-        void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, DataTable Tabla);
-        void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios);
+        void ListarTablasAsinc(string baseDeDatos);
+        void LeerTablaAsinc(string baseDeDatos, string tabla);
+        void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla);
+        void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios);
+        void ConsultarAsinc(string baseDeDatos, string Sql);
 
         #endregion
 

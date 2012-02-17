@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.ComponentModel;                    // INotifyPropertyChanged
-using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
-
-namespace Zuliaworks.Netzuela.Valeria.Logica
+﻿namespace Zuliaworks.Netzuela.Valeria.Logica
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;                    // INotifyPropertyChanged
+    using System.Linq;
+    using System.Text;
+   
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
+
     /// <summary>
     /// Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
     /// de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
     /// empleada por <see cref="TablaDeAsociaciones"/> como unidad básica de mapeo.
     /// </summary>
-    public class AsociacionDeColumnas : IDisposable
+    public class AsociacionDeColumnas : Desechable
     {
         #region Variables
 
-        private TablaDeAsociaciones _TablaPadre;
-        private Nodo _ColumnaDestino;
-        private Nodo _ColumnaOrigen;
+        private Nodo columnaDestino;
+        private Nodo columnaOrigen;
 
         #endregion
 
@@ -30,47 +29,53 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public AsociacionDeColumnas() { }
 
-        public AsociacionDeColumnas(TablaDeAsociaciones TablaPadre) 
+        public AsociacionDeColumnas(TablaDeAsociaciones tablaPadre) 
         {
-            this.TablaPadre = TablaPadre;
+            this.TablaPadre = tablaPadre;
         }
 
         /// <summary>
         /// Crea un mapeo de columnas especificando sólo la columna destino.
         /// </summary>
-        /// <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
-        public AsociacionDeColumnas(Nodo ColumnaDestino)
+        /// <param name="columnaDestino">Nodo que representa la columna destino.</param>
+        public AsociacionDeColumnas(Nodo columnaDestino)
         {
-            this.ColumnaDestino = ColumnaDestino;
+            this.ColumnaDestino = columnaDestino;
         }
 
         /// <summary>
         /// Crea un mapeo de columnas especificando la columna de orígen y la de destino.
         /// </summary>
-        /// <param name="ColumnaDestino">Nodo que representa la columna destino.</param>
-        /// <param name="ColumnaOrigen">Nodo que representa la columna orígen.</param>
-        public AsociacionDeColumnas(Nodo ColumnaOrigen, Nodo ColumnaDestino)
+        /// <param name="columnaDestino">Nodo que representa la columna destino.</param>
+        /// <param name="columnaOrigen">Nodo que representa la columna orígen.</param>
+        public AsociacionDeColumnas(Nodo columnaOrigen, Nodo columnaDestino)
         {
-            this.ColumnaOrigen = ColumnaOrigen;
-            this.ColumnaDestino = ColumnaDestino;
+            this.ColumnaOrigen = columnaOrigen;
+            this.ColumnaDestino = columnaDestino;
         }
 
-        public AsociacionDeColumnas(TablaDeAsociaciones TablaPadre, Nodo ColumnaDestino)
-            : this(ColumnaDestino)
+        public AsociacionDeColumnas(TablaDeAsociaciones tablaPadre, Nodo columnaDestino)
+            : this(columnaDestino)
         {
-            this.TablaPadre = TablaPadre;
+            this.TablaPadre = tablaPadre;
         }
 
-        public AsociacionDeColumnas(TablaDeAsociaciones TablaPadre, Nodo ColumnaDestino, Nodo ColumnaOrigen)
-            : this(ColumnaOrigen, ColumnaDestino)
+        public AsociacionDeColumnas(TablaDeAsociaciones tablaPadre, Nodo columnaDestino, Nodo columnaOrigen)
+            : this(columnaOrigen, columnaDestino)
         {
-            this.TablaPadre = TablaPadre;
+            this.TablaPadre = tablaPadre;
         }
         
         ~AsociacionDeColumnas()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
+
+        #endregion
+
+        #region Eventos
+
+        public event EventHandler<EventoCambioEnColumnasArgs> CambioEnColumnas;
 
         #endregion
 
@@ -86,39 +91,45 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public Nodo ColumnaOrigen
         {
-            get { return _ColumnaOrigen; }
+            get 
+            { 
+                return this.columnaOrigen; 
+            }
+
             private set
             {
-                Nodo ValorNuevo = value;
-                Nodo ValorAnterior = _ColumnaOrigen;
+                Nodo valorNuevo = value;
+                Nodo valorAnterior = this.columnaOrigen;
 
-                if (ValorNuevo == null)
+                if (valorNuevo == null)
                 {
-                    _ColumnaOrigen = ValorNuevo;
+                    this.columnaOrigen = valorNuevo;
 
-                    DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
+                    this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", valorAnterior, valorNuevo));
                 }
-                else if (ValorNuevo != ColumnaDestino && ValorNuevo != _ColumnaOrigen)
+                else if (valorNuevo != this.ColumnaDestino && valorNuevo != this.columnaOrigen)
                 {
-                    if (ValorNuevo.Nivel != Constantes.NivelDeNodo.COLUMNA)
-                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "NodoOrigen");
-
-                    if (TablaPadre != null)
+                    if (valorNuevo.Nivel != NivelDeNodo.Columna)
                     {
-                        if (TablaPadre.NodoEsLegal(ValorNuevo))
-                        {
-                            ValorNuevo.Sociedad = this;
-                            _ColumnaOrigen = ValorNuevo;
+                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "NodoOrigen");
+                    }
 
-                            DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
+                    if (this.TablaPadre != null)
+                    {
+                        if (this.TablaPadre.NodoEsLegal(valorNuevo))
+                        {
+                            valorNuevo.Sociedad = this;
+                            this.columnaOrigen = valorNuevo;
+
+                            this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", valorAnterior, valorNuevo));
                         }
                     }
                     else
                     {
-                        ValorNuevo.Sociedad = this;
-                        _ColumnaOrigen = ValorNuevo;
+                        valorNuevo.Sociedad = this;
+                        this.columnaOrigen = valorNuevo;
 
-                        DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", ValorAnterior, ValorNuevo));
+                        this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", valorAnterior, valorNuevo));
                     }
                 }
             }
@@ -129,39 +140,45 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         /// </summary>
         public Nodo ColumnaDestino
         {
-            get { return _ColumnaDestino; }
+            get 
+            { 
+                return this.columnaDestino; 
+            }
+
             private set
             {
-                Nodo ValorNuevo = value;
-                Nodo ValorAnterior = _ColumnaDestino;
+                Nodo valorNuevo = value;
+                Nodo valorAnterior = this.columnaDestino;
 
-                if (ValorNuevo == null)
+                if (valorNuevo == null)
                 {
-                    _ColumnaDestino = ValorNuevo;
+                    this.columnaDestino = valorNuevo;
 
-                    DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
+                    this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", valorAnterior, valorNuevo));
                 }
-                else if (ValorNuevo != ColumnaOrigen && ValorNuevo != _ColumnaDestino)
+                else if (valorNuevo != this.ColumnaOrigen && valorNuevo != this.columnaDestino)
                 {
-                    if (ValorNuevo.Nivel != Constantes.NivelDeNodo.COLUMNA)
-                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "NodoOrigen");
-
-                    if (TablaPadre != null)
+                    if (valorNuevo.Nivel != NivelDeNodo.Columna)
                     {
-                        if (TablaPadre.NodoEsLegal(ValorNuevo))
-                        {
-                            ValorNuevo.Sociedad = this;
-                            _ColumnaDestino = ValorNuevo;
+                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "NodoOrigen");
+                    }
 
-                            DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
+                    if (this.TablaPadre != null)
+                    {
+                        if (this.TablaPadre.NodoEsLegal(valorNuevo))
+                        {
+                            valorNuevo.Sociedad = this;
+                            this.columnaDestino = valorNuevo;
+
+                            this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", valorAnterior, valorNuevo));
                         }
                     }
                     else
                     {
-                        ValorNuevo.Sociedad = this;
-                        _ColumnaDestino = ValorNuevo;
+                        valorNuevo.Sociedad = this;
+                        this.columnaDestino = valorNuevo;
 
-                        DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", ValorAnterior, ValorNuevo));
+                        this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", valorAnterior, valorNuevo));
                     }
                 }
             }
@@ -169,51 +186,22 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
         
         #endregion
 
-        #region Eventos
-
-        public event EventHandler<EventoCambioEnColumnasArgs> CambioEnColumnas;
-
-        #endregion
-
         #region Funciones
         
-        protected virtual void DispararCambioEnColumnas(EventoCambioEnColumnasArgs Argumentos)
-        {
-            if(CambioEnColumnas != null)
-            {
-                CambioEnColumnas(this, Argumentos);
-            }
-        }
-        
-        protected void Dispose(bool BorrarCodigoAdministrado)
-        {
-            if (TablaPadre != null)
-            {
-                TablaPadre.Sociedades.Remove(this);
-                TablaPadre = null;
-            }
-
-            if (ColumnaDestino != null)
-                QuitarDestino();
-
-            if (ColumnaOrigen != null)
-                QuitarOrigen();
-
-            if (BorrarCodigoAdministrado) { }
-        }
-
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="ColumnaOrigen"></param>
-        public void FijarOrigen(Nodo ColumnaOrigen)
+        /// <param name="columnaOrigen"></param>
+        public void FijarOrigen(Nodo columnaOrigen)
         {
-            if (ColumnaOrigen == null)
+            if (columnaOrigen == null)
+            {
                 throw new ArgumentNullException("ColumnaOrigen");
+            }
 
             try
             {
-                this.ColumnaOrigen = ColumnaOrigen;
+                this.ColumnaOrigen = columnaOrigen;
             }
             catch (Exception ex)
             {
@@ -221,14 +209,16 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             }
         }
 
-        public void FijarDestino(Nodo ColumnaDestino)
+        public void FijarDestino(Nodo columnaDestino)
         {
-            if (ColumnaDestino == null)
+            if (columnaDestino == null)
+            {
                 throw new ArgumentNullException("ColumnaDestino");
+            }
 
             try
             {
-                this.ColumnaDestino = ColumnaDestino;
+                this.ColumnaDestino = columnaDestino;
             }
             catch (Exception ex)
             {
@@ -265,17 +255,32 @@ namespace Zuliaworks.Netzuela.Valeria.Logica
             }
         }
 
-        #endregion
-
-        #region Implementacion de interfaces
-
-        public void Dispose()
+        protected virtual void DispararCambioEnColumnas(EventoCambioEnColumnasArgs argumentos)
         {
-            // En este enlace esta la mejor explicacion acerca de como implementar IDisposable
-            // http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+            if (this.CambioEnColumnas != null)
+            {
+                this.CambioEnColumnas(this, argumentos);
+            }
+        }
 
-            Dispose(true);
-            GC.SuppressFinalize(this);
+        protected override void Dispose(bool borrarCodigoAdministrado)
+        {
+            if (this.TablaPadre != null)
+            {
+                int i = this.TablaPadre.Sociedades.IndexOf(this);
+                this.TablaPadre.Sociedades[i] = null;
+                this.TablaPadre = null;
+            }
+
+            if (this.ColumnaDestino != null)
+            {
+                this.QuitarDestino();
+            }
+
+            if (this.ColumnaOrigen != null)
+            {
+                this.QuitarOrigen();
+            }
         }
 
         #endregion

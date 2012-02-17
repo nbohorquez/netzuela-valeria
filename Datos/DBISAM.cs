@@ -10,6 +10,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 {
     public class DBISAM : EventosComunes, IBaseDeDatos
     {
+        #region Constructores
+
+        ~DBISAM()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
+        #region Funciones
+
+        protected void Dispose(bool BorrarCodigoAdministrado)
+        {
+            if (BorrarCodigoAdministrado)
+            {
+            }
+        }
+
+        #endregion
+
         #region Implementacion de interfaces
 
         #region Propiedades
@@ -72,6 +92,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
+        public DataTable Consultar(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Métodos asincrónicos
@@ -99,6 +124,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         public void CrearUsuarioAsinc(System.Security.SecureString Usuario, System.Security.SecureString Contrasena, string[] Columnas, int Privilegios)
         {
             throw new NotImplementedException();
+        }
+
+        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

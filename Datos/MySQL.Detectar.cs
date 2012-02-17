@@ -73,13 +73,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             switch (MetodoDeConexion)
             {
                 case MEMORIA_COMPARTIDA:
-                    Metodo.Nombre = Constantes.MetodosDeConexion.MEMORIA_COMPARTIDA;
+                    Metodo.Nombre = MetodosDeConexion.MemoriaCompartida;
                     break;
                 case PUERTO:
-                    Metodo.Nombre = Constantes.MetodosDeConexion.TCP_IP;
+                    Metodo.Nombre = MetodosDeConexion.TcpIp;
                     break;
                 case CANALIZACIONES:
-                    Metodo.Nombre = Constantes.MetodosDeConexion.CANALIZACIONES_CON_NOMBRE;
+                    Metodo.Nombre = MetodosDeConexion.CanalizacionesConNombre;
                     break;
                 default:
                     break;
@@ -159,7 +159,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                                 for (int i = 0; i < Ins.Metodos.Count; i++)
                                 {
-                                    if (Ins.Metodos[i].Nombre == Constantes.MetodosDeConexion.TCP_IP)
+                                    if (Ins.Metodos[i].Nombre == MetodosDeConexion.TcpIp)
                                     {
                                         Ins.Metodos.RemoveAt(i);
                                         Instancias[Instancias.Count - 1] = Ins;
@@ -247,7 +247,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             List<ServidorLocal.Instancia> Instancias = DetectarInstanciasInstaladas(ArchivosDeConfiguracion).ToList();
 
             ServidorLocal Serv = new ServidorLocal();
-            Serv.Nombre = Constantes.SGBDR.MYSQL;
+            Serv.Nombre = SGBDR.MySQL;
             Serv.Instancias = Instancias;
             return Serv;
         }

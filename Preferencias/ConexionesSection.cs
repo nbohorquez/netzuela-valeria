@@ -1,19 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Configuration;     // ConfigurationSection
-
-namespace Zuliaworks.Netzuela.Valeria.Preferencias
+﻿namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;     // ConfigurationSection
+    using System.Linq;
+    using System.Text;
+    
     public class ConexionesSection : ConfigurationSection
     {
-        // Referencia: http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
+        /*
+         * Referencia: http://www.codeproject.com/KB/dotnet/mysteriesofconfiguration.aspx
+         */
 
         #region Constructores
 
-        public ConexionesSection() { }
+        public ConexionesSection() 
+        { 
+        }
 
         #endregion
 

@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Configuration;                         // ConfigurationManager
-using System.Security;                              // SecureString
-using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
-
-namespace Zuliaworks.Netzuela.Valeria.Preferencias
+﻿namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;                         // ConfigurationManager
+    using System.Linq;
+    using System.Security;                              // SecureString
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
+
     public static class CargarGuardar
     {
         #region Funciones
 
-        public static void GuardarParametrosDeConexion(Configuration ArchivoConfig, ColeccionElementosGenerica<ParametrosDeConexionElement> ColeccionParametros)
+        public static void GuardarParametrosDeConexion(Configuration archivoConfig, ColeccionElementosGenerica<ParametrosDeConexionElement> coleccionParametros)
         {
             try
             {
-                ConexionesSection ConexionesGuardadas = new ConexionesSection();
-                ConexionesGuardadas.ParametrosDeConexion = ColeccionParametros;
+                ConexionesSection conexionesGuardadas = new ConexionesSection();
+                conexionesGuardadas.ParametrosDeConexion = coleccionParametros;
 
-                ArchivoConfig.Sections.Remove("conexionesGuardadas");
-                ArchivoConfig.Sections.Add("conexionesGuardadas", ConexionesGuardadas);
-                ArchivoConfig.Save(ConfigurationSaveMode.Modified);
+                archivoConfig.Sections.Remove("conexionesGuardadas");
+                archivoConfig.Sections.Add("conexionesGuardadas", conexionesGuardadas);
+                archivoConfig.Save(ConfigurationSaveMode.Modified);
 
                 ConfigurationManager.RefreshSection("conexionesGuardadas");
             }
@@ -32,22 +32,21 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
             }
         }
         
-        public static ParametrosDeConexion CargarParametrosDeConexion(string ID)
+        public static ParametrosDeConexion CargarParametrosDeConexion(string id)
         {
-            ParametrosDeConexion Resultado = null;
+            ParametrosDeConexion resultado = null;
 
             try
             {
-                ConexionesSection ConexionesGuardadas = ConfigurationManager.GetSection("conexionesGuardadas")
-                    as ConexionesSection;
+                ConexionesSection conexionesGuardadas = (ConexionesSection)ConfigurationManager.GetSection("conexionesGuardadas");
 
-                if (ConexionesGuardadas != null)
+                if (conexionesGuardadas != null)
                 {
-                    foreach (ParametrosDeConexionElement Param in ConexionesGuardadas.ParametrosDeConexion)
+                    foreach (ParametrosDeConexionElement param in conexionesGuardadas.ParametrosDeConexion)
                     {
-                        if (Param.ID == ID)
+                        if (param.ID == id)
                         {
-                            Resultado = Param.ConvertirAParametrosDeConexion();
+                            resultado = param.ConvertirAParametrosDeConexion();
                         }
                     }
                 }
@@ -57,47 +56,46 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
                 throw new Exception("Error al cargar los ParametrosDeConexion desde el archivo de configuración", ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public static void GuardarCredenciales(Configuration ArchivoConfig, ColeccionElementosGenerica<UsuarioContrasenaElement> ColeccionDeLlaves)
+        public static void GuardarCredenciales(Configuration archivoConfig, ColeccionElementosGenerica<UsuarioContrasenaElement> coleccionDeLlaves)
         {
             try
             {
-                AutentificacionSection Credenciales = new AutentificacionSection();
-                Credenciales.LlavesDeAcceso = ColeccionDeLlaves;
+                AutentificacionSection credenciales = new AutentificacionSection();
+                credenciales.LlavesDeAcceso = coleccionDeLlaves;
 
-                ArchivoConfig.Sections.Remove("credenciales");
-                ArchivoConfig.Sections.Add("credenciales", Credenciales);
-                ArchivoConfig.Save(ConfigurationSaveMode.Modified);
+                archivoConfig.Sections.Remove("credenciales");
+                archivoConfig.Sections.Add("credenciales", credenciales);
+                archivoConfig.Save(ConfigurationSaveMode.Modified);
 
                 ConfigurationManager.RefreshSection("credenciales");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Error al guardar las credenciales en el archivo de configuración", ex);
             }
         }
 
-        public static SecureString[] CargarCredenciales(string ID)
+        public static SecureString[] CargarCredenciales(string id)
         {
-            List<SecureString> Resultado = null;
+            List<SecureString> resultado = null;
 
             try
             {
-                AutentificacionSection Credenciales = ConfigurationManager.GetSection("credenciales")
-                    as AutentificacionSection;
+                AutentificacionSection credenciales = (AutentificacionSection)ConfigurationManager.GetSection("credenciales");
 
-                if (Credenciales != null)
+                if (credenciales != null)
                 {
-                    foreach (UsuarioContrasenaElement UsuCon in Credenciales.LlavesDeAcceso)
+                    foreach (UsuarioContrasenaElement usuCon in credenciales.LlavesDeAcceso)
                     {
-                        if (UsuCon.ID == ID)
+                        if (usuCon.ID == id)
                         {
-                            Resultado = new List<SecureString>();
+                            resultado = new List<SecureString>();
 
-                            Resultado.Add(UsuCon.Usuario.Desencriptar());
-                            Resultado.Add(UsuCon.Contrasena.Desencriptar());
+                            resultado.Add(usuCon.Usuario.Desencriptar());
+                            resultado.Add(usuCon.Contrasena.Desencriptar());
                         }
                     }
                 }
@@ -107,19 +105,19 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
                 throw new Exception("Error al cargar las credenciales desde el archivo de configuración", ex);
             }
 
-            return (Resultado != null) ? Resultado.ToArray() : null;
+            return (resultado != null) ? resultado.ToArray() : null;
         }
 
-        public static void GuardarTablas(Configuration ArchivoConfig, ColeccionElementosGenerica<TablaDeAsociacionesElement> ColeccionTablas)
+        public static void GuardarTablas(Configuration archivoConfig, ColeccionElementosGenerica<TablaDeAsociacionesElement> coleccionTablas)
         {
             try
             {
-                TablasDeAsociacionesSection Tablas = new TablasDeAsociacionesSection();
-                Tablas.Tablas = ColeccionTablas;
+                TablasDeAsociacionesSection tablas = new TablasDeAsociacionesSection();
+                tablas.Tablas = coleccionTablas;
 
-                ArchivoConfig.Sections.Remove("mapas");
-                ArchivoConfig.Sections.Add("mapas", Tablas);
-                ArchivoConfig.Save(ConfigurationSaveMode.Modified);
+                archivoConfig.Sections.Remove("mapas");
+                archivoConfig.Sections.Add("mapas", tablas);
+                archivoConfig.Save(ConfigurationSaveMode.Modified);
 
                 ConfigurationManager.RefreshSection("mapas");
             }
@@ -131,27 +129,27 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
 
         public static List<string[]> CargarTablas()
         {
-            List<string[]> Resultado = null;
+            List<string[]> resultado = null;
 
             try
             {
-                TablasDeAsociacionesSection Tablas = ConfigurationManager.GetSection("mapas") as TablasDeAsociacionesSection;
+                TablasDeAsociacionesSection tablas = (TablasDeAsociacionesSection)ConfigurationManager.GetSection("mapas");
 
-                if (Tablas != null)
+                if (tablas != null)
                 {
-                    Resultado = new List<string[]>();
+                    resultado = new List<string[]>();
 
-                    foreach (TablaDeAsociacionesElement Tabla in Tablas.Tablas)
+                    foreach (TablaDeAsociacionesElement tabla in tablas.Tablas)
                     {
-                        foreach (AsociacionDeColumnasElement Columnas in Tabla.TablaMapeada)
+                        foreach (AsociacionDeColumnasElement columnas in tabla.TablaMapeada)
                         {
-                            string[] Nodos = new string[] 
+                            string[] nodos = new string[] 
                             {
-                                Columnas.NodoOrigen,
-                                Columnas.NodoDestino                        
+                                columnas.NodoOrigen,
+                                columnas.NodoDestino                        
                             };
 
-                            Resultado.Add(Nodos);
+                            resultado.Add(nodos);
                         }
                     }
                 }
@@ -161,7 +159,7 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
                 throw new Exception("Error al cargar los MapaColumnas desde el archivo de configuración", ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
         #endregion

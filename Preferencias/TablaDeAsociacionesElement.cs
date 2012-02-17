@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Configuration;         // ConfigurationElement
-
-namespace Zuliaworks.Netzuela.Valeria.Preferencias
+﻿namespace Zuliaworks.Netzuela.Valeria.Preferencias
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;         // ConfigurationElement
+    using System.Linq;
+    using System.Text;
+
     public class TablaDeAsociacionesElement : ConfigurationElement
     {
         #region Constructores
 
-        public TablaDeAsociacionesElement() { }
+        public TablaDeAsociacionesElement() 
+        { 
+        }
 
         #endregion
 
@@ -38,4 +39,3 @@ namespace Zuliaworks.Netzuela.Valeria.Preferencias
         #endregion
     }
 }
-

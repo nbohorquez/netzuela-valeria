@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Collections.ObjectModel;           // ObservableCollection
-
-namespace Zuliaworks.Netzuela.Valeria.Comunes
+﻿namespace Zuliaworks.Netzuela.Valeria.Comunes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;           // ObservableCollection
+    using System.Linq;
+    using System.Text;
+
     /// <summary>
     /// Contiene funciones adicionales para los tipos IEnumerable
     /// </summary>
@@ -16,24 +15,28 @@ namespace Zuliaworks.Netzuela.Valeria.Comunes
         /// Convierte un tipo IEnumerable a ObservableCollection
         /// </summary>
         /// <typeparam name="T">Tipo de IEnumerable</typeparam>
-        /// <param name="Enumerable">Coleccion de objetos</param>
+        /// <param name="enumerable">Coleccion de objetos</param>
         /// <returns>ObservableColeccion de objetos tipo T</returns>
-        public static ObservableCollection<T> ConvertirAObservableCollection<T>(this IEnumerable<T> Enumerable)
+        public static ObservableCollection<T> ConvertirAObservableCollection<T>(this IEnumerable<T> enumerable)
         {
             var c = new ObservableCollection<T>();
 
-            foreach (var e in Enumerable)
+            foreach (var e in enumerable)
+            {
                 c.Add(e);
+            }
 
             return c;
         }
 
-        public static List<T> ConvertirALista<T>(this IEnumerable<T> Enumerable)
+        public static List<T> ConvertirALista<T>(this IEnumerable<T> enumerable)
         {
             var c = new List<T>();
 
-            foreach (var e in Enumerable)
+            foreach (var e in enumerable)
+            {
                 c.Add(e);
+            }
 
             return c;
         }

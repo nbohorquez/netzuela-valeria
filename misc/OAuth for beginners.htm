@@ -1,0 +1,575 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>
+			Bittercoder.com - OAuth for Beginners
+		</title>
+		<link media="all" rel="stylesheet" type="text/css" href="http://blog.bittercoder.com/themes/candidBlue/home.css"></link>
+
+		<meta name="geo.position" content=" 36.543069;174.50909" />
+		<meta name="geo.region" content="IN">
+		<meta name="geo.placename" content="Auckland">	
+	<base href="http://blog.bittercoder.com/"></base>
+<link rel="alternate" type="application/rss+xml" title="Bittercoder.com" href="http://feeds.feedburner.com/bittercoder" />
+<link rel="alternate" type="application/atom+xml" title="Bittercoder.com" href="http://feeds.feedburner.com/bittercoder" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.bittercoder.com/EditService.asmx/GetRsd" /><link rel="microsummary" type="application/x.microsummary+xml" href="http://blog.bittercoder.com/Microsummary.ashx" />
+<style type="text/css">
+/* Class for expanded nested outlines */
+.blogRollExpanded 
+{
+	visibility: visible;
+	display: block;
+}
+/* Class for collapsed nested outlines */
+.blogRollCollapsed 
+{
+	visibility: hidden;
+	display: none;
+}
+</style>
+
+<style type="text/css">.searchword {
+    background-color: yellow;
+}</style>
+</head>
+	<body><form name="mainForm" method="post" action="/PermaLink.aspx?guid=83488336-290d-4c4b-a314-14fe255e5b4e" id="mainForm">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJMjcyNzcyNjQ3D2QWAmYPZBYCAgUPZBYCAh0PZBYEZg8VARxodHRwOi8vYmxvZy5iaXR0ZXJjb2Rlci5jb20vZAIBDxYCHgV2YWx1ZQUGU2VhcmNoZGT9gh1UTQss5wtTy4XG4eU8X+BZQg==" />
+
+<script type="text/javascript" language="JavaScript">
+<!--
+function showReferral()
+{
+var elems = document.getElementsByTagName('*');
+var count = 0;
+for (var i=0;i<elems.length;i++) {
+    if ( elems[i].id.indexOf('referralSpanHidden') != -1 ) {
+        elems[i].style.display='inline';
+        count++;
+    }
+    else if ( elems[i].id.indexOf('referralMore') != -1 ) {
+        elems[i].style.display='none';
+        count++;
+    }
+    if (count == 2) {break;}
+}
+}
+// --></script><script type="text/javascript">
+<!--
+var br_img_expanded = 'http://blog.bittercoder.com/images/outlinedown.gif';
+var br_img_collapsed = 'http://blog.bittercoder.com/images/outlinearrow.gif';
+(new Image(15,15)).src = br_img_expanded; // caching
+(new Image(15,15)).src = br_img_collapsed; // caching
+
+
+function br_Expand(htmlNode,imgNode) {
+    
+    if (document.getElementById && document.getElementById(htmlNode) != null) {
+		document.getElementById(imgNode).src=br_img_expanded;
+		document.getElementById(htmlNode).className='blogRollExpanded';
+	}
+}
+
+function br_Collapse(htmlNode,imgNode) {
+	
+	if (document.getElementById && document.getElementById(htmlNode) !=  null) {
+		document.getElementById(imgNode).src=br_img_collapsed;
+		document.getElementById(htmlNode).className='blogRollCollapsed';
+	}
+}
+
+function br_toggleExpansionStatus(htmlNode,imgNode) {
+	if (document.getElementById && document.getElementById(htmlNode) !=  null) {
+		nodeState = document.getElementById(htmlNode).className;
+	}
+    if (nodeState == 'blogRollCollapsed') {
+        br_Expand(htmlNode,imgNode);
+	}
+	else {
+		br_Collapse(htmlNode,imgNode);
+	}
+}
+
+// --></script><script type="text/javascript">
+<!--
+/* http://www.kryogenix.org/code/browser/searchhi/ */
+/* Modified 20021006 to fix query string parsing and add case insensitivity */
+function highlightWord(node,word) {
+	// Iterate into this nodes childNodes
+	if (node.hasChildNodes) {
+		var hi_cn;
+		for (hi_cn=0;hi_cn<node.childNodes.length;hi_cn++) {
+			highlightWord(node.childNodes[hi_cn],word);
+		}
+	}
+
+	// And do this node itself
+	if (node.nodeType == 3) { // text node
+		tempNodeVal = node.nodeValue.toLowerCase();
+		tempWordVal = word.toLowerCase();
+		if (tempNodeVal.indexOf(tempWordVal) != -1) {
+			pn = node.parentNode;
+			if (pn.className != "searchword") {
+				// word has not already been highlighted!
+				nv = node.nodeValue;
+				ni = tempNodeVal.indexOf(tempWordVal);
+				// Create a load of replacement nodes
+				before = document.createTextNode(nv.substr(0,ni));
+				docWordVal = nv.substr(ni,word.length);
+				after = document.createTextNode(nv.substr(ni+word.length));
+				hiwordtext = document.createTextNode(docWordVal);
+				hiword = document.createElement("span");
+				hiword.className = "searchword";
+				hiword.appendChild(hiwordtext);
+				pn.insertBefore(before,node);
+				pn.insertBefore(hiword,node);
+				pn.insertBefore(after,node);
+				pn.removeChild(node);
+			}
+		}
+	}
+}
+
+function googleSearchHighlight() {
+	if (!document.createElement) return;
+	ref = document.referrer;
+	if (ref.indexOf('?') == -1 || ref.indexOf('http://blog.bittercoder.com/') != -1)
+	{
+		if (document.location.href.indexOf('PermaLink') != -1) {
+			if (ref.indexOf('SearchView.aspx') == -1) return;
+		}
+		else {
+		//Added by Scott Hanselman
+		ref = document.location.href;
+		if (ref.indexOf('?') == -1) return;
+		}
+	}
+	qs = ref.substr(ref.indexOf('?')+1);
+	qsa = qs.split('&');
+	for (i=0;i<qsa.length;i++) {
+		qsip = qsa[i].split('=');
+	        if (qsip.length == 1) continue;
+        	if (qsip[0] == 'q' || qsip[0] == 'p') { // q= for Google, p= for Yahoo
+			words = decodeURIComponent(qsip[1].replace(/\+/g,' ')).split(/\s+/);
+	                for (w=0;w<words.length;w++) {
+				highlightWord(document.getElementsByTagName("body")[0],words[w]);
+                	}
+	        }
+	}
+}
+
+//
+// addLoadEvent()
+// Adds event to window.onload without overwriting currently assigned onload functions.
+// Function found at Simon Willison's weblog - http://simon.incutio.com/
+//
+function addLoadEvent(func)
+{
+	var oldonload = window.onload;
+	if (typeof window.onload != 'function')
+	{
+    	window.onload = func;
+	}
+	else
+	{
+		window.onload = function()
+		{
+			oldonload();
+			func();
+		}
+	}
+}
+
+addLoadEvent(googleSearchHighlight);
+// -->
+</script>
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWAgK/hN3WCwKD7+j6DpctOpp2FQQspDe58E/qHQpa241j" />
+	    <table border="0"><tr><td width="75%" valign="top">
+		<div id="content">
+			<div class="blogbody">
+				<div id="banner">
+					<a href="http://blog.bittercoder.com/default.aspx" style="color:#07398D; line-height: 1em; font-size:22px; text-decoration:none;font-style: normal;font-weight:Bold;">Bittercoder.com</a><br>
+					<span class="description">
+						sour code and astringent experiences
+						</span>
+				</div>
+				
+				<div class="date"><a class="archiveLinkStyle" href="http://blog.bittercoder.com/default,date,2008-06-11.aspx"><img class="archiveLinkImageStyle" src="http://blog.bittercoder.com/images/dayLink.gif" alt="#" border="0" /></a>&nbsp;miércoles, 11 de junio de 2008</div>
+<div class="newsItems"><a name="a83488336-290d-4c4b-a314-14fe255e5b4e"></a><div class="itemBoxStyle">
+    <div class="itemTitleStyle"><a class="TitleLinkStyle" rel="bookmark" href="http://blog.bittercoder.com/PermaLink,guid,83488336-290d-4c4b-a314-14fe255e5b4e.aspx">OAuth for Beginners</a></div>
+    <div class="itemBodyStyle"><h2>OAuth for Beginners</h2>For those unfamiliar with OAuth, here's a
+very short run-down... I'm skipping over some of the details but I
+think this should give you a taste for what it's all about - for a more
+well rounded introduction, check out this <a  href="http://blog.bittercoder.com/ct.ashx?id=83488336-290d-4c4b-a314-14fe255e5b4e&amp;url=http%3a%2f%2foauth.net%2fdocumentation%2fgetting-started">article</a> on the <a  href="http://blog.bittercoder.com/ct.ashx?id=83488336-290d-4c4b-a314-14fe255e5b4e&amp;url=http%3a%2f%2foauth.net%2f">OAuth.Net</a> website.<br><br><h3>The participants</h3>Consumer - "weitu.googlepages.com" - that application that wants to see protected information the provider has for a user.<br>Provider - "google.com" - the keeper of a users protected information.<br>User - a user who stores protected information with the provider (say contacts in gmail)<br><br><h3>The goal</h3>To
+allow the user to give a consumer access to their data on the provider
+without the user having to disclose their credentials (username &amp;
+password) and to allow for fine-grained control over access granted to
+an individual consumer - i.e. putting power in the hands of the user to
+revoke access when they want to, and having it only affect one consumer.<br><br>A consumer needs to be known to a provider before they can request a token.<br><br><h3>How it works</h3>(For this example we'll use google, for more info on the google implementation see this <a  href="http://blog.bittercoder.com/ct.ashx?id=83488336-290d-4c4b-a314-14fe255e5b4e&amp;url=http%3a%2f%2fgroups.google.com%2fgroup%2foauth%2fbrowse_thread%2fthread%2f75ee6d973930c791">thread</a>)<br><br>The provider publishes 3 Urls for their service and documents them on their site somewhere:<br><ul><li>Request Token Url - <a  href="http://blog.bittercoder.com/ct.ashx?id=83488336-290d-4c4b-a314-14fe255e5b4e&amp;url=https%3a%2f%2fwww.google.com%2faccounts%2fOAuthGetRequestToken">https://www.google.com/accounts/OAuthGetRequestToken</a></li><li>User Authorize Url - <a  href="http://blog.bittercoder.com/ct.ashx?id=83488336-290d-4c4b-a314-14fe255e5b4e&amp;url=https%3a%2f%2fwww.google.com%2faccounts%2faccounts%2fOAuthAuthorizeToken">https://www.google.com/accounts/accounts/OAuthAuthorizeToken</a></li><li>Access Token Url - <a  href="http://blog.bittercoder.com/ct.ashx?id=83488336-290d-4c4b-a314-14fe255e5b4e&amp;url=https%3a%2f%2fwww.google.com%2faccounts%2fOAuthGetAccessToken">https://www.google.com/accounts/OAuthGetAccessToken</a><br></li></ul>The
+consumer is known to google by it's consumer key (which in the case of
+a google api is normally a host address, like www.test.com) and this
+relationship is established in a proprietary manor (i.e. it's not
+covered by the OAuth spec).<br><br><h3>Getting a Request Token</h3>The
+start the ball rolling the consumer makes a request to the Request
+Token Url, they get back some form-encoded parameters in the body of
+the response which contains the token information.<br><br>As an example, here's an http request to get a new request token:<br><br><div style="border-style: solid; border-width: 1px;">GET /accounts/OAuthGetRequestToken?<br>&nbsp; scope=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds<br>&nbsp; &amp;oauth_nonce=759437c3-3edf-4098-ac14-58d4f162b0e6<br>&nbsp; &amp;oauth_consumer_key=weitu.googlepages.com<br>&nbsp; &amp;oauth_signature_method=RSA-SHA1<br>&nbsp; &amp;oauth_timestamp=1213129078<br>&nbsp; &amp;oauth_version=1.0<br>&nbsp; &amp;oauth_token=<br>&nbsp; &amp;oauth_signature=peUZigwq1BLs%2Bb721vcct2vzA3Odk1j...<br><br>HTTP/1.1<br><br>Host: www.google.com<br>Connection: Keep-Alive</div><br>And here's the response:<br><br><div style="border-style: solid; border-width: 1px;">HTTP/1.1 200 OK<br>Content-Type: text/plain; charset=UTF-8<br>Date: Tue, 10 Jun 2008 20:18:01 GMT<br>Expires: Tue, 10 Jun 2008 20:18:01 GMT<br>Cache-Control: private, max-age=0<br>Content-Length: 51<br>Server: GFE/1.3<br><br>oauth_token=CMiJx-LdFxD56bOXAQ&amp;oauth_token_secret=<br></div><br>Notice
+the oauth_signature and other oauth_ etc. parameters - as part of the
+OAuth core specification it requires that requests be "signed" so that
+a provider can ensure they haven't been tampered with - this is one of
+the aspects my library will take care of for you (signing and verifying
+requests).<br><br><h3>User Authorization</h3>At that point the consumer
+now needs to send the user off to the providers site - this involves
+using the second of the 3 urls, the User Authorize Url... we just
+append the scope (required by google, identifies the service you wish
+to access - not part of OAuth spec itself) and the request token
+(CMiJx-LdFxD56bOXAQ)<br><br>Note that the User Authorize Url isn't
+signed like the other requests... this is because this step may be
+manual i.e. a user typing or copying a link into their browser or some
+hand held device.<br><br>
+<div style="border-style: solid; border-width: 1px;">GET /accounts/accounts/OAuthAuthorizeToken?<br>&nbsp; scope=http://www.google.com/m8/feeds<br>&nbsp; &amp;oauth_token=CMiJx-LdFxD56bOXAQ<br><br>HTTP/1.1</div>
+<br>In this case, google takes us to a universal login page:<br><br><img src="http://blog.bittercoder.com/images/google_login.jpg" alt="google_login.jpg" border="1" height="258" width="681"><br><br>Once authenticated it then takes us to a page where we can authorize the consumer to have access:<br><br><img src="http://blog.bittercoder.com/images/google_authorize.JPG" alt="google_authorize.JPG" border="1" height="362" width="595"><br><br>By
+granting access at this point the consumer can then use the last of the
+3 Urls, the Access Token Url, to exchange their request token for an
+access token. Upon granting access a few things should happen:<br><ul><li>An access token should be created.</li><li>The access token should be related to the request token.</li><li>The currently logged in user should be associated with the access token.<br></li></ul>The
+last point is important - because you're passing tokens around, rather
+than account names, you need to have the provider implementation record
+the association between the access token and the user granting access -
+and it should be easy for your API implementation to fetch the
+associated user when a protected resource is accessed.<br><br><h3>Exchanging Tokens</h3>Once
+the user has authorized the consumers access request, the consumer can
+then exchange their request token for an access token - generally a
+request token can only be used once - so if the request failed for some
+reason they would need to start the authorization process again from
+scratch.<br><br>here's the http request for exchanging tokens:<br><br>
+<div style="border-style: solid; border-width: 1px;">
+GET /accounts/OAuthGetAccessToken?<br>&nbsp; scope=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds<br>&nbsp; &amp;oauth_token=CMiJx-LdFxD56bOXAQ<br>&nbsp; &amp;oauth_nonce=19fe6f62-8b2c-4a40-b055-210d279ba770<br>&nbsp; &amp;oauth_consumer_key=weitu.googlepages.com<br>&nbsp; &amp;oauth_signature_method=RSA-SHA1<br>&nbsp; &amp;oauth_timestamp=1213129477<br>&nbsp; &amp;oauth_version=1.0<br>&nbsp; &amp;oauth_signature=hagokrS1W%2BcBXdRwTIlOd84PSO56OT...<br><br>&nbsp;HTTP/1.1
+Host: www.google.com
+</div>
+<br>
+And the corresponding response from the google server:<br>&nbsp;<br>
+<div style="border-style: solid; border-width: 1px;">HTTP/1.1 200 OK<br>Content-Type: text/plain; charset=UTF-8<br>Date: Tue, 10 Jun 2008 20:24:39 GMT<br>Expires: Tue, 10 Jun 2008 20:24:39 GMT<br>Cache-Control: private, max-age=0<br>Content-Length: 57<br>Server: GFE/1.3<br><br>oauth_token=CNO384n8BRD6pZTT_P____8B&amp;oauth_token_secret=<br>
+</div>
+
+<br><h3>Accessing a Protected Resource</h3>
+Now that the consumer has an access token they can then make requests
+for protected resources - they just need to use the access token,
+here's an example of doing just that:<br><br>
+<div style="border-style: solid; border-width: 1px;">
+GET /m8/feeds/contacts/default/base?<br>&nbsp; scope=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds<br>&nbsp; &amp;oauth_token=CNO384n8BRD6pZTT_P____8B<br>&nbsp; &amp;oauth_nonce=3ae44855-9d27-4b80-8b4f-2f68d1531657<br>&nbsp; &amp;oauth_consumer_key=weitu.googlepages.com<br>&nbsp; &amp;oauth_signature_method=RSA-SHA1<br>&nbsp; &amp;oauth_timestamp=1213129479<br>&nbsp; &amp;oauth_version=1.0<br>&nbsp; &amp;oauth_signature=kTFRbcD1IKzjPADfgF%2B3...<br><br>HTTP/1.1
+Host: www.google.com
+
+</div><br>Obviously once the request has been validated (i.e. valid
+signature, valid token, valid timestamp range, nonce is unique etc.)
+the provider implementation needs to fetch the user associated with the
+access token, so it can then return the correct data back to the
+consumer - normally you would want to automatically associate the
+token's user with the current request / controller / channel so that
+OAuth is basically transparent (i.e. it's just like getting a request
+from a user who's authenticated normally).<br><h3>Risks &amp; Issues<br></h3>One obvious risk is that of phishing... if the consumer sends you to a site that looks like googles authentication page, but isn't google then you're in trouble.&nbsp; Of course this kind of phishing is more a general problem, then something isolated to OAuth.<br><br>Another potential risk are that some signature methods are risky/flawed to the <u>consumer</u> due to implementation i.e. if you have a flickr uploader winforms application, and you use RSA-SHA1, the uploader will need to ship with the x509 certificate (including the private key) in their application ... this basically invalidates the strength of that certificate, because anyone could extract and use the private key themselves (so it's as bad as a plain text signature) - on the flip side for a website RSA-SHA1 is very strong because the private key is kept private.<br><br><br><br><p></p>
+       
+    </div>
+    <div class="itemCategoryLinksStyle"><a class="categoryLinkStyle" href="http://blog.bittercoder.com/CategoryView,category,OAuth.aspx">OAuth</a></div>
+    <div class="itemFooterStyle">
+      posted @ miércoles, 11 de junio de 2008 9:26:02 (New Zealand Standard Time, UTC+12:00)&nbsp;
+&nbsp;&nbsp;<a class="commentLinkStyle" href="http://blog.bittercoder.com/CommentView,guid,83488336-290d-4c4b-a314-14fe255e5b4e.aspx#commentstart">Comments [6]</a> |  | <span>Tracked by:<br /><a class="trackbackLinkStyle" href="http://blog.bittercoder.com/PermaLink,guid,a7ec7a4d-1d33-418a-8649-21fe8aa420fe.aspx">"OAuth .Net implementation" (Bitter Coder)</a>&nbsp;[Trackback]<br><a class="trackbackLinkStyle" href="http://www.dotnetkicks.com/webservices/OAuth_for_Beginners">"OAuth for Beginners" (DotNetKicks.com)</a>&nbsp;[Trackback]<br><a class="trackbackLinkStyle" href="http://weblogs.asp.net/cibrax/archive/2008/11/14/oauth-channel-for-wcf-restful-services.aspx">"OAuth channel for WCF RESTful services" (Pablo M. Cibraro (aka Cibrax) )</a>&nbsp;[Trackback]<br></span>
+     </div>
+ </div>
+   </div>
+				<p class="footer">
+					<table cellpadding="10" cellspacing="0" border="0" align="right">
+						<tr>
+							<td>
+								
+								</td>
+							</tr>
+						</table>
+					&copy; Copyright&nbsp;2011&nbsp;Alex Henderson<br>
+					Theme design by <a href="http://www.bryanbell.com">Bryan Bell</a><br>
+					<br>   
+					newtelligence dasBlog 2.3.9074.18820<br><a class="feedLinkStyle" href="http://feeds.feedburner.com/bittercoder"><img title="Feed your aggregator (RSS 2.0)" class="feedLinkImageStyle" src="http://blog.bittercoder.com/images/feed-icon-16x16.gif" alt="Feed your aggregator (RSS 2.0)" border="0" /></a>&nbsp;&nbsp;<a class="mailToStyle" href="javascript:var e1='%67%6d%61%69%6c%2e%63%6f%6d',e2='mailto: ', e3='%62%69%74%74%65%72%63%6f%64%65%72';var e0=e2+e3+'%40'+e1+'?Subject=Comments on: Bittercoder.com - OAuth for Beginners';(window.location?window.location.replace(e0):document.write(e0)); "><img title="Send mail to the author(s)" class="mailToImageStyle" src="http://blog.bittercoder.com/images/mailTo.gif" alt="Send mail to the author(s)" border="0" /></a>&nbsp;|&nbsp;Page rendered at&nbsp;jueves, 01 de diciembre de 2011 9:36:11 (New Zealand Daylight Time, UTC+13:00)<br clear="right"><br>
+				</p>
+			</div>
+	    </div>
+	    </td><td valign="top">
+	    <div class="sidetitle">
+				Search</div>
+			<div class="side">
+				
+<script type="text/javascript">
+<!--
+function doSearch(searchString)
+{
+	// Trim string.
+	searchString = searchString.replace(/^\s+|\s+$/g, "");
+	if (searchString.length > 0)
+	{
+		location.href = "http://blog.bittercoder.com/SearchView.aspx?q=" + encodeURIComponent(searchString);
+	}
+
+	return false;
+}
+-->
+</script>
+<div class="searchContainerStyle">
+	<input id="searchString" onkeypress="javascript:if (event.keyCode == 13) { doSearch(searchString.value); return false; }" type="text" class="searchTextBoxStyle" />
+	<input name="_ctl20:searchButton" type="button" id="_ctl20_searchButton" onclick="doSearch(searchString.value);" class="searchButtonStyle" value="Search" />
+</div>
+ </div>
+<div class="sidetitle">FeedCount</div>
+<div class="side">
+<p><a href="http://feeds.feedburner.com/BitterCoder"><img src="http://feeds.feedburner.com/~fc/BitterCoder?bg=99CCFF&amp;fg=444444&amp;anim=0" height="26" width="88" style="border:0" alt="" /></a></p></div>					
+                <div class="sidetitle">Tags...</div>
+		<div class="side"><span class="tagCloud"><a class="largeTag" href="http://blog.bittercoder.com/CategoryView,category,Net.aspx">.Net&nbsp;(85)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,NetReactor.aspx">.Net Reactor&nbsp;(4)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,netUserGroups.aspx">.net user groups&nbsp;(9)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,2008SummerRoadTrip.aspx">2008SummerRoadTrip&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,ActiveRecord.aspx">ActiveRecord&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,architecture.aspx">architecture&nbsp;(1)</a> <a class="largestTag" href="http://blog.bittercoder.com/CategoryView,category,architectureChat.aspx">architecture chat&nbsp;(121)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,ArchitectureCamp2007.aspx">ArchitectureCamp2007&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,aspnet.aspx">asp.net&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Astoria.aspx">Astoria&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Auckland.aspx">Auckland&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,base4.aspx">base4&nbsp;(9)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,batching.aspx">batching&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,binsor.aspx">binsor&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,blog.aspx">blog&nbsp;(4)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,boo.aspx">boo&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,books.aspx">books&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,C30.aspx">C# 3.0&nbsp;(9)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,cambodia.aspx">cambodia&nbsp;(9)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,CAMLNet.aspx">CAML.Net&nbsp;(1)</a> <a class="smallTag" href="http://blog.bittercoder.com/CategoryView,category,castle.aspx">castle&nbsp;(40)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,china.aspx">china&nbsp;(8)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,codecamp.aspx">codecamp&nbsp;(3)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,codeplex.aspx">codeplex&nbsp;(3)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,dappernet.aspx">dapper.net&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,DevDefinedLtd.aspx">DevDefined Ltd.&nbsp;(4)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,DirectShowNet.aspx">DirectShow.Net&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,DLR.aspx">DLR&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,DSL.aspx">DSL&nbsp;(4)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,EAUG.aspx">EAUG&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,EnterpriseArchitect.aspx">Enterprise Architect&nbsp;(5)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,EnterpriseArchitecture.aspx">Enterprise Architecture&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,EnterpriseLibrary.aspx">Enterprise Library&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,F.aspx">F#&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,feedburner.aspx">feedburner&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,firstPost.aspx">first post&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Friendster.aspx">Friendster&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,generics.aspx">generics&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,googlegears.aspx">googlegears&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,hacks.aspx">hacks&nbsp;(3)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,hardware.aspx">hardware&nbsp;(4)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,hongkong.aspx">hongkong&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Horn.aspx">Horn&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,hyperv.aspx">hyper-v&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,ideas.aspx">ideas&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,IoC.aspx">IoC&nbsp;(21)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,IronPython.aspx">IronPython&nbsp;(13)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,IronRuby.aspx">IronRuby&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,java.aspx">java&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,jobs.aspx">jobs&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Languages.aspx">Languages&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,laos.aspx">laos&nbsp;(8)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,LINQ.aspx">LINQ&nbsp;(7)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,LiveId.aspx">LiveId&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,LLU.aspx">LLU&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,LocalGovernment.aspx">Local Government&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,MDA.aspx">MDA&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,MDD.aspx">MDD&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,microsoft.aspx">microsoft&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,ModelDrivenDevelopment.aspx">Model Driven Development&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,mono.aspx">mono&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,monorail.aspx">monorail&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Movies.aspx">Movies&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Music.aspx">Music&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,nDepend.aspx">nDepend&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,news.aspx">news&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,NHibernate.aspx">NHibernate&nbsp;(3)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,NUnit.aspx">NUnit&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,nvelocity.aspx">nvelocity&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,OAuth.aspx">OAuth&nbsp;(6)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,office.aspx">office&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,OpenSocial.aspx">OpenSocial&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,orcon.aspx">orcon&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,photos.aspx">photos&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,php.aspx">php&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,PostSharp.aspx">PostSharp&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,powerpoint.aspx">powerpoint&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,presentations.aspx">presentations&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,ReSharper.aspx">ReSharper&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,REST.aspx">REST&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,rhinoCommons.aspx">rhino commons&nbsp;(3)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,rhinomocks.aspx">rhinomocks&nbsp;(5)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Ruby.aspx">Ruby&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,SaaS.aspx">SaaS&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,scm.aspx">scm&nbsp;(1)</a> <a class="smallestTag" href="http://blog.bittercoder.com/CategoryView,category,ScreenArchitect.aspx">Screen Architect&nbsp;(0)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,SharePoint.aspx">SharePoint&nbsp;(5)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,silverlight.aspx">silverlight&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Splicer.aspx">Splicer&nbsp;(4)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,SQL2008.aspx">SQL2008&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,supcom.aspx">supcom&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,survey.aspx">survey&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,svn.aspx">svn&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Syzmk.aspx">Syzmk&nbsp;(4)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,thailand.aspx">thailand&nbsp;(6)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Tools.aspx">Tools&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,TortoiseSVN.aspx">Tortoise SVN&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,trac.aspx">trac&nbsp;(2)</a> <a class="smallTag" href="http://blog.bittercoder.com/CategoryView,category,Travel.aspx">Travel&nbsp;(36)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,Unity.aspx">Unity&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,vietnam.aspx">vietnam&nbsp;(7)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,vista.aspx">vista&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,visualNhibernate.aspx">visual nhibernate&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,vmware.aspx">vmware&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,volta.aspx">volta&nbsp;(3)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,VS2008.aspx">VS2008&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,WCF.aspx">WCF&nbsp;(3)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,wiki.aspx">wiki&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,wikipedia.aspx">wikipedia&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,WindowsServer2008.aspx">Windows Server 2008&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,windsor.aspx">windsor&nbsp;(6)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,WinForms.aspx">WinForms&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,wix.aspx">wix&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,WPF.aspx">WPF&nbsp;(2)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,xmlrpc.aspx">xmlrpc&nbsp;(1)</a> <a class="smallerTag" href="http://blog.bittercoder.com/CategoryView,category,yahooPipes.aspx">yahoo pipes&nbsp;(1)</a> </span></div>
+		<div class="sidetitle">
+				Who am I?</div>
+			<div class="side">
+				<table id="author"><tr>
+					 <td>
+					  <img src="themes/candidblue/alex2.png" alt="Alex Henderson" border="1" /><br/>
+					 </td>
+					 <td>
+					  Alex Henderson<br />
+					  <a href="http://www.zoomin.co.nz/nz/auckland/auckland+central/">Auckland</a>, New Zealand<br />
+					  Managing Director at <a href="http://www.devdefined.com/">Dev|Defined Limited</a><br /><br />
+					  "Self Confessed Coding Junky for 15 years"
+</a>
+					 </td>
+					 </tr>
+<tr><td colspan="2"><a href="http://www.linkedin.com/in/alexchenderson" ><img src="http://www.linkedin.com/img/webpromo/btn_viewmy_160x33.gif" width="160" height="33" border="0" alt="View Alex Henderson's profile on LinkedIn"></td></tr>
+<tr><td colspan="2">&nbsp;</td></td>
+<tr>
+	<td>Mobile:</td>
+	<td class="userinfo">+64-21-402-969</td>	
+</tr/>
+<tr>
+	<td>Email:</td>
+	<td class="userinfo">bittercoder 'at' gmail 'dot' com</td>	
+</tr/>
+<tr>
+	<td>MSN:</td>
+	<td class="userinfo">bittercoder_nz@hotmail</td>	
+</tr/>
+<tr>
+	<td>Skype:</td>
+	<td class="userinfo">alex.devdefined</td>	
+</tr/>
+</table></div>
+		<div class="sidetitle">Navigation</div>
+				<div class="side">
+					<div class="navigatorLinksContainerStyle"><table class="navigatorLinksTableStyle"><tr>
+	<td class="navigatorLinksCellStyle"><a class="navigatorLinksLinkStyle" href="default.aspx">Home</a></td>
+</tr><tr>
+	<td class="navigatorLinksCellStyle"><a class="navigatorLinksLinkStyle" href="http://dasblog.info/">dasBlog</a></td>
+</tr><tr>
+	<td class="navigatorLinksCellStyle"><a class="navigatorLinksLinkStyle" href="http://codeplex.com/dasBlog/">CodePlex</a></td>
+</tr><tr>
+	<td class="navigatorLinksCellStyle"><a class="navigatorLinksLinkStyle" href="http://www.newtelligence.com/">newtelligence AG</a></td>
+</tr></table></div>
+			    </div>
+			<div id="links">
+		    <h2 align="center" class="sidetitle">On this page....</h2>
+				<div class="side">
+		            <table class="titleListStyle" border="0">
+	<tr>
+		<td><a href="/PermaLink,guid,83488336-290d-4c4b-a314-14fe255e5b4e.aspx#a83488336-290d-4c4b-a314-14fe255e5b4e">OAuth for Beginners</a></td>
+	</tr>
+</table>
+		        </div>
+
+
+			<div class="sidetitle">Blogs I read by New Zealanders...</div>
+				<div class="side">
+					<div class="blogRollContainerStyle"><table class="blogRollTableStyle" border="0">
+	<tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.base4.net/RSS.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.base4.net/Blog.aspx">Alex James</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/AndresWeblog?format=xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blog.andremeurer.com/">André Meurer @ Olympic Software</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/Mrdee"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://mrdee.blogspot.com/">Andrew Dixon</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://andrewpeters.net/feed/"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://andrewpeters.net">Andrew Peters</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://insidebennie.blogspot.com/atom.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://insidebennie.blogspot.com/">Bennie Johnston</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.pringle.net.nz/blog/SyndicationService.asmx/GetRss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.pringle.net.nz/blog/">Blog:: Craig Pringle</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://bretttaylor.wordpress.com/feed/"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://bretttaylor.wordpress.com">Blogging is probably just a fad, but just in case...</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://buzzrick.emedia.net.nz/dasBlog/SyndicationService.asmx/GetRss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://buzzrick.true.geek.nz/dasBlog/">Buzzrick's TileEngine Game Platform</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.syringe.net.nz/SyndicationService.asmx/GetRss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.syringe.net.nz/">Chris Auld</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://blog.crowe.co.nz/Rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blog.crowe.co.nz/Default.aspx">Chris Crowe's Blog</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://blogs.msdn.com/CJohnson/rss.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blogs.msdn.com/cjohnson/default.aspx">Chris Johnson</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://cliftonjohnston.spaces.live.com/feed.rss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://cliftonjohnston.spaces.live.com/">Clifton Johnston</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/codeclimber"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://codeclimber.net.nz/Default.aspx">Code Climber</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://craig.dubculture.co.nz/blog/feed/"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://craig.dubculture.co.nz/blog">Craig Box</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.355ml.com/nz/blogs/daniel/rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.355ml.com/nz/blogs/daniel/default.aspx">Daniel</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/DanDotNet"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.dan.net.nz/">Daniel Wissa</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://blogs.msdn.com/darrylburling/rss.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blogs.msdn.com/darrylburling/default.aspx">Darryl Burling</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/RandomThoughtsQuestions"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://randomthoughts.co.nz/blog/">Dave Dustin</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.fluidscape.co.nz/?q=rss.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.fluidscape.co.nz">Duncan Bayne</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://exceptionz.blogspot.com/atom.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://exceptionz.blogspot.com/">Floyd Burgess</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://gabelog.net.nz/SyndicationService.asmx/GetRss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://gabelog.net.nz/">Gabriel Smith</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.geekzone.co.nz/geekzone_blog.asp"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.geekzone.co.nz">Geekzone blog</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://teamsystemrocks.com/blogs/grant_archibald/rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://teamsystemrocks.com/blogs/grant_archibald/default.aspx">Grant Archibald</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.kiwidude.com/blog/atom.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.kiwidude.com/blog/">Grant Drake</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/casualjim"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.flanders.co.nz/Blog/">Ivan Porto Carrero</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://hestia.typepad.com/flatlander/index.rdf"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://hestia.typepad.com/flatlander/">Ivan Towlson</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://turtle.net.nz/blog/Rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://turtle.net.nz/blog/">Jeremy Boyd</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://se7en.co.nz/cms/scrappad/rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://se7en.co.nz/cms/scrappad/default.aspx">Jithen Singh</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://blog.bluecog.co.nz/wp-rss2.php"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blog.bluecog.co.nz">John-Daniel Trask</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://thejoshblog.wordpress.com/feed/"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://thejoshblog.wordpress.com">Josh Hektor</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/gzjuha"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.geekzone.co.nz/juha">Juha Saarinen</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://designingcode.blogspot.com/feeds/posts/default?alt=rss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://designingcode.blogspot.com/">Keith Nicholas</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://dotnetjunkies.com/WebLog/kevdaly/rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://dotnetjunkies.com/WebLog/kevdaly/default.aspx">Kevin Daly</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://hex-dump.blogspot.com/feeds/posts/default"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://hex-dump.blogspot.com/">Mark Rees</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://exceptionz.wordpress.com/feed/"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://exceptionz.wordpress.com">Maruis Marais</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/gzfreitasm"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.geekzone.co.nz/freitasm">Mauricio Freitas</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/MindscapeBlog"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.mindscape.co.nz/blog">Mindscape</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/BitterCoder"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blog.bittercoder.com/">My Blog (Alex Henderson)</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://blogs.technet.com/nmercer/rss.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blogs.technet.com/nmercer/default.aspx">Nathan Mercer</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/TheChickenCoop"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.fastchicken.co.nz/blog/">Nic Wise</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://nick.bluecog.co.nz/?feed=rss2"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://nick.bluecog.co.nz">Nick's Blog</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://blogs.msdn.com/nigel/rss.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blogs.msdn.com/nigel/default.aspx">Nigel Parker</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://blogs.msdn.com/PAndrew/rss.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blogs.msdn.com/pandrew/default.aspx">Paul Andrew</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://paullohao.spaces.live.com/feed.rss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://paullohao.spaces.live.com/">Paul Lo</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://jonesie.net.nz/SyndicationService.asmx/GetRss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://jonesie.net.nz/">Peter Jones</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.cockfield.net/Blog/SyndicationService.asmx/GetRss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://phil.cockfield.net/">Phil Cockfield</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.publicaddress.net/rss.sm"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.publicaddress.net">Public Address</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/RodDrury"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.drury.net.nz">Rod Drury</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://blogs.msdn.com/smcbreen/rss.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blogs.msdn.com/smcbreen/default.aspx">Sean McBreen</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://simeonpilgrim.com/blog/feed/"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.simeonpilgrim.com/blog/">Simeon Pilgrim</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://softwarex-nz.blogspot.com/atom.xml"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://softwarex-nz.blogspot.com/">Software Development and stuff</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.ehomefusion.com/?feed=rss2"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.ehomefusion.com">Stefan Schulz</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/DmsFacets"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blog.datamanagementsolutions.biz/dms.html">Steve Schapel</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://searchniche.blogs.com/steven/index.rdf"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.asiapacificheadhunter.com/">Steven Kempton</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.saintzeno.com/blog/feed/"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.saintzeno.com/blog">The Blog of Dave5</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://bookreviews.bittercoder.com/Rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.thebookdiary.com/">The Book Diary</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://tvornz.spaces.live.com/feed.rss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://tvorNZ.spaces.live.com/">The Voice Of Reason New Zealand</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.lambert.geek.nz/feed/atom/"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.lambert.geek.nz/">Thoughts from Mirality</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://ims.co.nz/blog/rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://ims.co.nz/blog/default.aspx">Tim Haines</a></td>
+	</tr>
+</table></div>
+			    </div>
+			
+			<div class="sidetitle">Blogs I read on Castle...</div>
+				<div class="side">
+					<div class="blogRollContainerStyle"><table class="blogRollTableStyle" border="0">
+	<tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.andrewhallock.com/?feed=rss2"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.andrewhallock.com">Andrew Hallock</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.ayende.com/Blog/SyndicationService.asmx/GetRss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://ayende.com/Blog/Default.aspx">Ayende</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://brianromanko.com/Rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://brianromanko.com/Default.aspx">Brian Romanko</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://danbunea.blogspot.com/feeds/posts/default"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://danbunea.blogspot.com/">Dan Bunea</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://geekswithblogs.net/dsellers/rss.aspx"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://geekswithblogs.net/dsellers/Default.aspx">Dru Sellers</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/EleutianSpeakengDevelopmentBlog"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blog.eleutian.com/">Eleutian SpeakENG Development Blog</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://gnschenker.blogspot.com/feeds/posts/default"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://gnschenker.blogspot.com/">Gabriel Schenker</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://hammett.castleproject.org/?feed=rss2"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://hammett.castleproject.org">Hamilton Verissimo</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/InsaneWorld"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://blog.goinsane.co.uk/">Insane World</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/wcpierce"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.google.com/reader/view/feed%2Fhttp%3A%2F%2Ffeeds.feedburner.com%2Fwcpierce">Insert Catchy Title Here</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://bits-in-motion.blogspot.com/feeds/posts/default"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://bits-in-motion.blogspot.com/">Jeff Brown</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.kenegozi.com/blog/SyndicationService.asmx/GetRss"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.kenegozi.com/blog/">Ken Egozi</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://macournoyer.wordpress.com/feed/"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://macournoyer.wordpress.com">Marc-André Cournoyer's blog</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://www.mattberther.com/?feed=rss2"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://www.mattberther.com">Matt Berther</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/developernotes"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://developernotes.com/Default.aspx">Nick Parker</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.feedburner.com/Iserializable"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://weblogs.asp.net/rosherove/default.aspx">Roy Osherove</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://roytate.blogspot.com/feeds/posts/default"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://roytate.blogspot.com/">Roy Tate</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://feeds.technorati.com/search/castleproject.org"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://castleproject.org">Technorati: http://castleproject.org</a></td>
+	</tr><tr>
+		<td class="blogRollCellStyle"><a class="blogRollXmlLinkStyle" href="http://wundasworld.blogspot.com/feeds/posts/default"><img src="http://blog.bittercoder.com/themes/candidBlue/feedButton.gif" alt="[Feed]" border="0" /></a>&nbsp;<a class="blogRollLinkStyle" href="http://wundasworld.blogspot.com/">Wendy Friedlander</a></td>
+	</tr>
+</table></div>
+			    </div>
+			<div class="sidetitle">BlogMap</div>
+<div><script type="text/javascript" src="http://www.feedmap.net/blogmap/blogapi.ashx?method=blogmapbadge&feed=http://feeds.feedburner.com/BitterCoder"></script></div>
+
+			<div>
+				<a href="http://technology.onbloglist.com/index.php?id=bitterc" title="Blog directory" target="_blank"><img src="http://technology.onbloglist.com/img.php?id=bitterc" alt="Blog directory" border="0"></a>
+			</div>
+			<div class="sidetitle">Del.icio.us</div>
+			<div>
+				<br/>
+				<script type="text/javascript" src="http://del.icio.us/feeds/js/networkbadge/bittercoder?name;nwcount;fancount;icon"></script>
+			</div>
+			<div class="sidetitle">Wishlists</div>
+			<div>			
+<br/>
+<a href="http://www.amazon.com/gp/registry/wishlist/VTHFWHTR2XGL/ref=wl_web/"><img src="http://ec1.images-amazon.com/images/G/01/gifts/registries/wishlist/v2/web/wl-btn-75-c._V46776201_.gif" width="75" alt="My Amazon.com Wish List" height="35" border="0" /></a>
+			
+			<hr/>
+			<a href="Login.aspx">Sign In</a>
+		</div>
+		</td></tr></table>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2706920-1";
+urchinTracker();
+</script>
+</form></body>
+	</html>

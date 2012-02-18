@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -261,13 +261,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * Nombre de usuario/cuenta empleado en el proceso de autentificacion, puede ser de hasta 128 
              * caracteres. NO RECOMENDADO, emplee la opcion "Integrated Security" o "Trusted_Connection".
              * 
-             * CONTRASEÃ‘A
+             * CONTRASEÑA
              * ==========
              * "Password=", "PWD="
              * -------------------
              * "PWD=();"
              * 
-             * ContraseÃ±a asociada al usuario, puede ser de hasta 128 caracteres. NO RECOMENDADO, emplee la 
+             * Contraseña asociada al usuario, puede ser de hasta 128 caracteres. NO RECOMENDADO, emplee la 
              * opcion "Integrated Security" o "Trusted_Connection".
              * 
              * CONEXION CONFIABLE
@@ -279,7 +279,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * Indica la forma en la que se hara la autentificacion de la conexion. Las opciones son:
              * 
              *      *- "true", "sspi": los credenciales actuales de Windows son empleados para autentificacion
-             *      *- "false": el usuario y la contraseÃ±a se especifican en la conexion.
+             *      *- "false": el usuario y la contraseña se especifican en la conexion.
              */
 
             if (Seleccion == null)
@@ -307,7 +307,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 RutaDeConexion.AgregarString(RutaServidorFormatoCanalizaciones(Seleccion) + ";");
             }
 
-            // 2) Indicamos que vamos a proporcionar el usuario y la contraseÃ±a de forma manual
+            // 2) Indicamos que vamos a proporcionar el usuario y la contraseña de forma manual
             RutaDeConexion.AgregarString("Integrated Security=false;");
 
             // 3) Requerimos pooling
@@ -319,12 +319,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             // 5) Nombre de usuario
             RutaDeConexion.AgregarString(("User ID=" + Usuario.ConvertirAUnsecureString()) + ";");
 
-            // 6) ContraseÃ±a
+            // 6) Contraseña
             RutaDeConexion.AgregarString(("Password=" + Contrasena.ConvertirAUnsecureString()));
 
             /*
              * De la instruccion anterior (agregar password) hasta la siguiente (return) hay un hueco de 
-             * seguridad porque cualquiera puede leer la contraseÃ±a al acceder a los miembros de RutaDeConexion
+             * seguridad porque cualquiera puede leer la contraseña al acceder a los miembros de RutaDeConexion
              */
 
             return RutaDeConexion;
@@ -347,7 +347,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         
         #region Funciones
         
-        #region MÃ©todos sincrÃ³nicos
+        #region Métodos sincrónicos
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
@@ -363,7 +363,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 switch (ex.Number)
                 {
                     case 18456:
-                        throw new Exception("Usuario/clave invÃ¡lido, intente nuevamente", ex);
+                        throw new Exception("Usuario/clave inválido, intente nuevamente", ex);
                     case 18470:
                         throw new Exception("Cuenta deshabilitada", ex);
                     case 15007:
@@ -371,7 +371,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     case 15151:
                         throw new Exception("Cuenta inexistente", ex);
                     default:
-                        throw new Exception("Error en la conexiÃ³n", ex);
+                        throw new Exception("Error en la conexión", ex);
                 }
             }
         }
@@ -385,7 +385,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al cerrar la conexiÃ³n con la base de datos", ex);
+                throw new Exception("Error al cerrar la conexión con la base de datos", ex);
             }
         }
 
@@ -481,6 +481,8 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                  * Para pasar una cantidad variable de parametros a un procedimiento en SQL Server:
                  * http://www.sommarskog.se/dyn-search-2008.html
                  * http://vyaskn.tripod.com/passing_arrays_to_stored_procedures.htm
+                 * http://www.sommarskog.se/share_data.html#tableparam <-- LEER ESTE
+                 * http://lennilobel.wordpress.com/2009/07/29/sql-server-2008-table-valued-parameters-and-c-custom-iterators-a-match-made-in-heaven/
                  */
 
                 DataTable Temporal = new DataTable();
@@ -649,7 +651,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                       + " DROP LOGIN " + Usuario.ConvertirAUnsecureString();
                 EjecutarOrden(SQL);
                 
-                // 4) Creamos el login (usuario + constraseÃ±a)
+                // 4) Creamos el login (usuario + constraseña)
                 SQL = "CREATE LOGIN " + Usuario.ConvertirAUnsecureString() + " WITH PASSWORD = '" 
                     + Contrasena.ConvertirAUnsecureString() + "'";
                 EjecutarOrden(SQL);
@@ -714,7 +716,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #endregion
 
-        #region MÃ©todos asincrÃ³nicos
+        #region Métodos asincrónicos
 
         public void ListarBasesDeDatosAsinc()
         {

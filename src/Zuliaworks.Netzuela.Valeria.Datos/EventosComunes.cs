@@ -12,11 +12,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #region Eventos
 
         public event StateChangeEventHandler CambioDeEstado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarBasesDeDatosCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarTablasCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado;
+        public event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado;
+        public event EventHandler<EventoListarTablasCompletadoArgs> ListarTablasCompletado;
+        public event EventHandler<EventoLeerTablaCompletadoArgs> LeerTablaCompletado;
+        public event EventHandler<EventoEscribirTablaCompletadoArgs> EscribirTablaCompletado;
+        public event EventHandler<EventoCrearUsuarioCompletadoArgs> CrearUsuarioCompletado;
+        public event EventHandler<EventoConsultarCompletadoArgs> ConsultarCompletado;
 
         #endregion
 
@@ -27,29 +28,34 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             DispararCambioDeEstado(Args);
         }
 
-        protected void ManejarListarBasesDeDatosCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
+        protected void ManejarListarBasesDeDatosCompletado(object Remitente, EventoListarBDsCompletadoArgs Args)
         {
             DispararListarBasesDeDatosCompletado(Args);
         }
 
-        protected void ManejarListarTablasCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
+        protected void ManejarListarTablasCompletado(object Remitente, EventoListarTablasCompletadoArgs Args)
         {
             DispararListarTablasCompletado(Args);
         }
 
-        protected void ManejarLeerTablaCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
+        protected void ManejarLeerTablaCompletado(object Remitente, EventoLeerTablaCompletadoArgs Args)
         {
             DispararLeerTablaCompletado(Args);
         }
 
-        protected void ManejarEscribirTablaCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
+        protected void ManejarEscribirTablaCompletado(object Remitente, EventoEscribirTablaCompletadoArgs Args)
         {
             DispararEscribirTablaCompletado(Args);
         }
 
-        protected void ManejarCrearUsuarioCompletado(object Remitente, EventoOperacionAsincCompletadaArgs Args)
+        protected void ManejarCrearUsuarioCompletado(object Remitente, EventoCrearUsuarioCompletadoArgs Args)
         {
             DispararCrearUsuarioCompletado(Args);
+        }
+
+        protected void ManejarConsultarCompletado(object Remitente, EventoConsultarCompletadoArgs Args)
+        {
+            DispararConsultarCompletado(Args);
         }
 
         protected virtual void DispararCambioDeEstado(StateChangeEventArgs e)
@@ -60,7 +66,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
         }
 
-        protected virtual void DispararListarBasesDeDatosCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararListarBasesDeDatosCompletado(EventoListarBDsCompletadoArgs e)
         {
             if (ListarBasesDeDatosCompletado != null)
             {
@@ -68,7 +74,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
         }
 
-        protected virtual void DispararListarTablasCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararListarTablasCompletado(EventoListarTablasCompletadoArgs e)
         {
             if (ListarTablasCompletado != null)
             {
@@ -76,7 +82,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
         }
 
-        protected virtual void DispararLeerTablaCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararLeerTablaCompletado(EventoLeerTablaCompletadoArgs e)
         {
             if (LeerTablaCompletado != null)
             {
@@ -84,7 +90,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
         }
 
-        protected virtual void DispararEscribirTablaCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararEscribirTablaCompletado(EventoEscribirTablaCompletadoArgs e)
         {
             if (EscribirTablaCompletado != null)
             {
@@ -92,11 +98,19 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
         }
 
-        protected virtual void DispararCrearUsuarioCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararCrearUsuarioCompletado(EventoCrearUsuarioCompletadoArgs e)
         {
             if (CrearUsuarioCompletado != null)
             {
                 CrearUsuarioCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararConsultarCompletado(EventoConsultarCompletadoArgs e)
+        {
+            if (ConsultarCompletado != null)
+            {
+                ConsultarCompletado(this, e);
             }
         }
 

@@ -31,12 +31,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         #region Eventos
 
         public event EventHandler<ProgressChangedEventArgs> CambioEnProgresoDeOperacion;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarBasesDeDatosCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarTablasCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado;
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ConsultarCompletado;
+        public event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado;
+        public event EventHandler<EventoListarTablasCompletadoArgs> ListarTablasCompletado;
+        public event EventHandler<EventoLeerTablaCompletadoArgs> LeerTablaCompletado;
+        public event EventHandler<EventoEscribirTablaCompletadoArgs> EscribirTablaCompletado;
+        public event EventHandler<EventoCrearUsuarioCompletadoArgs> CrearUsuarioCompletado;
+        public event EventHandler<EventoConsultarCompletadoArgs> ConsultarCompletado;
 
         #endregion
 
@@ -125,29 +125,50 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 }
             }
 
-            EventoOperacionAsincCompletadaArgs e =
-                        new EventoOperacionAsincCompletadaArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
-
             switch (Operacion)
             {
                 case "ListarBasesDeDatos":
-                    Asincronico.PostOperationCompleted(_DelegadoDispararListarBDsCompletado, e);
-                    break;
+                    {
+                        EventoListarBDsCompletadoArgs e =
+                            new EventoListarBDsCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
+                        Asincronico.PostOperationCompleted(_DelegadoDispararListarBDsCompletado, e);
+                        break;
+                    }
                 case "ListarTablas":
-                    Asincronico.PostOperationCompleted(_DelegadoDispararListarTablasCompletado, e);
-                    break;
+                    {
+                        EventoListarTablasCompletadoArgs e =
+                            new EventoListarTablasCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
+                        Asincronico.PostOperationCompleted(_DelegadoDispararListarTablasCompletado, e);
+                        break;
+                    }
                 case "LeerTabla":
-                    Asincronico.PostOperationCompleted(_DelegadoDispararLeerTablaCompletado, e);
-                    break;
+                    {
+                        EventoLeerTablaCompletadoArgs e =
+                            new EventoLeerTablaCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
+                        Asincronico.PostOperationCompleted(_DelegadoDispararLeerTablaCompletado, e);
+                        break;
+                    }
                 case "EscribirTabla":
-                    Asincronico.PostOperationCompleted(_DelegadoDispararEscribirTablaCompletado, e);
-                    break;
+                    {
+                        EventoEscribirTablaCompletadoArgs e =
+                            new EventoEscribirTablaCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
+                        Asincronico.PostOperationCompleted(_DelegadoDispararEscribirTablaCompletado, e);
+                        break;
+                    }
                 case "CrearUsuario":
-                    Asincronico.PostOperationCompleted(_DelegadoDispararCrearUsuarioCompletado, e);
-                    break;
+                    {
+                        EventoCrearUsuarioCompletadoArgs e =
+                            new EventoCrearUsuarioCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
+                        Asincronico.PostOperationCompleted(_DelegadoDispararCrearUsuarioCompletado, e);
+                        break;
+                    }
                 case "Consultar":
-                    Asincronico.PostOperationCompleted(_DelegadoDispararConsultarCompletado, e);
-                    break;
+                    {
+                        EventoConsultarCompletadoArgs e =
+                            new EventoConsultarCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
+                        Asincronico.PostOperationCompleted(_DelegadoDispararConsultarCompletado, e);
+                        break;
+                    }
                 default:
                     break;
             }
@@ -169,11 +190,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararListarBDsCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
+            EventoListarBDsCompletadoArgs e = (EventoListarBDsCompletadoArgs)EstadoOperacion;
             DispararListarBDsCompletado(e);
         }
 
-        protected virtual void DispararListarBDsCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararListarBDsCompletado(EventoListarBDsCompletadoArgs e)
         {
             if (ListarBasesDeDatosCompletado != null)
             {
@@ -183,11 +204,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararListarTablasCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
+            EventoListarTablasCompletadoArgs e = (EventoListarTablasCompletadoArgs)EstadoOperacion;
             DispararListarTablasCompletado(e);
         }
 
-        protected virtual void DispararListarTablasCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararListarTablasCompletado(EventoListarTablasCompletadoArgs e)
         {
             if (ListarTablasCompletado != null)
             {
@@ -197,11 +218,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararLeerTablaCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
+            EventoLeerTablaCompletadoArgs e = (EventoLeerTablaCompletadoArgs)EstadoOperacion;
             DispararLeerTablaCompletado(e);
         }
 
-        protected virtual void DispararLeerTablaCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararLeerTablaCompletado(EventoLeerTablaCompletadoArgs e)
         {
             if (LeerTablaCompletado != null)
             {
@@ -211,11 +232,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararEscribirTablaCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
+            EventoEscribirTablaCompletadoArgs e = (EventoEscribirTablaCompletadoArgs)EstadoOperacion;
             DispararEscribirTablaCompletado(e);
         }
 
-        protected virtual void DispararEscribirTablaCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararEscribirTablaCompletado(EventoEscribirTablaCompletadoArgs e)
         {
             if (EscribirTablaCompletado != null)
             {
@@ -225,11 +246,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararCrearUsuarioCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
+            EventoCrearUsuarioCompletadoArgs e = (EventoCrearUsuarioCompletadoArgs)EstadoOperacion;
             DispararCrearUsuarioCompletado(e);
         }
 
-        protected virtual void DispararCrearUsuarioCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararCrearUsuarioCompletado(EventoCrearUsuarioCompletadoArgs e)
         {
             if (CrearUsuarioCompletado != null)
             {
@@ -239,11 +260,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         private void AntesDeDispararConsultarCompletado(object EstadoOperacion)
         {
-            EventoOperacionAsincCompletadaArgs e = (EventoOperacionAsincCompletadaArgs)EstadoOperacion;
+            EventoConsultarCompletadoArgs e = (EventoConsultarCompletadoArgs)EstadoOperacion;
             DispararConsultarCompletado(e);
         }
 
-        protected virtual void DispararConsultarCompletado(EventoOperacionAsincCompletadaArgs e)
+        protected virtual void DispararConsultarCompletado(EventoConsultarCompletadoArgs e)
         {
             if (ConsultarCompletado != null)
             {

@@ -48,7 +48,10 @@
 
             _Cliente.CrearUsuarioCompletado -= base.ManejarCrearUsuarioCompletado;
             _Cliente.CrearUsuarioCompletado += base.ManejarCrearUsuarioCompletado;
-            
+
+            _Cliente.ConsultarCompletado -= base.ManejarConsultarCompletado;
+            _Cliente.ConsultarCompletado += base.ManejarConsultarCompletado;
+
             // Hay que ver como quito este pedazo de codigo tan feo
             _Estado = ConnectionState.Closed;
         }

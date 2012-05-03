@@ -63,6 +63,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBISAM.cs" />
+    <Compile Include="EventoConsultarCompletadoArgs.cs" />
+    <Compile Include="EventoCrearUsuarioCompletadoArgs.cs" />
+    <Compile Include="EventoEscribirTablaCompletadoArgs.cs" />
+    <Compile Include="EventoLeerTablaCompletadoArgs.cs" />
+    <Compile Include="EventoListarBDsCompletadoArgs.cs" />
+    <Compile Include="EventoListarTablasCompletadoArgs.cs" />
     <Compile Include="EventoOperacionAsincCompletadaArgs.cs" />
     <Compile Include="EventosComunes.cs" />
     <Compile Include="Web\ClienteSpuria.Operaciones.cs" />

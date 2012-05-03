@@ -69,34 +69,40 @@
             remove { this.BD.CambioDeEstado -= value; }
         }
 
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarBasesDeDatosCompletado
+        public event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado
         {
             add { this.BD.ListarBasesDeDatosCompletado += value; }
             remove { this.BD.ListarBasesDeDatosCompletado -= value; }
         }
 
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> ListarTablasCompletado
+        public event EventHandler<EventoListarTablasCompletadoArgs> ListarTablasCompletado
         {
             add { this.BD.ListarTablasCompletado += value; }
             remove { this.BD.ListarTablasCompletado -= value; }
         }
 
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado
+        public event EventHandler<EventoLeerTablaCompletadoArgs> LeerTablaCompletado
         {
             add { this.BD.LeerTablaCompletado += value; }
             remove { this.BD.LeerTablaCompletado -= value; }
         }
 
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado
+        public event EventHandler<EventoEscribirTablaCompletadoArgs> EscribirTablaCompletado
         {
             add { this.BD.EscribirTablaCompletado += value; }
             remove { this.BD.EscribirTablaCompletado -= value; }
         }
 
-        public event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado
+        public event EventHandler<EventoCrearUsuarioCompletadoArgs> CrearUsuarioCompletado
         {
             add { this.BD.CrearUsuarioCompletado += value; }
             remove { this.BD.CrearUsuarioCompletado -= value; }
+        }
+
+        public event EventHandler<EventoConsultarCompletadoArgs> ConsultarCompletado
+        {
+            add { this.BD.ConsultarCompletado += value; }
+            remove { this.BD.ConsultarCompletado -= value; }
         }
 
         #endregion

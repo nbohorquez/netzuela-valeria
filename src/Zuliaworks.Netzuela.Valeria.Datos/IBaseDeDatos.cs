@@ -26,11 +26,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #region Eventos
 
         event StateChangeEventHandler CambioDeEstado;
-        event EventHandler<EventoOperacionAsincCompletadaArgs> ListarBasesDeDatosCompletado;
-        event EventHandler<EventoOperacionAsincCompletadaArgs> ListarTablasCompletado;
-        event EventHandler<EventoOperacionAsincCompletadaArgs> LeerTablaCompletado;
-        event EventHandler<EventoOperacionAsincCompletadaArgs> EscribirTablaCompletado;
-        event EventHandler<EventoOperacionAsincCompletadaArgs> CrearUsuarioCompletado;
+        event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado;
+        event EventHandler<EventoListarTablasCompletadoArgs> ListarTablasCompletado;
+        event EventHandler<EventoLeerTablaCompletadoArgs> LeerTablaCompletado;
+        event EventHandler<EventoEscribirTablaCompletadoArgs> EscribirTablaCompletado;
+        event EventHandler<EventoCrearUsuarioCompletadoArgs> CrearUsuarioCompletado;
+        event EventHandler<EventoConsultarCompletadoArgs> ConsultarCompletado;
 
         #endregion
 

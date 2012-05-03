@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Collections.Specialized;               // HybridDictionary
-using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
-using System.Threading;                             // Thread, SendOrPostCallback
-
-namespace Zuliaworks.Netzuela.Valeria.Datos.Web
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;               // HybridDictionary
+    using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
+    using System.Linq;
+    using System.Text;
+    using System.Threading;                             // Thread, SendOrPostCallback
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;
+    
     /// <summary>
     /// 
     /// </summary>
-    public partial class ClienteSpuria : IDisposable
+    public partial class ClienteSpuria : Desechable
     {
         /*
          * Referencia 1: http://msdn.microsoft.com/en-us/library/bz33kx67.aspx
@@ -74,31 +75,6 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         #region Funciones
 
-        protected void Dispose(bool BorrarCodigoAdministrado)
-        {
-            this.UriWsdlServicio = null;
-
-            if (BorrarCodigoAdministrado)
-            {
-                if (this._Hilos != null)
-                {
-                    foreach(var entrada in this._Hilos.Keys)
-                    {
-                        this.CancelarTarea(entrada);
-                    }
-
-                    this._Hilos.Clear();
-                    this._Hilos = null;
-                }
-
-                if (this._Proxy != null)
-                {
-                    _Proxy.Dispose();
-                    _Proxy = null;
-                }
-            }
-        }
-
         private bool TareaCancelada(object TareaID)
         {
             return (_Hilos[TareaID] == null);
@@ -159,7 +135,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                     Armar();
                 }*/
 
-                _Proxy.Conectar(ContratoSpuria);
+                if (_Proxy != null)
+                {
+                    _Proxy.Conectar(ContratoSpuria);
+                }
             }
             catch (Exception ex)
             {
@@ -172,7 +151,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             try
             {
                 if (_Proxy != null)
+                {
                     _Proxy.Desconectar();
+                }
             }
             catch (Exception ex)
             {
@@ -204,17 +185,31 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         #region Implementación de interfaces
 
-        public void Dispose()
+        protected override void Dispose(bool BorrarCodigoAdministrado)
         {
-            /*
-             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
-             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
-             */
+            this.UriWsdlServicio = null;
 
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            if (BorrarCodigoAdministrado)
+            {
+                if (this._Hilos != null)
+                {
+                    foreach (var entrada in this._Hilos.Keys)
+                    {
+                        this.CancelarTarea(entrada);
+                    }
+
+                    this._Hilos.Clear();
+                    this._Hilos = null;
+                }
+
+                if (this._Proxy != null)
+                {
+                    _Proxy.Dispose();
+                    _Proxy = null;
+                }
+            }
         }
-
+                
         #endregion
     }
 }

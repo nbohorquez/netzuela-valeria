@@ -3,10 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;            // AsyncCompletedEventArgs
+    using System.Data;
     using System.Linq;
     using System.Text;
 
-    public class EventoOperacionAsincCompletadaArgs : AsyncCompletedEventArgs
+    public class EventoLeerTablaCompletadoArgs : AsyncCompletedEventArgs
     {
         #region Variables
 
@@ -16,26 +17,25 @@
 
         #region Constructores
 
-        public EventoOperacionAsincCompletadaArgs(object[] Resultados, bool Cancelado, Exception Error, object UsuarioID)
+        public EventoLeerTablaCompletadoArgs(object[] Resultados, bool Cancelado, Exception Error, object UsuarioID)
             : base(Error, Cancelado, UsuarioID)
         {
             this.resultados = Resultados;
         }
 
         #endregion
-        /*
+
         #region Propiedades
 
-        public object Resultado
+        public DataTable Resultado
         {
             get
             {
                 base.RaiseExceptionIfNecessary();
-                return resultados[0];
+                return (DataTable)resultados[0];
             }
         }
-
+            
         #endregion
-         */
     }
 }

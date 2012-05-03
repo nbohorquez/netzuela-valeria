@@ -71,7 +71,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Item.Expandido == true)
                 return;
 
-            EventHandler<EventoOperacionAsincCompletadaArgs> Retorno = null;
+            EventHandler<EventoListarBDsCompletadoArgs> Retorno = null;
             string[] BasesDeDatos = null;
 
             // Esta expresion lambda es llamada mas abajo.
@@ -121,7 +121,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
                     else if (a.Resultado != null)
                     {
-                        BasesDeDatos = (string[])a.Resultado;
+                        BasesDeDatos = a.Resultado;
                         CrearNodos();
                     }
                 }
@@ -152,7 +152,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             if (Item.Expandido == true)
                 return;
 
-            EventHandler<EventoOperacionAsincCompletadaArgs> Retorno = null;
+            EventHandler<EventoListarTablasCompletadoArgs> Retorno = null;
             string[] Tablas = null;
 
             // Esta expresion lambda es llamada mas abajo.
@@ -201,7 +201,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
                     else if (a.Resultado != null)
                     {
-                        Tablas = (string[])a.Resultado;
+                        Tablas = a.Resultado;
                         CrearNodos();
                     }
                 }
@@ -230,7 +230,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 throw new ArgumentNullException("Item");
 
             DataTable Tabla = null;
-            EventHandler<EventoOperacionAsincCompletadaArgs> Retorno = null;
+            EventHandler<EventoLeerTablaCompletadoArgs> Retorno = null;
 
             ExpresionGenerica AjustarExplorador = () =>
             {
@@ -294,7 +294,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
                     else if (a.Resultado != null)
                     {
-                        Tabla = (DataTable)a.Resultado;
+                        Tabla = a.Resultado;
                         CrearNodos();
                     }
                 }
@@ -471,7 +471,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 return false;
 
             bool Resultado = false;
-            EventHandler<EventoOperacionAsincCompletadaArgs> Retorno = null;
+            EventHandler<EventoEscribirTablaCompletadoArgs> Retorno = null;
 
             Retorno = (r, a) =>
             {
@@ -493,7 +493,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     }
                     else if (a.Resultado != null)
                     {
-                        R = Convert.ToBoolean(a.Resultado);
+                        R = a.Resultado;
                         Mensaje += "El resultado de la operacion EscribirTablaAsinc fue: " + R.ToString();
                     }
 
@@ -575,8 +575,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #endregion
 
-        #region Desechable
-
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
             if (_CacheDeTablas != null)
@@ -616,8 +614,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             }
         }
-
-        #endregion
 
         #endregion
 

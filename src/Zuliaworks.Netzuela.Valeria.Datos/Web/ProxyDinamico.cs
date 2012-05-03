@@ -17,7 +17,7 @@
     using Zuliaworks.Netzuela.Spuria.TiposApi;              // DataSetXml
     using Zuliaworks.Netzuela.Valeria.Comunes;
 
-    public class ProxyDinamico : IDisposable
+    public class ProxyDinamico : Desechable
     {
         /*
          * Con codigo de: http://blogs.msdn.com/b/vipulmodi/archive/2008/10/16/dynamic-proxy-and-memory-footprint.aspx
@@ -95,16 +95,6 @@
         #endregion
 
         #region Funciones
-
-        private void Dispose(bool BorrarCodigoAdministrado)
-        {
-            this._Fabrica = null;
-            this.Desconectar();
-
-            if (BorrarCodigoAdministrado) 
-            { 
-            }
-        }
 
         private void CrearFabrica()
         {
@@ -216,7 +206,6 @@
 
                 // No puedo hacer "if(Resultado is DataSetXML)" por que ocurre este error:
                 // http://stackoverflow.com/questions/2500280/invalidcastexception-for-two-objects-of-the-same-type
-
                 if (Resultado.GetType().Name == typeof(DataTableXml).Name)
                 {
                     Resultado = new DataTableXml(new DataTableXmlDinamico(Resultado));
@@ -251,10 +240,14 @@
 
         #region Implementacion de interfaces
 
-        public void Dispose()
+        protected override void Dispose(bool BorrarCodigoAdministrado)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            this._Fabrica = null;
+            this.Desconectar();
+
+            if (BorrarCodigoAdministrado)
+            {
+            }
         }
 
         #endregion

@@ -79,8 +79,8 @@
                 return System.Text.Encoding.Unicode.GetString(desencriptado);
             }
             catch(Exception ex)
-            {
-                //return string.Empty;
+            {            
+                //return new SecureString()
                 throw ex;
             }
         }

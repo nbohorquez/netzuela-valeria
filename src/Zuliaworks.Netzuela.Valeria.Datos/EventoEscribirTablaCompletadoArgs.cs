@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Text;
 
-    public class EventoOperacionAsincCompletadaArgs : AsyncCompletedEventArgs
+    public class EventoEscribirTablaCompletadoArgs : AsyncCompletedEventArgs
     {
         #region Variables
 
@@ -16,26 +16,25 @@
 
         #region Constructores
 
-        public EventoOperacionAsincCompletadaArgs(object[] Resultados, bool Cancelado, Exception Error, object UsuarioID)
+        public EventoEscribirTablaCompletadoArgs(object[] Resultados, bool Cancelado, Exception Error, object UsuarioID)
             : base(Error, Cancelado, UsuarioID)
         {
             this.resultados = Resultados;
         }
 
         #endregion
-        /*
+
         #region Propiedades
 
-        public object Resultado
+        public bool Resultado
         {
             get
             {
                 base.RaiseExceptionIfNecessary();
-                return resultados[0];
+                return Convert.ToBoolean(resultados[0]);
             }
         }
-
+            
         #endregion
-         */
     }
 }

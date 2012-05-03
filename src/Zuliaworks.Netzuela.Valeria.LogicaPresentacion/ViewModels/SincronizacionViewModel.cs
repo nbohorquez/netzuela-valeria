@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using MvvmFoundation.Wpf;                               // RelayCommand
-using System.Collections.ObjectModel;                   // ObservableCollection
-using System.Data;                                      // DataTable
-using System.Windows;                                   // MessageBox
-using System.Windows.Input;                             // ICommand
-using Zuliaworks.Netzuela.Valeria.Comunes;              // Constantes
-using Zuliaworks.Netzuela.Valeria.Logica;               // TablaMapeada
-using Zuliaworks.Netzuela.Valeria.LogicaPresentacion;   // ManipuladorDeTablas
-
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
+﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    using MvvmFoundation.Wpf;                               // RelayCommand
+
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;                   // ObservableCollection
+    using System.Data;                                      // DataTable
+    using System.Linq;
+    using System.Text;
+    using System.Windows;                                   // MessageBox
+    using System.Windows.Input;                             // ICommand
+    
+    using Zuliaworks.Netzuela.Valeria.Comunes;              // Constantes
+    using Zuliaworks.Netzuela.Valeria.Logica;               // TablaMapeada
+    using Zuliaworks.Netzuela.Valeria.LogicaPresentacion;   // ManipuladorDeTablas
+
     /// <summary>
     /// 
     /// </summary>
-    public class SincronizacionViewModel : ObservableObject
+    public class SincronizacionViewModel : ObservableObject, IDisposable
     {
         #region Variables
 
@@ -49,6 +50,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                  */
                 Tablas.Add(Nodo.CrearTablaDeAsociaciones());
             }
+        }
+
+        ~SincronizacionViewModel()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -219,7 +225,36 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             tablas = null;
             _CacheDeTablas.Clear();
         }
-        
+
+        protected void Dispose(bool borrarCodigoAdministrado)
+        {
+            _AsociarOrden = null;
+            _DesasociarOrden = null;
+            _ListoOrden = null;
+            _Listo = false;
+            _PermitirModificaciones = false;
+
+            if (borrarCodigoAdministrado)
+            {
+                if(_CacheDeTablas != null)
+                {
+                    _CacheDeTablas.Clear();
+                    _CacheDeTablas = null;
+                }
+
+                if (Tablas != null)
+                {
+                    for (int i = 0; i < Tablas.Count; i++)
+                    {
+                        Tablas[i].Dispose();
+                    }
+
+                    Tablas.Clear();
+                    Tablas = null;
+                }
+            }
+        }
+
         public void ActualizarTodasLasTablas()
         {
             try
@@ -435,6 +470,21 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
 
             return resultado;
+        }
+
+        #endregion
+
+        #region Implementacion de interfaces
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

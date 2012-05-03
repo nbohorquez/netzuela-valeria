@@ -15,7 +15,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     /// <summary>
     /// Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
     /// </summary>
-    public class AutentificacionViewModel : ObservableObject
+    public class AutentificacionViewModel : ObservableObject, IDisposable
     {
         #region Variables
 
@@ -29,6 +29,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public AutentificacionViewModel()
         {
             MostrarView = true;
+        }
+
+        ~AutentificacionViewModel()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -46,8 +51,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             set
             {
-                SecureString Valor = value.ConvertirASecureString();
-                Usuario = Valor;
+                Usuario = value.ConvertirASecureString();
             }
         }
                 
@@ -69,6 +73,37 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             get { return _AccederOrden ?? (_AccederOrden = new RelayCommand(() => this.MostrarView = false)); }
         }
         
+        #endregion
+
+        #region Funciones
+
+        protected void Dispose(bool borrarCodigoAdministrado)
+        {
+            _AccederOrden = null;
+            _MostrarView = false;
+
+            if (borrarCodigoAdministrado)
+            {
+                Usuario.Dispose();
+                Contrasena.Dispose();
+            }
+        }
+
+        #endregion
+
+        #region Implementacion de interfaces
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         #endregion
     }
 }

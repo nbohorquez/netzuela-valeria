@@ -1,23 +1,23 @@
-﻿using System; 
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using MvvmFoundation.Wpf;                                   // RelayCommand, ObservableObject
-using System.Data;                                          // DataTable, ConnectionState
-using System.Security;                                      // SecureString
-using System.Windows;                                       // MessageBox
-using System.Windows.Input;                                 // ICommand
-using Zuliaworks.Netzuela.Valeria.Comunes;                  // DatosDeConexion, PasswordGenerator
-//using Zuliaworks.Netzuela.Valeria.Datos;                    // IBaseDeDatos
-using Zuliaworks.Netzuela.Valeria.Logica;                   // Conexion
-
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
+﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    using MvvmFoundation.Wpf;                                   // RelayCommand, ObservableObject
+
+    using System;
+    using System.Collections.Generic;
+    using System.Data;                                          // DataTable, ConnectionState
+    using System.Linq;
+    using System.Security;                                      // SecureString
+    using System.Text;
+    using System.Windows;                                       // MessageBox
+    using System.Windows.Input;                                 // ICommand
+    
+    using Zuliaworks.Netzuela.Valeria.Comunes;                  // DatosDeConexion, PasswordGenerator
+    using Zuliaworks.Netzuela.Valeria.Logica;                   // Conexion
+
     /// <summary>
     /// 
     /// </summary>
-    public class ConexionLocalViewModel : ConexionViewModel
+    public class ConexionLocalViewModel : ConexionViewModel, IDisposable
     {
         #region Variables
 
@@ -52,6 +52,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             : base(Parametros) 
         {
             InicializarGeneradorDeContrasenas();
+        }
+
+        ~ConexionLocalViewModel()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -121,6 +126,61 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         #endregion
 
         #region Funciones
+
+        protected void Dispose(bool borrarCodigoAdministrado)
+        {
+            _GeneradorDeContrasenas = null;
+            _DetectarOrden = null;
+            _MostrarAutentificacionView = false;
+            _MostrarDetectarServidoresLocalesView = false;
+            _ObservadorAutentificacion = null;
+            _ObservadorServidores = null;
+        
+            if (borrarCodigoAdministrado)
+            {
+                if (UsuarioNetzuela != null)
+                {
+                    UsuarioNetzuela.Dispose();
+                    UsuarioNetzuela = null;
+                }
+
+                if (ContrasenaNetzuela != null)
+                {
+                    ContrasenaNetzuela.Dispose();
+                    ContrasenaNetzuela = null;
+                }
+
+                if (_Autentificacion != null)
+                {
+                    _Autentificacion.Dispose();
+                    _Autentificacion = null;
+                }
+
+                if (_Autentificacion != null)
+                {
+                    _ServidoresDetectados.Dispose();
+                    _ServidoresDetectados = null;
+                }
+
+                if (_UsuarioExterno != null)
+                {
+                    _UsuarioExterno.Dispose();
+                    _UsuarioExterno = null;
+                }
+
+                if (_ContrasenaExterna != null)
+                {
+                    _ContrasenaExterna.Dispose();
+                    _ContrasenaExterna = null;
+                }
+
+                if (_Conexion != null)
+                {
+                    _Conexion.Dispose();
+                    _Conexion = null;
+                }
+            }
+        }
 
         private void InicializarGeneradorDeContrasenas()
         {
@@ -247,6 +307,21 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             }
 
             return Resultado;
+        }
+
+        #endregion
+
+        #region Implementacion de interfaces
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

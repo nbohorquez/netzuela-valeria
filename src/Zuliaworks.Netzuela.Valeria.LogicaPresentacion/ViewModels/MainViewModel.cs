@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using MvvmFoundation.Wpf;                       // PropertyObserver<>, ObservableObject
-using System.Collections.ObjectModel;           // ObservableCollection
-using System.Data;                              // DataTable
-using System.Security;                          // SecureString
-using System.Windows;                           // MessageBox
-using System.Windows.Threading;                 // DispatcherTimer
-using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
-using Zuliaworks.Netzuela.Valeria.Logica;       // TablaMapeada
-
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
+﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    using MvvmFoundation.Wpf;                       // PropertyObserver<>, ObservableObject
+
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;           // ObservableCollection
+    using System.Data;                              // DataTable
+    using System.Linq;
+    using System.Security;                          // SecureString
+    using System.Text;
+    using System.Windows;                           // MessageBox
+    using System.Windows.Threading;                 // DispatcherTimer
+    
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
+    using Zuliaworks.Netzuela.Valeria.Logica;       // TablaMapeada
+
     /// <summary>
     /// 
     /// </summary>
-    public partial class MainViewModel : ObservableObject
+    public partial class MainViewModel : ObservableObject, IDisposable
     {
         #region Variables
 
@@ -63,6 +64,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 LocalARemota = new SincronizacionViewModel();
             }
+        }
+
+        ~MainViewModel()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -135,10 +141,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             ConexionRemota.Parametros = _ConfiguracionLocal.ParametrosConexionRemota;
 
             if (ConexionLocal.Parametros != null && _ConfiguracionLocal.UsuarioLocal != null && _ConfiguracionLocal.ContrasenaLocal != null)
+            {
                 ConexionLocal.Conectar(_ConfiguracionLocal.UsuarioLocal, _ConfiguracionLocal.ContrasenaLocal);
+            }
 
             if (ConexionRemota.Parametros != null && _ConfiguracionLocal.UsuarioRemoto != null && _ConfiguracionLocal.ContrasenaRemota != null)
+            {
                 ConexionRemota.Conectar(_ConfiguracionLocal.UsuarioRemoto, _ConfiguracionLocal.ContrasenaRemota);
+            }
         }
 
         private void InicializarSincronizacion()
@@ -159,14 +169,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 string RutaRemota = RutaColumnaARutaTabla(Asociacion[1]);
 
                 if (RutasDeTablaLocales.Add(RutaLocal))
+                {
                     ExploradorLocal.ExpandirRuta(RutaLocal);
+                }
 
                 if (RutasDeTablaRemotas.Add(RutaRemota))
+                {
                     ExploradorRemoto.ExpandirRuta(RutaRemota);
+                }
 
                 // Pueden haber espacios en blanco debido a que no todas las columnas destino estan apareadas
                 if (RutaLocal != string.Empty && RutaRemota != string.Empty)
+                {
                     AsociacionesValidas.Add(Asociacion);
+                }
             }
 
             ExploradorLocal.OperacionAsincronica = AsincronicoLocal;
@@ -179,10 +195,14 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         private string RutaColumnaARutaTabla(string RutaColumna)
         {
             if (RutaColumna == null)
+            {
                 throw new ArgumentNullException("RutaColumna");
+            }
 
             if (RutaColumna == string.Empty)
+            {
                 return string.Empty;
+            }
 
             // PasosRutaColumna = Servidor + Base de datos + Tabla + Columna + ""
             string[] PasosRutaColumna = RutaColumna.Split('\\');
@@ -210,7 +230,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 ExploradorLocal.OperacionAsincronica = false;
 
                 if (ConexionRemota.Estado == ConnectionState.Open)
+                {
                     DispararAmbasConexionesEstablecidas(new EventArgs());
+                }
             }
         }
 
@@ -220,9 +242,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 ExploradorRemoto = CrearExplorador(Conexion);
                 ExploradorRemoto.OperacionAsincronica = true;
-                
+
                 if (ConexionLocal.Estado == ConnectionState.Open)
+                {
                     DispararAmbasConexionesEstablecidas(new EventArgs());
+                }
             }
         }
 
@@ -266,7 +290,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             // Creamos un usuario en la base de datos local con los privilegios necesarios 
             // para leer las columnas de origen
             if (!ConexionLocal.CrearUsuarioNetzuela(NodosOrigen))
+            {
                 throw new Exception("No se pudo crear el usuario Netzuela dentro de la base de datos local. La sincronización no puede proceder");
+            }
 
             // Cambiamos de usuario
             ConexionLocal.Desconectar();
@@ -281,7 +307,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
                 // Si ya esa ruta fue expandida, no la expandamos otra vez
                 if (RutasDeTabla.Add(RutaDeTabla))
+                {
                     ExploradorLocal.ExpandirRuta(RutaDeTabla);
+                }
             }
 
             // Borramos cada una de las tablas de destino para llenarlas nuevamente en el evento del temporizador
@@ -335,6 +363,55 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 .RegisterHandler(n => n.Listo, this.SincronizacionLista);
         }
 
+        protected void Dispose(bool borrarCodigoAdministrado)
+        {
+            _ConfiguracionLocal = null;
+            _SistemaConfigurado = false;
+            _ObservadorSincronizacion = null;
+            _TiendaID = null;
+            AmbasConexionesEstablecidas -= ManejarAmbasConexionesEstablecidas;
+            
+            if (borrarCodigoAdministrado)
+            {
+                if (_ExploradorLocal != null)
+                {
+                    _ExploradorLocal.Dispose();
+                    _ExploradorLocal = null;
+                }
+
+                if (_ExploradorRemoto != null)
+                {
+                    _ExploradorRemoto.Dispose();
+                    _ExploradorRemoto = null;
+                }
+
+                if (_LocalARemota != null)
+                {
+                    _LocalARemota.Dispose();
+                    _LocalARemota = null;
+                }
+
+                if (_Temporizador != null)
+                {
+                    _Temporizador.Tick -= ManejarAlarmaTemporizador;
+                    _Temporizador.Stop();
+                    _Temporizador = null;
+                }
+
+                if (ConexionLocal != null)
+                {
+                    ConexionLocal.Dispose();
+                    ConexionLocal = null;
+                }
+
+                if (ConexionRemota != null)
+                {
+                    ConexionRemota.Dispose();
+                    ConexionRemota = null;
+                }
+            }
+        }
+
         protected virtual void DispararAmbasConexionesEstablecidas(EventArgs e)
         {
             if (AmbasConexionesEstablecidas != null)
@@ -358,7 +435,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 {
                     // Si ya esta tabla fue expandida, no la expandamos otra vez
                     if (Tablas.Add(NodoColumna.Padre))
+                    {
                         ExploradorLocal.Reexpandir(NodoColumna.Padre);
+                    }
                 }
 
                 LocalARemota.ActualizarTodasLasTablas();
@@ -379,6 +458,21 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
+        }
+
+        #endregion
+
+        #region Implementacion de interfaces
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion

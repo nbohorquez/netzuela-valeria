@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using MvvmFoundation.Wpf;                       // ObservableObject
-using System.Data;                              // DataTable, ConnectionState
-using System.Windows.Input;                     // ICommand
-using System.Security;                          // SecureString
-using System.Windows;                           // MessageBox
-using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
-//using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
-using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
-
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
+﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    using MvvmFoundation.Wpf;                       // ObservableObject
+
+    using System;
+    using System.Collections.Generic;
+    using System.Data;                              // DataTable, ConnectionState
+    using System.Linq;
+    using System.Security;                          // SecureString
+    using System.Text;
+    using System.Windows;                           // MessageBox
+    using System.Windows.Input;                     // ICommand
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
+    using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
+
     public class ConexionViewModel : ObservableObject
     {
         #region Variables

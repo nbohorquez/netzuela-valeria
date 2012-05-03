@@ -16,7 +16,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     /// <summary>
     /// 
     /// </summary>
-    public class ConexionRemotaViewModel : ConexionViewModel
+    public class ConexionRemotaViewModel : ConexionViewModel, IDisposable
     {
         /*
          * Esto esta parapeteado nada mas, hay que acomodarlo bien cuando se tenga el servidor de 
@@ -34,6 +34,42 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ConexionRemotaViewModel(ParametrosDeConexion Parametros)
             : base(Parametros) { }
 
-        #endregion        
+        ~ConexionRemotaViewModel()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
+        #region Funciones
+
+        protected void Dispose(bool borrarCodigoAdministrado)
+        {
+            if (borrarCodigoAdministrado)
+            {
+                if (_Conexion != null)
+                {
+                    _Conexion.Dispose();
+                    _Conexion = null;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Implementacion de interfaces
+
+        public void Dispose()
+        {
+            /*
+             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
+             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
+             */
+
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
 }

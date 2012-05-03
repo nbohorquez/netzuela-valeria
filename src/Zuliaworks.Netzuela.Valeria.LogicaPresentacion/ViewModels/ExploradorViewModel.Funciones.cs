@@ -575,6 +575,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         #endregion
 
+        #region Dispose
+
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
             if (_CacheDeTablas != null)
@@ -614,6 +616,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             }
         }
+
+        #endregion
 
         #endregion
 

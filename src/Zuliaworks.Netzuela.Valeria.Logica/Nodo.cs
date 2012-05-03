@@ -142,6 +142,7 @@
             if (this.Sociedad != null)
             {
                 this.Desasociarse();
+                this.Sociedad = null;
             }
 
             if (this.TablaDeSocios != null)

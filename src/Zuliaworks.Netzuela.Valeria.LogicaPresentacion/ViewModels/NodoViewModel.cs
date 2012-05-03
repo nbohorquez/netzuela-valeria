@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using MvvmFoundation.Wpf;                       // ObservableObject
-using System.Collections.ObjectModel;           // ObservableCollection
-using Zuliaworks.Netzuela.Valeria.Comunes;      // ConvertirALista
-using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
-
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
+﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    using MvvmFoundation.Wpf;                       // ObservableObject
+
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;           // ObservableCollection
+    using System.Linq;
+    using System.Text;
+    
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // ConvertirALista
+    using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
+
     /// <summary>
     /// Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
     /// y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
@@ -181,24 +182,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             if (Sociedad != null)
             {
+                // Nodo.Dispose() se encarga de desechar esta propiedad
                 Sociedad.CambioEnColumnas -= this.ManejarCambioEnColumnas;
-
-                /*
-                if (_Nodo == Sociedad.ColumnaDestino)
-                {
-                    Sociedad.QuitarDestino();
-                }
-                else if (_Nodo == Sociedad.ColumnaOrigen)
-                {
-                    Sociedad.QuitarOrigen();
-                }
-                
-                Sociedad = null;
-                 */
             }
-
-            if (Explorador != null)
-                Explorador = null;
+            
+            Explorador = null;
 
             if (BorrarCodigoAdministrado)
             {
@@ -297,7 +285,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                     Hijo.Sociedad.CambioEnColumnas -= Hijo.ManejarCambioEnColumnas;
                     Hijo.Sociedad.CambioEnColumnas += Hijo.ManejarCambioEnColumnas;
                 }
-
             }
             catch (Exception ex)
             {

@@ -1,22 +1,21 @@
-Bibliotecas/
-Informacion/
-Utilidades/
-Documentacion/
+src/Zuliaworks.Netzuela.Valeria.Comunes/bin/
+src/Zuliaworks.Netzuela.Valeria.Comunes/obj/
+src/Zuliaworks.Netzuela.Valeria.Comunes/StyleCop.Cache
 
-Comunes/bin/
-Comunes/obj/
+src/Zuliaworks.Netzuela.Valeria.Datos/bin/
+src/Zuliaworks.Netzuela.Valeria.Datos/obj/
 
-Datos/bin/
-Datos/obj/
+src/Zuliaworks.Netzuela.Valeria.Logica/bin/
+src/Zuliaworks.Netzuela.Valeria.Logica/obj/
+src/Zuliaworks.Netzuela.Valeria.Logica/StyleCop.Cache
 
-Logica/bin/
-Logica/obj/
+src/Zuliaworks.Netzuela.Valeria.LogicaPresentacion/bin/
+src/Zuliaworks.Netzuela.Valeria.LogicaPresentacion/obj/
 
-LogicaPresentacion/bin/
-LogicaPresentacion/obj/
+src/Zuliaworks.Netzuela.Valeria.Preferencias/bin/
+src/Zuliaworks.Netzuela.Valeria.Preferencias/obj/
+src/Zuliaworks.Netzuela.Valeria.Preferencias/StyleCop.Cache
 
-Preferencias/bin/
-Preferencias/obj/
-
-Presentacion/bin/
-Presentacion/obj/
+src/Zuliaworks.Netzuela.Valeria.Presentacion/bin/
+src/Zuliaworks.Netzuela.Valeria.Presentacion/obj/
+src/Zuliaworks.Netzuela.Valeria.Presentacion/StyleCop.Cache

@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.ConexionRemotaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="est_PilaSeleccionServidor" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Style.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Width" Value="Auto"/>
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Width" Value="Auto"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Stretch">
+            <StackPanel Style="{StaticResource est_PilaSeleccionServidor}">
+                <Label>Dirección URL</Label>
+                <TextBox Name="txt_Direccion" IsEnabled="{Binding Path=PermitirModificaciones}" Text="{Binding Path=Parametros.Anfitrion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+
+            <Button Margin="0,15,0,0" Content="{Binding Path=BotonConectarDesconectar}" Command="{Binding Path=ConectarDesconectarOrden, Mode=OneTime}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

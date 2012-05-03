@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Logica</name>
+    </assembly>
+    <members>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Nodo">
+            <summary>
+            Implementación de la unidad básica de información de una estructura de datos 
+            en forma de árbol. Se usa para representar la organizacion interna de las 
+            bases de datos.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="nombre"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Nodo.#ctor(System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="nombre"></param>
+            <param name="nivel"></param>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Nodo.Nombre">
+            <summary>
+            Nombre del nodo.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Nodo.Nivel">
+            <summary>
+            Nivel de profundidad dentro del arbol de nodos.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Nodo.Sociedad">
+            <summary>
+            Sociedad con otro nodo.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Nodo.TablaDeSocios">
+            <summary>
+            Tabla de sociedades asociada este nodo.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas">
+            <summary>
+            Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
+            de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
+            empleada por <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones"/> como unidad básica de mapeo.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.#ctor">
+            <summary>
+            Crea un mapeo de columnas vacío.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            Crea un mapeo de columnas especificando sólo la columna destino.
+            </summary>
+            <param name="columnaDestino">Nodo que representa la columna destino.</param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            Crea un mapeo de columnas especificando la columna de orígen y la de destino.
+            </summary>
+            <param name="columnaDestino">Nodo que representa la columna destino.</param>
+            <param name="columnaOrigen">Nodo que representa la columna orígen.</param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.FijarOrigen(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="columnaOrigen"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.QuitarOrigen">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.TablaPadre">
+            <summary>
+            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones"/> asociada a esta clase.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.ColumnaOrigen">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.ColumnaDestino">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
+            <summary>
+            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.#ctor(Zuliaworks.Netzuela.Valeria.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Logica.Nodo})">
+            <summary>
+            
+            </summary>
+            <param name="tabla"></param>
+            <param name="columnas"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="nodo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.AgregarMapa(Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas)">
+            <summary>
+            
+            </summary>
+            <param name="mapaDeColumna"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.Sociedades">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones.NodoTabla">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Logica.Conexion">
+            <summary>
+            Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
+            de forma transparente para el programador.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.#ctor">
+            <summary>
+            Crea una conexión vacía.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.#ctor(Zuliaworks.Netzuela.Valeria.Comunes.ParametrosDeConexion)">
+            <summary>
+            Crea una conexión con el servidor especificado.
+            </summary>
+            <param name="parametros">Datos de configuración de la conexión con el servidor.</param>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="parametros"/> es una referencia 
+            nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
+            <summary>
+            Abre la conexión con el servidor especificado en <see cref="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Parametros"/>.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Desconectar">
+            <summary>
+            Cierra la conexión con el servidor.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Parametros">
+            <summary>
+            Parámetros de la conexión con el servidor actual.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.BD">
+            <summary>
+            Proveedor de datos creado a partir de las especificaciones de conexión.
+            </summary>
+        </member>
+    </members>
+</doc>

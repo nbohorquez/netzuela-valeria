@@ -8,7 +8,7 @@ using System.Data;                          // DataTable
 using System.IO;                            // MemoryStream
 using System.Threading;                     // Thread, SendOrPostCallback
 using System.Security;                      // SecureString
-using Zuliaworks.Netzuela.Spuria.Api;       // DataSetXml
+using Zuliaworks.Netzuela.Spuria.TiposApi;  // DataSetXml
 
 namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {

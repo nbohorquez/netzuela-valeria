@@ -94,8 +94,8 @@
                         {
                             resultado = new List<SecureString>();
 
-                            resultado.Add(usuCon.Usuario.Desencriptar());
-                            resultado.Add(usuCon.Contrasena.Desencriptar());
+                            resultado.Add(usuCon.Usuario.DesencriptarSS());
+                            resultado.Add(usuCon.Contrasena.DesencriptarSS());
                         }
                     }
                 }

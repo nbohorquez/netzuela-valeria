@@ -34,25 +34,54 @@
             byte[] encriptado = System.Security.Cryptography.ProtectedData.Protect(
                 Encoding.Unicode.GetBytes(entrada.ConvertirAUnsecureString()),
                 entropia,
-                System.Security.Cryptography.DataProtectionScope.CurrentUser);
+                System.Security.Cryptography.DataProtectionScope.LocalMachine);
 
             return Convert.ToBase64String(encriptado);
         }
 
-        public static SecureString Desencriptar(this string entrada)
+        public static string Encriptar(this string entrada)
+        {
+            byte[] encriptado = System.Security.Cryptography.ProtectedData.Protect(
+                Encoding.Unicode.GetBytes(entrada),
+                entropia,
+                System.Security.Cryptography.DataProtectionScope.LocalMachine);
+
+            return Convert.ToBase64String(encriptado);
+        }
+
+        public static SecureString DesencriptarSS(this string entrada)
         {
             try
             {
                 byte[] desencriptado = System.Security.Cryptography.ProtectedData.Unprotect(
                     Convert.FromBase64String(entrada),
                     entropia,
-                    System.Security.Cryptography.DataProtectionScope.CurrentUser);
+                    System.Security.Cryptography.DataProtectionScope.LocalMachine);
 
                 return System.Text.Encoding.Unicode.GetString(desencriptado).ConvertirASecureString();
             }
-            catch
+            catch(Exception ex)
             {
-                return new SecureString();
+                //return new SecureString();
+                throw ex;
+            }
+        }
+
+        public static string DesencriptarS(this string entrada)
+        {
+            try
+            {
+                byte[] desencriptado = System.Security.Cryptography.ProtectedData.Unprotect(
+                    Convert.FromBase64String(entrada),
+                    entropia,
+                    System.Security.Cryptography.DataProtectionScope.LocalMachine);
+
+                return System.Text.Encoding.Unicode.GetString(desencriptado);
+            }
+            catch(Exception ex)
+            {
+                //return string.Empty;
+                throw ex;
             }
         }
     }

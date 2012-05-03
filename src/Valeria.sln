@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comunes", "Zuliaworks.Netzuela.Valeria.Comunes\Comunes.csproj", "{9EFCF5AD-5A96-4726-8385-807552BA1497}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datos", "Zuliaworks.Netzuela.Valeria.Datos\Datos.csproj", "{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9EFCF5AD-5A96-4726-8385-807552BA1497} = {9EFCF5AD-5A96-4726-8385-807552BA1497}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logica", "Zuliaworks.Netzuela.Valeria.Logica\Logica.csproj", "{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}"
 EndProject

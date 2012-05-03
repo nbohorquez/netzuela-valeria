@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Data;                                  // ConnectionState, DataTable
-using System.Security;                              // SecureString
-using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
-using Zuliaworks.Netzuela.Valeria.Datos.Web;        // ProxyDinamico
-
-namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;                                  // ConnectionState, DataTable
+    using System.Linq;
+    using System.Security;                              // SecureString
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
+    using Zuliaworks.Netzuela.Valeria.Datos.Web;        // ProxyDinamico
+
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
     /// </summary>
@@ -124,7 +124,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             try
             {
                 if (_Cliente != null)
-                    _Cliente.Desconectar();
+                    _Cliente.Desarmar();
                 
                 // Esto hay que borrarlo
                 Estado = ConnectionState.Closed;

@@ -61,3 +61,9 @@ http://www.geekpedia.com/tutorial201_Splitting-and-joining-files-using-Csharp.ht
 http://msdn.microsoft.com/en-us/library/ff647804.aspx
 
 
+Software para crear instaladores
+================================
+http://wix.sourceforge.net/
+http://nsis.sourceforge.net/Main_Page
+http://www.jrsoftware.org/isinfo.php
+

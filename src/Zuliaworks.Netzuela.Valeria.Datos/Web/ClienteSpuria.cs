@@ -26,7 +26,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         private HybridDictionary _Hilos;
         private string _UriWsdlServicio;
 
-        private const string ContratoSpuria = "IApiPublica";
+        private const string ContratoSpuria = "IApi";
 
         #endregion
 
@@ -128,17 +128,36 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             }
         }
 
-        public void Conectar()
+        public void Desarmar()
         {
             try
             {
+                this.Desconectar();
+
+                if (_Proxy != null)
+                {
+                    _Proxy.Dispose();
+                }
+
+                _Proxy = null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error creando ProxyDinamico con argumento: \"" + UriWsdlServicio + "\"", ex);
+            }
+        }
+
+        public void Conectar()
+        {
+            try
+            {/*
                 if (_Proxy == null)
                 {
                     if (UriWsdlServicio == null)
                         throw new ArgumentNullException("UriWsdlServicio");
 
                     Armar();
-                }
+                }*/
 
                 _Proxy.Conectar(ContratoSpuria);
             }

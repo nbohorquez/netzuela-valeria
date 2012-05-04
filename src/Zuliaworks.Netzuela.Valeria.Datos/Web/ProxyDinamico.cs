@@ -171,17 +171,6 @@
                     if (Argumentos[i] is DataTableXml)
                     {
                         Argumentos[i] = ((DataTableXml)Argumentos[i]).ConvertirEnObjetoDinamico(_Fabrica.ProxyAssembly);
-                        /*
-                        DataTableXmlDinamico DataTableDinamico = new DataTableXmlDinamico(_Fabrica.ProxyAssembly);
-                        DataTableDinamico.BaseDeDatos = ((DataTableXml)Argumentos[i]).BaseDeDatos;
-                        DataTableDinamico.NombreTabla = ((DataTableXml)Argumentos[i]).NombreTabla;
-                        DataTableDinamico.EsquemaXml = ((DataTableXml)Argumentos[i]).EsquemaXml;
-                        DataTableDinamico.Xml = ((DataTableXml)Argumentos[i]).Xml;
-                        DataTableDinamico.EstadoFilas = ((DataTableXml)Argumentos[i]).EstadoFilas;
-                        DataTableDinamico.ClavePrimaria = ((DataTableXml)Argumentos[i]).ClavePrimaria;
-
-                        Argumentos[i] = DataTableDinamico.ObjectInstance;
-                         */
                     }
                 }
             }
@@ -204,8 +193,17 @@
                     Resultado = _ProxyDinamico.CallMethod(Metodo, Argumentos);
                 }
 
-                // No puedo hacer "if(Resultado is DataSetXML)" por que ocurre este error:
-                // http://stackoverflow.com/questions/2500280/invalidcastexception-for-two-objects-of-the-same-type
+                /*
+                 * No puedo hacer "if(Resultado is DataSetXML)" por que ocurre este error:
+                 * http://stackoverflow.com/questions/2500280/invalidcastexception-for-two-objects-of-the-same-type
+                 * 
+                 * Anteriormente la comparacion era: (Resultado.GetType().FullName == typeof(DataTableXml).FullName)
+                 * porque los tipos involucrados eran ambos 'Zuliaworks.Netzuela.Spuria.TiposApi.DataTableXml'. Sin
+                 * embargo, luego de que pase a Mono (y probablemente luego de cambiar muchos Namespace en la confi-
+                 * guracion del servidor a http://netzuela.zuliaworks.com/spuria/api) el tipo al que pertenece 
+                 * Resultado es ahora 'netzuela.zuliaworks.com.spuria.api.DataTableXml' por lo que ya no puedo hacer 
+                 * la misma comparacion FullName sino solo Name.
+                 */
                 if (Resultado.GetType().Name == typeof(DataTableXml).Name)
                 {
                     Resultado = new DataTableXml(new DataTableXmlDinamico(Resultado));

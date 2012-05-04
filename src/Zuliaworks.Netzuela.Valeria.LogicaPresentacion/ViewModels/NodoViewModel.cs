@@ -162,7 +162,7 @@
             this.Hijos = new ObservableCollection<NodoViewModel>();
             this.Expandido = false;
             this.Explorador = null;
-            _Nodo.AgregarARepositorio(this);
+            _Nodo.AgregarARepositorioDeNodos(this);
         }
 
         private void InicializacionComun2(NodoViewModel Padre)
@@ -170,7 +170,7 @@
             Padre.AgregarHijo(this);
             this.Hijos = new ObservableCollection<NodoViewModel>();
             this.Expandido = false;
-            _Nodo.AgregarARepositorio(this);
+            _Nodo.AgregarARepositorioDeNodos(this);
         }
 
         protected virtual void ManejarCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
@@ -185,14 +185,24 @@
                 // Nodo.Dispose() se encarga de desechar esta propiedad
                 Sociedad.CambioEnColumnas -= this.ManejarCambioEnColumnas;
             }
-            
+
+            if (this.ExisteEnRepositorioDeTablas())
+            {
+                this.BuscarEnRepositorioDeTablas().Dispose();
+                this.QuitarDeRepositorioDeTablas();
+            }
+
             Explorador = null;
 
             if (BorrarCodigoAdministrado)
             {
                 if (_Nodo != null)
                 {
-                    _Nodo.QuitarDeRepositorio();
+                    if (this.ExisteEnRepositorioDeNodos())
+                    {
+                        _Nodo.QuitarDeRepositorioDeNodos();
+                    }
+
                     _Nodo.Dispose();
                     _Nodo = null;
                 }
@@ -301,11 +311,11 @@
                 if (NodoOrigen == null)
                     throw new ArgumentNullException("NodoOrigen");                
 
+                _Nodo.AsociarCon(NodoOrigen._Nodo);
+
                 // El nuevo nodo tambien quiere saber cuándo ocurre un cambio en las columnas
                 this.Sociedad.CambioEnColumnas -= NodoOrigen.ManejarCambioEnColumnas;
                 this.Sociedad.CambioEnColumnas += NodoOrigen.ManejarCambioEnColumnas;
-
-                _Nodo.AsociarCon(NodoOrigen._Nodo);                
             }
             catch (Exception ex)
             {
@@ -317,8 +327,7 @@
         {
             try
             {
-                NodoViewModel NodoOrigen = this.Sociedad.ColumnaOrigen.BuscarEnRepositorio();
-
+                NodoViewModel NodoOrigen = this.Sociedad.ColumnaOrigen.BuscarEnRepositorioDeNodos();
                 _Nodo.Desasociarse();
                 this.Sociedad.CambioEnColumnas -= NodoOrigen.ManejarCambioEnColumnas;
             }

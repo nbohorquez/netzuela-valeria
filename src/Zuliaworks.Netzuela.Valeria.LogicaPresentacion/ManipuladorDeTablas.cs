@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Data;
-using Zuliaworks.Netzuela.Valeria.Logica;
-using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;
-
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Logica;
+    using Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels;
+
     public static class ManipuladorDeTablas
     {
         #region Funciones
@@ -119,10 +119,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
             {
                 if (Sociedad.ColumnaOrigen != null)
                 {
-                    NodoViewModel ColumnaOrigen = Sociedad.ColumnaOrigen.BuscarEnRepositorio();
-                    NodoViewModel ColumnaDestino = Sociedad.ColumnaDestino.BuscarEnRepositorio();
+                    NodoViewModel ColumnaOrigen = Sociedad.ColumnaOrigen.BuscarEnRepositorioDeNodos();
+                    NodoViewModel ColumnaDestino = Sociedad.ColumnaDestino.BuscarEnRepositorioDeNodos();
 
-                    DataTable TablaOrigen = ColumnaOrigen.Explorador.ObtenerTablaDeCache(ColumnaOrigen.Padre);
+                    //DataTable TablaOrigen = ColumnaOrigen.Explorador.ObtenerTablaDeCache(ColumnaOrigen.Padre);
+                    DataTable TablaOrigen = ColumnaOrigen.Padre.BuscarEnRepositorioDeTablas();
 
                     for (int i = 0; i < TablaOrigen.Rows.Count; i++)
                     {
@@ -148,8 +149,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
             if (Tabla == null)
                 throw new ArgumentNullException("Tabla");
 
-            NodoViewModel NodoTablaDestino = Tabla.NodoTabla.BuscarEnRepositorio();
-            DataTable TablaDestino = NodoTablaDestino.Explorador.ObtenerTablaDeCache(NodoTablaDestino);
+            NodoViewModel NodoTablaDestino = Tabla.NodoTabla.BuscarEnRepositorioDeNodos();
+            //DataTable TablaDestino = NodoTablaDestino.Explorador.ObtenerTablaDeCache(NodoTablaDestino);
+            DataTable TablaDestino = NodoTablaDestino.BuscarEnRepositorioDeTablas();
             DataTable Resultado = new DataTable(Tabla.NodoTabla.Nombre);
 
             NodoTablaDestino = null;
@@ -165,8 +167,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
                     if (Sociedad.ColumnaOrigen != null)
                     {
-                        NodoViewModel NodoColOrigen = Sociedad.ColumnaOrigen.BuscarEnRepositorio();
-                        DataTable TablaOrigen = NodoColOrigen.Explorador.ObtenerTablaDeCache(NodoColOrigen.Padre);
+                        NodoViewModel NodoColOrigen = Sociedad.ColumnaOrigen.BuscarEnRepositorioDeNodos();
+                        //DataTable TablaOrigen = NodoColOrigen.Explorador.ObtenerTablaDeCache(NodoColOrigen.Padre);
+                        DataTable TablaOrigen = NodoColOrigen.Padre.BuscarEnRepositorioDeTablas();
 
                         for (int i = 0; i < TablaOrigen.Rows.Count; i++)
                         {

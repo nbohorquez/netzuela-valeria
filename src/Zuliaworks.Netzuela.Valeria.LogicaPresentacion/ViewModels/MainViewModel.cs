@@ -311,7 +311,7 @@
                     ExploradorLocal.ExpandirRuta(RutaDeTabla);
                 }
             }
-
+            /*
             // Borramos cada una de las tablas de destino para llenarlas nuevamente en el evento del temporizador
             NodoViewModel[] NodosDestino = LocalARemota.NodosDeDestino();
             HashSet<NodoViewModel> Tablas = new HashSet<NodoViewModel>();
@@ -325,7 +325,7 @@
                     t.Rows.Clear();
                 }
             }
-
+            */
             // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
             LocalARemota.RecargarTablasLocales(ExploradorLocal.Nodos);
 
@@ -350,17 +350,6 @@
             _ConfiguracionLocal.Tablas = Tablas;
 
             Configuracion.GuardarConfiguracion(_ConfiguracionLocal);
-        }
-
-        private void ManejarAmbasConexionesEstablecidas(object Remitente, EventArgs Args)
-        {
-            if (LocalARemota == null)
-            {
-                LocalARemota = new SincronizacionViewModel();
-            }
-
-            _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
-                .RegisterHandler(n => n.Listo, this.SincronizacionLista);
         }
 
         protected void Dispose(bool borrarCodigoAdministrado)
@@ -412,6 +401,17 @@
             }
         }
 
+        protected virtual void ManejarAmbasConexionesEstablecidas(object Remitente, EventArgs Args)
+        {
+            if (LocalARemota == null)
+            {
+                LocalARemota = new SincronizacionViewModel();
+            }
+
+            _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
+                .RegisterHandler(n => n.Listo, this.SincronizacionLista);
+        }
+
         protected virtual void DispararAmbasConexionesEstablecidas(EventArgs e)
         {
             if (AmbasConexionesEstablecidas != null)
@@ -424,9 +424,10 @@
         {
             try
             {
-                //_Temporizador.Stop();
+                _Temporizador.Stop();
 
                 NodoViewModel[] NodosOrigen = LocalARemota.NodosDeOrigen();
+                NodoViewModel[] NodosDestino = LocalARemota.NodosDeDestino();
 
                 // Expandimos nuevamente los nodos locales para verificar cambios
                 HashSet<NodoViewModel> Tablas = new HashSet<NodoViewModel>();
@@ -440,6 +441,22 @@
                     }
                 }
 
+                Tablas.Clear();
+
+                // Expandimos nuevamente los nodos remotos para saber que cambios hay que hacerles
+                bool anterior = ExploradorRemoto.OperacionAsincronica;
+                ExploradorRemoto.OperacionAsincronica = false;
+
+                foreach (NodoViewModel NodoColumna in NodosDestino)
+                {
+                    // Si ya esta tabla fue expandida, no la expandamos otra vez
+                    if (Tablas.Add(NodoColumna.Padre))
+                    {
+                        ExploradorRemoto.Reexpandir(NodoColumna.Padre);
+                    }
+                }
+
+                ExploradorRemoto.OperacionAsincronica = anterior;
                 LocalARemota.ActualizarTodasLasTablas();
 
                 foreach (KeyValuePair<NodoViewModel, DataTable> Par in LocalARemota.TablasAEnviar())

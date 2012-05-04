@@ -136,7 +136,10 @@
 
         protected override void Dispose(bool borrarCodigoAdministrado)
         {
-            this.QuitarDeRepositorio();
+            if (this.ExisteEnRepositorio())
+            {
+                this.QuitarDeRepositorio();
+            }
             this.Nombre = null;
 
             if (this.Sociedad != null)

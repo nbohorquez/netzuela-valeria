@@ -1,18 +1,18 @@
-﻿using MvvmFoundation.Wpf;                       // ObservableObject
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;           // ObservableCollection
-using System.Data;                              // DataTable
-using System.Linq;
-using System.Text;
-using System.Windows;                           // MessageBox
-using System.Windows.Input;                     // ICommand
-
-using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
-
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
+﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    using MvvmFoundation.Wpf;                       // ObservableObject
+
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;           // ObservableCollection
+    using System.Data;                              // DataTable
+    using System.Linq;
+    using System.Text;
+    using System.Windows;                           // MessageBox
+    using System.Windows.Input;                     // ICommand
+
+    using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
+
     /// <summary>
     /// Esta clase se emplea para acceder a los datos de una fuente cuya estructura 
     /// sea un árbol de nodos.
@@ -21,7 +21,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
         private Conexion _Conexion;
         private NodoViewModel _NodoActual;
         private RelayCommand<NodoViewModel> _ExpandirOrden;
@@ -37,7 +36,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         public ExploradorViewModel()
         {
             this.Nodos = new ObservableCollection<NodoViewModel>();
-            this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
             this._Conexion = null;
@@ -56,7 +54,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             this.Nodos = Nodos;
             AsignarEsteExploradorA(Nodos);
 
-            this._CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
             this.NodoActual = Nodos[0];
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
@@ -82,17 +79,19 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         /// </summary>
         public DataTable TablaActual
         {
-            get { return _CacheDeTablas.ContainsKey(NodoTablaActual) ? _CacheDeTablas[NodoTablaActual] : null; }
+            get { return NodoTablaActual.ExisteEnRepositorioDeTablas() ? NodoTablaActual.BuscarEnRepositorioDeTablas() : null; }
             set
             {
-                if (_CacheDeTablas.ContainsKey(NodoTablaActual))
+                if (NodoTablaActual.ExisteEnRepositorioDeTablas())
                 {
-                    if (_CacheDeTablas[NodoTablaActual] != value)
-                        _CacheDeTablas[NodoTablaActual] = value;                        
+                    if (NodoTablaActual.BuscarEnRepositorioDeTablas() != value)
+                    {
+                        NodoTablaActual.AgregarARepositorioDeTablas(value);
+                    }
                 }
                 else
                 {
-                    _CacheDeTablas.Add(NodoTablaActual, value);
+                    NodoTablaActual.AgregarARepositorioDeTablas(value);
                 }
 
                 RaisePropertyChanged("TablaActual");

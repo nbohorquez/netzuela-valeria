@@ -22,7 +22,6 @@
     {
         #region Variables
 
-        private Dictionary<NodoViewModel, DataTable> _CacheDeTablas;
         private RelayCommand<object[]> _AsociarOrden;
         private RelayCommand<object> _DesasociarOrden;
         private RelayCommand _ListoOrden;
@@ -36,7 +35,6 @@
         public SincronizacionViewModel()
         {
             Tablas = new List<TablaDeAsociaciones>();
-            _CacheDeTablas = new Dictionary<NodoViewModel, DataTable>();
         }
 
         public SincronizacionViewModel(List<NodoViewModel> Nodos)
@@ -113,7 +111,7 @@
                 NodoViewModel NodoDestino = (NodoViewModel)Argumento[1];
 
                 Asociar(NodoOrigen, NodoDestino);
-                ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
+                ManipuladorDeTablas.IntegrarTabla(NodoDestino.Padre.BuscarEnRepositorioDeTablas(), NodoDestino.Sociedad.TablaPadre);
             }
             catch (Exception ex)
             {
@@ -128,7 +126,7 @@
                 NodoViewModel NodoDestino = (NodoViewModel)Argumento;
                 
                 Desasociar(NodoDestino);
-                ManipuladorDeTablas.IntegrarTabla(_CacheDeTablas[NodoDestino.Padre], NodoDestino.Sociedad.TablaPadre);
+                ManipuladorDeTablas.IntegrarTabla(NodoDestino.Padre.BuscarEnRepositorioDeTablas(), NodoDestino.Sociedad.TablaPadre);
             }
             catch (Exception ex)
             {
@@ -158,24 +156,33 @@
         private void ListoTrue()
         {
             if (Listo == false)
+            {
                 ConmutarListo();
+            }
         }
 
         private void ListoFalse()
         {
             if (Listo == true)
+            {
                 ConmutarListo();
+            }
         }
 
         private void Asociar(NodoViewModel NodoOrigen, NodoViewModel NodoDestino)
         {
             if (NodoOrigen == null)
+            {
                 throw new ArgumentNullException("NodoOrigen");
-            if (NodoDestino == null)
-                throw new ArgumentNullException("NodoDestino");
+            }
 
-            DataTable TablaOrigen = NodoOrigen.Explorador.ObtenerTablaDeCache(NodoOrigen.Padre);
-            DataTable TablaDestino = NodoDestino.Explorador.ObtenerTablaDeCache(NodoDestino.Padre);
+            if (NodoDestino == null)
+            {
+                throw new ArgumentNullException("NodoDestino");
+            }
+
+            DataTable TablaOrigen = NodoOrigen.Padre.BuscarEnRepositorioDeTablas();
+            DataTable TablaDestino = NodoDestino.Padre.BuscarEnRepositorioDeTablas();
 
             Type TipoOrigen = TablaOrigen.Columns[NodoOrigen.Nombre].DataType;
             Type TipoDestino = TablaDestino.Columns[NodoDestino.Nombre].DataType;
@@ -195,12 +202,6 @@
                 Tablas.Add(NodoDestino.Padre.CrearTablaDeAsociaciones());
             }
 
-            // Agregamos la DataTable a la cache local de tablas si ya no esta agregada
-            if (!_CacheDeTablas.ContainsKey(NodoDestino.Padre))
-            {
-                _CacheDeTablas[NodoDestino.Padre] = TablaDestino;
-            }
-
             NodoDestino.AsociarCon(NodoOrigen);
         }
 
@@ -210,20 +211,6 @@
                 throw new ArgumentNullException("NodoDestino");
 
             NodoDestino.Desasociarse();
-        }
-
-        private void BorrarCacheDeTablas()
-        {
-            DataTable[] tablas = _CacheDeTablas.Values.ToArray();
-
-            for (int i = 0; i < tablas.Length; i++)
-            {
-                tablas[i].Dispose();
-                tablas[i] = null;
-            }
-
-            tablas = null;
-            _CacheDeTablas.Clear();
         }
 
         protected void Dispose(bool borrarCodigoAdministrado)
@@ -236,12 +223,6 @@
 
             if (borrarCodigoAdministrado)
             {
-                if(_CacheDeTablas != null)
-                {
-                    _CacheDeTablas.Clear();
-                    _CacheDeTablas = null;
-                }
-
                 if (Tablas != null)
                 {
                     for (int i = 0; i < Tablas.Count; i++)
@@ -261,7 +242,8 @@
             {
                 foreach (TablaDeAsociaciones TM in Tablas)
                 {
-                     ManipuladorDeTablas.ActualizarTabla(_CacheDeTablas[TM.NodoTabla.BuscarEnRepositorio()], TM);
+                    NodoViewModel NodoTabla = TM.NodoTabla.BuscarEnRepositorioDeNodos();
+                    ManipuladorDeTablas.ActualizarTabla(NodoTabla.BuscarEnRepositorioDeTablas(), TM);
                 }
             }
             catch (Exception ex)
@@ -274,8 +256,6 @@
         {
             NodoViewModel NodoOrigen = null;
             NodoViewModel NodoDestino = null;
-
-            BorrarCacheDeTablas();
 
             try
             {
@@ -306,8 +286,6 @@
             NodoViewModel NodoDestino = null;
             NodoViewModel NodoOrigen = null;
 
-            BorrarCacheDeTablas();
-
             try
             {
                 foreach (TablaDeAsociaciones TM in Tablas)
@@ -317,9 +295,9 @@
                         if (MC.ColumnaOrigen == null)
                             continue;
 
-                        RutaNodoOrigen = MC.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta();
+                        RutaNodoOrigen = MC.ColumnaOrigen.BuscarEnRepositorioDeNodos().RutaCompleta();
                         NodoOrigen = NodoViewModelExtensiones.RutaANodo(RutaNodoOrigen, NodosLocales);
-                        NodoDestino = MC.ColumnaDestino.BuscarEnRepositorio();
+                        NodoDestino = MC.ColumnaDestino.BuscarEnRepositorioDeNodos();
 
                         Asociar(NodoOrigen, NodoDestino);
                     }
@@ -330,15 +308,23 @@
                 throw new Exception("Error al recargar las tablas locales", ex);
             }
         }
-
+        
         public Dictionary<NodoViewModel, DataTable> TablasAEnviar()
         {
             // Creamos una copia solamente. De esta forma, las modificaciones externas no afectaran 
             // al objeto interno
-            return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
-            //return _CacheDeTablas;
-        }
+            //return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
+            Dictionary<NodoViewModel, DataTable> resultado = new Dictionary<NodoViewModel, DataTable>();
 
+            foreach (TablaDeAsociaciones TA in Tablas)
+            {
+                NodoViewModel NodoTabla = TA.NodoTabla.BuscarEnRepositorioDeNodos();
+                resultado.Add(NodoTabla, NodoTabla.BuscarEnRepositorioDeTablas());
+            }
+
+            return resultado;
+        }
+        
         public string[] RutasDeNodosDeOrigen()
         {
             List<string> NodosOrigen = new List<string>();
@@ -389,7 +375,7 @@
                     foreach (AsociacionDeColumnas MC in TM.Sociedades)
                     {
                         if (MC.ColumnaOrigen != null)
-                            NodosOrigen.Add(MC.ColumnaOrigen.BuscarEnRepositorio());
+                            NodosOrigen.Add(MC.ColumnaOrigen.BuscarEnRepositorioDeNodos());
                     }
                 }
             }
@@ -413,7 +399,7 @@
                     foreach (AsociacionDeColumnas MC in TM.Sociedades)
                     {
                         if (MC.ColumnaDestino != null)
-                            NodosDestino.Add(MC.ColumnaDestino.BuscarEnRepositorio());
+                            NodosDestino.Add(MC.ColumnaDestino.BuscarEnRepositorioDeNodos());
                     }
                 }
             }
@@ -423,53 +409,6 @@
             }
 
             return NodosDestino.ToArray();
-        }
-
-        /// <summary>
-        /// Lee la tabla especificada desde el proveedor de datos.
-        /// </summary>
-        /// <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
-        /// <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
-        /// <exception cref="ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
-        /// nula.</exception>
-        public DataTable ObtenerTablaDeCache(NodoViewModel Tabla)
-        {
-            DataTable Resultado = null;
-
-            if (Tabla == null)
-                throw new ArgumentNullException("Tabla");
-
-            try
-            {
-                Resultado = _CacheDeTablas[Tabla];
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener tabla de la cache", ex);
-            }
-
-            return Resultado;
-        }
-
-        public bool BorrarTablaDeCache(NodoViewModel Tabla)
-        {
-            bool resultado = false;
-
-            if (Tabla == null)
-            {
-                throw new ArgumentNullException("Tabla");
-            }
-
-            try
-            {
-                resultado = _CacheDeTablas.Remove(Tabla);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al borrar tabla de la cache", ex);
-            }
-
-            return resultado;
         }
 
         #endregion

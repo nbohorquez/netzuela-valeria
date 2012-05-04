@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Data;                              // DataTable
-using System.Windows;                           // MessageBox
-using System.Collections.ObjectModel;           // ObservableCollection
-using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes, ExpresionGenerica
-using Zuliaworks.Netzuela.Valeria.Datos;        // EventoEnviarTablasCompletadoArgs
-
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
+﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;           // ObservableCollection
+    using System.Data;                              // DataTable
+    using System.Linq;
+    using System.Text;
+    using System.Windows;                           // MessageBox
+    
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes, ExpresionGenerica
+    using Zuliaworks.Netzuela.Valeria.Datos;        // EventoEnviarTablasCompletadoArgs
+    
     public partial class ExploradorViewModel : IDisposable
     {
         #region Funciones
@@ -304,9 +304,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 }
             };
 
-            if (_CacheDeTablas.ContainsKey(Item))
+            if (Item.ExisteEnRepositorioDeTablas())
             {
-                Tabla = _CacheDeTablas[Item];
+                Tabla = Item.BuscarEnRepositorioDeTablas();
                 AjustarExplorador();
             }
             else
@@ -455,8 +455,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             Item.Expandido = false;
 
-            if (_CacheDeTablas.ContainsKey(Item))
-                _CacheDeTablas.Remove(Item);
+            if (Item.ExisteEnRepositorioDeTablas())
+            {
+                Item.QuitarDeRepositorioDeTablas();
+            }
 
             Expandir(Item);
         }
@@ -526,73 +528,12 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
             return Resultado;
         }
 
-        /// <summary>
-        /// Lee la tabla especificada desde el proveedor de datos.
-        /// </summary>
-        /// <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
-        /// <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
-        /// <exception cref="ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
-        /// nula.</exception>
-        public DataTable ObtenerTablaDeCache(NodoViewModel Tabla)
-        {
-            DataTable Resultado = null;
-
-            if (Tabla == null)
-                throw new ArgumentNullException("Tabla");
-
-            try
-            {
-                Resultado = _CacheDeTablas[Tabla];
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener tabla de la cache", ex);
-            }
-
-            return Resultado;
-        }
-
-        public bool BorrarTablaDeCache(NodoViewModel Tabla)
-        {
-            bool resultado = false;
-
-            if (Tabla == null)
-            {
-                throw new ArgumentNullException("Tabla");
-            }
-
-            try
-            {
-                resultado = _CacheDeTablas.Remove(Tabla);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al borrar tabla de la cache", ex);
-            }
-
-            return resultado;
-        }
-
         #endregion
 
         #region Dispose
 
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
-            if (_CacheDeTablas != null)
-            {
-                foreach (DataTable T in _CacheDeTablas.Values)
-                {
-                    T.Clear();
-                    T.Rows.Clear();
-                    T.DefaultView.Dispose();
-                    T.Dispose();
-                }
-
-                _CacheDeTablas.Clear();
-                _CacheDeTablas = null;
-            }
-
             if (_Conexion != null)
                 _Conexion = null;
 

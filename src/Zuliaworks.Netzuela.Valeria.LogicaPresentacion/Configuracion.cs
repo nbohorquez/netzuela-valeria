@@ -134,9 +134,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                     foreach (AsociacionDeColumnas MP in T.Sociedades)
                     {
                         Columnas = new AsociacionDeColumnasElement();
-                        Columnas.NodoDestino = MP.ColumnaDestino.BuscarEnRepositorio().RutaCompleta();
+                        Columnas.NodoDestino = MP.ColumnaDestino.BuscarEnRepositorioDeNodos().RutaCompleta();
                         if (MP.ColumnaOrigen != null)
-                            Columnas.NodoOrigen = MP.ColumnaOrigen.BuscarEnRepositorio().RutaCompleta();
+                            Columnas.NodoOrigen = MP.ColumnaOrigen.BuscarEnRepositorioDeNodos().RutaCompleta();
 
                         ColeccionColumnas.Add(Columnas);
                     }

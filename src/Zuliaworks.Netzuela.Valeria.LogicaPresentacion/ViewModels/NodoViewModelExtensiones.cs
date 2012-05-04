@@ -1,12 +1,14 @@
-﻿using System;using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Collections.ObjectModel;           // ObservableCollection
-using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
-
-namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
+﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
+    using System;
+    using System.Collections.Generic;               // Dictionary
+    using System.Collections.ObjectModel;           // ObservableCollection
+    using System.Data;
+    using System.Linq;
+    using System.Text;
+    
+    using Zuliaworks.Netzuela.Valeria.Logica;       // Nodo
+
     /// <summary>
     /// Esta clase lleva el repositorio de todos los Nodo's que tienen un NodoViewModel asociado
     /// </summary>
@@ -14,53 +16,106 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private static Dictionary<Nodo, NodoViewModel> Repositorio = new Dictionary<Nodo, NodoViewModel>();
+        private static Dictionary<Nodo, NodoViewModel> RepositorioDeNodos = new Dictionary<Nodo, NodoViewModel>();
+        private static Dictionary<NodoViewModel, DataTable> RepositorioDeTablas = new Dictionary<NodoViewModel, DataTable>();
 
         #endregion
 
         #region Funciones
 
-        public static bool ExisteEnRepositorio(this Nodo Nodo)
+        #region RepositorioDeNodos
+
+        public static bool ExisteEnRepositorioDeNodos(this Nodo Nodo)
         {
             if (Nodo == null)
                 throw new ArgumentNullException("Nodo");
 
-            return Repositorio.ContainsKey(Nodo);
+            return RepositorioDeNodos.ContainsKey(Nodo);
         }
 
-        public static bool ExisteEnRepositorio(this NodoViewModel NodoVM)
+        public static bool ExisteEnRepositorioDeNodos(this NodoViewModel NodoVM)
         {
             if (NodoVM == null)
                 throw new ArgumentNullException("NodoVM");
 
-            return Repositorio.ContainsValue(NodoVM);
+            return RepositorioDeNodos.ContainsValue(NodoVM);
         }
 
-        public static void AgregarARepositorio(this Nodo Nodo, NodoViewModel NodoVM)
+        public static void AgregarARepositorioDeNodos(this Nodo Nodo, NodoViewModel NodoVM)
         {
             if (Nodo == null)
                 throw new ArgumentNullException("Nodo");
             else if (NodoVM == null)
                 throw new ArgumentNullException("NodoVM");
 
-            Repositorio.Add(Nodo, NodoVM);
+            RepositorioDeNodos.Add(Nodo, NodoVM);
         }
 
-        public static bool QuitarDeRepositorio(this Nodo Nodo)
+        public static bool QuitarDeRepositorioDeNodos(this Nodo Nodo)
         {
             if (Nodo == null)
                 throw new ArgumentNullException("Nodo");
 
-            return Repositorio.Remove(Nodo);
+            return RepositorioDeNodos.Remove(Nodo);
         }
 
-        public static NodoViewModel BuscarEnRepositorio(this Nodo Nodo)
+        public static NodoViewModel BuscarEnRepositorioDeNodos(this Nodo Nodo)
         {
             if (Nodo == null)
                 throw new ArgumentNullException("Nodo");
 
-            return Repositorio[Nodo];
+            return RepositorioDeNodos[Nodo];
         }
+
+        #endregion
+
+        #region RepositorioDeTablas
+
+        public static bool ExisteEnRepositorioDeTablas(this NodoViewModel NodoVM)
+        {
+            if (NodoVM == null)
+                throw new ArgumentNullException("NodoVM");
+
+            return RepositorioDeTablas.ContainsKey(NodoVM);
+        }
+
+        public static bool ExisteEnRepositorioDeTablas(this DataTable Tabla)
+        {
+            if (Tabla == null)
+                throw new ArgumentNullException("Tabla");
+
+            return RepositorioDeTablas.ContainsValue(Tabla);
+        }
+
+        public static void AgregarARepositorioDeTablas(this NodoViewModel NodoVM, DataTable Tabla)
+        {
+            if (NodoVM == null)
+                throw new ArgumentNullException("NodoVM");
+            if (Tabla == null)
+                throw new ArgumentNullException("Tabla");
+
+            RepositorioDeTablas.Add(NodoVM, Tabla);
+        }
+
+        public static bool QuitarDeRepositorioDeTablas(this NodoViewModel NodoVM)
+        {
+            if (NodoVM == null)
+                throw new ArgumentNullException("NodoVM");
+
+            return RepositorioDeTablas.Remove(NodoVM);
+        }
+
+        public static DataTable BuscarEnRepositorioDeTablas(this NodoViewModel NodoVM)
+        {
+            if (NodoVM == null)
+                throw new ArgumentNullException("NodoVM");
+
+            return RepositorioDeTablas[NodoVM];
+        }
+
+        #endregion
+
+        #region Otras
 
         public static NodoViewModel BuscarNodo(string Nombre, ObservableCollection<NodoViewModel> Lista)
         {
@@ -151,6 +206,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
             return Resultado.ToArray();
         }
+
+        #endregion
 
         #endregion
     }

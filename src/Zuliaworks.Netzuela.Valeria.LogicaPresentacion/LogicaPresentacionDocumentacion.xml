@@ -65,7 +65,7 @@
             <exception cref="T:System.ArgumentNullException">Si <paramref name="Item"/> es una referencia 
             nula.</exception>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.ObtenerTablaDeCache(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Dispose(System.Boolean)">
             <summary>
             Lee la tabla especificada desde el proveedor de datos.
             </summary>
@@ -177,7 +177,7 @@
             </summary>
             <param name="NodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel.ObtenerTablaDeCache(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel.Dispose">
             <summary>
             Lee la tabla especificada desde el proveedor de datos.
             </summary>

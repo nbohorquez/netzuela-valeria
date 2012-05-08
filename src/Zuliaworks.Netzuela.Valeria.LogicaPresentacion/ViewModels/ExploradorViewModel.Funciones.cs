@@ -133,13 +133,13 @@
 
             if (OperacionAsincronica)
             {
-                _Conexion.ListarBasesDeDatosCompletado -= Retorno;
-                _Conexion.ListarBasesDeDatosCompletado += Retorno;
-                _Conexion.ListarBasesDeDatosAsinc();
+                this._Conexion.ListarBasesDeDatosCompletado -= Retorno;
+                this._Conexion.ListarBasesDeDatosCompletado += Retorno;
+                this._Conexion.ListarBasesDeDatosAsinc();
             }
             else
             {
-                BasesDeDatos = _Conexion.ListarBasesDeDatos();
+                BasesDeDatos = this._Conexion.ListarBasesDeDatos();
                 CrearNodos();
             }
         }
@@ -189,7 +189,7 @@
             {
                 try
                 {
-                    _Conexion.ListarTablasCompletado -= Retorno;
+                    this._Conexion.ListarTablasCompletado -= Retorno;
 
                     if (a.Error != null)
                     {
@@ -213,13 +213,13 @@
 
             if (OperacionAsincronica)
             {
-                _Conexion.ListarTablasCompletado -= Retorno;
-                _Conexion.ListarTablasCompletado += Retorno;
-                _Conexion.ListarTablasAsinc(Item.Nombre);
+                this._Conexion.ListarTablasCompletado -= Retorno;
+                this._Conexion.ListarTablasCompletado += Retorno;
+                this._Conexion.ListarTablasAsinc(Item.Nombre);
             }
             else
             {
-                Tablas = _Conexion.ListarTablas(Item.Nombre);
+                Tablas = this._Conexion.ListarTablas(Item.Nombre);
                 CrearNodos();
             }
         }
@@ -282,7 +282,7 @@
             {
                 try
                 {
-                    _Conexion.LeerTablaCompletado -= Retorno;
+                    this._Conexion.LeerTablaCompletado -= Retorno;
 
                     if (a.Error != null)
                     {
@@ -313,13 +313,13 @@
             {
                 if (OperacionAsincronica)
                 {
-                    _Conexion.LeerTablaCompletado -= Retorno;
-                    _Conexion.LeerTablaCompletado += Retorno;
-                    _Conexion.LeerTablaAsinc(Item.Padre.Nombre, Item.Nombre);
+                    this._Conexion.LeerTablaCompletado -= Retorno;
+                    this._Conexion.LeerTablaCompletado += Retorno;
+                    this._Conexion.LeerTablaAsinc(Item.Padre.Nombre, Item.Nombre);
                 }
                 else
                 {
-                    Tabla = _Conexion.LeerTabla(Item.Padre.Nombre, Item.Nombre);
+                    Tabla = this._Conexion.LeerTabla(Item.Padre.Nombre, Item.Nombre);
                     CrearNodos();
                 }
             }
@@ -483,7 +483,7 @@
                     bool R = false;
                     string Mensaje = string.Empty;
 
-                    _Conexion.EscribirTablaCompletado -= Retorno;
+                    this._Conexion.EscribirTablaCompletado -= Retorno;
 
                     if (a.Error != null)
                     {
@@ -511,13 +511,13 @@
             {
                 if (OperacionAsincronica)
                 {
-                    _Conexion.EscribirTablaCompletado -= Retorno;
-                    _Conexion.EscribirTablaCompletado += Retorno;
-                    _Conexion.EscribirTablaAsinc(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);                    
+                    this._Conexion.EscribirTablaCompletado -= Retorno;
+                    this._Conexion.EscribirTablaCompletado += Retorno;
+                    this._Conexion.EscribirTablaAsinc(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);                    
                 }
                 else
                 {
-                    Resultado = _Conexion.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
+                    Resultado = this._Conexion.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
                 }
             }
             catch (Exception ex)
@@ -534,8 +534,8 @@
 
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
-            if (_Conexion != null)
-                _Conexion = null;
+            if (this._Conexion != null)
+                this._Conexion = null;
 
             if (_NodoActual != null)
                 _NodoActual = null;

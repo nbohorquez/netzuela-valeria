@@ -1,30 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.ComponentModel;                // ProgressChangedEventArgs, AsyncOperation
-using System.Data;                          // DataTable
-using System.IO;                            // MemoryStream
-using System.Threading;                     // Thread, SendOrPostCallback
-using System.Security;                      // SecureString
-using Zuliaworks.Netzuela.Spuria.TiposApi;  // DataSetXml
-
-namespace Zuliaworks.Netzuela.Valeria.Datos.Web
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;                // ProgressChangedEventArgs, AsyncOperation
+    using System.Data;                          // DataTable
+    using System.IO;                            // MemoryStream
+    using System.Linq;
+    using System.Security;                      // SecureString
+    using System.Text;
+    using System.Threading;                     // Thread, SendOrPostCallback
+    
+    using Zuliaworks.Netzuela.Spuria.TiposApi;  // DataSetXml
+
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class ClienteSpuria
     {
         #region Variables
 
+        private SendOrPostCallback delegadoDispararCambioEnProgresoDeOperacion;
+        private SendOrPostCallback delegadoDispararListarBDsCompletado;
+        private SendOrPostCallback delegadoDispararListarTablasCompletado;
+        private SendOrPostCallback delegadoDispararLeerTablaCompletado;
+        private SendOrPostCallback delegadoDispararEscribirTablaCompletado;
+        private SendOrPostCallback delegadoDispararCrearUsuarioCompletado;
+        private SendOrPostCallback delegadoDispararConsultarCompletado;
+        private DelegadoComenzarOperacion carpintero;
+        
         private delegate void DelegadoComenzarOperacion(AsyncOperation Asincronico, string Operacion, object[] Parametros);
-        private SendOrPostCallback _DelegadoDispararCambioEnProgresoDeOperacion;
-        private SendOrPostCallback _DelegadoDispararListarBDsCompletado;
-        private SendOrPostCallback _DelegadoDispararListarTablasCompletado;
-        private SendOrPostCallback _DelegadoDispararLeerTablaCompletado;
-        private SendOrPostCallback _DelegadoDispararEscribirTablaCompletado;
-        private SendOrPostCallback _DelegadoDispararCrearUsuarioCompletado;
-        private SendOrPostCallback _DelegadoDispararConsultarCompletado;
-        private DelegadoComenzarOperacion _Carpintero;
 
         #endregion
 
@@ -44,63 +48,119 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         #region Operaciones internas
 
-        private AsyncOperation CrearOperacionAsincronica(object TareaID)
+        protected virtual void DispararCambioEnProgresoDeOperacion(ProgressChangedEventArgs e)
         {
-            AsyncOperation Asincronico = null;
-
-            lock (_Hilos.SyncRoot)
+            if (this.CambioEnProgresoDeOperacion != null)
             {
-                if (_Hilos.Contains(TareaID))
+                this.CambioEnProgresoDeOperacion(this, e);
+            }
+        }
+
+        protected virtual void DispararListarBDsCompletado(EventoListarBDsCompletadoArgs e)
+        {
+            if (this.ListarBasesDeDatosCompletado != null)
+            {
+                this.ListarBasesDeDatosCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararListarTablasCompletado(EventoListarTablasCompletadoArgs e)
+        {
+            if (this.ListarTablasCompletado != null)
+            {
+                this.ListarTablasCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararLeerTablaCompletado(EventoLeerTablaCompletadoArgs e)
+        {
+            if (this.LeerTablaCompletado != null)
+            {
+                this.LeerTablaCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararEscribirTablaCompletado(EventoEscribirTablaCompletadoArgs e)
+        {
+            if (this.EscribirTablaCompletado != null)
+            {
+                this.EscribirTablaCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararCrearUsuarioCompletado(EventoCrearUsuarioCompletadoArgs e)
+        {
+            if (this.CrearUsuarioCompletado != null)
+            {
+                this.CrearUsuarioCompletado(this, e);
+            }
+        }
+
+        protected virtual void DispararConsultarCompletado(EventoConsultarCompletadoArgs e)
+        {
+            if (this.ConsultarCompletado != null)
+            {
+                this.ConsultarCompletado(this, e);
+            }
+        }
+
+        private AsyncOperation CrearOperacionAsincronica(object tareaId)
+        {
+            AsyncOperation asincronico = null;
+
+            lock (this.hilos.SyncRoot)
+            {
+                if (this.hilos.Contains(tareaId))
                 {
                     throw new ArgumentException("El argumento TareaID debe ser unico", "TareaID");
                 }
                 else
                 {
-                    Asincronico = AsyncOperationManager.CreateOperation(TareaID);
-                    _Hilos[TareaID] = Asincronico;
+                    asincronico = AsyncOperationManager.CreateOperation(tareaId);
+                    this.hilos[tareaId] = asincronico;
                 }
             }
 
-            return Asincronico;
+            return asincronico;
         }
 
-        private void ComenzarOperacion(AsyncOperation Asincronico, string Operacion, object[] Parametros)
+        private void ComenzarOperacion(AsyncOperation asincronico, string operacion, object[] parametros)
         {
-            List<object> Resultados = new List<object>();
+            List<object> resultados = new List<object>();
             Exception e = null;
 
-            if (!TareaCancelada(Asincronico.UserSuppliedState))
+            if (!TareaCancelada(asincronico.UserSuppliedState))
             {
                 try
                 {
-                    switch (Operacion)
+                    switch (operacion)
                     {
                         case "ListarBasesDeDatos":
-                            Resultados.Add(ListarBasesDeDatos());
+                            resultados.Add(this.ListarBasesDeDatos());
                             break;
                         case "ListarTablas":
-                            Resultados.Add(ListarTablas((string)Parametros[0]));
+                            resultados.Add(this.ListarTablas((string)parametros[0]));
                             break;
                         case "LeerTabla":
-                            Resultados.Add(LeerTabla((string)Parametros[0], (string)Parametros[1]));
+                            resultados.Add(this.LeerTabla((string)parametros[0], (string)parametros[1]));
                             break;
                         case "EscribirTabla":
-                            Resultados.Add(EscribirTabla(
-                                (string)Parametros[0],
-                                (string)Parametros[1],
-                                (DataTable)Parametros[2]));
+                            resultados.Add(this.EscribirTabla(
+                                (string)parametros[0],
+                                (string)parametros[1],
+                                (DataTable)parametros[2]));
                             break;
                         case "CrearUsuario":
-                            Resultados.Add(CrearUsuario(
-                                (SecureString)Parametros[0],
-                                (SecureString)Parametros[1],
-                                (string[])Parametros[2],
-                                Convert.ToInt16(Parametros[3])));
+                            resultados.Add(this.CrearUsuario(
+                                (SecureString)parametros[0],
+                                (SecureString)parametros[1],
+                                (string[])parametros[2],
+                                Convert.ToInt16(parametros[3])));
                             break;
                         case "Consultar":
-                            Resultados.Add(Consultar(
-                                (string)Parametros[0],
-                                (string)Parametros[1]));
+                            resultados.Add(this.Consultar(
+                                (string)parametros[0],
+                                (string)parametros[1]));
                             break;
                         default:
                             break;
@@ -112,164 +172,114 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
                 }
             }
 
-            this.FinalizarOperacion(Operacion, Resultados.ToArray(), e, TareaCancelada(Asincronico.UserSuppliedState), Asincronico);
+            this.FinalizarOperacion(operacion, resultados.ToArray(), e, TareaCancelada(asincronico.UserSuppliedState), asincronico);
         }
 
-        private void FinalizarOperacion(string Operacion, object[] Resultados, Exception Error, bool Cancelado, AsyncOperation Asincronico)
+        private void FinalizarOperacion(string operacion, object[] resultados, Exception error, bool cancelado, AsyncOperation asincronico)
         {
-            if (!Cancelado)
+            if (!cancelado)
             {
-                lock (_Hilos.SyncRoot)
+                lock (this.hilos.SyncRoot)
                 {
-                    _Hilos.Remove(Asincronico.UserSuppliedState);
+                    this.hilos.Remove(asincronico.UserSuppliedState);
                 }
             }
 
-            switch (Operacion)
+            switch (operacion)
             {
                 case "ListarBasesDeDatos":
                     {
                         EventoListarBDsCompletadoArgs e =
-                            new EventoListarBDsCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
-                        Asincronico.PostOperationCompleted(_DelegadoDispararListarBDsCompletado, e);
+                            new EventoListarBDsCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
+                        asincronico.PostOperationCompleted(this.delegadoDispararListarBDsCompletado, e);
                         break;
                     }
+
                 case "ListarTablas":
                     {
                         EventoListarTablasCompletadoArgs e =
-                            new EventoListarTablasCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
-                        Asincronico.PostOperationCompleted(_DelegadoDispararListarTablasCompletado, e);
+                            new EventoListarTablasCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
+                        asincronico.PostOperationCompleted(this.delegadoDispararListarTablasCompletado, e);
                         break;
                     }
+
                 case "LeerTabla":
                     {
                         EventoLeerTablaCompletadoArgs e =
-                            new EventoLeerTablaCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
-                        Asincronico.PostOperationCompleted(_DelegadoDispararLeerTablaCompletado, e);
+                            new EventoLeerTablaCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
+                        asincronico.PostOperationCompleted(this.delegadoDispararLeerTablaCompletado, e);
                         break;
                     }
+
                 case "EscribirTabla":
                     {
                         EventoEscribirTablaCompletadoArgs e =
-                            new EventoEscribirTablaCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
-                        Asincronico.PostOperationCompleted(_DelegadoDispararEscribirTablaCompletado, e);
+                            new EventoEscribirTablaCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
+                        asincronico.PostOperationCompleted(this.delegadoDispararEscribirTablaCompletado, e);
                         break;
                     }
+
                 case "CrearUsuario":
                     {
                         EventoCrearUsuarioCompletadoArgs e =
-                            new EventoCrearUsuarioCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
-                        Asincronico.PostOperationCompleted(_DelegadoDispararCrearUsuarioCompletado, e);
+                            new EventoCrearUsuarioCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
+                        asincronico.PostOperationCompleted(this.delegadoDispararCrearUsuarioCompletado, e);
                         break;
                     }
+
                 case "Consultar":
                     {
                         EventoConsultarCompletadoArgs e =
-                            new EventoConsultarCompletadoArgs(Resultados, Cancelado, Error, Asincronico.UserSuppliedState);
-                        Asincronico.PostOperationCompleted(_DelegadoDispararConsultarCompletado, e);
+                            new EventoConsultarCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
+                        asincronico.PostOperationCompleted(this.delegadoDispararConsultarCompletado, e);
                         break;
                     }
+
                 default:
                     break;
             }
         }
 
-        private void AntesDeDispararCambioEnProgresoDeOperacion(object Estado)
+        private void AntesDeDispararCambioEnProgresoDeOperacion(object estado)
         {
-            ProgressChangedEventArgs e = (ProgressChangedEventArgs)Estado;
-            DispararCambioEnProgresoDeOperacion(e);
+            ProgressChangedEventArgs e = (ProgressChangedEventArgs)estado;
+            this.DispararCambioEnProgresoDeOperacion(e);
         }
 
-        protected virtual void DispararCambioEnProgresoDeOperacion(ProgressChangedEventArgs e)
+        private void AntesDeDispararListarBDsCompletado(object estadoOperacion)
         {
-            if (CambioEnProgresoDeOperacion != null)
-            {
-                CambioEnProgresoDeOperacion(this, e);
-            }
+            EventoListarBDsCompletadoArgs e = (EventoListarBDsCompletadoArgs)estadoOperacion;
+            this.DispararListarBDsCompletado(e);
         }
 
-        private void AntesDeDispararListarBDsCompletado(object EstadoOperacion)
+        private void AntesDeDispararListarTablasCompletado(object estadoOperacion)
         {
-            EventoListarBDsCompletadoArgs e = (EventoListarBDsCompletadoArgs)EstadoOperacion;
-            DispararListarBDsCompletado(e);
+            EventoListarTablasCompletadoArgs e = (EventoListarTablasCompletadoArgs)estadoOperacion;
+            this.DispararListarTablasCompletado(e);
         }
 
-        protected virtual void DispararListarBDsCompletado(EventoListarBDsCompletadoArgs e)
+        private void AntesDeDispararLeerTablaCompletado(object estadoOperacion)
         {
-            if (ListarBasesDeDatosCompletado != null)
-            {
-                ListarBasesDeDatosCompletado(this, e);
-            }
+            EventoLeerTablaCompletadoArgs e = (EventoLeerTablaCompletadoArgs)estadoOperacion;
+            this.DispararLeerTablaCompletado(e);
         }
 
-        private void AntesDeDispararListarTablasCompletado(object EstadoOperacion)
+        private void AntesDeDispararEscribirTablaCompletado(object estadoOperacion)
         {
-            EventoListarTablasCompletadoArgs e = (EventoListarTablasCompletadoArgs)EstadoOperacion;
-            DispararListarTablasCompletado(e);
+            EventoEscribirTablaCompletadoArgs e = (EventoEscribirTablaCompletadoArgs)estadoOperacion;
+            this.DispararEscribirTablaCompletado(e);
         }
 
-        protected virtual void DispararListarTablasCompletado(EventoListarTablasCompletadoArgs e)
+        private void AntesDeDispararCrearUsuarioCompletado(object estadoOperacion)
         {
-            if (ListarTablasCompletado != null)
-            {
-                ListarTablasCompletado(this, e);
-            }
+            EventoCrearUsuarioCompletadoArgs e = (EventoCrearUsuarioCompletadoArgs)estadoOperacion;
+            this.DispararCrearUsuarioCompletado(e);
         }
 
-        private void AntesDeDispararLeerTablaCompletado(object EstadoOperacion)
+        private void AntesDeDispararConsultarCompletado(object estadoOperacion)
         {
-            EventoLeerTablaCompletadoArgs e = (EventoLeerTablaCompletadoArgs)EstadoOperacion;
-            DispararLeerTablaCompletado(e);
-        }
-
-        protected virtual void DispararLeerTablaCompletado(EventoLeerTablaCompletadoArgs e)
-        {
-            if (LeerTablaCompletado != null)
-            {
-                LeerTablaCompletado(this, e);
-            }
-        }
-
-        private void AntesDeDispararEscribirTablaCompletado(object EstadoOperacion)
-        {
-            EventoEscribirTablaCompletadoArgs e = (EventoEscribirTablaCompletadoArgs)EstadoOperacion;
-            DispararEscribirTablaCompletado(e);
-        }
-
-        protected virtual void DispararEscribirTablaCompletado(EventoEscribirTablaCompletadoArgs e)
-        {
-            if (EscribirTablaCompletado != null)
-            {
-                EscribirTablaCompletado(this, e);
-            }
-        }
-
-        private void AntesDeDispararCrearUsuarioCompletado(object EstadoOperacion)
-        {
-            EventoCrearUsuarioCompletadoArgs e = (EventoCrearUsuarioCompletadoArgs)EstadoOperacion;
-            DispararCrearUsuarioCompletado(e);
-        }
-
-        protected virtual void DispararCrearUsuarioCompletado(EventoCrearUsuarioCompletadoArgs e)
-        {
-            if (CrearUsuarioCompletado != null)
-            {
-                CrearUsuarioCompletado(this, e);
-            }
-        }
-
-        private void AntesDeDispararConsultarCompletado(object EstadoOperacion)
-        {
-            EventoConsultarCompletadoArgs e = (EventoConsultarCompletadoArgs)EstadoOperacion;
-            DispararConsultarCompletado(e);
-        }
-
-        protected virtual void DispararConsultarCompletado(EventoConsultarCompletadoArgs e)
-        {
-            if (ConsultarCompletado != null)
-            {
-                ConsultarCompletado(this, e);
-            }
+            EventoConsultarCompletadoArgs e = (EventoConsultarCompletadoArgs)estadoOperacion;
+            this.DispararConsultarCompletado(e);
         }
 
         #endregion
@@ -279,26 +289,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         public string[] ListarBasesDeDatos()
         {
             Conectar();
-            string[] Resultado = (string[])_Proxy.InvocarMetodo("ListarBasesDeDatos", null);
+            string[] Resultado = (string[])this.proxy.InvocarMetodo("ListarBasesDeDatos", null);
             Desconectar();
 
             return Resultado;
         }
 
-        public string[] ListarTablas(string BaseDeDatos)
+        public string[] ListarTablas(string baseDeDatos)
         {
             Conectar();
-            string[] Resultado = (string[])_Proxy.InvocarMetodo("ListarTablas", BaseDeDatos);
+            string[] Resultado = (string[])this.proxy.InvocarMetodo("ListarTablas", baseDeDatos);
             Desconectar();
 
             return Resultado;
         }
 
-        public DataTable LeerTabla(string BaseDeDatos, string NombreTabla)
+        public DataTable LeerTabla(string baseDeDatos, string nombreTabla)
         {
             Conectar();
 
-            object TablaXML = _Proxy.InvocarMetodo("LeerTabla", BaseDeDatos, NombreTabla);
+            object TablaXML = this.proxy.InvocarMetodo("LeerTabla", baseDeDatos, nombreTabla);
             DataTable Tabla = ((DataTableXml)TablaXML).XmlADataTable();
 
             Desconectar();
@@ -306,19 +316,19 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             return Tabla;
         }
 
-        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
             Conectar();
 
-            DataTableXml DatosAEnviar = Tabla.DataTableAXml(BaseDeDatos, NombreTabla);
-            bool Resultado = Convert.ToBoolean(_Proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
+            DataTableXml DatosAEnviar = tabla.DataTableAXml(baseDeDatos, nombreTabla);
+            bool Resultado = Convert.ToBoolean(this.proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
             
             Desconectar();
 
             return Resultado;
         }
 
-        public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
             throw new NotImplementedException();
         }
@@ -334,40 +344,40 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 
         public void ListarBasesDeDatosAsinc()
         {
-            ListarBasesDeDatosAsinc(_Aleatorio.Next());
+            this.ListarBasesDeDatosAsinc(this.aleatorio.Next());
         }
 
-        public void ListarTablasAsinc(string BaseDeDatos)
+        public void ListarTablasAsinc(string baseDeDatos)
         {
-            ListarTablasAsinc(BaseDeDatos, _Aleatorio.Next());
+            this.ListarTablasAsinc(baseDeDatos, this.aleatorio.Next());
         }
 
-        public void LeerTablaAsinc(string BaseDeDatos, string Tabla)
+        public void LeerTablaAsinc(string baseDeDatos, string tabla)
         {
-            LeerTablaAsinc(BaseDeDatos, Tabla, _Aleatorio.Next());
+            this.LeerTablaAsinc(baseDeDatos, tabla, this.aleatorio.Next());
         }
 
-        public void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
-            EscribirTablaAsinc(BaseDeDatos, NombreTabla, Tabla, _Aleatorio.Next());
+            this.EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla, this.aleatorio.Next());
         }
 
-        public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
-            CrearUsuarioAsinc(Usuario, Contrasena, Columnas, Privilegios, _Aleatorio.Next());
+            this.CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios, this.aleatorio.Next());
         }
 
         public void ConsultarAsinc(string baseDeDatos, string Sql)
         {
-            ConsultarAsinc(baseDeDatos, Sql, _Aleatorio.Next());
+            this.ConsultarAsinc(baseDeDatos, Sql, this.aleatorio.Next());
         }
 
-        public void ListarBasesDeDatosAsinc(object TareaID)
+        public void ListarBasesDeDatosAsinc(object tareaId)
         {
             try
             {
-                AsyncOperation Asincronico = CrearOperacionAsincronica(TareaID);
-                _Carpintero.BeginInvoke(Asincronico, "ListarBasesDeDatos", null, null, null);
+                AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
+                this.carpintero.BeginInvoke(asincronico, "ListarBasesDeDatos", null, null, null);
             }
             catch (Exception ex)
             {
@@ -375,14 +385,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             }
         }
 
-        public void ListarTablasAsinc(string BaseDeDatos, object TareaID)
+        public void ListarTablasAsinc(string baseDeDatos, object tareaId)
         {
             try
             {
-                object[] Parametros = new object[1] { BaseDeDatos };
+                object[] parametros = new object[1] { baseDeDatos };
 
-                AsyncOperation Asincronico = CrearOperacionAsincronica(TareaID);
-                _Carpintero.BeginInvoke(Asincronico, "ListarTablas", Parametros, null, null);
+                AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
+                this.carpintero.BeginInvoke(asincronico, "ListarTablas", parametros, null, null);
             }
             catch (Exception ex)
             {
@@ -390,14 +400,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             }
         }
 
-        public void LeerTablaAsinc(string BaseDeDatos, string Tabla, object TareaID)
+        public void LeerTablaAsinc(string baseDeDatos, string tabla, object tareaId)
         {
             try
             {
-                object[] Parametros = new object[2] { BaseDeDatos, Tabla };
+                object[] parametros = new object[2] { baseDeDatos, tabla };
 
-                AsyncOperation Asincronico = CrearOperacionAsincronica(TareaID);
-                _Carpintero.BeginInvoke(Asincronico, "LeerTabla", Parametros, null, null);
+                AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
+                this.carpintero.BeginInvoke(asincronico, "LeerTabla", parametros, null, null);
             }
             catch (Exception ex)
             {
@@ -405,14 +415,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             }
         }
 
-        public void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, DataTable Tabla, object TareaID)
+        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla, object tareaId)
         {
             try
             {
-                object[] Parametros = new object[3] { BaseDeDatos, NombreTabla, Tabla };
+                object[] parametros = new object[3] { baseDeDatos, nombreTabla, tabla };
 
-                AsyncOperation Asincronico = CrearOperacionAsincronica(TareaID);
-                _Carpintero.BeginInvoke(Asincronico, "EscribirTabla", Parametros, null, null);
+                AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
+                this.carpintero.BeginInvoke(asincronico, "EscribirTabla", parametros, null, null);
             }
             catch (Exception ex)
             {
@@ -420,14 +430,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             }
         }
 
-        public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios, object TareaID)
+        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios, object tareaId)
         {
             try
             {
-                object[] Parametros = new object[4] { Usuario, Contrasena, Columnas, Privilegios };
+                object[] parametros = new object[4] { usuario, contrasena, columnas, privilegios };
 
-                AsyncOperation Asincronico = CrearOperacionAsincronica(TareaID);
-                _Carpintero.BeginInvoke(Asincronico, "CrearUsuario", Parametros, null, null);
+                AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
+                this.carpintero.BeginInvoke(asincronico, "CrearUsuario", parametros, null, null);
             }
             catch (Exception ex)
             {
@@ -435,14 +445,14 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
             }
         }
 
-        public void ConsultarAsinc(string baseDeDatos, string Sql, object TareaID)
+        public void ConsultarAsinc(string baseDeDatos, string sql, object tareaId)
         {
             try
             {
-                object[] Parametros = new object[2] { baseDeDatos, Sql };
+                object[] parametros = new object[2] { baseDeDatos, sql };
 
-                AsyncOperation Asincronico = CrearOperacionAsincronica(TareaID);
-                _Carpintero.BeginInvoke(Asincronico, "Consultar", Parametros, null, null);
+                AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
+                this.carpintero.BeginInvoke(asincronico, "Consultar", parametros, null, null);
             }
             catch (Exception ex)
             {
@@ -455,4 +465,3 @@ namespace Zuliaworks.Netzuela.Valeria.Datos.Web
         #endregion
     }
 }
-

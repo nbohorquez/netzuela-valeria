@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Zuliaworks.Netzuela.Valeria.Comunes;          // ServidorLocal, ParametrosDeConexion
-using System.Data;                                  // DataTable
-using System.Data.SqlClient;                        // SqlConnection
-using System.Security;                              // SecureString
-
 namespace Zuliaworks.Netzuela.Valeria.Datos
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;                                  // DataTable
+    using System.Data.SqlClient;                        // SqlConnection
+    using System.Linq;
+    using System.Security;                              // SecureString
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // ServidorLocal, ParametrosDeConexion
+    
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos SQLServer
     /// </summary>
@@ -17,8 +17,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Variables
 
-        private SqlConnection _Conexion;
-        protected static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
+        private static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
         {
             { Privilegios.NoValido, string.Empty },
             { Privilegios.Seleccionar, "SELECT" },
@@ -31,24 +30,26 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             { Privilegios.Destruir, "DROP" }
         };
 
+        private SqlConnection conexion;
+
         #endregion
 
         #region Constructores
 
         public SQLServer(ParametrosDeConexion ServidorBD)
         {
-            DatosDeConexion = ServidorBD;
+            this.DatosDeConexion = ServidorBD;
 
-            _Conexion = new SqlConnection();
+            this.conexion = new SqlConnection();
 
             // Registramos el manejador de eventos por defecto. Este sirve como repetidor del evento subyacente.
-            _Conexion.StateChange -= base.ManejarCambioDeEstado;
-            _Conexion.StateChange += base.ManejarCambioDeEstado;
+            this.conexion.StateChange -= this.ManejarCambioDeEstado;
+            this.conexion.StateChange += this.ManejarCambioDeEstado;
         }
 
         ~SQLServer()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -61,106 +62,115 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             if (BorrarCodigoAdministrado)
             {
-                this._Conexion.Dispose();
+                this.conexion.Dispose();
             }
         }
 
         private void CambiarBaseDeDatos(string BaseDeDatos)
         {
-            if (_Conexion.Database != BaseDeDatos)
-                _Conexion.ChangeDatabase(BaseDeDatos);
-        }
-
-        private void EjecutarOrden(string SQL)
-        {
-            if (SQL == null)
-                throw new ArgumentNullException("SQL");
-
-            SqlCommand Orden = new SqlCommand(SQL, _Conexion);
-            Orden.ExecuteNonQuery();
-        }
-
-        private string[] LectorSimple(string SQL)
-        {
-            if (SQL == null)
-                throw new ArgumentNullException("SQL");
-
-            SqlDataReader Lector = null;
-            List<string> Resultado = new List<string>();
-
-            SqlCommand Orden = new SqlCommand(SQL, _Conexion);
-
-            Lector = Orden.ExecuteReader();
-            while (Lector.Read())
+            if (this.conexion.Database != BaseDeDatos)
             {
-                Resultado.Add(Lector.GetString(0));
+                this.conexion.ChangeDatabase(BaseDeDatos);
+            }
+        }
+
+        private void EjecutarOrden(string sql)
+        {
+            if (sql == null)
+            {
+                throw new ArgumentNullException("sql");
+            }
+
+            SqlCommand orden = new SqlCommand(sql, this.conexion);
+            orden.ExecuteNonQuery();
+        }
+
+        private string[] LectorSimple(string sql)
+        {
+            if (sql == null)
+            {
+                throw new ArgumentNullException("sql");
+            }
+
+            SqlDataReader lector = null;
+            List<string> resultado = new List<string>();
+
+            SqlCommand orden = new SqlCommand(sql, this.conexion);
+
+            lector = orden.ExecuteReader();
+            while (lector.Read())
+            {
+                resultado.Add(lector.GetString(0));
             }
             
-            Lector.Close();
-
-            return Resultado.ToArray();
+            lector.Close();
+            return resultado.ToArray();
         }
 
-        private DataTable LectorAvanzado(string SQL)
+        private DataTable LectorAvanzado(string sql)
         {
-            if (SQL == null)
-                throw new ArgumentNullException("SQL");
+            if (sql == null)
+            {
+                throw new ArgumentNullException("sql");
+            }
 
-            DataTable Resultado = new DataTable();
+            DataTable resultado = new DataTable();
+            SqlDataAdapter adaptador = new SqlDataAdapter(sql, this.conexion);
+            SqlCommandBuilder creadorDeOrden = new SqlCommandBuilder(adaptador);
 
-            SqlDataAdapter Adaptador = new SqlDataAdapter(SQL, _Conexion);
-            SqlCommandBuilder CreadorDeOrden = new SqlCommandBuilder(Adaptador);
+            adaptador.FillSchema(resultado, SchemaType.Source);
+            adaptador.Fill(resultado);
 
-            Adaptador.FillSchema(Resultado, SchemaType.Source);
-            Adaptador.Fill(Resultado);
-
-            return Resultado;
+            return resultado;
         }
 
-        private string DescribirTabla(string Tabla)
+        private string DescribirTabla(string tabla)
         {
-            string[] Descripcion = LectorSimple("SELECT subentity_name FROM fn_my_permissions('dbo." + Tabla + "', 'Object') WHERE permission_name = 'SELECT' AND datalength(subentity_name) > 0");
-
-            return string.Join(", ", Descripcion.ToArray());
+            string[] descripcion = this.LectorSimple("SELECT subentity_name FROM fn_my_permissions('dbo." + tabla + "', 'Object') WHERE permission_name = 'SELECT' AND datalength(subentity_name) > 0");
+            return string.Join(", ", descripcion.ToArray());
         }
 
-        private string RutaServidorFormatoTCPIP(ParametrosDeConexion Seleccion)
+        private string RutaServidorFormatoTCPIP(ParametrosDeConexion seleccion)
         {
-            List<string> RutaDeConexion = new List<string>();
+            List<string> rutaDeConexion = new List<string>();
             
-            switch (Seleccion.MetodoDeConexion)
+            switch (seleccion.MetodoDeConexion)
             {
                 case MetodosDeConexion.TcpIp:
-                    RutaDeConexion.Add("tcp:");
+                    rutaDeConexion.Add("tcp:");
                     break;
                 case MetodosDeConexion.MemoriaCompartida:
-                    RutaDeConexion.Add("lpc:");
+                    rutaDeConexion.Add("lpc:");
                     break;
                 case MetodosDeConexion.Via:
-                    RutaDeConexion.Add("via:");
+                    rutaDeConexion.Add("via:");
                     break;
                 default:
-                    throw new Exception("No se reconoce el metodo de conexion: \"" + Seleccion.MetodoDeConexion + "\"");
+                    throw new Exception("No se reconoce el metodo de conexion: \"" + seleccion.MetodoDeConexion + "\"");
             }
 
-            RutaDeConexion.Add((Seleccion.Anfitrion == "localhost") ? "." : Seleccion.Anfitrion);
-            RutaDeConexion.Add("\\" + Seleccion.Instancia);
+            rutaDeConexion.Add((seleccion.Anfitrion == "localhost") ? "." : seleccion.Anfitrion);
+            rutaDeConexion.Add("\\" + seleccion.Instancia);
 
-            if (Seleccion.ArgumentoDeConexion != null && Seleccion.ArgumentoDeConexion != string.Empty && Seleccion.ArgumentoDeConexion != "Por defecto")
-                RutaDeConexion.Add("," + Seleccion.ArgumentoDeConexion);
+            if (seleccion.ArgumentoDeConexion != null && seleccion.ArgumentoDeConexion != string.Empty && seleccion.ArgumentoDeConexion != "Por defecto")
+            {
+                rutaDeConexion.Add("," + seleccion.ArgumentoDeConexion);
+            }
 
-            return string.Join(string.Empty, RutaDeConexion.ToArray());
+            return string.Join(string.Empty, rutaDeConexion.ToArray());
         }
 
-        private string RutaServidorFormatoCanalizaciones(ParametrosDeConexion Seleccion)
+        private string RutaServidorFormatoCanalizaciones(ParametrosDeConexion seleccion)
         {
-            if(Seleccion.MetodoDeConexion != MetodosDeConexion.CanalizacionesConNombre)
-                throw new Exception("No se reconoce el metodo de conexion: \"" + Seleccion.MetodoDeConexion + "\"");
+            if (seleccion.MetodoDeConexion != MetodosDeConexion.CanalizacionesConNombre)
+            {
+                throw new Exception("No se reconoce el metodo de conexion: \"" + seleccion.MetodoDeConexion + "\"");
+            }
 
-            return "np:" + Seleccion.ArgumentoDeConexion;;
+            return "np:" + seleccion.ArgumentoDeConexion;
         }
 
-        private SecureString CrearRutaDeAcceso(ParametrosDeConexion Seleccion, SecureString Usuario, SecureString Contrasena)
+        private SecureString CrearRutaDeAcceso(ParametrosDeConexion seleccion, SecureString usuario, SecureString contrasena)
         {
             /*
              * La lista completa de las opciones de la ruta de conexion ("Connection String" en ingles) se detalla en:
@@ -282,52 +292,58 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              *      *- "false": el usuario y la contraseña se especifican en la conexion.
              */
 
-            if (Seleccion == null)
+            if (seleccion == null)
+            {
                 throw new ArgumentNullException("Seleccion");
-            
-            if (Usuario == null)
-                throw new ArgumentNullException("Usuario");
-            
-            if (Contrasena == null)
-                throw new ArgumentNullException("Contrasena");
+            }
 
-            SecureString RutaDeConexion = new SecureString();
+            if (usuario == null)
+            {
+                throw new ArgumentNullException("Usuario");
+            }
+
+            if (contrasena == null)
+            {
+                throw new ArgumentNullException("Contrasena");
+            }
+
+            SecureString rutaDeConexion = new SecureString();
             
             // 1) Servidor
-            RutaDeConexion.AgregarString("Server=");
+            rutaDeConexion.AgregarString("Server=");
             
-            if((Seleccion.MetodoDeConexion == MetodosDeConexion.TcpIp) ||
-                (Seleccion.MetodoDeConexion == MetodosDeConexion.MemoriaCompartida) ||
-                (Seleccion.MetodoDeConexion == MetodosDeConexion.Via))
+            if ((seleccion.MetodoDeConexion == MetodosDeConexion.TcpIp) ||
+                (seleccion.MetodoDeConexion == MetodosDeConexion.MemoriaCompartida) ||
+                (seleccion.MetodoDeConexion == MetodosDeConexion.Via))
             {
-                RutaDeConexion.AgregarString(RutaServidorFormatoTCPIP(Seleccion) + ";");
+                rutaDeConexion.AgregarString(this.RutaServidorFormatoTCPIP(seleccion) + ";");
             }
-            else if (Seleccion.MetodoDeConexion == MetodosDeConexion.CanalizacionesConNombre)
+            else if (seleccion.MetodoDeConexion == MetodosDeConexion.CanalizacionesConNombre)
             {
-                RutaDeConexion.AgregarString(RutaServidorFormatoCanalizaciones(Seleccion) + ";");
+                rutaDeConexion.AgregarString(this.RutaServidorFormatoCanalizaciones(seleccion) + ";");
             }
 
             // 2) Indicamos que vamos a proporcionar el usuario y la contraseña de forma manual
-            RutaDeConexion.AgregarString("Integrated Security=false;");
+            rutaDeConexion.AgregarString("Integrated Security=false;");
 
             // 3) Requerimos pooling
-            RutaDeConexion.AgregarString("Pooling=false;");
+            rutaDeConexion.AgregarString("Pooling=false;");
 
             // 4) Aumentamos la seguridad no permitiendo que se pueda leer la ruta de acceso
-            RutaDeConexion.AgregarString("Persist Security Info=false;");
+            rutaDeConexion.AgregarString("Persist Security Info=false;");
             
             // 5) Nombre de usuario
-            RutaDeConexion.AgregarString(("User ID=" + Usuario.ConvertirAUnsecureString()) + ";");
+            rutaDeConexion.AgregarString(("User ID=" + usuario.ConvertirAUnsecureString()) + ";");
 
             // 6) Contraseña
-            RutaDeConexion.AgregarString(("Password=" + Contrasena.ConvertirAUnsecureString()));
+            rutaDeConexion.AgregarString(("Password=" + contrasena.ConvertirAUnsecureString()));
 
             /*
              * De la instruccion anterior (agregar password) hasta la siguiente (return) hay un hueco de 
              * seguridad porque cualquiera puede leer la contraseña al acceder a los miembros de RutaDeConexion
              */
 
-            return RutaDeConexion;
+            return rutaDeConexion;
         }
 
         #endregion
@@ -338,7 +354,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public ConnectionState Estado
         {
-            get { return _Conexion.State; }
+            get { return this.conexion.State; }
         }
 
         public ParametrosDeConexion DatosDeConexion { get; set; }
@@ -349,14 +365,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         
         #region Métodos sincrónicos
 
-        public void Conectar(SecureString Usuario, SecureString Contrasena)
+        public void Conectar(SecureString usuario, SecureString contrasena)
         {
             try
             {
-                Desconectar();
-
-                _Conexion.ConnectionString = CrearRutaDeAcceso(DatosDeConexion, Usuario, Contrasena).ConvertirAUnsecureString();
-                _Conexion.Open();
+                this.Desconectar();
+                this.conexion.ConnectionString = this.CrearRutaDeAcceso(this.DatosDeConexion, usuario, contrasena).ConvertirAUnsecureString();
+                this.conexion.Open();
             }
             catch (SqlException ex)
             {
@@ -380,8 +395,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             try
             {
-                if(_Conexion != null)
-                    _Conexion.Close();
+                if (this.conexion != null)
+                {
+                    this.conexion.Close();
+                }
             }
             catch (Exception ex)
             {
@@ -391,19 +408,18 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public string[] ListarBasesDeDatos()
         {
-            List<string> ResultadoFinal = null;
+            List<string> resultadoFinal = null;
 
             try
             {
                 //string[] ResultadoBruto = LectorSimple("EXEC sp_databases");
-                string[] ResultadoBruto = LectorSimple("SELECT name FROM sys.databases ORDER BY name");
+                string[] resultadoBruto = this.LectorSimple("SELECT name FROM sys.databases ORDER BY name");
+                resultadoFinal = new List<string>();
 
-                ResultadoFinal = new List<string>();
-
-                foreach (string R in ResultadoBruto)
+                foreach (string R in resultadoBruto)
                 {
-                    if(R != "master" && R != "tempdb" && R != "model" && R != "msdb")
-                        ResultadoFinal.Add(R);
+                    if (R != "master" && R != "tempdb" && R != "model" && R != "msdb")
+                        resultadoFinal.Add(R);
                 }
             }
             catch (SqlException ex)
@@ -411,61 +427,62 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 throw new Exception("Error al listar las bases de datos. Error MSSQL No. " + ex.Number.ToString(), ex);
             }
 
-            return ResultadoFinal.ToArray();
+            return resultadoFinal.ToArray();
         }
 
-        public string[] ListarTablas(string BaseDeDatos)
+        public string[] ListarTablas(string baseDeDatos)
         {
-            List<string> Resultado = null;
+            List<string> resultado = null;
 
             try
             {
-                CambiarBaseDeDatos(BaseDeDatos);
+                this.CambiarBaseDeDatos(baseDeDatos);
                 //string[] ResultadoBruto = LectorSimple("EXEC sp_tables");
-                string[] ResultadoBruto = LectorSimple("SELECT name FROM " + BaseDeDatos + "..sysobjects WHERE xtype = 'U' OR xtype = 'V' ORDER BY name");
+                string[] resultadoBruto = this.LectorSimple("SELECT name FROM " + baseDeDatos + "..sysobjects WHERE xtype = 'U' OR xtype = 'V' ORDER BY name");
+                resultado = new List<string>();
 
-                Resultado = new List<string>();
-
-                foreach (string S in ResultadoBruto)
-                    Resultado.Add(S);
+                foreach (string S in resultadoBruto)
+                {
+                    resultado.Add(S);
+                }
             }
             catch (SqlException ex)
             {
                 throw new Exception("Error al listar las tablas. Error MSSQL No. " + ex.Number.ToString(), ex);
             }
 
-            return Resultado.ToArray();
+            return resultado.ToArray();
         }
 
-        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
+        public DataTable LeerTabla(string baseDeDatos, string tabla)
         {
-            DataTable TablaLeida = null;
+            DataTable tablaLeida = null;
 
             try
             {
-                CambiarBaseDeDatos(BaseDeDatos);
+                this.CambiarBaseDeDatos(baseDeDatos);
 
                 // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
                 //DataTable Descripcion = LectorAvanzado("EXEC sp_columns @table_name = " + Tabla);
-                string Columnas = DescribirTabla(Tabla);
+                string Columnas = this.DescribirTabla(tabla);
 
                 /*
                  * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
                  * generar un error si el usuario no tiene los privilegios suficientes
                  */
-                TablaLeida = LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
+                tablaLeida = this.LectorAvanzado("SELECT " + Columnas + " FROM " + tabla);
             }
             catch (SqlException ex)
             {
                 throw new Exception("Error al leer la tabla. Error MSSQL No. " + ex.Number.ToString(), ex);
             }
 
-            return TablaLeida;
+            return tablaLeida;
         }
 
-        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
-            bool Resultado = false;
+            bool resultado = false;
 
             try
             {
@@ -485,51 +502,51 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                  * http://lennilobel.wordpress.com/2009/07/29/sql-server-2008-table-valued-parameters-and-c-custom-iterators-a-match-made-in-heaven/
                  */
 
-                DataTable Temporal = new DataTable();
+                DataTable temporal = new DataTable();
 
-                CambiarBaseDeDatos(BaseDeDatos);
+                this.CambiarBaseDeDatos(baseDeDatos);
 
                 // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
-                string Columnas = DescribirTabla(NombreTabla);
+                string columnas = this.DescribirTabla(nombreTabla);
 
-                SqlDataAdapter Adaptador = new SqlDataAdapter("SELECT " + Columnas + " FROM " + NombreTabla, _Conexion);
-                SqlCommandBuilder CreadorDeOrden = new SqlCommandBuilder(Adaptador);
+                SqlDataAdapter adaptador = new SqlDataAdapter("SELECT " + columnas + " FROM " + nombreTabla, this.conexion);
+                SqlCommandBuilder creadorDeOrden = new SqlCommandBuilder(adaptador);
 
-                Adaptador.FillSchema(Temporal, SchemaType.Source);
-                Adaptador.Fill(Temporal);
+                adaptador.FillSchema(temporal, SchemaType.Source);
+                adaptador.Fill(temporal);
 
-                Adaptador.InsertCommand = new SqlCommand("Insertar");
-                Adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
-                Adaptador.UpdateCommand = new SqlCommand("Actualizar");
-                Adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
-                Adaptador.DeleteCommand = new SqlCommand("Eliminar");
-                Adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
+                adaptador.InsertCommand = new SqlCommand("Insertar");
+                adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
+                adaptador.UpdateCommand = new SqlCommand("Actualizar");
+                adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
+                adaptador.DeleteCommand = new SqlCommand("Eliminar");
+                adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
 
-                string VariableDeEntrada = string.Empty;
+                string variableDeEntrada = string.Empty;
 
-                SqlParameter VariableDeEntradaSQL = new SqlParameter("a_Parametros", VariableDeEntrada);
-                VariableDeEntradaSQL.Direction = ParameterDirection.Input;
+                SqlParameter variableDeEntradaSql = new SqlParameter("a_Parametros", variableDeEntrada);
+                variableDeEntradaSql.Direction = ParameterDirection.Input;
 
-                Adaptador.InsertCommand.Parameters.Add(VariableDeEntradaSQL);
-                Adaptador.UpdateCommand.Parameters.Add(VariableDeEntradaSQL);
-                Adaptador.DeleteCommand.Parameters.Add(VariableDeEntradaSQL);
+                adaptador.InsertCommand.Parameters.Add(variableDeEntradaSql);
+                adaptador.UpdateCommand.Parameters.Add(variableDeEntradaSql);
+                adaptador.DeleteCommand.Parameters.Add(variableDeEntradaSql);
 
                 //Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
 
-                SqlRowUpdatingEventHandler ActualizandoFila = (r, a) =>
+                SqlRowUpdatingEventHandler actualizandoFila = (r, a) =>
                 {
-                    List<string> Parametros = new List<string>();
+                    List<string> parametros = new List<string>();
 
                     foreach (object Dato in a.Row.ItemArray)
                     {
-                        Parametros.Add(Dato.ToString().Replace(",", "."));
+                        parametros.Add(Dato.ToString().Replace(",", "."));
                     }
 
-                    VariableDeEntrada = string.Join(",", Parametros.ToArray());
-                    a.Command.Parameters[0].Value = VariableDeEntrada;
+                    variableDeEntrada = string.Join(",", parametros.ToArray());
+                    a.Command.Parameters[0].Value = variableDeEntrada;
                 };
 
-                SqlRowUpdatedEventHandler FilaActualizada = (r, a) =>
+                SqlRowUpdatedEventHandler filaActualizada = (r, a) =>
                 {
                     if (a.Errors != null)
                     {
@@ -537,33 +554,33 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     }
                 };
 
-                Adaptador.RowUpdating -= ActualizandoFila;
-                Adaptador.RowUpdating += ActualizandoFila;
+                adaptador.RowUpdating -= actualizandoFila;
+                adaptador.RowUpdating += actualizandoFila;
 
-                Adaptador.RowUpdated -= FilaActualizada;
-                Adaptador.RowUpdated += FilaActualizada;
+                adaptador.RowUpdated -= filaActualizada;
+                adaptador.RowUpdated += filaActualizada;
 
                 // Primero actualizamos los borrados
-                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Deleted));
+                adaptador.Update(tabla.Select(null, null, DataViewRowState.Deleted));
                 // Luego los modificados
-                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.ModifiedCurrent));
+                adaptador.Update(tabla.Select(null, null, DataViewRowState.ModifiedCurrent));
                 // Y por ultimo los agregados
-                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Added));
+                adaptador.Update(tabla.Select(null, null, DataViewRowState.Added));
 
-                Resultado = true;
+                resultado = true;
             }
             catch (SqlException ex)
             {
                 throw new Exception("No se pudo escribir la tabla. Error MSSQL No. " + ex.Number.ToString(), ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
-            bool Resultado = false;
-            string SQL = string.Empty;
+            bool resultado = false;
+            string sql = string.Empty;
 
             /* 
              * Por lo general, se procede a crear un "login" y luego un usuario asociado a ese "login".
@@ -613,80 +630,80 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              */
 
             // 1) Determinamos los privilegios otorgados al nuevo usuario
-            List<string> PrivilegiosLista = new List<string>();
+            List<string> privilegiosLista = new List<string>();
 
             for (int i = 0; i < PrivilegiosAOrdenes.Count; i++)
             {
-                if ((Privilegios & (1 << i)) == 1)
+                if ((privilegios & (1 << i)) == 1)
                 {
-                    PrivilegiosLista.Add(PrivilegiosAOrdenes[(1 << i)]);
+                    privilegiosLista.Add(PrivilegiosAOrdenes[(1 << i)]);
                 }
             }
 
             // 2) Identificamos las columnas a las cuales se aplican estos privilegios
-            Dictionary<string, string> ColumnasDiccionario = new Dictionary<string, string>();
+            Dictionary<string, string> columnasDiccionario = new Dictionary<string, string>();
 
-            foreach (string S in Columnas)
+            foreach (string s in columnas)
             {
-                string[] Columna = S.Split('\\');
+                string[] columna = s.Split('\\');
 
-                string BD_Tabla = Columna[1] + "." + Columna[2];
+                string tabla = columna[1] + "." + columna[2];
 
-                if (ColumnasDiccionario.ContainsKey(BD_Tabla))
+                if (columnasDiccionario.ContainsKey(tabla))
                 {
-                    ColumnasDiccionario[BD_Tabla] += ", " + Columna[3];
+                    columnasDiccionario[tabla] += ", " + columna[3];
                 }
                 else
                 {
-                    ColumnasDiccionario.Add(BD_Tabla, Columna[3]);
+                    columnasDiccionario.Add(tabla, columna[3]);
                 }
             }
 
-            List<KeyValuePair<string, string>> ColumnasLista = ColumnasDiccionario.ToList();
+            List<KeyValuePair<string, string>> columnasLista = columnasDiccionario.ToList();
 
             try
             {
                 // 3) Chequeamos a ver si ya existe el Login en el sistema y, si es asi, lo eliminamos
-                SQL = "IF EXISTS (SELECT name FROM sys.server_principals WHERE name = '" + Usuario.ConvertirAUnsecureString() + "')"
-                      + " DROP LOGIN " + Usuario.ConvertirAUnsecureString();
-                EjecutarOrden(SQL);
+                sql = "IF EXISTS (SELECT name FROM sys.server_principals WHERE name = '" + usuario.ConvertirAUnsecureString() + "')"
+                      + " DROP LOGIN " + usuario.ConvertirAUnsecureString();
+                this.EjecutarOrden(sql);
                 
                 // 4) Creamos el login (usuario + constraseña)
-                SQL = "CREATE LOGIN " + Usuario.ConvertirAUnsecureString() + " WITH PASSWORD = '" 
-                    + Contrasena.ConvertirAUnsecureString() + "'";
-                EjecutarOrden(SQL);
+                sql = "CREATE LOGIN " + usuario.ConvertirAUnsecureString() + " WITH PASSWORD = '" 
+                    + contrasena.ConvertirAUnsecureString() + "'";
+                this.EjecutarOrden(sql);
 
-                foreach (KeyValuePair<string, string> Par in ColumnasLista)
+                foreach (KeyValuePair<string, string> par in columnasLista)
                 {
-                    string[] BD_Tabla = Par.Key.Split('.');
+                    string[] tabla = par.Key.Split('.');
 
-                    CambiarBaseDeDatos(BD_Tabla[0]);
+                    this.CambiarBaseDeDatos(tabla[0]);
 
                     // 5) Chequeamos a ver si ya existe el usuario en la base de datos y, si es asi, lo eliminamos
-                    SQL = "IF EXISTS (SELECT * FROM sys.database_principals WHERE name = '" + Usuario.ConvertirAUnsecureString() + "')"
-                          + " DROP USER " + Usuario.ConvertirAUnsecureString();
-                    EjecutarOrden(SQL);
+                    sql = "IF EXISTS (SELECT * FROM sys.database_principals WHERE name = '" + usuario.ConvertirAUnsecureString() + "')"
+                          + " DROP USER " + usuario.ConvertirAUnsecureString();
+                    this.EjecutarOrden(sql);
 
                     // 6) Creamos un usuario nuevo en la base de datos seleccionada y lo asociamos al login recien creado
-                    SQL = "CREATE USER " + Usuario.ConvertirAUnsecureString() + " FOR LOGIN "
-                        + Usuario.ConvertirAUnsecureString();
-                    EjecutarOrden(SQL);
+                    sql = "CREATE USER " + usuario.ConvertirAUnsecureString() + " FOR LOGIN "
+                        + usuario.ConvertirAUnsecureString();
+                    this.EjecutarOrden(sql);
 
                     // 9) Otorgamos los privilegios de tablas/columnas para cada base de datos
-                    SQL = "GRANT ";
-                    for (int i = 0; i < PrivilegiosLista.Count; i++)
+                    sql = "GRANT ";
+                    for (int i = 0; i < privilegiosLista.Count; i++)
                     {
-                        SQL += PrivilegiosLista[i] + " (" + Par.Value + ")";
-                        if ((i + 1) < PrivilegiosLista.Count)
+                        sql += privilegiosLista[i] + " (" + par.Value + ")";
+                        if ((i + 1) < privilegiosLista.Count)
                         {
-                            SQL += ", ";
+                            sql += ", ";
                         }
                     }
 
-                    SQL += " ON OBJECT::dbo." + BD_Tabla[1] + " TO " + Usuario.ConvertirAUnsecureString();
-                    EjecutarOrden(SQL);
+                    sql += " ON OBJECT::dbo." + tabla[1] + " TO " + usuario.ConvertirAUnsecureString();
+                    this.EjecutarOrden(sql);
 
-                    Resultado = true;
+                    resultado = true;
                 }
             }
             catch (SqlException ex)
@@ -694,17 +711,17 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 throw new Exception("No se pudo crear el usuario especificado. Error MSSQL No. " + ex.Number.ToString(), ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public DataTable Consultar(string baseDeDatos, string Sql)
+        public DataTable Consultar(string baseDeDatos, string sql)
         {
             DataTable resultado = null;
-            CambiarBaseDeDatos(baseDeDatos);
+            this.CambiarBaseDeDatos(baseDeDatos);
 
             try
             {
-                resultado = LectorAvanzado(Sql);
+                resultado = this.LectorAvanzado(sql);
             }
             catch (SqlException ex)
             {
@@ -723,27 +740,27 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
-        public void ListarTablasAsinc(string BaseDeDatos)
+        public void ListarTablasAsinc(string baseDeDatos)
         {
             throw new NotImplementedException();
         }
 
-        public void LeerTablaAsinc(string BaseDeDatos, string Tabla)
+        public void LeerTablaAsinc(string baseDeDatos, string tabla)
         {
             throw new NotImplementedException();
         }
 
-        public void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
             throw new NotImplementedException();
         }
 
-        public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
             throw new NotImplementedException();
         }
 
-        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        public void ConsultarAsinc(string baseDeDatos, string sql)
         {
             throw new NotImplementedException();
         }
@@ -759,7 +776,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
              */
 
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 

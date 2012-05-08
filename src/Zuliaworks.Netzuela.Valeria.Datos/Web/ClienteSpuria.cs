@@ -20,14 +20,14 @@
          * Referencia 2: http://msdn.microsoft.com/en-us/library/wewwczdw.aspx
          */
         
-        #region Variables y constantes
-
-        private Random _Aleatorio;
-        private ProxyDinamico _Proxy;
-        private HybridDictionary _Hilos;
-        private string _UriWsdlServicio;
+        #region Variables y Constantes
 
         private const string ContratoSpuria = "IApi";
+
+        private Random aleatorio;
+        private ProxyDinamico proxy;
+        private HybridDictionary hilos;
+        private string uriWsdlServicio;
 
         #endregion
 
@@ -35,10 +35,9 @@
 
         public ClienteSpuria()
         {
-            InicializarDelegados();
-
-            _Aleatorio = new Random();
-            _Hilos = new HybridDictionary();
+            this.InicializarDelegados();
+            this.aleatorio = new Random();
+            this.hilos = new HybridDictionary();
         }
 
         public ClienteSpuria(string UriWsdlServicio)
@@ -52,7 +51,7 @@
 
         ~ClienteSpuria()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -61,13 +60,21 @@
 
         public string UriWsdlServicio
         {
-            get { return (_Proxy == null) ? _UriWsdlServicio : _Proxy.UriWsdlServicio; }
+            get 
+            { 
+                return (this.proxy == null) ? this.uriWsdlServicio : this.proxy.UriWsdlServicio; 
+            }
+
             set
             {
-                if (_Proxy == null)
-                    _UriWsdlServicio = value;
+                if (this.proxy == null)
+                {
+                    this.uriWsdlServicio = value;
+                }
                 else
-                    _Proxy.UriWsdlServicio = value;
+                {
+                    this.proxy.UriWsdlServicio = value;
+                }
             }
         }
 
@@ -75,32 +82,15 @@
 
         #region Funciones
 
-        private bool TareaCancelada(object TareaID)
-        {
-            return (_Hilos[TareaID] == null);
-        }
-
-        protected virtual void InicializarDelegados()
-        {
-            _DelegadoDispararCambioEnProgresoDeOperacion = new SendOrPostCallback(AntesDeDispararCambioEnProgresoDeOperacion);
-            _DelegadoDispararListarBDsCompletado = new SendOrPostCallback(AntesDeDispararListarBDsCompletado);
-            _DelegadoDispararListarTablasCompletado = new SendOrPostCallback(AntesDeDispararListarTablasCompletado);
-            _DelegadoDispararLeerTablaCompletado = new SendOrPostCallback(AntesDeDispararLeerTablaCompletado);
-            _DelegadoDispararEscribirTablaCompletado = new SendOrPostCallback(AntesDeDispararEscribirTablaCompletado);
-            _DelegadoDispararCrearUsuarioCompletado = new SendOrPostCallback(AntesDeDispararCrearUsuarioCompletado);
-            _DelegadoDispararConsultarCompletado = new SendOrPostCallback(AntesDeDispararConsultarCompletado);
-            _Carpintero = new DelegadoComenzarOperacion(ComenzarOperacion);
-        }
-
         public void Armar()
         {
             try
             {
-                _Proxy = new ProxyDinamico(UriWsdlServicio);
+                this.proxy = new ProxyDinamico(this.UriWsdlServicio);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error creando ProxyDinamico con argumento: \"" + UriWsdlServicio + "\"", ex);
+                throw new Exception("Error creando ProxyDinamico con argumento: \"" + this.UriWsdlServicio + "\"", ex);
             }
         }
 
@@ -110,24 +100,25 @@
             {
                 this.Desconectar();
 
-                if (_Proxy != null)
+                if (this.proxy != null)
                 {
-                    _Proxy.Dispose();
+                    this.proxy.Dispose();
                 }
 
-                _Proxy = null;
+                this.proxy = null;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error creando ProxyDinamico con argumento: \"" + UriWsdlServicio + "\"", ex);
+                throw new Exception("Error creando ProxyDinamico con argumento: \"" + this.UriWsdlServicio + "\"", ex);
             }
         }
 
         public void Conectar()
         {
             try
-            {/*
-                if (_Proxy == null)
+            {
+                /*
+                if (this._Proxy == null)
                 {
                     if (UriWsdlServicio == null)
                         throw new ArgumentNullException("UriWsdlServicio");
@@ -135,9 +126,9 @@
                     Armar();
                 }*/
 
-                if (_Proxy != null)
+                if (this.proxy != null)
                 {
-                    _Proxy.Conectar(ContratoSpuria);
+                    this.proxy.Conectar(ContratoSpuria);
                 }
             }
             catch (Exception ex)
@@ -150,9 +141,9 @@
         {
             try
             {
-                if (_Proxy != null)
+                if (this.proxy != null)
                 {
-                    _Proxy.Desconectar();
+                    this.proxy.Desconectar();
                 }
             }
             catch (Exception ex)
@@ -165,13 +156,13 @@
         {
             try
             {
-                AsyncOperation Asincronico = (AsyncOperation)_Hilos[TareaID];
+                AsyncOperation asincronico = (AsyncOperation)this.hilos[TareaID];
 
-                if (Asincronico != null)
+                if (asincronico != null)
                 {
-                    lock (_Hilos.SyncRoot)
+                    lock (this.hilos.SyncRoot)
                     {
-                        _Hilos.Remove(TareaID);
+                        this.hilos.Remove(TareaID);
                     }
                 }
             }
@@ -179,6 +170,23 @@
             {
                 throw new Exception("Error cancelando la tarea " + TareaID.ToString(), ex);
             }
+        }
+
+        private bool TareaCancelada(object TareaID)
+        {
+            return this.hilos[TareaID] == null;
+        }
+
+        protected virtual void InicializarDelegados()
+        {
+            this.delegadoDispararCambioEnProgresoDeOperacion = new SendOrPostCallback(AntesDeDispararCambioEnProgresoDeOperacion);
+            this.delegadoDispararListarBDsCompletado = new SendOrPostCallback(AntesDeDispararListarBDsCompletado);
+            this.delegadoDispararListarTablasCompletado = new SendOrPostCallback(AntesDeDispararListarTablasCompletado);
+            this.delegadoDispararLeerTablaCompletado = new SendOrPostCallback(AntesDeDispararLeerTablaCompletado);
+            this.delegadoDispararEscribirTablaCompletado = new SendOrPostCallback(AntesDeDispararEscribirTablaCompletado);
+            this.delegadoDispararCrearUsuarioCompletado = new SendOrPostCallback(AntesDeDispararCrearUsuarioCompletado);
+            this.delegadoDispararConsultarCompletado = new SendOrPostCallback(AntesDeDispararConsultarCompletado);
+            this.carpintero = new DelegadoComenzarOperacion(ComenzarOperacion);
         }
 
         #endregion
@@ -191,21 +199,21 @@
 
             if (BorrarCodigoAdministrado)
             {
-                if (this._Hilos != null)
+                if (this.hilos != null)
                 {
-                    foreach (var entrada in this._Hilos.Keys)
+                    foreach (var entrada in this.hilos.Keys)
                     {
                         this.CancelarTarea(entrada);
                     }
 
-                    this._Hilos.Clear();
-                    this._Hilos = null;
+                    this.hilos.Clear();
+                    this.hilos = null;
                 }
 
-                if (this._Proxy != null)
+                if (this.proxy != null)
                 {
-                    _Proxy.Dispose();
-                    _Proxy = null;
+                    this.proxy.Dispose();
+                    this.proxy = null;
                 }
             }
         }

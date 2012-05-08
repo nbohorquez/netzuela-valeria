@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using MySql.Data.MySqlClient;                   // MySqlConnection
-using System.Data;                              // ConnectionState, DataTable
-using System.Security;                          // SecureString
-using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
-
-namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;                              // ConnectionState, DataTable
+    using System.Linq;
+    using System.Security;                          // SecureString
+    using System.Text;
+
+    using MySql.Data.MySqlClient;                   // MySqlConnection
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
+
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos MySQL
     /// </summary>
@@ -17,7 +17,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Variables y constantes
 
-        protected static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
+        private static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
         {
             { Privilegios.NoValido, string.Empty },
             { Privilegios.Seleccionar, "SELECT" },
@@ -30,7 +30,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             { Privilegios.Destruir, "DROP" }
         };
 
-        private MySqlConnection _Conexion;
+        private MySqlConnection conexion;
         
         #endregion
 
@@ -38,16 +38,16 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public MySQL(ParametrosDeConexion ServidorBD)
         {
-            DatosDeConexion = ServidorBD;
+            this.DatosDeConexion = ServidorBD;
 
-            _Conexion = new MySqlConnection();
-            _Conexion.StateChange -= base.ManejarCambioDeEstado;
-            _Conexion.StateChange += base.ManejarCambioDeEstado;
+            this.conexion = new MySqlConnection();
+            this.conexion.StateChange -= this.ManejarCambioDeEstado;
+            this.conexion.StateChange += this.ManejarCambioDeEstado;
         }
 
         ~MySQL()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -60,34 +60,40 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             if (BorrarCodigoAdministrado)
             {
-                this._Conexion.Dispose();
+                this.conexion.Dispose();
             }
         }
 
-        private void CambiarBaseDeDatos(string BaseDeDatos)
+        private void CambiarBaseDeDatos(string baseDeDatos)
         {
-            if (_Conexion.Database != BaseDeDatos)
-                _Conexion.ChangeDatabase(BaseDeDatos);
+            if (this.conexion.Database != baseDeDatos)
+            {
+                this.conexion.ChangeDatabase(baseDeDatos);
+            }
         }
 
-        private void EjecutarOrden(string SQL)
+        private void EjecutarOrden(string sql)
         {
-            if (SQL == null)
-                throw new ArgumentNullException("SQL");
+            if (sql == null)
+            {
+                throw new ArgumentNullException("sql");
+            }
             
-            MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
+            MySqlCommand Orden = new MySqlCommand(sql, this.conexion);
             Orden.ExecuteNonQuery();
         }
 
-        private string[] LectorSimple(string SQL)
+        private string[] LectorSimple(string sql)
         {
-            if (SQL == null)
+            if (sql == null)
+            {
                 throw new ArgumentNullException("SQL");
+            }
 
             MySqlDataReader Lector = null;
             List<string> Resultado = new List<string>();
 
-            MySqlCommand Orden = new MySqlCommand(SQL, _Conexion);
+            MySqlCommand Orden = new MySqlCommand(sql, this.conexion);
 
             Lector = Orden.ExecuteReader();
             while (Lector.Read())
@@ -100,30 +106,32 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado.ToArray();
         }
 
-        private DataTable LectorAvanzado(string SQL)
+        private DataTable LectorAvanzado(string sql)
         {
-            if (SQL == null)
+            if (sql == null)
+            {
                 throw new ArgumentNullException("SQL");
+            }
 
-            DataTable Resultado = new DataTable();
+            DataTable resultado = new DataTable();
 
-            MySqlDataAdapter Adaptador = new MySqlDataAdapter(SQL, _Conexion);
-            MySqlCommandBuilder CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
+            MySqlDataAdapter adaptador = new MySqlDataAdapter(sql, this.conexion);
+            MySqlCommandBuilder creadorDeOrden = new MySqlCommandBuilder(adaptador);
 
-            Adaptador.FillSchema(Resultado, SchemaType.Source);
-            Adaptador.Fill(Resultado);
+            adaptador.FillSchema(resultado, SchemaType.Source);
+            adaptador.Fill(resultado);
 
-            return Resultado;
+            return resultado;
         }
 
-        private string DescribirTabla(string Tabla)
+        private string DescribirTabla(string tabla)
         {
-            DataTable Descripcion = LectorAvanzado("DESCRIBE " + Tabla);
+            DataTable descripcion = this.LectorAvanzado("DESCRIBE " + tabla);
 
-            var ColumnasPermitidas = from D in Descripcion.AsEnumerable()
+            var columnasPermitidas = from D in descripcion.AsEnumerable()
                                      select D.Field<string>("Field");
 
-            return string.Join(", ", ColumnasPermitidas.ToArray());
+            return string.Join(", ", columnasPermitidas.ToArray());
         }
 
         /*
@@ -136,7 +144,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
          * final que las convierto en SecureStrings) y no se si eso pueda suponer un "hueco" de seguridad.
          */
 
-        private SecureString CrearRutaDeAcceso(ParametrosDeConexion Seleccion, SecureString Usuario, SecureString Contrasena)
+        private SecureString CrearRutaDeAcceso(ParametrosDeConexion seleccion, SecureString usuario, SecureString contrasena)
         {
             /*
              * La lista completa de las opciones de la ruta de conexion ("Connection String" en ingles) se detalla en:
@@ -205,34 +213,40 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * Contraseña asociada al usuario.
              */
 
-            if(Seleccion == null)
+            if (seleccion == null)
+            {
                 throw new ArgumentNullException("Seleccion");
+            }
 
-            if(Usuario == null)
+            if (usuario == null)
+            {
                 throw new ArgumentNullException("Usuario");
-            
-            if (Contrasena == null)
+            }
+
+            if (contrasena == null)
+            {
                 throw new ArgumentNullException("Contrasena");
+            }
 
             SecureString RutaDeConexion = new SecureString();
 
             // 1) Nombre del servidor anfitrion
-            RutaDeConexion.AgregarString("Host=" + Seleccion.Anfitrion + ";");
+            RutaDeConexion.AgregarString("Host=" + seleccion.Anfitrion + ";");
 
             // 2) Metodo de conexion
-            switch (Seleccion.MetodoDeConexion)
+            switch (seleccion.MetodoDeConexion)
             {
                 case MetodosDeConexion.TcpIp:
                     RutaDeConexion.AgregarString("Protocol=\"tcp\";");
-                    RutaDeConexion.AgregarString("Port=" + Seleccion.ArgumentoDeConexion + ";");
+                    RutaDeConexion.AgregarString("Port=" + seleccion.ArgumentoDeConexion + ";");
                     break;
                 case MetodosDeConexion.CanalizacionesConNombre:
                     RutaDeConexion.AgregarString("Protocol=\"pipe\";");
-                    RutaDeConexion.AgregarString("Pipe=" + Seleccion.ArgumentoDeConexion + ";");
+                    RutaDeConexion.AgregarString("Pipe=" + seleccion.ArgumentoDeConexion + ";");
                     break;
                 case MetodosDeConexion.MemoriaCompartida:
                     RutaDeConexion.AgregarString("Protocol=\"memory\";");
-                    RutaDeConexion.AgregarString("Shared Memory Name=" + Seleccion.ArgumentoDeConexion + ";");
+                    RutaDeConexion.AgregarString("Shared Memory Name=" + seleccion.ArgumentoDeConexion + ";");
                     break;
                 default:
                     break;
@@ -245,10 +259,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             RutaDeConexion.AgregarString("Persist Security Info=false;");
 
             // 5) Nombre de usuario
-            RutaDeConexion.AgregarString(("Username=" + Usuario.ConvertirAUnsecureString()) + ";");
+            RutaDeConexion.AgregarString(("Username=" + usuario.ConvertirAUnsecureString()) + ";");
 
             // 6) Contraseña
-            RutaDeConexion.AgregarString(("Password=" + Contrasena.ConvertirAUnsecureString()));
+            RutaDeConexion.AgregarString(("Password=" + contrasena.ConvertirAUnsecureString()));
 
             /*
              * De la instruccion anterior (agregar password) hasta la siguiente (return) hay un hueco de 
@@ -266,7 +280,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public ConnectionState Estado 
         { 
-            get { return _Conexion.State; }
+            get { return this.conexion.State; }
         }
 
         public ParametrosDeConexion DatosDeConexion { get; set; }
@@ -281,10 +295,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             try
             {
-                Desconectar();
+                this.Desconectar();
 
-                _Conexion.ConnectionString = CrearRutaDeAcceso(DatosDeConexion, Usuario, Contrasena).ConvertirAUnsecureString();
-                _Conexion.Open();
+                this.conexion.ConnectionString = this.CrearRutaDeAcceso(this.DatosDeConexion, Usuario, Contrasena).ConvertirAUnsecureString();
+                this.conexion.Open();
             }
             catch (MySqlException ex)
             {
@@ -304,8 +318,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         {
             try
             {
-                if (_Conexion != null)
-                    _Conexion.Close();
+                if (this.conexion != null)
+                {
+                    this.conexion.Close();
+                }
             }
             catch (MySqlException ex)
             {
@@ -319,14 +335,15 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
             try
             {
-                string[] ResultadoBruto = LectorSimple("SHOW DATABASES");
-
+                string[] ResultadoBruto = this.LectorSimple("SHOW DATABASES");
                 ResultadoFinal = new List<string>();
 
                 foreach (string R in ResultadoBruto)
                 {
-                    if(R != "information_schema" && R != "mysql" && R != "performance_schema")
+                    if (R != "information_schema" && R != "mysql" && R != "performance_schema")
+                    {
                         ResultadoFinal.Add(R);
+                    }
                 }
             }
             catch (MySqlException ex)
@@ -337,20 +354,20 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return ResultadoFinal.ToArray();
         }
 
-        public string[] ListarTablas(string BaseDeDatos)
+        public string[] ListarTablas(string baseDeDatos)
         {
             List<string> Resultado = null;
 
             try
             {
-                CambiarBaseDeDatos(BaseDeDatos);
-
-                string[] ResultadoBruto = LectorSimple("SHOW TABLES");
-
+                this.CambiarBaseDeDatos(baseDeDatos);
+                string[] ResultadoBruto = this.LectorSimple("SHOW TABLES");
                 Resultado = new List<string>();
 
                 foreach (string S in ResultadoBruto)
+                {
                     Resultado.Add(S);
+                }
             }
             catch (MySqlException ex)
             {
@@ -360,29 +377,29 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado.ToArray();
         }
 
-        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
+        public DataTable LeerTabla(string baseDeDatos, string tabla)
         {
-            DataTable TablaLeida = null;
+            DataTable tablaLeida = null;
 
             try
             {
-                CambiarBaseDeDatos(BaseDeDatos);
+                this.CambiarBaseDeDatos(baseDeDatos);
                 /*
                  * Tenemos que ver primero cuales son las columnas a las que tenemos acceso. Un "SELECT * 
                  * FROM ..." podria generar un error si el usuario no tiene los privilegios suficientes.
                  */
-                string Columnas = DescribirTabla(Tabla);
-                TablaLeida = LectorAvanzado("SELECT " + Columnas + " FROM " + Tabla);
+                string columnas = this.DescribirTabla(tabla);
+                tablaLeida = this.LectorAvanzado("SELECT " + columnas + " FROM " + tabla);
             }
             catch (MySqlException ex)
             {
                 throw new Exception("Error al leer la tabla. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
-            return TablaLeida;
+            return tablaLeida;
         }
 
-        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
             bool Resultado = false;
 
@@ -396,51 +413,50 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                  * http://dev.mysql.com/doc/refman/5.1/en/view-updatability.html
                  */
 
-                DataTable Temporal = new DataTable();
-
-                CambiarBaseDeDatos(BaseDeDatos);
+                DataTable temporal = new DataTable();
+                this.CambiarBaseDeDatos(baseDeDatos);
 
                 // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
-                string Columnas = DescribirTabla(NombreTabla);
+                string columnas = this.DescribirTabla(nombreTabla);
 
-                MySqlDataAdapter Adaptador = new MySqlDataAdapter("SELECT " + Columnas + " FROM " + NombreTabla, _Conexion);
-                MySqlCommandBuilder CreadorDeOrden = new MySqlCommandBuilder(Adaptador);
+                MySqlDataAdapter adaptador = new MySqlDataAdapter("SELECT " + columnas + " FROM " + nombreTabla, this.conexion);
+                MySqlCommandBuilder creadorDeOrden = new MySqlCommandBuilder(adaptador);
                 
-                Adaptador.FillSchema(Temporal, SchemaType.Source);
-                Adaptador.Fill(Temporal);
+                adaptador.FillSchema(temporal, SchemaType.Source);
+                adaptador.Fill(temporal);
 
-                Adaptador.InsertCommand = new MySqlCommand("Insertar");
-                Adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
-                Adaptador.UpdateCommand = new MySqlCommand("Actualizar");
-                Adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
-                Adaptador.DeleteCommand = new MySqlCommand("Eliminar");
-                Adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
+                adaptador.InsertCommand = new MySqlCommand("Insertar");
+                adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
+                adaptador.UpdateCommand = new MySqlCommand("Actualizar");
+                adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
+                adaptador.DeleteCommand = new MySqlCommand("Eliminar");
+                adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
 
-                string VariableDeEntrada = string.Empty;
+                string variableDeEntrada = string.Empty;
 
-                MySqlParameter VariableDeEntradaSQL = new MySqlParameter("a_Parametros", VariableDeEntrada);
-                VariableDeEntradaSQL.Direction = ParameterDirection.Input;
+                MySqlParameter variableDeEntradaSql = new MySqlParameter("a_Parametros", variableDeEntrada);
+                variableDeEntradaSql.Direction = ParameterDirection.Input;
 
-                Adaptador.InsertCommand.Parameters.Add(VariableDeEntradaSQL);
-                Adaptador.UpdateCommand.Parameters.Add(VariableDeEntradaSQL);
-                Adaptador.DeleteCommand.Parameters.Add(VariableDeEntradaSQL);
+                adaptador.InsertCommand.Parameters.Add(variableDeEntradaSql);
+                adaptador.UpdateCommand.Parameters.Add(variableDeEntradaSql);
+                adaptador.DeleteCommand.Parameters.Add(variableDeEntradaSql);
 
                 //Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
                 
-                MySqlRowUpdatingEventHandler ActualizandoFila = (r, a) =>
+                MySqlRowUpdatingEventHandler actualizandoFila = (r, a) =>
                 {
-                    List<string> Parametros = new List<string>();
+                    List<string> parametros = new List<string>();
 
                     foreach (object Dato in a.Row.ItemArray)
                     {
-                        Parametros.Add(Dato.ToString().Replace(",", "."));
+                        parametros.Add(Dato.ToString().Replace(",", "."));
                     }
 
-                    VariableDeEntrada = string.Join(",", Parametros.ToArray());
-                    a.Command.Parameters[0].Value = VariableDeEntrada;
+                    variableDeEntrada = string.Join(",", parametros.ToArray());
+                    a.Command.Parameters[0].Value = variableDeEntrada;
                 };
                 
-                MySqlRowUpdatedEventHandler FilaActualizada = (r, a) =>
+                MySqlRowUpdatedEventHandler filaActualizada = (r, a) =>
                 {
                     if (a.Errors != null)
                     {
@@ -448,18 +464,18 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                     }
                 };
 
-                Adaptador.RowUpdating -= ActualizandoFila;
-                Adaptador.RowUpdating += ActualizandoFila;
+                adaptador.RowUpdating -= actualizandoFila;
+                adaptador.RowUpdating += actualizandoFila;
 
-                Adaptador.RowUpdated -= FilaActualizada;
-                Adaptador.RowUpdated += FilaActualizada;
+                adaptador.RowUpdated -= filaActualizada;
+                adaptador.RowUpdated += filaActualizada;
 
                 // Primero actualizamos los borrados
-                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Deleted));
+                adaptador.Update(tabla.Select(null, null, DataViewRowState.Deleted));
                 // Luego los modificados
-                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.ModifiedCurrent));
+                adaptador.Update(tabla.Select(null, null, DataViewRowState.ModifiedCurrent));
                 // Y por ultimo los agregados
-                Adaptador.Update(Tabla.Select(null, null, DataViewRowState.Added));
+                adaptador.Update(tabla.Select(null, null, DataViewRowState.Added));
 
                 Resultado = true;
             }
@@ -471,10 +487,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Resultado;
         }
 
-        public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
-            bool Resultado = false;
-            string SQL = string.Empty;
+            bool resultado = false;
+            string sql = string.Empty;
 
             /*
              * La estructura de esta orden es:
@@ -528,95 +544,93 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              */
 
             // 1) Determinamos los privilegios otorgados al nuevo usuario
-            List<string> PrivilegiosLista = new List<string>();
+            List<string> privilegiosLista = new List<string>();
 
             for (int i = 0; i < PrivilegiosAOrdenes.Count; i++)
             {
-                if ((Privilegios & (1 << i)) == 1)
+                if ((privilegios & (1 << i)) == 1)
                 {
-                    PrivilegiosLista.Add(PrivilegiosAOrdenes[(1 << i)]);
+                    privilegiosLista.Add(PrivilegiosAOrdenes[(1 << i)]);
                 }
             }
 
             // 2) Identificamos las columnas a las cuales se aplican estos privilegios
-            Dictionary<string, string> ColumnasDiccionario = new Dictionary<string, string>();
+            Dictionary<string, string> columnasDiccionario = new Dictionary<string, string>();
 
-            foreach (string S in Columnas)
+            foreach (string s in columnas)
             {
-                string[] Columna = S.Split('\\');
+                string[] columna = s.Split('\\');
 
-                string BD_Tabla = Columna[1] + "." + Columna[2];
+                string tabla = columna[1] + "." + columna[2];
 
-                if (ColumnasDiccionario.ContainsKey(BD_Tabla))
+                if (columnasDiccionario.ContainsKey(tabla))
                 {
-                    ColumnasDiccionario[BD_Tabla] += ", " + Columna[3];
+                    columnasDiccionario[tabla] += ", " + columna[3];
                 }
                 else
                 {
-                    ColumnasDiccionario.Add(BD_Tabla, Columna[3]);
+                    columnasDiccionario.Add(tabla, columna[3]);
                 }
             }
 
-            List<KeyValuePair<string, string>> ColumnasLista = ColumnasDiccionario.ToList();
+            List<KeyValuePair<string, string>> columnasLista = columnasDiccionario.ToList();
 
             try
             {
                 // 3) Chequeamos a ver si ya existe el usuario en el sistema
-                SQL = "SELECT user FROM mysql.user WHERE user = '" + Usuario.ConvertirAUnsecureString() + "' AND host = 'localhost'";
-                List<string> UsuariosExistentes = LectorSimple(SQL).ToList();
+                sql = "SELECT user FROM mysql.user WHERE user = '" + usuario.ConvertirAUnsecureString() + "' AND host = 'localhost'";
+                List<string> usuariosExistentes = this.LectorSimple(sql).ToList();
                 
                 // 4) Si es asi, se elimina
-                if(UsuariosExistentes.Contains(Usuario.ConvertirAUnsecureString()))
+                if (usuariosExistentes.Contains(usuario.ConvertirAUnsecureString()))
                 {
-                    SQL = "DROP USER '" + Usuario.ConvertirAUnsecureString() + "'@'localhost'";
-                    EjecutarOrden(SQL);
+                    sql = "DROP USER '" + usuario.ConvertirAUnsecureString() + "'@'localhost'";
+                    this.EjecutarOrden(sql);
                 }
                 
                 // 5) Creamos el usuario con su contraseña
-                SQL = "CREATE USER '" + Usuario.ConvertirAUnsecureString() + "'@'localhost' " +
-                    "IDENTIFIED BY '" + Contrasena.ConvertirAUnsecureString() + "'";
-                EjecutarOrden(SQL);
+                sql = "CREATE USER '" + usuario.ConvertirAUnsecureString() + "'@'localhost' " +
+                    "IDENTIFIED BY '" + contrasena.ConvertirAUnsecureString() + "'";
+                this.EjecutarOrden(sql);
 
                 // 6) Otorgamos los privilegios de columnas
-                foreach (KeyValuePair<string, string> Par in ColumnasLista)
+                foreach (KeyValuePair<string, string> par in columnasLista)
                 {
-                    SQL = "GRANT ";
+                    sql = "GRANT ";
 
-                    for (int i = 0; i < PrivilegiosLista.Count; i++)
+                    for (int i = 0; i < privilegiosLista.Count; i++)
                     {
-                        SQL += PrivilegiosLista[i] + " (" + Par.Value + ")";
-                        if ((i + 1) < PrivilegiosLista.Count)
+                        sql += privilegiosLista[i] + " (" + par.Value + ")";
+                        if ((i + 1) < privilegiosLista.Count)
                         {
-                            SQL += ", ";
+                            sql += ", ";
                         }
                     }
 
-                    SQL += " ON " + Par.Key + " TO '" + Usuario.ConvertirAUnsecureString() + "'@'localhost'";
-                    EjecutarOrden(SQL);
+                    sql += " ON " + par.Key + " TO '" + usuario.ConvertirAUnsecureString() + "'@'localhost'";
+                    this.EjecutarOrden(sql);
                 }
 
                 // 7) Actualizamos la cache de privilegios del servidor
-                EjecutarOrden("FLUSH PRIVILEGES");
-
-                Resultado = true;
+                this.EjecutarOrden("FLUSH PRIVILEGES");
+                resultado = true;
             }
             catch (MySqlException ex)
             {
                 throw new Exception("No se pudo crear el usuario especificado. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public DataTable Consultar(string baseDeDatos, string Sql)
+        public DataTable Consultar(string baseDeDatos, string sql)
         {
             DataTable resultado = null;
-
-            CambiarBaseDeDatos(baseDeDatos);
+            this.CambiarBaseDeDatos(baseDeDatos);
 
             try
             {
-                resultado = LectorAvanzado(Sql);
+                resultado = this.LectorAvanzado(sql);
             }
             catch (MySqlException ex)
             {
@@ -671,7 +685,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
              */
 
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 

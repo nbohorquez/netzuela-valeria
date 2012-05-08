@@ -8,6 +8,9 @@
             <summary>
             Implementa las funciones de acceso a las bases de datos MySQL
             </summary>
+            <summary>
+            
+            </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos">
             <summary>
@@ -23,10 +26,16 @@
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
             <summary>
+            
+            </summary>
+            <summary>
             Implementa las funciones de acceso a las bases de datos SQLServer
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Web.ClienteSpuria">
+            <summary>
+            
+            </summary>
             <summary>
             
             </summary>

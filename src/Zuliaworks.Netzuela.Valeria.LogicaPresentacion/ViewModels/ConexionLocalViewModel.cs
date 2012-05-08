@@ -56,7 +56,7 @@
 
         ~ConexionLocalViewModel()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -174,10 +174,10 @@
                     _ContrasenaExterna = null;
                 }
 
-                if (_Conexion != null)
+                if (this._Conexion != null)
                 {
-                    _Conexion.Dispose();
-                    _Conexion = null;
+                    this._Conexion.Dispose();
+                    this._Conexion = null;
                 }
             }
         }
@@ -299,7 +299,7 @@
 
             try
             {
-                Resultado = _Conexion.CrearUsuario(UsuarioNetzuela, ContrasenaNetzuela, ColumnasAutorizadas, Privilegios.Seleccionar);
+                Resultado = this._Conexion.CrearUsuario(UsuarioNetzuela, ContrasenaNetzuela, ColumnasAutorizadas, Privilegios.Seleccionar);
             }
             catch (Exception ex)
             {

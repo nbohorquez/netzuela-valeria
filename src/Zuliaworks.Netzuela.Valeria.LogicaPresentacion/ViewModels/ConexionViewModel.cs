@@ -28,7 +28,7 @@
 
         public ConexionViewModel()
         {
-            _Conexion = new Conexion();
+            this._Conexion = new Conexion();
         }
 
         public ConexionViewModel(Conexion Conexion)
@@ -36,7 +36,7 @@
             if (Conexion == null)
                 throw new ArgumentNullException("Conexion");
 
-            _Conexion = Conexion;
+            this._Conexion = Conexion;
         }
 
         public ConexionViewModel(ParametrosDeConexion Parametros)
@@ -44,7 +44,7 @@
             if (Parametros == null)
                 throw new ArgumentNullException("Parametros");
 
-            _Conexion = new Conexion(Parametros);
+            this._Conexion = new Conexion(Parametros);
         }
 
         #endregion
@@ -53,22 +53,22 @@
 
         public Conexion Conexion
         {
-            get { return _Conexion; }
+            get { return this._Conexion; }
         }
 
         public ConnectionState Estado
         {
-            get { return _Conexion.Estado; }
+            get { return this._Conexion.Estado; }
         }
 
         public ParametrosDeConexion Parametros
         {
-            get { return _Conexion.Parametros; }
+            get { return this._Conexion.Parametros; }
             set
             {
-                if (value != _Conexion.Parametros)
+                if (value != this._Conexion.Parametros)
                 {
-                    _Conexion.Parametros = value;
+                    this._Conexion.Parametros = value;
                     RaisePropertyChanged("Parametros");
                 }
             }
@@ -167,10 +167,10 @@
             try
             {
                 // Esto es para evitar que aparezca registrado el mismo manejador dos veces
-                _Conexion.CambioDeEstado -= ManejarCambioDeEstado;
-                _Conexion.CambioDeEstado += ManejarCambioDeEstado;
+                this._Conexion.CambioDeEstado -= ManejarCambioDeEstado;
+                this._Conexion.CambioDeEstado += ManejarCambioDeEstado;
 
-                _Conexion.Conectar(Usuario, Contrasena);
+                this._Conexion.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)
             {
@@ -182,7 +182,7 @@
         {
             try
             {
-                _Conexion.Desconectar();
+                this._Conexion.Desconectar();
             }
             catch (Exception ex)
             {
@@ -194,7 +194,7 @@
         {
             try
             {
-                _Conexion.ResolverDatosDeConexion();
+                this._Conexion.ResolverDatosDeConexion();
             }
             catch (Exception ex)
             {

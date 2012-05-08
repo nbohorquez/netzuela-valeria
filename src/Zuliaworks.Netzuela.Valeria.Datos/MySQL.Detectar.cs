@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Microsoft.Win32;                          // Registry
-using System.IO;                                // StreamReader
-using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
-
-namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;                                // StreamReader
+    using System.Linq;
+    using System.Text;
+
+    using Microsoft.Win32;                          // Registry
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
+
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class MySQL
     {
         #region Constantes
@@ -29,6 +32,40 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         #endregion
 
         #region Funciones
+
+        /// <summary>
+        /// Esta función detecta las instancias de servidores MySQL instalados en el sistema.
+        /// </summary>
+        /// <returns>Instancias MySQL detectadas.</returns>
+        public static ServidorLocal DetectarServidor()
+        {
+            /*
+             * MySQL:
+             * ======
+             * 
+             * La informacion sobre el puerto de escucha de MySQL se encuentra en el archivo my.ini de configuración 
+             * al lado de la etiqueta 'port=' en la seccion del servidor [mysqld]. El archivo my.ini reside en la carpeta
+             * de instalación del servidor (su ubicación esta disponible en el registro de Windows).
+             */
+
+            // Se descubre la ruta de instalación de todos los servidores MySQL registrados en el sistema
+
+            string[] archivosDeConfiguracion = DescubrirRutasDeInstalacion();
+
+            /*
+             * Se analiza sintacticamente ("parse" en ingles) cada archivo de configuracion para detectar
+             * instancias y metodos de conexion. Las opciones que pueden aparecer en estos archivos se 
+             * especifican con detalle en:
+             * http://dev.mysql.com/doc/refman/5.5/en/connecting.html
+             */
+
+            List<ServidorLocal.Instancia> instancias = DetectarInstanciasInstaladas(archivosDeConfiguracion).ToList();
+
+            ServidorLocal serv = new ServidorLocal();
+            serv.Nombre = SGBDR.MySQL;
+            serv.Instancias = instancias;
+            return serv;
+        }
 
         private static string[] DescubrirRutasDeInstalacion()
         {
@@ -58,152 +95,137 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return Rutas.ToArray();
         }
 
-        private static ServidorLocal.MetodoDeConexion DetectarMetodo(string Linea, string MetodoDeConexion)
+        private static ServidorLocal.MetodoDeConexion DetectarMetodo(string linea, string metodoDeConexion)
         {
-            ServidorLocal.MetodoDeConexion Metodo = new ServidorLocal.MetodoDeConexion();
-            string Argumento = Linea.Replace(MetodoDeConexion, string.Empty);
+            ServidorLocal.MetodoDeConexion metodo = new ServidorLocal.MetodoDeConexion();
+            string argumento = linea.Replace(metodoDeConexion, string.Empty);
 
-            if (MetodoDeConexion == MEMORIA_COMPARTIDA && Argumento == string.Empty)
+            if (metodoDeConexion == MEMORIA_COMPARTIDA && argumento == string.Empty)
             {
-                Argumento = MEMORIA_COMPARTIDA_POR_DEFECTO;
+                argumento = MEMORIA_COMPARTIDA_POR_DEFECTO;
             }
 
-            string[] Argumentos = Argumento.Split(',').ToArray();
+            string[] argumentos = argumento.Split(',').ToArray();
 
-            switch (MetodoDeConexion)
+            switch (metodoDeConexion)
             {
                 case MEMORIA_COMPARTIDA:
-                    Metodo.Nombre = MetodosDeConexion.MemoriaCompartida;
+                    metodo.Nombre = MetodosDeConexion.MemoriaCompartida;
                     break;
                 case PUERTO:
-                    Metodo.Nombre = MetodosDeConexion.TcpIp;
+                    metodo.Nombre = MetodosDeConexion.TcpIp;
                     break;
                 case CANALIZACIONES:
-                    Metodo.Nombre = MetodosDeConexion.CanalizacionesConNombre;
+                    metodo.Nombre = MetodosDeConexion.CanalizacionesConNombre;
                     break;
                 default:
                     break;
             }
             
-            Metodo.Valores = Argumentos.ToList();
+            metodo.Valores = argumentos.ToList();
 
-            return Metodo;
+            return metodo;
         }
 
-        private static ServidorLocal.Instancia[] DetectarInstanciasInstaladas(string[] ArchivosDeConfiguracion)
+        private static ServidorLocal.Instancia[] DetectarInstanciasInstaladas(string[] archivosDeConfiguracion)
         {
-            List<ServidorLocal.Instancia> Instancias = new List<ServidorLocal.Instancia>();
+            List<ServidorLocal.Instancia> instancias = new List<ServidorLocal.Instancia>();
 
-            foreach (string Ruta in ArchivosDeConfiguracion)
+            foreach (string ruta in archivosDeConfiguracion)
             {
                 try
                 {
-                    ServidorLocal.Instancia Ins = new ServidorLocal.Instancia();
+                    ServidorLocal.Instancia ins = new ServidorLocal.Instancia();
 
-                    string Linea;
-                    string NombreDeInstancia = null;
-                    bool SeccionServidor = false;
-                    bool MemoriaCompartidaHabilitada = false;
-                    bool CanalizacionesHabilitadas = false;
-                    bool TcpIpHabilitado = true;
+                    string linea;
+                    string nombreDeInstancia = null;
+                    bool seccionServidor = false;
+                    bool memoriaCompartidaHabilitada = false;
+                    bool canalizacionesHabilitadas = false;
+                    bool tcpIpHabilitado = true;
 
-                    StreamReader my_ini = new StreamReader(Ruta + ARCHIVO_DE_CONFIGURACION);
+                    StreamReader my_ini = new StreamReader(ruta + ARCHIVO_DE_CONFIGURACION);
 
                     while (my_ini.Peek() > 0)
                     {
-                        Linea = my_ini.ReadLine();
+                        linea = my_ini.ReadLine();
 
                         //Quitamos todos los espacios en blanco para analizar mejor
-                        Linea = Linea.Replace(" ", string.Empty);
+                        linea = linea.Replace(" ", string.Empty);
 
                         // Si esta linea esta comentada, pasamos a la siguiente
-                        if (Linea.Length == 0 || Linea[0] == CARACTER_DE_COMENTARIO)
+                        if (linea.Length == 0 || linea[0] == CARACTER_DE_COMENTARIO)
+                        {
                             continue;
+                        }
 
                         /*
                          * Si se encuentra "[mysqld" (puede ser [mysqld1], [mysqld2], [mysqld3], etc...)
                          * significa que hemos llegado a la seccion que especifica los datos del servidor
                          */
-                        if (Linea.Contains(SECCION_DEL_SERVIDOR))
+                        if (linea.Contains(SECCION_DEL_SERVIDOR))
                         {
-                            NombreDeInstancia = Linea.Replace("[", string.Empty);
-                            NombreDeInstancia = NombreDeInstancia.Replace("]", string.Empty);
+                            nombreDeInstancia = linea.Replace("[", string.Empty);
+                            nombreDeInstancia = nombreDeInstancia.Replace("]", string.Empty);
 
-                            Ins.Nombre = NombreDeInstancia;
-                            Ins.Metodos = new List<ServidorLocal.MetodoDeConexion>();
-                            Instancias.Add(Ins);
+                            ins.Nombre = nombreDeInstancia;
+                            ins.Metodos = new List<ServidorLocal.MetodoDeConexion>();
+                            instancias.Add(ins);
 
-                            SeccionServidor = true;
+                            seccionServidor = true;
                             continue;
                         }
 
-                        if (SeccionServidor)
+                        if (seccionServidor)
                         {
                             ServidorLocal.MetodoDeConexion Metodo = new ServidorLocal.MetodoDeConexion();
 
-                            #region TCP/IP
-
-                            if (Linea.Contains(PUERTO) && TcpIpHabilitado)
+                            if (linea.Contains(PUERTO) && tcpIpHabilitado)
                             {
-                                Metodo = DetectarMetodo(Linea, PUERTO);
+                                Metodo = DetectarMetodo(linea, PUERTO);
 
-                                Ins = Instancias[Instancias.Count - 1];
-                                Ins.Metodos.Add(Metodo);
-                                Instancias[Instancias.Count - 1] = Ins;
+                                ins = instancias[instancias.Count - 1];
+                                ins.Metodos.Add(Metodo);
+                                instancias[instancias.Count - 1] = ins;
                             }
-                            // Esto deshabilita el TCP/IP
-                            else if (Linea.Contains(DESHABILITAR_TCPIP))
+                            else if (linea.Contains(DESHABILITAR_TCPIP))
                             {
-                                TcpIpHabilitado = false;
-                                Ins = Instancias[Instancias.Count - 1];
+                                tcpIpHabilitado = false;
+                                ins = instancias[instancias.Count - 1];
 
-                                for (int i = 0; i < Ins.Metodos.Count; i++)
+                                for (int i = 0; i < ins.Metodos.Count; i++)
                                 {
-                                    if (Ins.Metodos[i].Nombre == MetodosDeConexion.TcpIp)
+                                    if (ins.Metodos[i].Nombre == MetodosDeConexion.TcpIp)
                                     {
-                                        Ins.Metodos.RemoveAt(i);
-                                        Instancias[Instancias.Count - 1] = Ins;
+                                        ins.Metodos.RemoveAt(i);
+                                        instancias[instancias.Count - 1] = ins;
                                     }
                                 }
                             }
-
-                            #endregion
-
-                            #region Canalizaciones con nombre
-
-                            else if (Linea.Contains(CANALIZACIONES) && CanalizacionesHabilitadas)
+                            else if (linea.Contains(CANALIZACIONES) && canalizacionesHabilitadas)
                             {
-                                Metodo = DetectarMetodo(Linea, CANALIZACIONES);
+                                Metodo = DetectarMetodo(linea, CANALIZACIONES);
 
-                                Ins = Instancias[Instancias.Count - 1];
-                                Ins.Metodos.Add(Metodo);
-                                Instancias[Instancias.Count - 1] = Ins;
+                                ins = instancias[instancias.Count - 1];
+                                ins.Metodos.Add(Metodo);
+                                instancias[instancias.Count - 1] = ins;
                             }
-                            // Esto habilita las canalizaciones con nombre
-                            else if (Linea.Contains(HABILITAR_CANALIZACIONES))
+                            else if (linea.Contains(HABILITAR_CANALIZACIONES))
                             {
-                                CanalizacionesHabilitadas = true;
+                                canalizacionesHabilitadas = true;
                             }
-
-                            #endregion
-
-                            #region Memoria compartida
-
-                            else if (Linea.Contains(MEMORIA_COMPARTIDA) && MemoriaCompartidaHabilitada)
+                            else if (linea.Contains(MEMORIA_COMPARTIDA) && memoriaCompartidaHabilitada)
                             {
-                                Metodo = DetectarMetodo(Linea, MEMORIA_COMPARTIDA);
+                                Metodo = DetectarMetodo(linea, MEMORIA_COMPARTIDA);
 
-                                Ins = Instancias[Instancias.Count - 1];
-                                Ins.Metodos.Add(Metodo);
-                                Instancias[Instancias.Count - 1] = Ins;
+                                ins = instancias[instancias.Count - 1];
+                                ins.Metodos.Add(Metodo);
+                                instancias[instancias.Count - 1] = ins;
                             }
-                            // Esto habilita la memoria compartida
-                            else if (Linea.Contains(HABILITAR_MEMORIA_COMPARTIDA))
+                            else if (linea.Contains(HABILITAR_MEMORIA_COMPARTIDA))
                             {
-                                MemoriaCompartidaHabilitada = true;
+                                memoriaCompartidaHabilitada = true;
                             }
-
-                            #endregion
                         }
                     }
 
@@ -215,43 +237,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 }
             }
 
-            return Instancias.ToArray();
+            return instancias.ToArray();
         }
 
-        /// <summary>
-        /// Esta función detecta las instancias de servidores MySQL instalados en el sistema.
-        /// </summary>
-        /// <returns>Instancias MySQL detectadas.</returns>
-        public static ServidorLocal DetectarServidor()
-        {            
-            /*
-             * MySQL:
-             * ======
-             * 
-             * La informacion sobre el puerto de escucha de MySQL se encuentra en el archivo my.ini de configuración 
-             * al lado de la etiqueta 'port=' en la seccion del servidor [mysqld]. El archivo my.ini reside en la carpeta
-             * de instalación del servidor (su ubicación esta disponible en el registro de Windows).
-             */
-
-            // Se descubre la ruta de instalación de todos los servidores MySQL registrados en el sistema
-
-            string[] ArchivosDeConfiguracion = DescubrirRutasDeInstalacion();
-
-            /*
-             * Se analiza sintacticamente ("parse" en ingles) cada archivo de configuracion para detectar
-             * instancias y metodos de conexion. Las opciones que pueden aparecer en estos archivos se 
-             * especifican con detalle en:
-             * http://dev.mysql.com/doc/refman/5.5/en/connecting.html
-             */
-
-            List<ServidorLocal.Instancia> Instancias = DetectarInstanciasInstaladas(ArchivosDeConfiguracion).ToList();
-
-            ServidorLocal Serv = new ServidorLocal();
-            Serv.Nombre = SGBDR.MySQL;
-            Serv.Instancias = Instancias;
-            return Serv;
-        }
-        
         #endregion
     }        
 }

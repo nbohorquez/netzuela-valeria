@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Data;                              // ConnectionState, DataTable
-using Zuliaworks.Netzuela.Valeria.Comunes;      // ParametrosDeConexion
-
-namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;                              // ConnectionState, DataTable
+    using System.Linq;
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;      // ParametrosDeConexion
+
     public class DBISAM : EventosComunes, IBaseDeDatos
     {
         #region Constructores
 
         ~DBISAM()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -45,6 +45,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             {
                 throw new NotImplementedException();
             }
+
             set
             {
                 throw new NotImplementedException();
@@ -72,22 +73,22 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
-        public string[] ListarTablas(string BaseDeDatos)
+        public string[] ListarTablas(string baseDeDatos)
         {
             throw new NotImplementedException();
         }
 
-        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
+        public DataTable LeerTabla(string baseDeDatos, string tabla)
         {
             throw new NotImplementedException();
         }
 
-        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, System.Data.DataTable Tabla)
+        public bool EscribirTabla(string baseDeDatos, string nombreTabla, System.Data.DataTable tabla)
         {
             throw new NotImplementedException();
         }
 
-        public bool CrearUsuario(System.Security.SecureString Usuario, System.Security.SecureString Contrasena, string[] Columnas, int Privilegios)
+        public bool CrearUsuario(System.Security.SecureString usuario, System.Security.SecureString contrasena, string[] columnas, int privilegios)
         {
             throw new NotImplementedException();
         }
@@ -106,27 +107,27 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             throw new NotImplementedException();
         }
 
-        public void ListarTablasAsinc(string BaseDeDatos)
+        public void ListarTablasAsinc(string baseDeDatos)
         {
             throw new NotImplementedException();
         }
 
-        public void LeerTablaAsinc(string BaseDeDatos, string Tabla)
+        public void LeerTablaAsinc(string baseDeDatos, string tabla)
         {
             throw new NotImplementedException();
         }
 
-        public void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, System.Data.DataTable Tabla)
+        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, System.Data.DataTable tabla)
         {
             throw new NotImplementedException();
         }
 
-        public void CrearUsuarioAsinc(System.Security.SecureString Usuario, System.Security.SecureString Contrasena, string[] Columnas, int Privilegios)
+        public void CrearUsuarioAsinc(System.Security.SecureString usuario, System.Security.SecureString contrasena, string[] columnas, int privilegios)
         {
             throw new NotImplementedException();
         }
 
-        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        public void ConsultarAsinc(string baseDeDatos, string sql)
         {
             throw new NotImplementedException();
         }
@@ -142,7 +143,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
              */
 
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 

@@ -8,7 +8,6 @@ using System.Data;                              // DataTable, ConnectionState
 using System.Security;                          // SecureString
 using System.Windows;                           // MessageBox
 using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
-//using Zuliaworks.Netzuela.Valeria.Datos;        // IBaseDeDatos
 using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
 
 namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
@@ -36,7 +35,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         ~ConexionRemotaViewModel()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -47,10 +46,10 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
         {
             if (borrarCodigoAdministrado)
             {
-                if (_Conexion != null)
+                if (this._Conexion != null)
                 {
-                    _Conexion.Dispose();
-                    _Conexion = null;
+                    this._Conexion.Dispose();
+                    this._Conexion = null;
                 }
             }
         }

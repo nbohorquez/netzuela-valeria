@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Data;              // StateChangeEventHandler
-
-namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;              // StateChangeEventHandler
+    using System.Linq;
+    using System.Text;
+
     public class EventosComunes
     {
         #region Eventos
@@ -23,94 +22,94 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Funciones
 
-        protected void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs Args)
+        protected void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs args)
         {
-            DispararCambioDeEstado(Args);
+            this.DispararCambioDeEstado(args);
         }
 
-        protected void ManejarListarBasesDeDatosCompletado(object Remitente, EventoListarBDsCompletadoArgs Args)
+        protected void ManejarListarBasesDeDatosCompletado(object Remitente, EventoListarBDsCompletadoArgs args)
         {
-            DispararListarBasesDeDatosCompletado(Args);
+            this.DispararListarBasesDeDatosCompletado(args);
         }
 
-        protected void ManejarListarTablasCompletado(object Remitente, EventoListarTablasCompletadoArgs Args)
+        protected void ManejarListarTablasCompletado(object Remitente, EventoListarTablasCompletadoArgs args)
         {
-            DispararListarTablasCompletado(Args);
+            this.DispararListarTablasCompletado(args);
         }
 
-        protected void ManejarLeerTablaCompletado(object Remitente, EventoLeerTablaCompletadoArgs Args)
+        protected void ManejarLeerTablaCompletado(object Remitente, EventoLeerTablaCompletadoArgs args)
         {
-            DispararLeerTablaCompletado(Args);
+            this.DispararLeerTablaCompletado(args);
         }
 
-        protected void ManejarEscribirTablaCompletado(object Remitente, EventoEscribirTablaCompletadoArgs Args)
+        protected void ManejarEscribirTablaCompletado(object Remitente, EventoEscribirTablaCompletadoArgs args)
         {
-            DispararEscribirTablaCompletado(Args);
+            this.DispararEscribirTablaCompletado(args);
         }
 
-        protected void ManejarCrearUsuarioCompletado(object Remitente, EventoCrearUsuarioCompletadoArgs Args)
+        protected void ManejarCrearUsuarioCompletado(object Remitente, EventoCrearUsuarioCompletadoArgs args)
         {
-            DispararCrearUsuarioCompletado(Args);
+            this.DispararCrearUsuarioCompletado(args);
         }
 
-        protected void ManejarConsultarCompletado(object Remitente, EventoConsultarCompletadoArgs Args)
+        protected void ManejarConsultarCompletado(object Remitente, EventoConsultarCompletadoArgs args)
         {
-            DispararConsultarCompletado(Args);
+            this.DispararConsultarCompletado(args);
         }
 
         protected virtual void DispararCambioDeEstado(StateChangeEventArgs e)
         {
-            if (CambioDeEstado != null)
+            if (this.CambioDeEstado != null)
             {
-                CambioDeEstado(this, e);
+                this.CambioDeEstado(this, e);
             }
         }
 
         protected virtual void DispararListarBasesDeDatosCompletado(EventoListarBDsCompletadoArgs e)
         {
-            if (ListarBasesDeDatosCompletado != null)
+            if (this.ListarBasesDeDatosCompletado != null)
             {
-                ListarBasesDeDatosCompletado(this, e);
+                this.ListarBasesDeDatosCompletado(this, e);
             }
         }
 
         protected virtual void DispararListarTablasCompletado(EventoListarTablasCompletadoArgs e)
         {
-            if (ListarTablasCompletado != null)
+            if (this.ListarTablasCompletado != null)
             {
-                ListarTablasCompletado(this, e);
+                this.ListarTablasCompletado(this, e);
             }
         }
 
         protected virtual void DispararLeerTablaCompletado(EventoLeerTablaCompletadoArgs e)
         {
-            if (LeerTablaCompletado != null)
+            if (this.LeerTablaCompletado != null)
             {
-                LeerTablaCompletado(this, e);
+                this.LeerTablaCompletado(this, e);
             }
         }
 
         protected virtual void DispararEscribirTablaCompletado(EventoEscribirTablaCompletadoArgs e)
         {
-            if (EscribirTablaCompletado != null)
+            if (this.EscribirTablaCompletado != null)
             {
-                EscribirTablaCompletado(this, e);
+                this.EscribirTablaCompletado(this, e);
             }
         }
 
         protected virtual void DispararCrearUsuarioCompletado(EventoCrearUsuarioCompletadoArgs e)
         {
-            if (CrearUsuarioCompletado != null)
+            if (this.CrearUsuarioCompletado != null)
             {
-                CrearUsuarioCompletado(this, e);
+                this.CrearUsuarioCompletado(this, e);
             }
         }
 
         protected virtual void DispararConsultarCompletado(EventoConsultarCompletadoArgs e)
         {
-            if (ConsultarCompletado != null)
+            if (this.ConsultarCompletado != null)
             {
-                ConsultarCompletado(this, e);
+                this.ConsultarCompletado(this, e);
             }
         }
 

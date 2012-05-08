@@ -46,8 +46,8 @@
         /// <summary>
         /// Crea un mapeo de columnas especificando la columna de orígen y la de destino.
         /// </summary>
-        /// <param name="columnaDestino">Nodo que representa la columna destino.</param>
-        /// <param name="columnaOrigen">Nodo que representa la columna orígen.</param>
+        /// <param name="columnaOrigen">Nodo que representa la columna destino.</param>
+        /// <param name="columnaDestino">Nodo que representa la columna orígen.</param>
         public AsociacionDeColumnas(Nodo columnaOrigen, Nodo columnaDestino)
         {
             this.ColumnaOrigen = columnaOrigen;

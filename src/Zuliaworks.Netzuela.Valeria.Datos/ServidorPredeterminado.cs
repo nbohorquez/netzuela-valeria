@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Data;              // DataTable, ConnectionState
-using System.Security;          // SecureString
-using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
-
-namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;                                  // DataTable, ConnectionState
+    using System.Linq;
+    using System.Security;                              // SecureString
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
+
     /// <summary>
     /// Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.
     /// </summary>
@@ -16,7 +16,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Variables
 
-        private ConnectionState _Estado;
+        private ConnectionState estado;
 
         #endregion
 
@@ -24,13 +24,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public ServidorPredeterminado(ParametrosDeConexion ServidorBD)
         {
-            DatosDeConexion = ServidorBD;
-            _Estado = ConnectionState.Closed;
+            this.DatosDeConexion = ServidorBD;
+            this.estado = ConnectionState.Closed;
         }
 
         ~ServidorPredeterminado()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -54,7 +54,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public ConnectionState Estado
         {
-            get { return _Estado; }
+            get { return this.estado; }
         }
 
         public ParametrosDeConexion DatosDeConexion { get; set; }
@@ -65,9 +65,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
         
         #region Métodos sincrónicos
 
-        public void Conectar(SecureString Usuario, SecureString Contrasena) { }
+        public void Conectar(SecureString Usuario, SecureString Contrasena) 
+        { 
+        }
 
-        public void Desconectar() { }
+        public void Desconectar() 
+        { 
+        }
 
         public string[] ListarBasesDeDatos()
         {
@@ -144,7 +148,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
              */
 
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 

@@ -25,47 +25,52 @@
 
         #region Variables
 
-        private readonly BasicHttpBinding _Vinculacion;
-        private readonly BasicHttpSecurity _Seguridad;
-        private DynamicProxyFactory _Fabrica;
-        private DynamicProxy _ProxyDinamico;
-        private string _UriWsdlServicio;
-        private bool _UriWsdlServicioModificado;
+        private readonly BasicHttpBinding vinculacion;
+        private readonly BasicHttpSecurity seguridad;
+        private DynamicProxyFactory fabrica;
+        private DynamicProxy proxyDinamico;
+        private string uriWsdlServicio;
+        private bool uriWsdlServicioModificado;
 
         #endregion
 
         #region Constructores
 
-        public ProxyDinamico() { }
+        public ProxyDinamico() 
+        { 
+        }
 
         public ProxyDinamico(string UriWsdlServicio)
         {
             if (UriWsdlServicio == null)
+            {
                 throw new ArgumentNullException("UriWsdlServicio");
+            }
 
             this.UriWsdlServicio = UriWsdlServicio;
-            this._UriWsdlServicioModificado = false;
-            CrearFabrica();            
+            this.uriWsdlServicioModificado = false;
+            this.CrearFabrica();            
             
-            _Seguridad = new BasicHttpSecurity()
+            this.seguridad = new BasicHttpSecurity()
             {
                 Mode = BasicHttpSecurityMode.TransportCredentialOnly,
-                Transport = { 
+                Transport = 
+                { 
                     ClientCredentialType = HttpClientCredentialType.Basic
                 }
             };
             
-            _Vinculacion = new BasicHttpBinding()
+            this.vinculacion = new BasicHttpBinding()
             {
                 Name = "ServidorApi",
                 Namespace = Constantes.Namespace,
-                Security = _Seguridad
+                Security = this.seguridad
             };
         }
 
         ~ProxyDinamico()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -74,15 +79,19 @@
 
         public string UriWsdlServicio 
         {
-            get { return _UriWsdlServicio; }
+            get 
+            { 
+                return this.uriWsdlServicio; 
+            }
+
             set
             {
-                if (value != _UriWsdlServicio)
+                if (value != this.uriWsdlServicio)
                 {
-                    if (_ProxyDinamico == null)
+                    if (this.proxyDinamico == null)
                     {
-                        _UriWsdlServicio = value;
-                        _UriWsdlServicioModificado = true;
+                        this.uriWsdlServicio = value;
+                        this.uriWsdlServicioModificado = true;
                     }
                     else
                     {
@@ -96,20 +105,9 @@
 
         #region Funciones
 
-        private void CrearFabrica()
-        {
-            // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
-            _Fabrica = new DynamicProxyFactory(UriWsdlServicio);
-        }
-
-        private void Abortar()
-        {
-            _ProxyDinamico.CallMethod("Abort");
-        }
-
         public void Conectar(string Contrato)
         {
-            Desconectar();
+            this.Desconectar();
 
             if (Contrato == null)
             {
@@ -118,21 +116,21 @@
 
             try
             {
-                if (_UriWsdlServicioModificado)
+                if (this.uriWsdlServicioModificado)
                 {
-                    _UriWsdlServicioModificado = false;
-                    
-                    if (UriWsdlServicio == null)
+                    this.uriWsdlServicioModificado = false;
+
+                    if (this.UriWsdlServicio == null)
                     {
                         throw new ArgumentNullException("UriWsdlServicio");
                     }
 
-                    CrearFabrica();
+                    this.CrearFabrica();
                 }
 
                 ServiceEndpoint Endpoint = null;
 
-                foreach (ServiceEndpoint SE in _Fabrica.Endpoints)
+                foreach (ServiceEndpoint SE in this.fabrica.Endpoints)
                 {
                     if (SE.Contract.Name.Contains(Contrato))
                     {
@@ -141,17 +139,19 @@
                     }
                 }
 
-                // Al usar WSHttpBinding se pierde la capacidad de enviar los datos en un flujo sin fin 
-                // (streaming). Por lo que se hace obligatorio el uso de intermedios (buffers) para enviar
-                // archivos o datos extensos.
-                // http://kjellsj.blogspot.com/2007/02/wcf-streaming-upload-files-over-http.html
+                /*
+                 * Al usar WSHttpBinding se pierde la capacidad de enviar los datos en un flujo sin fin 
+                 * (streaming). Por lo que se hace obligatorio el uso de intermedios (buffers) para enviar
+                 * archivos o datos extensos.
+                 * http://kjellsj.blogspot.com/2007/02/wcf-streaming-upload-files-over-http.html
+                 * 
+                 * Las configuraciones de "binding" del servidor no son visibles del lado del cliente a traves de WSDL,
+                 * segun http://social.msdn.microsoft.com/Forums/en-AU/wcf/thread/dcc46d86-87a5-4694-aa88-3568fddf159f.
+                 * Es necesario crear un nuevo binding del lado del cliente con las opciones de configuracion deseadas.
+                 */
 
-                // Las configuraciones de "binding" del servidor no son visibles del lado del cliente a traves de WSDL,
-                // segun http://social.msdn.microsoft.com/Forums/en-AU/wcf/thread/dcc46d86-87a5-4694-aa88-3568fddf159f.
-                // Es necesario crear un nuevo binding del lado del cliente con las opciones de configuracion deseadas.
-
-                Endpoint.Binding = _Vinculacion;
-                _ProxyDinamico = _Fabrica.CreateProxy(Contrato);
+                Endpoint.Binding = this.vinculacion;
+                this.proxyDinamico = this.fabrica.CreateProxy(Contrato);
             }
             catch (Exception ex)
             {
@@ -159,38 +159,38 @@
             }
         }
 
-        public object InvocarMetodo(string Metodo, params object[] Argumentos)
+        public object InvocarMetodo(string metodo, params object[] argumentos)
         {
-            object Resultado = null;
+            object resultado = null;
 
             // Si alguno de los argumentos es un DataContract entonces hay que convertirlo en DynamicObject
-            if (Argumentos != null)
+            if (argumentos != null)
             {
-                for (int i = 0; i < Argumentos.Length; i++)
+                for (int i = 0; i < argumentos.Length; i++)
                 {
-                    if (Argumentos[i] is DataTableXml)
+                    if (argumentos[i] is DataTableXml)
                     {
-                        Argumentos[i] = ((DataTableXml)Argumentos[i]).ConvertirEnObjetoDinamico(_Fabrica.ProxyAssembly);
+                        argumentos[i] = ((DataTableXml)argumentos[i]).ConvertirEnObjetoDinamico(this.fabrica.ProxyAssembly);
                     }
                 }
             }
 
             try
             {
-                var Credenciales = (ClientCredentials)_ProxyDinamico.GetProperty("ClientCredentials");
+                var credenciales = (ClientCredentials)this.proxyDinamico.GetProperty("ClientCredentials");
                 //Credenciales.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-                Credenciales.UserName.UserName = "molleja@abc.com";
-                Credenciales.UserName.Password = "41ssdas#ASX";
-                
+                credenciales.UserName.UserName = "molleja@abc.com";
+                credenciales.UserName.Password = "41ssdas#ASX";
+
                 // Con codigo de: http://stackoverflow.com/questions/1544830/wcf-transportcredentialonly-not-sending-username-and-password
-                using (OperationContextScope scope = new OperationContextScope((IClientChannel)_ProxyDinamico.GetProperty("InnerChannel")))
+                using (OperationContextScope scope = new OperationContextScope((IClientChannel)this.proxyDinamico.GetProperty("InnerChannel")))
                 {
                     var propiedadPeticionHttp = new HttpRequestMessageProperty();
-                    string autorizacion = (Credenciales.UserName.UserName + ":" + Credenciales.UserName.Password).CodificarBase64();
+                    string autorizacion = (credenciales.UserName.UserName + ":" + credenciales.UserName.Password).CodificarBase64();
                     propiedadPeticionHttp.Headers[System.Net.HttpRequestHeader.Authorization] = "Basic " + autorizacion;
                     OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = propiedadPeticionHttp;
-                  
-                    Resultado = _ProxyDinamico.CallMethod(Metodo, Argumentos);
+
+                    resultado = this.proxyDinamico.CallMethod(metodo, argumentos);
                 }
 
                 /*
@@ -204,28 +204,28 @@
                  * Resultado es ahora 'netzuela.zuliaworks.com.spuria.api.DataTableXml' por lo que ya no puedo hacer 
                  * la misma comparacion FullName sino solo Name.
                  */
-                if (Resultado.GetType().Name == typeof(DataTableXml).Name)
+                if (resultado.GetType().Name == typeof(DataTableXml).Name)
                 {
-                    Resultado = new DataTableXml(new DataTableXmlDinamico(Resultado));
+                    resultado = new DataTableXml(new DataTableXmlDinamico(resultado));
                 }
             }
             catch (Exception ex)
             {
-                Abortar();
-                throw new Exception("Error invocando el metodo \"" + Metodo + "\" en el servidor remoto", ex);
+                this.Abortar();
+                throw new Exception("Error invocando el metodo \"" + metodo + "\" en el servidor remoto", ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
         public void Desconectar()
         {
             try
             {
-                if (_ProxyDinamico != null)
+                if (this.proxyDinamico != null)
                 {
-                    _ProxyDinamico.Close();
-                    _ProxyDinamico = null;
+                    this.proxyDinamico.Close();
+                    this.proxyDinamico = null;
                 }
             }
             catch (Exception ex)
@@ -234,13 +234,24 @@
             }
         }
 
+        private void CrearFabrica()
+        {
+            // En este instruccion es donde se consume la mayor cantidad de tiempo de ejecucion
+            this.fabrica = new DynamicProxyFactory(this.UriWsdlServicio);
+        }
+
+        private void Abortar()
+        {
+            this.proxyDinamico.CallMethod("Abort");
+        }
+
         #endregion
 
         #region Implementacion de interfaces
 
         protected override void Dispose(bool BorrarCodigoAdministrado)
         {
-            this._Fabrica = null;
+            this.fabrica = null;
             this.Desconectar();
 
             if (BorrarCodigoAdministrado)

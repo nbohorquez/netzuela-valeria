@@ -17,10 +17,10 @@
     {
         #region Variables
 
-        private ClienteSpuria _Cliente;
+        private ClienteSpuria cliente;
 
         // ¡Temporal!
-        private ConnectionState _Estado;
+        private ConnectionState estado;
 
         #endregion
 
@@ -28,37 +28,37 @@
 
         public Netzuela(ParametrosDeConexion ServidorBD)
         {
-            DatosDeConexion = ServidorBD;
+            this.DatosDeConexion = ServidorBD;
 
             // El argumento de ClienteValeria debe estar relacionado con DatosDeConexion
-            _Cliente = new ClienteSpuria();
+            this.cliente = new ClienteSpuria();
 
             // Inicializamos los manejadores de eventos
-            _Cliente.ListarBasesDeDatosCompletado -= base.ManejarListarBasesDeDatosCompletado;
-            _Cliente.ListarBasesDeDatosCompletado += base.ManejarListarBasesDeDatosCompletado;
+            this.cliente.ListarBasesDeDatosCompletado -= this.ManejarListarBasesDeDatosCompletado;
+            this.cliente.ListarBasesDeDatosCompletado += this.ManejarListarBasesDeDatosCompletado;
 
-            _Cliente.ListarTablasCompletado -= base.ManejarListarTablasCompletado;
-            _Cliente.ListarTablasCompletado += base.ManejarListarTablasCompletado;
+            this.cliente.ListarTablasCompletado -= this.ManejarListarTablasCompletado;
+            this.cliente.ListarTablasCompletado += this.ManejarListarTablasCompletado;
 
-            _Cliente.LeerTablaCompletado -= base.ManejarLeerTablaCompletado;
-            _Cliente.LeerTablaCompletado += base.ManejarLeerTablaCompletado;
+            this.cliente.LeerTablaCompletado -= this.ManejarLeerTablaCompletado;
+            this.cliente.LeerTablaCompletado += this.ManejarLeerTablaCompletado;
 
-            _Cliente.EscribirTablaCompletado -= base.ManejarEscribirTablaCompletado;
-            _Cliente.EscribirTablaCompletado += base.ManejarEscribirTablaCompletado;
+            this.cliente.EscribirTablaCompletado -= this.ManejarEscribirTablaCompletado;
+            this.cliente.EscribirTablaCompletado += this.ManejarEscribirTablaCompletado;
 
-            _Cliente.CrearUsuarioCompletado -= base.ManejarCrearUsuarioCompletado;
-            _Cliente.CrearUsuarioCompletado += base.ManejarCrearUsuarioCompletado;
+            this.cliente.CrearUsuarioCompletado -= this.ManejarCrearUsuarioCompletado;
+            this.cliente.CrearUsuarioCompletado += this.ManejarCrearUsuarioCompletado;
 
-            _Cliente.ConsultarCompletado -= base.ManejarConsultarCompletado;
-            _Cliente.ConsultarCompletado += base.ManejarConsultarCompletado;
+            this.cliente.ConsultarCompletado -= this.ManejarConsultarCompletado;
+            this.cliente.ConsultarCompletado += this.ManejarConsultarCompletado;
 
             // Hay que ver como quito este pedazo de codigo tan feo
-            _Estado = ConnectionState.Closed;
+            this.estado = ConnectionState.Closed;
         }
 
         ~Netzuela()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -71,8 +71,8 @@
             
             if (BorrarCodigoAdministrado)
             {
-                this._Cliente.Dispose();
-                this._Cliente = null;
+                this.cliente.Dispose();
+                this.cliente = null;
             }
         }
 
@@ -84,14 +84,18 @@
 
         public ConnectionState Estado
         {
-            get { return _Estado; }
+            get 
+            { 
+                return this.estado; 
+            }
+
             private set
             {
-                if(value != _Estado)
+                if (value != this.estado)
                 {
-                    ConnectionState Anterior = _Estado;
-                    _Estado = value;
-                    DispararCambioDeEstado(new StateChangeEventArgs(Anterior, _Estado));
+                    ConnectionState anterior = this.estado;
+                    this.estado = value;
+                    DispararCambioDeEstado(new StateChangeEventArgs(anterior, this.estado));
                 }
             }
         }
@@ -108,13 +112,13 @@
         {
             try
             {
-                Desconectar();
+                this.Desconectar();
 
-                _Cliente.UriWsdlServicio = DatosDeConexion.Anfitrion;
-                _Cliente.Armar();
+                this.cliente.UriWsdlServicio = this.DatosDeConexion.Anfitrion;
+                this.cliente.Armar();
                 
                 // Esto hay que borrarlo
-                Estado = ConnectionState.Open;
+                this.Estado = ConnectionState.Open;
             }
             catch (Exception ex)
             {
@@ -126,13 +130,15 @@
         {
             try
             {
-                if (_Cliente != null)
-                    _Cliente.Desarmar();
+                if (this.cliente != null)
+                {
+                    this.cliente.Desarmar();
+                }
                 
                 // Esto hay que borrarlo
-                Estado = ConnectionState.Closed;
+                this.Estado = ConnectionState.Closed;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Error al cerrar la conexión con el servidor de Netzuela", ex);
             }
@@ -144,7 +150,7 @@
 
             try
             {
-                Resultado = _Cliente.ListarBasesDeDatos().ToList();
+                Resultado = this.cliente.ListarBasesDeDatos().ToList();
             }
             catch (Exception ex)
             {
@@ -154,61 +160,61 @@
             return Resultado.ToArray();
         }
 
-        public string[] ListarTablas(string BaseDeDatos)
+        public string[] ListarTablas(string baseDeDatos)
         {
-            List<string> Resultado = new List<string>();
+            List<string> resultado = new List<string>();
 
             try
             {
-                Resultado = _Cliente.ListarTablas(BaseDeDatos).ToList();
+                resultado = this.cliente.ListarTablas(baseDeDatos).ToList();
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al listar las tablas", ex);
             }
 
-            return Resultado.ToArray();
+            return resultado.ToArray();
         }
 
-        public DataTable LeerTabla(string BaseDeDatos, string Tabla)
+        public DataTable LeerTabla(string baseDeDatos, string tabla)
         {            
-            DataTable Resultado = new DataTable();
+            DataTable resultado = new DataTable();
 
             try
             {
-                Resultado = _Cliente.LeerTabla(BaseDeDatos, Tabla);
+                resultado = this.cliente.LeerTabla(baseDeDatos, tabla);
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al listar las tablas", ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public bool EscribirTabla(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
-            bool Resultado = false;
+            bool resultado = false;
 
             try
             {
-                Resultado = _Cliente.EscribirTabla(BaseDeDatos, NombreTabla, Tabla);
+                resultado = this.cliente.EscribirTabla(baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {
-                string Error = "Error al escribir la tabla " + NombreTabla + " en la base de datos " + BaseDeDatos;
-                throw new Exception(Error, ex);
+                string error = "Error al escribir la tabla " + nombreTabla + " en la base de datos " + baseDeDatos;
+                throw new Exception(error, ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
-        public bool CrearUsuario(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
             throw new NotImplementedException();
         }
 
-        public DataTable Consultar(string baseDeDatos, string Sql)
+        public DataTable Consultar(string baseDeDatos, string sql)
         {
             throw new NotImplementedException();
         }
@@ -221,7 +227,7 @@
         {
             try
             {
-                _Cliente.ListarBasesDeDatosAsinc();
+                this.cliente.ListarBasesDeDatosAsinc();
             }
             catch (Exception ex)
             {
@@ -229,11 +235,11 @@
             }
         }
 
-        public void ListarTablasAsinc(string BaseDeDatos)
+        public void ListarTablasAsinc(string baseDeDatos)
         {
             try
             {
-                _Cliente.ListarTablasAsinc(BaseDeDatos);
+                this.cliente.ListarTablasAsinc(baseDeDatos);
             }
             catch (Exception ex)
             {
@@ -241,11 +247,11 @@
             }
         }
 
-        public void LeerTablaAsinc(string BaseDeDatos, string Tabla)
+        public void LeerTablaAsinc(string baseDeDatos, string tabla)
         {
             try
             {
-                _Cliente.LeerTablaAsinc(BaseDeDatos, Tabla);
+                this.cliente.LeerTablaAsinc(baseDeDatos, tabla);
             }
             catch (Exception ex)
             {
@@ -253,25 +259,25 @@
             }
         }
 
-        public void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
             try
             {
-                _Cliente.EscribirTablaAsinc(BaseDeDatos, NombreTabla, Tabla);
+                this.cliente.EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {
-                string Error = "Error al escribir la tabla " + NombreTabla + " en la base de datos " + BaseDeDatos;
+                string Error = "Error al escribir la tabla " + nombreTabla + " en la base de datos " + baseDeDatos;
                 throw new Exception(Error, ex);
             }
         }
 
-        public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
             throw new NotImplementedException();
         }
 
-        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        public void ConsultarAsinc(string baseDeDatos, string sql)
         {
             throw new NotImplementedException();
         }
@@ -287,7 +293,7 @@
              * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
              */
 
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 

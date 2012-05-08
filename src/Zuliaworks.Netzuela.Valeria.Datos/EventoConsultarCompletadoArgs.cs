@@ -31,8 +31,8 @@
         {
             get
             {
-                base.RaiseExceptionIfNecessary();
-                return (DataTable)resultados[0];
+                this.RaiseExceptionIfNecessary();
+                return (DataTable)this.resultados[0];
             }
         }
             

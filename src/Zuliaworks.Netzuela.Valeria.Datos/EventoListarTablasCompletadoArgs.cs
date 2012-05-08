@@ -30,8 +30,8 @@
         {
             get
             {
-                base.RaiseExceptionIfNecessary();
-                return (string[])resultados[0];
+                this.RaiseExceptionIfNecessary();
+                return (string[])this.resultados[0];
             }
         }
 

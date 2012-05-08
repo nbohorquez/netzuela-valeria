@@ -93,7 +93,7 @@
 
         ~NodoViewModel()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -346,7 +346,7 @@
             // En este enlace esta la mejor explicacion acerca de como implementar IDisposable
             // http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
 
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 

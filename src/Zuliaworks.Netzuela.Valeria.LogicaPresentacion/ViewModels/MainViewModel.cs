@@ -68,7 +68,7 @@
 
         ~MainViewModel()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion

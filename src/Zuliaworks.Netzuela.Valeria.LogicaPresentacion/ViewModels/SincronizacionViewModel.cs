@@ -52,7 +52,7 @@
 
         ~SincronizacionViewModel()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion

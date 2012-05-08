@@ -13,6 +13,7 @@
         /// <summary>
         /// Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
         /// </summary>
+        /// <returns></returns>
         public static List<ServidorLocal> DetectarServidoresLocales()
         {
             return AnfitrionLocal.DetectarTodosLosServidores();

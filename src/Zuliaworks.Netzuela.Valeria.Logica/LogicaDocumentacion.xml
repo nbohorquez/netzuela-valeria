@@ -71,8 +71,8 @@
             <summary>
             Crea un mapeo de columnas especificando la columna de orígen y la de destino.
             </summary>
-            <param name="columnaDestino">Nodo que representa la columna destino.</param>
-            <param name="columnaOrigen">Nodo que representa la columna orígen.</param>
+            <param name="columnaOrigen">Nodo que representa la columna destino.</param>
+            <param name="columnaDestino">Nodo que representa la columna orígen.</param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.AsociacionDeColumnas.FijarOrigen(Zuliaworks.Netzuela.Valeria.Logica.Nodo)">
             <summary>
@@ -104,6 +104,7 @@
             <summary>
             Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
             </summary>
+            <returns></returns>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Logica.TablaDeAsociaciones">
             <summary>
@@ -167,8 +168,10 @@
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
             <summary>
-            Abre la conexión con el servidor especificado en <see cref="P:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Parametros"/>.
+            
             </summary>
+            <param name="usuario"></param>
+            <param name="contrasena"></param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Logica.Conexion.Desconectar">
             <summary>

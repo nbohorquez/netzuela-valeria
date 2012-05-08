@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using System.Data;
-using System.Security;                              // SecureString
-using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
-
-namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Security;                              // SecureString
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // ParametrosDeConexion
+
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos Oracle
     /// </summary>
@@ -16,7 +16,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     {
         #region Variables
 
-        private ConnectionState _Estado;
+        private ConnectionState estado;
 
         #endregion
 
@@ -24,12 +24,12 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public Oracle(ParametrosDeConexion ServidorBD) 
         {
-            DatosDeConexion = ServidorBD;
+            this.DatosDeConexion = ServidorBD;
         }
 
         ~Oracle()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -81,9 +81,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Métodos sincrónicos
 
-        public void Conectar(SecureString Usuario, SecureString Contrasena) { }
+        public void Conectar(SecureString Usuario, SecureString Contrasena) 
+        { 
+        }
 
-        public void Desconectar() { }
+        public void Desconectar() 
+        { 
+        }
 
         public string[] ListarBasesDeDatos() 
         { 
@@ -162,7 +166,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
              * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
              */
 
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 

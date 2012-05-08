@@ -60,7 +60,7 @@
 
                 return System.Text.Encoding.Unicode.GetString(desencriptado).ConvertirASecureString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //return new SecureString();
                 throw ex;
@@ -78,7 +78,7 @@
 
                 return System.Text.Encoding.Unicode.GetString(desencriptado);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {            
                 //return new SecureString()
                 throw ex;

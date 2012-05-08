@@ -160,8 +160,10 @@
         #region Métodos sincrónicos
         
         /// <summary>
-        /// Abre la conexión con el servidor especificado en <see cref="Parametros"/>.
+        /// 
         /// </summary>
+        /// <param name="usuario"></param>
+        /// <param name="contrasena"></param>
         public void Conectar(SecureString usuario, SecureString contrasena)
         {
             try

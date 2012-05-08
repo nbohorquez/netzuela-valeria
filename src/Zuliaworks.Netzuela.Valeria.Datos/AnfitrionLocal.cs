@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Zuliaworks.Netzuela.Valeria.Comunes;          // ServidorLocal
-
-namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // ServidorLocal
+
     /// <summary>
     /// Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
     /// </summary>    

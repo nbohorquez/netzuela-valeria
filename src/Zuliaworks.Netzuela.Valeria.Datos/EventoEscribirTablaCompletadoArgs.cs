@@ -30,8 +30,8 @@
         {
             get
             {
-                base.RaiseExceptionIfNecessary();
-                return Convert.ToBoolean(resultados[0]);
+                this.RaiseExceptionIfNecessary();
+                return Convert.ToBoolean(this.resultados[0]);
             }
         }
             

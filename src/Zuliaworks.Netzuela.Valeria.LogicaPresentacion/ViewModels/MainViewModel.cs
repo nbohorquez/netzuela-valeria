@@ -311,21 +311,7 @@
                     ExploradorLocal.ExpandirRuta(RutaDeTabla);
                 }
             }
-            /*
-            // Borramos cada una de las tablas de destino para llenarlas nuevamente en el evento del temporizador
-            NodoViewModel[] NodosDestino = LocalARemota.NodosDeDestino();
-            HashSet<NodoViewModel> Tablas = new HashSet<NodoViewModel>();
-
-            foreach (NodoViewModel Columna in NodosDestino)
-            {
-                // Si ya esta tabla fue expandida, no la expandamos otra vez
-                if (Tablas.Add(Columna.Padre))
-                {
-                    DataTable t = ExploradorRemoto.ObtenerTablaDeCache(Columna.Padre);
-                    t.Rows.Clear();
-                }
-            }
-            */
+            
             // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
             LocalARemota.RecargarTablasLocales(ExploradorLocal.Nodos);
 
@@ -461,12 +447,12 @@
 
                 foreach (KeyValuePair<NodoViewModel, DataTable> Par in LocalARemota.TablasAEnviar())
                 {
-                    DataTable T = Par.Value.GetChanges();
-
-                    if (T != null)
+                    DataTable t = Par.Value.GetChanges();
+                    
+                    if (t != null)
                     {
-                        ExploradorRemoto.EscribirTabla(Par.Key, T);
-                        T.Dispose();
+                        ExploradorRemoto.EscribirTabla(Par.Key, t);
+                        t.Dispose();
                         Par.Value.AcceptChanges();
                     }
                 }

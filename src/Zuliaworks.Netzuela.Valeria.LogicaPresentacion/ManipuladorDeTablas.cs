@@ -24,9 +24,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
             // http://social.msdn.microsoft.com/Forums/en/wpf/thread/a5767cf4-8d26-4f72-b1b1-feca26bb6b2e
 
             if (Tabla == null)
+            {
                 throw new ArgumentNullException("Tabla");
+            }
             if (TabAso == null)
+            {
                 throw new ArgumentNullException("TabAso");
+            }
 
             using (DataTable TablaOrigen = CrearTabla(TabAso))
             {
@@ -34,7 +38,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                 List<DataColumn> Columnas = new List<DataColumn>();
 
                 foreach (DataColumn Columna in Tabla.PrimaryKey)
+                {
                     Columnas.Add(TablaOrigen.Columns[Columna.Ordinal]);
+                }
 
                 TablaOrigen.PrimaryKey = Columnas.ToArray();
 
@@ -77,9 +83,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                                                           from Eliminada in Eliminadas
                                                           where Fila.ItemArray.SequenceEqual(Eliminada.ItemArray)
                                                           select Fila).ToList();
-                    
+
                     foreach (DataRow Fila in MarcarComoEliminadas)
+                    {
                         Fila.Delete();
+                    }
                 }
                 
                 if (CambiadasDestino.Count > 0)
@@ -91,7 +99,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                                                          select Fila).ToList();
 
                     foreach (DataRow Fila in MarcarComoCambiadas)
+                    {
                         Fila.SetModified();
+                    }
                 }
 
                 if (Agregados.Count > 0)
@@ -103,7 +113,9 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                                                          select Fila).ToList();
 
                     foreach (DataRow Fila in MarcarComoAgregadas)
+                    {
                         Fila.SetAdded();
+                    }
                 }
             }
         }
@@ -111,9 +123,13 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         public static void IntegrarTabla(DataTable Tabla, TablaDeAsociaciones TabAso)
         {
             if (Tabla == null)
+            {
                 throw new ArgumentNullException("Tabla");
+            }
             if (TabAso == null)
+            {
                 throw new ArgumentNullException("TabAso");
+            }
 
             foreach (AsociacionDeColumnas Sociedad in TabAso.Sociedades)
             {
@@ -121,8 +137,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                 {
                     NodoViewModel ColumnaOrigen = Sociedad.ColumnaOrigen.BuscarEnRepositorioDeNodos();
                     NodoViewModel ColumnaDestino = Sociedad.ColumnaDestino.BuscarEnRepositorioDeNodos();
-
-                    //DataTable TablaOrigen = ColumnaOrigen.Explorador.ObtenerTablaDeCache(ColumnaOrigen.Padre);
                     DataTable TablaOrigen = ColumnaOrigen.Padre.BuscarEnRepositorioDeTablas();
 
                     for (int i = 0; i < TablaOrigen.Rows.Count; i++)
@@ -147,10 +161,11 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
         public static DataTable CrearTabla(TablaDeAsociaciones Tabla)
         {
             if (Tabla == null)
+            {
                 throw new ArgumentNullException("Tabla");
+            }
 
             NodoViewModel NodoTablaDestino = Tabla.NodoTabla.BuscarEnRepositorioDeNodos();
-            //DataTable TablaDestino = NodoTablaDestino.Explorador.ObtenerTablaDeCache(NodoTablaDestino);
             DataTable TablaDestino = NodoTablaDestino.BuscarEnRepositorioDeTablas();
             DataTable Resultado = new DataTable(Tabla.NodoTabla.Nombre);
 
@@ -168,7 +183,6 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
                     if (Sociedad.ColumnaOrigen != null)
                     {
                         NodoViewModel NodoColOrigen = Sociedad.ColumnaOrigen.BuscarEnRepositorioDeNodos();
-                        //DataTable TablaOrigen = NodoColOrigen.Explorador.ObtenerTablaDeCache(NodoColOrigen.Padre);
                         DataTable TablaOrigen = NodoColOrigen.Padre.BuscarEnRepositorioDeTablas();
 
                         for (int i = 0; i < TablaOrigen.Rows.Count; i++)

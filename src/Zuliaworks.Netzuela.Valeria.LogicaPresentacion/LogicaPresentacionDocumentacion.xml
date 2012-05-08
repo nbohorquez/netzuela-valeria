@@ -65,15 +65,6 @@
             <exception cref="T:System.ArgumentNullException">Si <paramref name="Item"/> es una referencia 
             nula.</exception>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Dispose(System.Boolean)">
-            <summary>
-            Lee la tabla especificada desde el proveedor de datos.
-            </summary>
-            <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
-            <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
-            nula.</exception>
-        </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Nodos">
             <summary>
             Representa la colección de nodos que conforman el arbol de datos.
@@ -176,15 +167,6 @@
             cuando se actualizan las tablas de origen desde el servidor local.
             </summary>
             <param name="NodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel.Dispose">
-            <summary>
-            Lee la tabla especificada desde el proveedor de datos.
-            </summary>
-            <param name="Tabla">Nodo del árbol de datos cuya tabla se quiere obtener</param>
-            <returns>Tabla leída desde el proveedor de datos o nulo si no se pudo encontrar.</returns>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Tabla"/> es una referencia 
-            nula.</exception>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
             <summary>

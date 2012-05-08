@@ -242,8 +242,8 @@
             {
                 foreach (TablaDeAsociaciones TM in Tablas)
                 {
-                    NodoViewModel NodoTabla = TM.NodoTabla.BuscarEnRepositorioDeNodos();
-                    ManipuladorDeTablas.ActualizarTabla(NodoTabla.BuscarEnRepositorioDeTablas(), TM);
+                    DataTable tabla = TM.NodoTabla.BuscarEnRepositorioDeNodos().BuscarEnRepositorioDeTablas();
+                    ManipuladorDeTablas.ActualizarTabla(tabla, TM);
                 }
             }
             catch (Exception ex)
@@ -313,7 +313,6 @@
         {
             // Creamos una copia solamente. De esta forma, las modificaciones externas no afectaran 
             // al objeto interno
-            //return new Dictionary<NodoViewModel, DataTable>(_CacheDeTablas);
             Dictionary<NodoViewModel, DataTable> resultado = new Dictionary<NodoViewModel, DataTable>();
 
             foreach (TablaDeAsociaciones TA in Tablas)

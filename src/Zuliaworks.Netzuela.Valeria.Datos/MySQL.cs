@@ -87,7 +87,7 @@
         {
             if (sql == null)
             {
-                throw new ArgumentNullException("SQL");
+                throw new ArgumentNullException("sql");
             }
 
             MySqlDataReader Lector = null;
@@ -110,7 +110,7 @@
         {
             if (sql == null)
             {
-                throw new ArgumentNullException("SQL");
+                throw new ArgumentNullException("sql");
             }
 
             DataTable resultado = new DataTable();
@@ -215,61 +215,61 @@
 
             if (seleccion == null)
             {
-                throw new ArgumentNullException("Seleccion");
+                throw new ArgumentNullException("seleccion");
             }
 
             if (usuario == null)
             {
-                throw new ArgumentNullException("Usuario");
+                throw new ArgumentNullException("usuario");
             }
 
             if (contrasena == null)
             {
-                throw new ArgumentNullException("Contrasena");
+                throw new ArgumentNullException("contrasena");
             }
 
-            SecureString RutaDeConexion = new SecureString();
+            SecureString rutaDeConexion = new SecureString();
 
             // 1) Nombre del servidor anfitrion
-            RutaDeConexion.AgregarString("Host=" + seleccion.Anfitrion + ";");
+            rutaDeConexion.AgregarString("Host=" + seleccion.Anfitrion + ";");
 
             // 2) Metodo de conexion
             switch (seleccion.MetodoDeConexion)
             {
                 case MetodosDeConexion.TcpIp:
-                    RutaDeConexion.AgregarString("Protocol=\"tcp\";");
-                    RutaDeConexion.AgregarString("Port=" + seleccion.ArgumentoDeConexion + ";");
+                    rutaDeConexion.AgregarString("Protocol=\"tcp\";");
+                    rutaDeConexion.AgregarString("Port=" + seleccion.ArgumentoDeConexion + ";");
                     break;
                 case MetodosDeConexion.CanalizacionesConNombre:
-                    RutaDeConexion.AgregarString("Protocol=\"pipe\";");
-                    RutaDeConexion.AgregarString("Pipe=" + seleccion.ArgumentoDeConexion + ";");
+                    rutaDeConexion.AgregarString("Protocol=\"pipe\";");
+                    rutaDeConexion.AgregarString("Pipe=" + seleccion.ArgumentoDeConexion + ";");
                     break;
                 case MetodosDeConexion.MemoriaCompartida:
-                    RutaDeConexion.AgregarString("Protocol=\"memory\";");
-                    RutaDeConexion.AgregarString("Shared Memory Name=" + seleccion.ArgumentoDeConexion + ";");
+                    rutaDeConexion.AgregarString("Protocol=\"memory\";");
+                    rutaDeConexion.AgregarString("Shared Memory Name=" + seleccion.ArgumentoDeConexion + ";");
                     break;
                 default:
                     break;
             }
 
             // 3) Requerimos pooling
-            RutaDeConexion.AgregarString("Pooling=false;");
+            rutaDeConexion.AgregarString("Pooling=false;");
 
             // 4) Aumentamos la seguridad no permitiendo que se pueda leer la ruta de acceso
-            RutaDeConexion.AgregarString("Persist Security Info=false;");
+            rutaDeConexion.AgregarString("Persist Security Info=false;");
 
             // 5) Nombre de usuario
-            RutaDeConexion.AgregarString(("Username=" + usuario.ConvertirAUnsecureString()) + ";");
+            rutaDeConexion.AgregarString(("Username=" + usuario.ConvertirAUnsecureString()) + ";");
 
             // 6) Contraseña
-            RutaDeConexion.AgregarString(("Password=" + contrasena.ConvertirAUnsecureString()));
+            rutaDeConexion.AgregarString(("Password=" + contrasena.ConvertirAUnsecureString()));
 
             /*
              * De la instruccion anterior (agregar password) hasta la siguiente (return) hay un hueco de 
              * seguridad porque cualquiera puede leer la contraseña al acceder a los miembros de RutaDeConexion
              */
 
-            return RutaDeConexion;
+            return rutaDeConexion;
         }
          
         #endregion
@@ -291,13 +291,13 @@
 
         #region Métodos sincrónicos
 
-        public void Conectar(SecureString Usuario, SecureString Contrasena)
+        public void Conectar(SecureString usuario, SecureString contrasena)
         {
             try
             {
                 this.Desconectar();
 
-                this.conexion.ConnectionString = this.CrearRutaDeAcceso(this.DatosDeConexion, Usuario, Contrasena).ConvertirAUnsecureString();
+                this.conexion.ConnectionString = this.CrearRutaDeAcceso(this.DatosDeConexion, usuario, contrasena).ConvertirAUnsecureString();
                 this.conexion.Open();
             }
             catch (MySqlException ex)
@@ -331,18 +331,18 @@
 
         public string[] ListarBasesDeDatos()
         {
-            List<string> ResultadoFinal = null;
+            List<string> resultadoFinal = null;
 
             try
             {
-                string[] ResultadoBruto = this.LectorSimple("SHOW DATABASES");
-                ResultadoFinal = new List<string>();
+                string[] resultadoBruto = this.LectorSimple("SHOW DATABASES");
+                resultadoFinal = new List<string>();
 
-                foreach (string R in ResultadoBruto)
+                foreach (string r in resultadoBruto)
                 {
-                    if (R != "information_schema" && R != "mysql" && R != "performance_schema")
+                    if (r != "information_schema" && r != "mysql" && r != "performance_schema")
                     {
-                        ResultadoFinal.Add(R);
+                        resultadoFinal.Add(r);
                     }
                 }
             }
@@ -351,22 +351,22 @@
                 throw new Exception("Error al listar las bases de datos. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
-            return ResultadoFinal.ToArray();
+            return resultadoFinal.ToArray();
         }
 
         public string[] ListarTablas(string baseDeDatos)
         {
-            List<string> Resultado = null;
+            List<string> resultado = null;
 
             try
             {
                 this.CambiarBaseDeDatos(baseDeDatos);
-                string[] ResultadoBruto = this.LectorSimple("SHOW TABLES");
-                Resultado = new List<string>();
+                string[] resultadoBruto = this.LectorSimple("SHOW TABLES");
+                resultado = new List<string>();
 
-                foreach (string S in ResultadoBruto)
+                foreach (string s in resultadoBruto)
                 {
-                    Resultado.Add(S);
+                    resultado.Add(s);
                 }
             }
             catch (MySqlException ex)
@@ -374,7 +374,7 @@
                 throw new Exception("Error al listar las tablas. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
-            return Resultado.ToArray();
+            return resultado.ToArray();
         }
 
         public DataTable LeerTabla(string baseDeDatos, string tabla)
@@ -401,7 +401,7 @@
 
         public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
-            bool Resultado = false;
+            bool resultado = false;
 
             try
             {
@@ -413,7 +413,7 @@
                  * http://dev.mysql.com/doc/refman/5.1/en/view-updatability.html
                  */
 
-                DataTable temporal = new DataTable();
+                DataSet settmp = new DataSet();
                 this.CambiarBaseDeDatos(baseDeDatos);
 
                 // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
@@ -422,45 +422,80 @@
                 MySqlDataAdapter adaptador = new MySqlDataAdapter("SELECT " + columnas + " FROM " + nombreTabla, this.conexion);
                 MySqlCommandBuilder creadorDeOrden = new MySqlCommandBuilder(adaptador);
                 
-                adaptador.FillSchema(temporal, SchemaType.Source);
-                adaptador.Fill(temporal);
-
-                adaptador.InsertCommand = new MySqlCommand("Insertar");
+                adaptador.FillSchema(settmp, SchemaType.Source);
+                adaptador.Fill(settmp);
+                settmp.Tables[0].TableName = nombreTabla;
+                
+                adaptador.InsertCommand = new MySqlCommand("Insertar", this.conexion);
                 adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
-                adaptador.UpdateCommand = new MySqlCommand("Actualizar");
+                adaptador.UpdateCommand = new MySqlCommand("Actualizar", this.conexion);
                 adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
-                adaptador.DeleteCommand = new MySqlCommand("Eliminar");
+                adaptador.DeleteCommand = new MySqlCommand("Eliminar", this.conexion);
                 adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
 
-                string variableDeEntrada = string.Empty;
-
-                MySqlParameter variableDeEntradaSql = new MySqlParameter("a_Parametros", variableDeEntrada);
+                MySqlParameter variableDeEntradaSql = new MySqlParameter("a_Parametros", string.Empty);
                 variableDeEntradaSql.Direction = ParameterDirection.Input;
 
                 adaptador.InsertCommand.Parameters.Add(variableDeEntradaSql);
                 adaptador.UpdateCommand.Parameters.Add(variableDeEntradaSql);
                 adaptador.DeleteCommand.Parameters.Add(variableDeEntradaSql);
 
-                //Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
+                // http://msdn.microsoft.com/es-es/library/wtk78t63%28v=vs.80%29.aspx
+                settmp.Merge(tabla, false, MissingSchemaAction.Error);
                 
                 MySqlRowUpdatingEventHandler actualizandoFila = (r, a) =>
                 {
                     List<string> parametros = new List<string>();
+                    DataRowVersion version = DataRowVersion.Current;
 
-                    foreach (object Dato in a.Row.ItemArray)
+                    if (a.StatementType == StatementType.Delete)
                     {
-                        parametros.Add(Dato.ToString().Replace(",", "."));
+                        version = DataRowVersion.Original;
                     }
 
-                    variableDeEntrada = string.Join(",", parametros.ToArray());
-                    a.Command.Parameters[0].Value = variableDeEntrada;
+                    for (int i = 0; i < a.Row.Table.Columns.Count; i++)
+                    {
+                        parametros.Add(a.Row[i, version].ToString().Replace(",", "."));
+                    }
+
+                    a.Command.Parameters["a_Parametros"].Value = string.Join(",", parametros.ToArray());
                 };
                 
                 MySqlRowUpdatedEventHandler filaActualizada = (r, a) =>
                 {
+                    // http://www.hesab.net/book/asp.net/Additional%20Documents/Resolving%20Conflicts%20on%20a%20Row-by-Row%20Basis.pdf
                     if (a.Errors != null)
                     {
-                        throw a.Errors;
+                        switch (a.Status)
+                        {
+                            case UpdateStatus.Continue:
+                                break;
+                            case UpdateStatus.ErrorsOccurred:
+                                string msj = "Tipo de error=" + a.Errors.GetType().ToString()
+                                        + "\nFilas afectadas=" + a.RecordsAffected.ToString()
+                                        + "\nFila tiene errores=" + a.Row.HasErrors.ToString()
+                                        + "\nTipo de instruccion ejecutada=" + a.StatementType
+                                        + "\nEstatus de la fila=" + a.Status.ToString()
+                                        + "\nErrores=" + a.Row.RowError;
+
+                                for (int i = 0; i < a.Row.ItemArray.Length; i++)
+                                {
+                                    msj += "\nValorActual[" + i.ToString() + "]=" + a.Row[i, DataRowVersion.Current];
+                                }
+
+                                foreach (System.Collections.DictionaryEntry de in a.Errors.Data)
+                                {
+                                    msj += "\nClave=" + de.Key.ToString() + "Valor=" + de.Value.ToString();
+                                }
+
+                                throw new Exception(msj, a.Errors);
+                            case UpdateStatus.SkipAllRemainingRows:
+                                break;
+                            case UpdateStatus.SkipCurrentRow:
+                                break;
+                            default:
+                                throw new Exception("Estatus de fila desconocido", a.Errors);
+                        }
                     }
                 };
 
@@ -470,21 +505,26 @@
                 adaptador.RowUpdated -= filaActualizada;
                 adaptador.RowUpdated += filaActualizada;
 
+                /* 
+                 * http://msdn.microsoft.com/es-es/library/33y2221y%28v=vs.100%29.aspx 
+                 * https://github.com/mono/mono/blob/mono-2-10/mcs/class/System.Data/System.Data.Common/DbDataAdapter.cs 
+                 * Estas instrucciones generaban excepciones de valor nulo porque no tenian una conexion especificada
+                 */
                 // Primero actualizamos los borrados
-                adaptador.Update(tabla.Select(null, null, DataViewRowState.Deleted));
+                adaptador.Update(settmp.Tables[0].Select(null, null, DataViewRowState.Deleted));
                 // Luego los modificados
-                adaptador.Update(tabla.Select(null, null, DataViewRowState.ModifiedCurrent));
+                adaptador.Update(settmp.Tables[0].Select(null, null, DataViewRowState.ModifiedCurrent));
                 // Y por ultimo los agregados
-                adaptador.Update(tabla.Select(null, null, DataViewRowState.Added));
+                adaptador.Update(settmp.Tables[0].Select(null, null, DataViewRowState.Added));
 
-                Resultado = true;
+                resultado = true;
             }
             catch (MySqlException ex)
             {
                 throw new Exception("No se pudo escribir la tabla. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
-            return Resultado;
+            return resultado;
         }
 
         public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)

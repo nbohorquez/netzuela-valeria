@@ -1,7 +1,5 @@
 ﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
-    using MvvmFoundation.Wpf;                       // PropertyObserver<>, ObservableObject
-
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;           // ObservableCollection
@@ -12,6 +10,8 @@
     using System.Windows;                           // MessageBox
     using System.Windows.Threading;                 // DispatcherTimer
     
+    using MvvmFoundation.Wpf;                       // PropertyObserver<>, ObservableObject
+
     using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
     using Zuliaworks.Netzuela.Valeria.Logica;       // TablaMapeada
 
@@ -410,7 +410,7 @@
         {
             try
             {
-                _Temporizador.Stop();
+                //_Temporizador.Stop();
 
                 NodoViewModel[] NodosOrigen = LocalARemota.NodosDeOrigen();
                 NodoViewModel[] NodosDestino = LocalARemota.NodosDeDestino();

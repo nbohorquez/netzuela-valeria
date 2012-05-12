@@ -1,8 +1,5 @@
 <stylecopresultscache>
   <version>11</version>
-  <project key="-237678212">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
   <sourcecode name="ArbolVisual.cs" parser="StyleCop.CSharp.CsParser">
     <settings>
       <timestamp>07/06/2011 11:29:50</timestamp>
@@ -4233,15 +4230,6 @@
       </violation>
     </violations>
   </sourcecode>
-  <sourcecode name="GeneratedInternalTypeHelper.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>05/08/2012 14:07:30</timestamp>
-    <milliseconds>250</milliseconds>
-    <violations />
-  </sourcecode>
   <sourcecode name=".NETFramework,Version=v4.0.AssemblyAttributes.cs" parser="StyleCop.CSharp.CsParser">
     <settings>
       <timestamp>07/06/2011 11:29:50</timestamp>
@@ -5371,22 +5359,613 @@
       </violation>
     </violations>
   </sourcecode>
-  <sourcecode name="MainViewModel.cs" parser="StyleCop.CSharp.CsParser">
+  <sourcecode name="DetectarServidoresLocalesView.xaml.cs" parser="StyleCop.CSharp.CsParser">
     <settings>
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>05/08/2012 12:30:41</timestamp>
-    <milliseconds>125</milliseconds>
+    <timestamp>05/03/2012 02:49:35</timestamp>
+    <milliseconds>703</milliseconds>
     <violations>
       <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
         <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
         <line>1</line>
         <warning>False</warning>
       </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>1</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>2</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>3</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>3</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>4</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>4</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>5</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>5</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>6</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>6</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>7</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>7</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>9</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>9</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>10</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>10</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>11</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>11</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>12</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>12</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>15</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The constructor must have a documentation header.</context>
+        <line>24</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.ReadabilityRules" rule="PrefixLocalCallsWithThis" ruleCheckId="SA1101">
+        <context>The call to InitializeComponent must begin with the 'this.' prefix to indicate that the item is a member of the class.</context>
+        <line>26</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.MaintainabilityRules" rule="AccessModifierMustBeDeclared" ruleCheckId="SA1400">
+        <context>The class must have an access modifier.</context>
+        <line>35</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.MaintainabilityRules" rule="FileMayOnlyContainASingleClass" ruleCheckId="SA1402">
+        <context>A C# document may only contain a single class at the root level unless all of the classes are partial and are of the same type.</context>
+        <line>35</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>62</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Valor.</context>
+        <line>62</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: TipoObjetivo.</context>
+        <line>62</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Parametro.</context>
+        <line>62</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Cultura.</context>
+        <line>62</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>67</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Valor.</context>
+        <line>67</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: TipoObjetivo.</context>
+        <line>67</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Parametro.</context>
+        <line>67</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Cultura.</context>
+        <line>67</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.MaintainabilityRules" rule="AccessModifierMustBeDeclared" ruleCheckId="SA1400">
+        <context>The class must have an access modifier.</context>
+        <line>78</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>80</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="ClosingCurlyBracketMustBeFollowedByBlankLine" ruleCheckId="SA1513">
+        <context>Statements or elements wrapped in curly brackets must be followed by a blank line.</context>
+        <line>85</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Valor.</context>
+        <line>80</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: TipoObjetivo.</context>
+        <line>80</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Parametro.</context>
+        <line>80</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Cultura.</context>
+        <line>80</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>89</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Valor.</context>
+        <line>89</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: TipoObjetivo.</context>
+        <line>89</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Parametro.</context>
+        <line>89</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Cultura.</context>
+        <line>89</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+  <sourcecode name="ExploradorView.xaml.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>05/03/2012 02:49:35</timestamp>
+    <milliseconds>703</milliseconds>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
+        <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
+        <line>1</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>1</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>2</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>3</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>3</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>4</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>4</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>5</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>5</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>6</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>6</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>7</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>7</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>8</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>9</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>9</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>10</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>10</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>11</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>11</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>12</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>12</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>13</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>15</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>16</line>
+        <warning>False</warning>
+      </violation>
       <violation namespace="StyleCop.CSharp.OrderingRules" rule="SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives" ruleCheckId="SA1208">
         <context>System using directives must be placed before all other using directives.</context>
-        <line>5</line>
+        <line>16</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>17</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>18</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>19</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
+        <context>Using directives must be sorted alphabetically by the namespaces.</context>
+        <line>19</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
+        <context>All using directives must be placed inside of the namespace.</context>
+        <line>20</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The constructor must have a documentation header.</context>
+        <line>31</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.ReadabilityRules" rule="PrefixLocalCallsWithThis" ruleCheckId="SA1101">
+        <context>The call to InitializeComponent must begin with the 'this.' prefix to indicate that the item is a member of the class.</context>
+        <line>33</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>40</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="ElementMustBeginWithUpperCaseLetter" ruleCheckId="SA1300">
+        <context>method names begin with an upper-case letter: tvi_Item_ClicBotonIzqRaton.</context>
+        <line>40</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Item.</context>
+        <line>42</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>52</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="CurlyBracketsMustNotBeOmitted" ruleCheckId="SA1503">
+        <context>The body of the if statement must be wrapped in opening and closing curly brackets.</context>
+        <line>57</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="ElementMustBeginWithUpperCaseLetter" ruleCheckId="SA1300">
+        <context>method names begin with an upper-case letter: tvi_Item_MouseEncima.</context>
+        <line>52</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Item.</context>
+        <line>54</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>60</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="CurlyBracketsMustNotBeOmitted" ruleCheckId="SA1503">
+        <context>The body of the if statement must be wrapped in opening and closing curly brackets.</context>
+        <line>65</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="ElementMustBeginWithUpperCaseLetter" ruleCheckId="SA1300">
+        <context>method names begin with an upper-case letter: tvi_Item_MouseAfuera.</context>
+        <line>60</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Item.</context>
+        <line>62</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
+        <context>The method must have a documentation header.</context>
+        <line>68</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="SingleLineCommentsMustNotBeFollowedByBlankLine" ruleCheckId="SA1512">
+        <context>A single-line comment must not be followed by a blank line. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
+        <line>73</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="ElementMustBeginWithUpperCaseLetter" ruleCheckId="SA1300">
+        <context>method names begin with an upper-case letter: dgr_Tabla_DestinoActualizado.</context>
+        <line>68</line>
+        <warning>False</warning>
+      </violation>
+      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
+        <context>Variable names must start with a lower-case letter: Grilla.</context>
+        <line>70</line>
+        <warning>False</warning>
+      </violation>
+    </violations>
+  </sourcecode>
+  <project key="-237678212">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
+  <sourcecode name="GeneratedInternalTypeHelper.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>05/11/2012 21:45:26</timestamp>
+    <milliseconds>0</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="AutentificacionView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>05/11/2012 21:45:26</timestamp>
+    <milliseconds>0</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="BarraDeEstadoView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>05/11/2012 21:45:26</timestamp>
+    <milliseconds>31</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ConexionLocalView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>05/11/2012 21:45:26</timestamp>
+    <milliseconds>62</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ConexionRemotaView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>05/11/2012 21:45:26</timestamp>
+    <milliseconds>62</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="DetectarServidoresLocalesView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>05/11/2012 21:45:26</timestamp>
+    <milliseconds>93</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ExploradorView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>05/11/2012 21:45:26</timestamp>
+    <milliseconds>343</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="MainViewModel.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>05/11/2012 21:43:46</timestamp>
+    <milliseconds>984</milliseconds>
+    <violations>
+      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
+        <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
+        <line>1</line>
         <warning>False</warning>
       </violation>
       <violation namespace="StyleCop.CSharp.DocumentationRules" rule="DocumentationHeadersMustNotContainBlankLines" ruleCheckId="SA1644">
@@ -6454,6 +7033,11 @@
         <line>409</line>
         <warning>False</warning>
       </violation>
+      <violation namespace="StyleCop.CSharp.LayoutRules" rule="SingleLineCommentsMustNotBeFollowedByBlankLine" ruleCheckId="SA1512">
+        <context>A single-line comment must not be followed by a blank line. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
+        <line>413</line>
+        <warning>False</warning>
+      </violation>
       <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
         <context>Variable names must start with a lower-case letter: Remitente.</context>
         <line>409</line>
@@ -6492,11 +7076,6 @@
       <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
         <context>Variable names must start with a lower-case letter: Par.</context>
         <line>448</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.ReadabilityRules" rule="PrefixLocalCallsWithThis" ruleCheckId="SA1101">
-        <context>The call to _Temporizador must begin with the 'this.' prefix to indicate that the item is a member of the class.</context>
-        <line>413</line>
         <warning>False</warning>
       </violation>
       <violation namespace="StyleCop.CSharp.ReadabilityRules" rule="PrefixLocalCallsWithThis" ruleCheckId="SA1101">
@@ -6549,593 +7128,14 @@
         <line>448</line>
         <warning>False</warning>
       </violation>
+      <violation namespace="StyleCop.CSharp.SpacingRules" rule="SingleLineCommentsMustBeginWithSingleSpace" ruleCheckId="SA1005">
+        <context>The comment must start with a single space. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
+        <line>413</line>
+        <warning>False</warning>
+      </violation>
       <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
         <context>The method must have a documentation header.</context>
         <line>470</line>
-        <warning>False</warning>
-      </violation>
-    </violations>
-  </sourcecode>
-  <sourcecode name="DetectarServidoresLocalesView.xaml.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>05/03/2012 02:49:35</timestamp>
-    <milliseconds>703</milliseconds>
-    <violations>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
-        <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
-        <line>1</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>1</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>2</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>3</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>3</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>4</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>4</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>5</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>5</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>6</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>6</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>7</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>7</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>8</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>8</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>9</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>9</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>10</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>10</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>11</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>11</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>12</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>12</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>13</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>13</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>15</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The constructor must have a documentation header.</context>
-        <line>24</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.ReadabilityRules" rule="PrefixLocalCallsWithThis" ruleCheckId="SA1101">
-        <context>The call to InitializeComponent must begin with the 'this.' prefix to indicate that the item is a member of the class.</context>
-        <line>26</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.MaintainabilityRules" rule="AccessModifierMustBeDeclared" ruleCheckId="SA1400">
-        <context>The class must have an access modifier.</context>
-        <line>35</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.MaintainabilityRules" rule="FileMayOnlyContainASingleClass" ruleCheckId="SA1402">
-        <context>A C# document may only contain a single class at the root level unless all of the classes are partial and are of the same type.</context>
-        <line>35</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The method must have a documentation header.</context>
-        <line>62</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Valor.</context>
-        <line>62</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: TipoObjetivo.</context>
-        <line>62</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Parametro.</context>
-        <line>62</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Cultura.</context>
-        <line>62</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The method must have a documentation header.</context>
-        <line>67</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Valor.</context>
-        <line>67</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: TipoObjetivo.</context>
-        <line>67</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Parametro.</context>
-        <line>67</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Cultura.</context>
-        <line>67</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.MaintainabilityRules" rule="AccessModifierMustBeDeclared" ruleCheckId="SA1400">
-        <context>The class must have an access modifier.</context>
-        <line>78</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The method must have a documentation header.</context>
-        <line>80</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.LayoutRules" rule="ClosingCurlyBracketMustBeFollowedByBlankLine" ruleCheckId="SA1513">
-        <context>Statements or elements wrapped in curly brackets must be followed by a blank line.</context>
-        <line>85</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Valor.</context>
-        <line>80</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: TipoObjetivo.</context>
-        <line>80</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Parametro.</context>
-        <line>80</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Cultura.</context>
-        <line>80</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The method must have a documentation header.</context>
-        <line>89</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Valor.</context>
-        <line>89</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: TipoObjetivo.</context>
-        <line>89</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Parametro.</context>
-        <line>89</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Cultura.</context>
-        <line>89</line>
-        <warning>False</warning>
-      </violation>
-    </violations>
-  </sourcecode>
-  <sourcecode name="AutentificacionView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>05/08/2012 14:07:30</timestamp>
-    <milliseconds>218</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="BarraDeEstadoView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>05/08/2012 14:07:30</timestamp>
-    <milliseconds>359</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="ConexionLocalView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>05/08/2012 14:07:30</timestamp>
-    <milliseconds>437</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="ConexionRemotaView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>05/08/2012 14:07:30</timestamp>
-    <milliseconds>484</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="DetectarServidoresLocalesView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>05/08/2012 14:07:30</timestamp>
-    <milliseconds>625</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="ExploradorView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>05/08/2012 14:07:30</timestamp>
-    <milliseconds>718</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="ExploradorView.xaml.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>05/03/2012 02:49:35</timestamp>
-    <milliseconds>703</milliseconds>
-    <violations>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
-        <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
-        <line>1</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>1</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>2</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>3</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>3</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>4</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>4</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>5</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>5</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>6</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>6</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>7</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>7</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>8</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>8</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>9</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>9</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>10</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>10</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>11</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>11</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>12</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>12</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>13</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>13</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>15</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>16</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives" ruleCheckId="SA1208">
-        <context>System using directives must be placed before all other using directives.</context>
-        <line>16</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>17</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>18</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>19</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace" ruleCheckId="SA1210">
-        <context>Using directives must be sorted alphabetically by the namespaces.</context>
-        <line>19</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.OrderingRules" rule="UsingDirectivesMustBePlacedWithinNamespace" ruleCheckId="SA1200">
-        <context>All using directives must be placed inside of the namespace.</context>
-        <line>20</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The constructor must have a documentation header.</context>
-        <line>31</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.ReadabilityRules" rule="PrefixLocalCallsWithThis" ruleCheckId="SA1101">
-        <context>The call to InitializeComponent must begin with the 'this.' prefix to indicate that the item is a member of the class.</context>
-        <line>33</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The method must have a documentation header.</context>
-        <line>40</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="ElementMustBeginWithUpperCaseLetter" ruleCheckId="SA1300">
-        <context>method names begin with an upper-case letter: tvi_Item_ClicBotonIzqRaton.</context>
-        <line>40</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Item.</context>
-        <line>42</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The method must have a documentation header.</context>
-        <line>52</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.LayoutRules" rule="CurlyBracketsMustNotBeOmitted" ruleCheckId="SA1503">
-        <context>The body of the if statement must be wrapped in opening and closing curly brackets.</context>
-        <line>57</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="ElementMustBeginWithUpperCaseLetter" ruleCheckId="SA1300">
-        <context>method names begin with an upper-case letter: tvi_Item_MouseEncima.</context>
-        <line>52</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Item.</context>
-        <line>54</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The method must have a documentation header.</context>
-        <line>60</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.LayoutRules" rule="CurlyBracketsMustNotBeOmitted" ruleCheckId="SA1503">
-        <context>The body of the if statement must be wrapped in opening and closing curly brackets.</context>
-        <line>65</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="ElementMustBeginWithUpperCaseLetter" ruleCheckId="SA1300">
-        <context>method names begin with an upper-case letter: tvi_Item_MouseAfuera.</context>
-        <line>60</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Item.</context>
-        <line>62</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The method must have a documentation header.</context>
-        <line>68</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.LayoutRules" rule="SingleLineCommentsMustNotBeFollowedByBlankLine" ruleCheckId="SA1512">
-        <context>A single-line comment must not be followed by a blank line. To ignore this error when commenting out a line of code, begin the comment with '////' rather than '//'.</context>
-        <line>73</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="ElementMustBeginWithUpperCaseLetter" ruleCheckId="SA1300">
-        <context>method names begin with an upper-case letter: dgr_Tabla_DestinoActualizado.</context>
-        <line>68</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
-        <context>Variable names must start with a lower-case letter: Grilla.</context>
-        <line>70</line>
         <warning>False</warning>
       </violation>
     </violations>

@@ -8,32 +8,34 @@
     using System.Text;
 
     using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
+    using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
     using Zuliaworks.Netzuela.Valeria.Datos.Web;        // ProxyDinamico
 
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
     /// </summary>
-    public class Netzuela : EventosComunes, IBaseDeDatos
+    public class Netzuela : EventosComunes, INetzuela
     {
         #region Variables
 
         private ClienteSpuria cliente;
-
-        // ¡Temporal!
-        private ConnectionState estado;
+        private ConnectionState estado;         // ¡Temporal!
 
         #endregion
 
         #region Constructores
 
-        public Netzuela(ParametrosDeConexion ServidorBD)
+        public Netzuela(ParametrosDeConexion servidorBd)
         {
-            this.DatosDeConexion = ServidorBD;
+            this.DatosDeConexion = servidorBd;
 
             // El argumento de ClienteValeria debe estar relacionado con DatosDeConexion
             this.cliente = new ClienteSpuria();
 
             // Inicializamos los manejadores de eventos
+            this.cliente.ListarTiendasCompletado -= this.ManejarListarTiendasCompletado;
+            this.cliente.ListarTiendasCompletado += this.ManejarListarTiendasCompletado;
+
             this.cliente.ListarBasesDeDatosCompletado -= this.ManejarListarBasesDeDatosCompletado;
             this.cliente.ListarBasesDeDatosCompletado += this.ManejarListarBasesDeDatosCompletado;
 
@@ -63,6 +65,12 @@
 
         #endregion
 
+        #region Eventos
+
+        public event EventHandler<EventoListarTiendasCompletadoArgs> ListarTiendasCompletado;
+
+        #endregion
+
         #region Funciones
 
         protected void Dispose(bool BorrarCodigoAdministrado)
@@ -73,6 +81,19 @@
             {
                 this.cliente.Dispose();
                 this.cliente = null;
+            }
+        }
+
+        protected void ManejarListarTiendasCompletado(object remitente, EventoListarTiendasCompletadoArgs args)
+        {
+            this.DispararListarTiendasCompletado(args);
+        }
+
+        protected virtual void DispararListarTiendasCompletado(EventoListarTiendasCompletadoArgs e)
+        {
+            if (this.ListarTiendasCompletado != null)
+            {
+                this.ListarTiendasCompletado(this, e);
             }
         }
 
@@ -108,14 +129,14 @@
 
         #region Métodos sincrónicos
 
-        public void Conectar(SecureString Usuario, SecureString Contrasena)
+        public void Conectar(SecureString usuario, SecureString contrasena)
         {
             try
             {
                 this.Desconectar();
 
                 this.cliente.UriWsdlServicio = this.DatosDeConexion.Anfitrion;
-                this.cliente.Armar();
+                this.cliente.Armar(usuario, contrasena);
                 
                 // Esto hay que borrarlo
                 this.Estado = ConnectionState.Open;
@@ -144,45 +165,45 @@
             }
         }
 
-        public string[] ListarBasesDeDatos()
+        public string[] ListarTiendas()
         {
-            List<string> Resultado = new List<string>();
+            string[] resultado = new string[] { };
 
             try
             {
-                Resultado = this.cliente.ListarBasesDeDatos().ToList();
+                resultado = this.cliente.ListarTiendas();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las bases de datos", ex);
+            }
+
+            return resultado;
+        }
+
+        public string[] ListarBasesDeDatos()
+        {
+            string[] resultado = new string[] {};
+
+            try
+            {
+                resultado = this.cliente.ListarBasesDeDatos();
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al listar las bases de datos", ex);
             }
             
-            return Resultado.ToArray();
+            return resultado;
         }
 
         public string[] ListarTablas(string baseDeDatos)
         {
-            List<string> resultado = new List<string>();
+            string[] resultado = new string[] { };
 
             try
             {
-                resultado = this.cliente.ListarTablas(baseDeDatos).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al listar las tablas", ex);
-            }
-
-            return resultado.ToArray();
-        }
-
-        public DataTable LeerTabla(string baseDeDatos, string tabla)
-        {            
-            DataTable resultado = new DataTable();
-
-            try
-            {
-                resultado = this.cliente.LeerTabla(baseDeDatos, tabla);
+                resultado = this.cliente.ListarTablas(baseDeDatos);
             }
             catch (Exception ex)
             {
@@ -192,13 +213,29 @@
             return resultado;
         }
 
-        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
+        public DataTable LeerTabla(int tiendaId, string baseDeDatos, string tabla)
+        {            
+            DataTable resultado = new DataTable();
+
+            try
+            {
+                resultado = this.cliente.LeerTabla(tiendaId, baseDeDatos, tabla);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las tablas", ex);
+            }
+
+            return resultado;
+        }
+
+        public bool EscribirTabla(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
         {
             bool resultado = false;
 
             try
             {
-                resultado = this.cliente.EscribirTabla(baseDeDatos, nombreTabla, tabla);
+                resultado = this.cliente.EscribirTabla(tiendaId, baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {
@@ -222,6 +259,18 @@
         #endregion
 
         #region Métodos asincrónicos
+
+        public void ListarTiendasAsinc()
+        {
+            try
+            {
+                this.cliente.ListarTiendasAsinc();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las bases de datos", ex);
+            }
+        }
 
         public void ListarBasesDeDatosAsinc()
         {
@@ -247,11 +296,11 @@
             }
         }
 
-        public void LeerTablaAsinc(string baseDeDatos, string tabla)
+        public void LeerTablaAsinc(int tiendaId, string baseDeDatos, string tabla)
         {
             try
             {
-                this.cliente.LeerTablaAsinc(baseDeDatos, tabla);
+                this.cliente.LeerTablaAsinc(tiendaId, baseDeDatos, tabla);
             }
             catch (Exception ex)
             {
@@ -259,11 +308,11 @@
             }
         }
 
-        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
+        public void EscribirTablaAsinc(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
         {
             try
             {
-                this.cliente.EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla);
+                this.cliente.EscribirTablaAsinc(tiendaId, baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {

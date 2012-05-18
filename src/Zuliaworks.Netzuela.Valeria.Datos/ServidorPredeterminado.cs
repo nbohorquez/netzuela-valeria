@@ -12,7 +12,7 @@
     /// <summary>
     /// Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.
     /// </summary>
-    public class ServidorPredeterminado : EventosComunes, IBaseDeDatos
+    public class ServidorPredeterminado : EventosComunes, IBaseDeDatosLocal
     {
         #region Variables
 

@@ -33,7 +33,7 @@
             Construye un explorador vacio.
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel},Zuliaworks.Netzuela.Valeria.Logica.Conexion)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.#ctor(System.Collections.ObjectModel.ObservableCollection{Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel},Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ConexionViewModel)">
             <summary>
             Construye un explorador con determinado arbol de nodos y proveedor de datos.
             </summary>
@@ -52,17 +52,17 @@
             <summary>
             Expande todos los nodos del árbol de nodos especificado.
             </summary>
-            <param name="Nodos">Arbol a expandir.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Nodos"/> es una referencia 
+            <param name="nodos">Arbol a expandir.</param>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="nodos"/> es una referencia 
             nula.</exception>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Expandir(Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.NodoViewModel)">
             <summary>
             Obtiene el contenido del nodo especificado desde el proveedor de datos.
             </summary>
-            <param name="Item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
+            <param name="item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
             especificados en <see cref="!:Constantes.NivelDeNodo"/>.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="Item"/> es una referencia 
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="item"/> es una referencia 
             nula.</exception>
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.ExploradorViewModel.Nodos">
@@ -156,6 +156,19 @@
             y asi poder vincularse (to bind) a ella desde el ViewModel.
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.OpcionesView">
+            <summary>
+            Lógica de interacción para ConfiguracionView.xaml
+            </summary>
+            <summary>
+            OpcionesView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.OpcionesView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.SincronizacionViewModel">
             <summary>
             
@@ -166,9 +179,14 @@
             Vuelve a vincular las columnas de destino con las de origen. Se emplea generalmente 
             cuando se actualizan las tablas de origen desde el servidor local.
             </summary>
-            <param name="NodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
+            <param name="nodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.MainViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels.OpcionesViewModel">
             <summary>
             
             </summary>
@@ -244,6 +262,19 @@
             La siguiente clase se utiliza para mostrar contenido por defecto cuando no hay nada 
             seleccionado en un ComboBox. El valor devuelto controla la propiedad "Visibility" de 
             un TextBox.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.SeleccionarTiendaView">
+            <summary>
+            Lógica de interacción para ListadoTiendasView.xaml
+            </summary>
+            <summary>
+            SeleccionarTiendaView
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views.SeleccionarTiendaView.InitializeComponent">
+            <summary>
+            InitializeComponent
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.SeleccionarTodaLaColumna">

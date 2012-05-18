@@ -164,19 +164,24 @@
         public static NodoViewModel RutaANodo(string Ruta, ObservableCollection<NodoViewModel> Arbol)
         {
             if (Ruta == null)
+            {
                 throw new ArgumentNullException("Ruta");
+            }
             else if (Arbol == null)
+            {
                 throw new ArgumentNullException("Arbol");
+            }
 
             NodoViewModel Resultado = null;
-
             string[] PasosDeLaRuta = Ruta.Split('\\');
-
             int i = 0;
-            foreach(string Paso in PasosDeLaRuta)
+
+            foreach (string Paso in PasosDeLaRuta)
             {
                 if (Paso == string.Empty)
+                {
                     continue;
+                }
 
                 if (i == 0)
                 {

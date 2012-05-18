@@ -1,7 +1,5 @@
 ﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
-    using MvvmFoundation.Wpf;                                   // RelayCommand, ObservableObject
-
     using System;
     using System.Collections.Generic;
     using System.Data;                                          // DataTable, ConnectionState
@@ -10,7 +8,8 @@
     using System.Text;
     using System.Windows;                                       // MessageBox
     using System.Windows.Input;                                 // ICommand
-    
+
+    using MvvmFoundation.Wpf;                                   // RelayCommand, ObservableObject
     using Zuliaworks.Netzuela.Valeria.Comunes;                  // DatosDeConexion, PasswordGenerator
     using Zuliaworks.Netzuela.Valeria.Logica;                   // Conexion
 
@@ -21,16 +20,13 @@
     {
         #region Variables
 
-        private PasswordGenerator _GeneradorDeContrasenas;
-        private RelayCommand _DetectarOrden;
-        private bool _MostrarAutentificacionView;
-        private bool _MostrarDetectarServidoresLocalesView;
-        private PropertyObserver<AutentificacionViewModel> _ObservadorAutentificacion;
-        private PropertyObserver<DetectarServidoresLocalesViewModel> _ObservadorServidores;
-        private AutentificacionViewModel _Autentificacion;
-        private DetectarServidoresLocalesViewModel _ServidoresDetectados;
-        private SecureString _UsuarioExterno;
-        private SecureString _ContrasenaExterna;
+        private PasswordGenerator generadorDeContrasenas;
+        private RelayCommand detectarOrden;
+        private bool mostrarDetectarServidoresLocalesView;
+        private PropertyObserver<DetectarServidoresLocalesViewModel> observadorServidores;
+        private DetectarServidoresLocalesViewModel servidoresDetectados;
+        private SecureString usuarioProtegido;
+        private SecureString contrasenaProtegida;
 
         #endregion
 
@@ -63,139 +59,67 @@
 
         #region Propiedades
 
-        public SecureString UsuarioNetzuela { get; private set; }
-        public SecureString ContrasenaNetzuela { get; private set; }
-
-        public AutentificacionViewModel Autentificacion
-        {
-            get { return _Autentificacion; }
-            private set
-            {
-                if (value != _Autentificacion)
-                {
-                    _Autentificacion = value;
-                    RaisePropertyChanged("Autentificacion");
-                }
-            }
-        }
-
         public DetectarServidoresLocalesViewModel ServidoresDetectados
         {
-            get { return _ServidoresDetectados; }
+            get 
+            { 
+                return servidoresDetectados; 
+            }
             set
             {
-                if (value != _ServidoresDetectados)
+                if (value != servidoresDetectados)
                 {
-                    _ServidoresDetectados = value;
-                    RaisePropertyChanged("ServidoresDetectados");
-                }
-            }
-        }
-
-        public bool MostrarAutentificacionView
-        {
-            get { return _MostrarAutentificacionView; }
-            set 
-            {
-                if (value != _MostrarAutentificacionView)
-                {
-                    _MostrarAutentificacionView = value;
-                    RaisePropertyChanged("MostrarAutentificacionView");
+                    servidoresDetectados = value;
+                    this.RaisePropertyChanged("ServidoresDetectados");
                 }
             }
         }
 
         public bool MostrarDetectarServidoresLocalesView
         {
-            get { return _MostrarDetectarServidoresLocalesView; }
+            get 
+            { 
+                return mostrarDetectarServidoresLocalesView; 
+            }
             set
             {
-                if (value != _MostrarDetectarServidoresLocalesView)
+                if (value != mostrarDetectarServidoresLocalesView)
                 {
-                    _MostrarDetectarServidoresLocalesView = value;
-                    RaisePropertyChanged("MostrarDetectarServidoresLocalesView");
+                    mostrarDetectarServidoresLocalesView = value;
+                    this.RaisePropertyChanged("MostrarDetectarServidoresLocalesView");
                 }
             }
         }
 
         public ICommand DetectarOrden
         {
-            get { return _DetectarOrden ?? (_DetectarOrden = new RelayCommand(this.AbrirDetectarServidores)); }
+            get { return detectarOrden ?? (detectarOrden = new RelayCommand(this.AbrirDetectarServidores)); }
         }
 
         #endregion
 
         #region Funciones
 
-        protected void Dispose(bool borrarCodigoAdministrado)
-        {
-            _GeneradorDeContrasenas = null;
-            _DetectarOrden = null;
-            _MostrarAutentificacionView = false;
-            _MostrarDetectarServidoresLocalesView = false;
-            _ObservadorAutentificacion = null;
-            _ObservadorServidores = null;
-        
-            if (borrarCodigoAdministrado)
-            {
-                if (UsuarioNetzuela != null)
-                {
-                    UsuarioNetzuela.Dispose();
-                    UsuarioNetzuela = null;
-                }
-
-                if (ContrasenaNetzuela != null)
-                {
-                    ContrasenaNetzuela.Dispose();
-                    ContrasenaNetzuela = null;
-                }
-
-                if (_Autentificacion != null)
-                {
-                    _Autentificacion.Dispose();
-                    _Autentificacion = null;
-                }
-
-                if (_Autentificacion != null)
-                {
-                    _ServidoresDetectados.Dispose();
-                    _ServidoresDetectados = null;
-                }
-
-                if (_UsuarioExterno != null)
-                {
-                    _UsuarioExterno.Dispose();
-                    _UsuarioExterno = null;
-                }
-
-                if (_ContrasenaExterna != null)
-                {
-                    _ContrasenaExterna.Dispose();
-                    _ContrasenaExterna = null;
-                }
-
-                if (this._Conexion != null)
-                {
-                    this._Conexion.Dispose();
-                    this._Conexion = null;
-                }
-            }
-        }
-
         private void InicializarGeneradorDeContrasenas()
         {
-            _GeneradorDeContrasenas = new PasswordGenerator();
-            _GeneradorDeContrasenas.ConsecutiveCharacters = false;
-            _GeneradorDeContrasenas.RepeatCharacters = false;
-            _GeneradorDeContrasenas.Maximum = 20;
-            _GeneradorDeContrasenas.Minimum = 18;
+            generadorDeContrasenas = new PasswordGenerator();
+            generadorDeContrasenas.ConsecutiveCharacters = false;
+            generadorDeContrasenas.RepeatCharacters = false;
+            generadorDeContrasenas.Maximum = 20;
+            generadorDeContrasenas.Minimum = 18;
         }
 
         private void AbrirDetectarServidores()
         {
+            if (ServidoresDetectados != null)
+            {
+                ServidoresDetectados.Dispose();
+                ServidoresDetectados = null;
+            }
+
             ServidoresDetectados = new DetectarServidoresLocalesViewModel();
 
-            _ObservadorServidores = new PropertyObserver<DetectarServidoresLocalesViewModel>(this.ServidoresDetectados)
+            observadorServidores = new PropertyObserver<DetectarServidoresLocalesViewModel>(this.ServidoresDetectados)
                 .RegisterHandler(n => n.MostrarView, this.CerrarDetectarServidores);
 
             MostrarDetectarServidoresLocalesView = true;
@@ -209,6 +133,8 @@
                 {
                     MostrarDetectarServidoresLocalesView = false;
                     Parametros = ServidoresVM.Parametros.Clonar();
+                    ServidoresVM.Dispose();
+                    ServidoresDetectados = null;
                 }
             }
             catch (Exception ex)
@@ -217,97 +143,180 @@
             }
         }
 
-        private void AbrirAutentificacion()
+        private void ConexionProtegida()
         {
-            Autentificacion = new AutentificacionViewModel();
+            this.Conectar(usuarioProtegido, contrasenaProtegida);
 
-            _ObservadorAutentificacion = new PropertyObserver<AutentificacionViewModel>(this.Autentificacion)
-                .RegisterHandler(n => n.MostrarView, this.CerrarAutentificacion);
-            
-            MostrarAutentificacionView = true;
+            // Borramos todo aquello que pudiese resultar atractivo para alguien con malas intenciones
+            if (usuarioProtegido != null)
+            {
+                usuarioProtegido.Dispose();
+                usuarioProtegido = null;
+            }
+            if (contrasenaProtegida != null)
+            {
+                contrasenaProtegida.Dispose();
+                contrasenaProtegida = null;
+            }
         }
 
-        private void CerrarAutentificacion(AutentificacionViewModel AutentificacionVM)
+        protected void Dispose(bool borrarCodigoAdministrado)
+        {
+            generadorDeContrasenas = null;
+            detectarOrden = null;
+            mostrarAutentificacionView = false;
+            mostrarDetectarServidoresLocalesView = false;
+            observadorAutentificacion = null;
+            observadorServidores = null;
+
+            if (borrarCodigoAdministrado)
+            {
+                if (Usuario != null)
+                {
+                    Usuario.Dispose();
+                    Usuario = null;
+                }
+
+                if (Contrasena != null)
+                {
+                    Contrasena.Dispose();
+                    Contrasena = null;
+                }
+
+                if (autentificacion != null)
+                {
+                    autentificacion.Dispose();
+                    autentificacion = null;
+                }
+
+                if (servidoresDetectados != null)
+                {
+                    servidoresDetectados.Dispose();
+                    servidoresDetectados = null;
+                }
+
+                if (usuarioProtegido != null)
+                {
+                    usuarioProtegido.Dispose();
+                    usuarioProtegido = null;
+                }
+
+                if (contrasenaProtegida != null)
+                {
+                    contrasenaProtegida.Dispose();
+                    contrasenaProtegida = null;
+                }
+
+                if (this.conexion != null)
+                {
+                    this.conexion.Dispose();
+                    this.conexion = null;
+                }
+            }
+        }
+
+        protected override void CerrarAutentificacion(AutentificacionViewModel AutentificacionVM)
         {
             try
             {
                 if (AutentificacionVM.MostrarView == false)
                 {
                     MostrarAutentificacionView = false;
-
-                    _UsuarioExterno = AutentificacionVM.Usuario.Copy();
-                    _ContrasenaExterna = AutentificacionVM.Contrasena.Copy();
-                                    
-                    ConexionUsuario();
+                    usuarioProtegido = AutentificacionVM.Usuario.Copy();
+                    contrasenaProtegida = AutentificacionVM.Contrasena.Copy();
+                    AutentificacionVM.Dispose();
+                    Autentificacion = null;
+                    ConexionProtegida();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.MostrarPilaDeExcepciones());
-            }            
-        }
-
-        private void ConexionUsuario()
-        {
-            base.Conectar(_UsuarioExterno, _ContrasenaExterna);
-
-            // Borramos todo aquello que pudiese resultar atractivo para alguien con malas intenciones
-            if (_UsuarioExterno != null)
-            {
-                _UsuarioExterno.Dispose();
-                Autentificacion.Usuario = null;
-                _UsuarioExterno = null;
-            }
-            if (_ContrasenaExterna != null)
-            {
-                _ContrasenaExterna.Dispose();
-                Autentificacion.Contrasena = null;
-                _ContrasenaExterna = null;
             }
         }
 
-        protected override void ConectarDesconectar()
-        {
-            if (Estado == ConnectionState.Open)
-            {
-                base.Desconectar();
-            }
-            else
-            {
-                AbrirAutentificacion();
-            }
-        }
-            
-        public void ConexionNetzuela()
-        {
-            try
-            {
-                base.Conectar(UsuarioNetzuela, ContrasenaNetzuela);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al tratar de establecer la conexión local con el usuario Netzuela", ex);
-            }
-        }
-        
-        public bool CrearUsuarioNetzuela(string[] ColumnasAutorizadas)
+        public bool CrearUsuarioOrdinario(string[] ColumnasAutorizadas)
         {
             bool Resultado = false;
             // ¿Será un problema de seguridad grave colocar el nombre "netzuela" asi tan a la vista?
-            UsuarioNetzuela = "netzuela".ConvertirASecureString();
-            ContrasenaNetzuela = _GeneradorDeContrasenas.Generate().ConvertirASecureString();
+            Usuario = "netzuela".ConvertirASecureString();
+            Contrasena = generadorDeContrasenas.Generate().ConvertirASecureString();
 
             try
             {
-                Resultado = this._Conexion.CrearUsuario(UsuarioNetzuela, ContrasenaNetzuela, ColumnasAutorizadas, Privilegios.Seleccionar);
+                Resultado = this.conexion.CrearUsuario(Usuario, Contrasena, ColumnasAutorizadas, Privilegios.Seleccionar);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al crear el usuario Netzuela", ex);
+                throw new Exception("Error al crear el usuario ordinario", ex);
             }
 
             return Resultado;
         }
+
+        #region Métodos sincrónicos
+
+        public override DataTable LeerTabla(string baseDeDatos, string tabla)
+        {
+            DataTable resultado = null;
+
+            try
+            {
+                resultado = this.Conexion.LeerTabla(baseDeDatos, tabla);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
+        public override bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
+        {
+            bool resultado = false;
+
+            try
+            {
+                resultado = this.Conexion.EscribirTabla(baseDeDatos, nombreTabla, tabla);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
+        #endregion
+
+        #region Métodos asincrónicos
+
+        public override void LeerTablaAsinc(string baseDeDatos, string tabla)
+        {
+            try
+            {
+                this.Conexion.LeerTablaAsinc(baseDeDatos, tabla);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public override void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
+        {
+            try
+            {
+                this.Conexion.EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
 
         #endregion
 

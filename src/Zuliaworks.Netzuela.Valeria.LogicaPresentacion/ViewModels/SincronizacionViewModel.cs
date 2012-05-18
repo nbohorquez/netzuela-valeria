@@ -1,7 +1,5 @@
 ﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
-    using MvvmFoundation.Wpf;                               // RelayCommand
-
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;                   // ObservableCollection
@@ -10,7 +8,8 @@
     using System.Text;
     using System.Windows;                                   // MessageBox
     using System.Windows.Input;                             // ICommand
-    
+
+    using MvvmFoundation.Wpf;                               // RelayCommand
     using Zuliaworks.Netzuela.Valeria.Comunes;              // Constantes
     using Zuliaworks.Netzuela.Valeria.Logica;               // TablaMapeada
     using Zuliaworks.Netzuela.Valeria.LogicaPresentacion;   // ManipuladorDeTablas
@@ -22,11 +21,11 @@
     {
         #region Variables
 
-        private RelayCommand<object[]> _AsociarOrden;
-        private RelayCommand<object> _DesasociarOrden;
-        private RelayCommand _ListoOrden;
-        private bool _Listo;
-        private bool _PermitirModificaciones;
+        private RelayCommand<object[]> asociarOrden;
+        private RelayCommand<object> desasociarOrden;
+        private RelayCommand listoOrden;
+        private bool listo;
+        private bool permitirModificaciones;
 
         #endregion
 
@@ -34,19 +33,19 @@
 
         public SincronizacionViewModel()
         {
-            Tablas = new List<TablaDeAsociaciones>();
+            this.Tablas = new List<TablaDeAsociaciones>();
         }
 
-        public SincronizacionViewModel(List<NodoViewModel> Nodos)
+        public SincronizacionViewModel(List<NodoViewModel> nodos)
             : base()
         {
-            foreach (NodoViewModel Nodo in Nodos)
+            foreach (NodoViewModel nodo in nodos)
             {
                 /*
                  * Creamos una TablaMapeada por cada Tabla listada en el servidor remoto.
                  * Posteriormente se agregaran MapeoDeColumnas a estas TablaMapeada.
                  */
-                Tablas.Add(Nodo.CrearTablaDeAsociaciones());
+                this.Tablas.Add(nodo.CrearTablaDeAsociaciones());
             }
         }
 
@@ -63,55 +62,55 @@
 
         public bool Listo
         {
-            get { return _Listo; }
+            get { return listo; }
             private set
             {
-                if (value != _Listo)
+                if (value != listo)
                 {
-                    _Listo = value;
-                    RaisePropertyChanged("Listo");
+                    listo = value;
+                    this.RaisePropertyChanged("Listo");
                 }
             }
         }
         
         public string BotonSincronizar
         {
-            get { return (Listo == true) ? "Desincronizar" : "Sincronizar"; }
+            get { return (this.Listo == true) ? "Desincronizar" : "Sincronizar"; }
         }
 
         public bool PermitirModificaciones
         {
-            get { return (Listo == true) ? false : true; }
+            get { return (this.Listo == true) ? false : true; }
         }
 
         public ICommand AsociarOrden
         {
-            get { return _AsociarOrden ?? (_AsociarOrden = new RelayCommand<object[]>(param => this.AsociarAccion(param))); }
+            get { return this.asociarOrden ?? (this.asociarOrden = new RelayCommand<object[]>(param => this.AsociarAccion(param))); }
         }
 
         public ICommand DesasociarOrden
         {
-            get { return _DesasociarOrden ?? (_DesasociarOrden = new RelayCommand<object>(param => this.DesasociarAccion(param))); }
+            get { return this.desasociarOrden ?? (this.desasociarOrden = new RelayCommand<object>(param => this.DesasociarAccion(param))); }
         }
 
         public ICommand ListoOrden
         {
-            get { return _ListoOrden ?? (_ListoOrden = new RelayCommand(() => ListoAccion())); }
+            get { return this.listoOrden ?? (this.listoOrden = new RelayCommand(() => this.ListoAccion())); }
         }
 
         #endregion
 
         #region Funciones
 
-        private void AsociarAccion(object[] Argumento)
+        private void AsociarAccion(object[] argumento)
         {
             try
             {
-                NodoViewModel NodoOrigen = (NodoViewModel)Argumento[0];
-                NodoViewModel NodoDestino = (NodoViewModel)Argumento[1];
+                NodoViewModel nodoOrigen = (NodoViewModel)argumento[0];
+                NodoViewModel nodoDestino = (NodoViewModel)argumento[1];
 
-                Asociar(NodoOrigen, NodoDestino);
-                ManipuladorDeTablas.IntegrarTabla(NodoDestino.Padre.BuscarEnRepositorioDeTablas(), NodoDestino.Sociedad.TablaPadre);
+                Asociar(nodoOrigen, nodoDestino);
+                ManipuladorDeTablas.IntegrarTabla(nodoDestino.Padre.BuscarEnRepositorioDeTablas(), nodoDestino.Sociedad.TablaPadre);
             }
             catch (Exception ex)
             {
@@ -119,14 +118,14 @@
             }
         }
 
-        private void DesasociarAccion(object Argumento)
+        private void DesasociarAccion(object argumento)
         {
             try
             {
-                NodoViewModel NodoDestino = (NodoViewModel)Argumento;
-                
-                Desasociar(NodoDestino);
-                ManipuladorDeTablas.IntegrarTabla(NodoDestino.Padre.BuscarEnRepositorioDeTablas(), NodoDestino.Sociedad.TablaPadre);
+                NodoViewModel nodoDestino = (NodoViewModel)argumento;
+
+                this.Desasociar(nodoDestino);
+                ManipuladorDeTablas.IntegrarTabla(nodoDestino.Padre.BuscarEnRepositorioDeTablas(), nodoDestino.Sociedad.TablaPadre);
             }
             catch (Exception ex)
             {
@@ -138,7 +137,7 @@
         {
             try
             {
-                ConmutarListo();
+                this.ConmutarListo();
             }
             catch (Exception ex)
             {
@@ -148,90 +147,92 @@
 
         private void ConmutarListo()
         {
-            Listo = !Listo;
-            RaisePropertyChanged("BotonSincronizar");
-            RaisePropertyChanged("PermitirModificaciones");
+            this.Listo = !this.Listo;
+            this.RaisePropertyChanged("BotonSincronizar");
+            this.RaisePropertyChanged("PermitirModificaciones");
         }
 
         private void ListoTrue()
         {
-            if (Listo == false)
+            if (this.Listo == false)
             {
-                ConmutarListo();
+                this.ConmutarListo();
             }
         }
 
         private void ListoFalse()
         {
-            if (Listo == true)
+            if (this.Listo == true)
             {
-                ConmutarListo();
+                this.ConmutarListo();
             }
         }
 
-        private void Asociar(NodoViewModel NodoOrigen, NodoViewModel NodoDestino)
+        private void Asociar(NodoViewModel nodoOrigen, NodoViewModel nodoDestino)
         {
-            if (NodoOrigen == null)
+            if (nodoOrigen == null)
             {
-                throw new ArgumentNullException("NodoOrigen");
+                throw new ArgumentNullException("nodoOrigen");
             }
 
-            if (NodoDestino == null)
+            if (nodoDestino == null)
             {
-                throw new ArgumentNullException("NodoDestino");
+                throw new ArgumentNullException("nodoDestino");
             }
 
-            DataTable TablaOrigen = NodoOrigen.Padre.BuscarEnRepositorioDeTablas();
-            DataTable TablaDestino = NodoDestino.Padre.BuscarEnRepositorioDeTablas();
+            DataTable tablaOrigen = nodoOrigen.Padre.BuscarEnRepositorioDeTablas();
+            DataTable tablaDestino = nodoDestino.Padre.BuscarEnRepositorioDeTablas();
 
-            Type TipoOrigen = TablaOrigen.Columns[NodoOrigen.Nombre].DataType;
-            Type TipoDestino = TablaDestino.Columns[NodoDestino.Nombre].DataType;
+            Type tipoOrigen = tablaOrigen.Columns[nodoOrigen.Nombre].DataType;
+            Type tipoDestino = tablaDestino.Columns[nodoDestino.Nombre].DataType;
 
-            if (TipoOrigen != TipoDestino)
+            if (tipoOrigen != tipoDestino)
             {
                 throw new Exception("Los tipos de datos de ambas columnas tienen que ser iguales. "
-                                    + TipoOrigen.ToString() + " != " + TipoDestino.ToString());
+                                    + tipoOrigen.ToString() + " != " + tipoDestino.ToString());
             }
 
             /*
              * Si es la primera vez que asociamos un nodo de esta tabla, agregamos a Tablas
              * una nueva AsociacionDeColumnas cuya ColumnaDestino sea NodoDestino.
              */
-            if (NodoDestino.Padre.TablaDeSocios == null)
+            if (nodoDestino.Padre.TablaDeSocios == null)
             {
-                Tablas.Add(NodoDestino.Padre.CrearTablaDeAsociaciones());
+                Tablas.Add(nodoDestino.Padre.CrearTablaDeAsociaciones());
             }
 
-            NodoDestino.AsociarCon(NodoOrigen);
+            nodoDestino.AsociarCon(nodoOrigen);
         }
 
-        private void Desasociar(NodoViewModel NodoDestino)
+        private void Desasociar(NodoViewModel nodoDestino)
         {
-            if (NodoDestino == null)
-                throw new ArgumentNullException("NodoDestino");
+            if (nodoDestino == null)
+            {
+                throw new ArgumentNullException("nodoDestino");
+            }
 
-            NodoDestino.Desasociarse();
+            nodoDestino.Desasociarse();
         }
 
         protected void Dispose(bool borrarCodigoAdministrado)
         {
-            _AsociarOrden = null;
-            _DesasociarOrden = null;
-            _ListoOrden = null;
-            _Listo = false;
-            _PermitirModificaciones = false;
+            this.asociarOrden = null;
+            this.desasociarOrden = null;
+            this.listoOrden = null;
+            this.listo = false;
+            this.permitirModificaciones = false;
 
             if (borrarCodigoAdministrado)
             {
-                if (Tablas != null)
+                if (this.Tablas != null)
                 {
-                    for (int i = 0; i < Tablas.Count; i++)
+                    for (int i = 0; i < this.Tablas.Count; i++)
                     {
-                        Tablas[i].Dispose();
+                        this.Tablas[i].Dispose();
                     }
 
-                    Tablas.Clear();
-                    Tablas = null;
+                    this.Tablas.Clear();
+                    this.Tablas = null;
                 }
             }
         }
@@ -240,10 +241,10 @@
         {
             try
             {
-                foreach (TablaDeAsociaciones TM in Tablas)
+                foreach (TablaDeAsociaciones tm in this.Tablas)
                 {
-                    DataTable tabla = TM.NodoTabla.BuscarEnRepositorioDeNodos().BuscarEnRepositorioDeTablas();
-                    ManipuladorDeTablas.ActualizarTabla(tabla, TM);
+                    DataTable tabla = tm.NodoTabla.BuscarEnRepositorioDeNodos().BuscarEnRepositorioDeTablas();
+                    ManipuladorDeTablas.ActualizarTabla(tabla, tm);
                 }
             }
             catch (Exception ex)
@@ -252,22 +253,22 @@
             }
         }
         
-        public void Sincronizar(ObservableCollection<NodoViewModel> NodosLocales, ObservableCollection<NodoViewModel> NodosRemotos, List<string[]> Asociaciones)
+        public void Sincronizar(ObservableCollection<NodoViewModel> nodosLocales, ObservableCollection<NodoViewModel> nodosRemotos, List<string[]> asociaciones)
         {
-            NodoViewModel NodoOrigen = null;
-            NodoViewModel NodoDestino = null;
+            NodoViewModel nodoOrigen = null;
+            NodoViewModel nodoDestino = null;
 
             try
             {
-                foreach (string[] Asociacion in Asociaciones)
+                foreach (string[] asociacion in asociaciones)
                 {
-                    NodoOrigen = NodoViewModelExtensiones.RutaANodo(Asociacion[0], NodosLocales);
-                    NodoDestino = NodoViewModelExtensiones.RutaANodo(Asociacion[1], NodosRemotos);
+                    nodoOrigen = NodoViewModelExtensiones.RutaANodo(asociacion[0], nodosLocales);
+                    nodoDestino = NodoViewModelExtensiones.RutaANodo(asociacion[1], nodosRemotos);
 
-                    Asociar(NodoOrigen, NodoDestino);
+                    this.Asociar(nodoOrigen, nodoDestino);
                 }
 
-                ListoTrue();
+                this.ListoTrue();
             }
             catch (Exception ex)
             {
@@ -279,27 +280,29 @@
         /// Vuelve a vincular las columnas de destino con las de origen. Se emplea generalmente 
         /// cuando se actualizan las tablas de origen desde el servidor local.
         /// </summary>
-        /// <param name="NodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
-        public void RecargarTablasLocales(ObservableCollection<NodoViewModel> NodosLocales)
+        /// <param name="nodosLocales">Es la coleccion de nodos que contiene las columnas de origen nuevas</param>
+        public void RecargarTablasLocales(ObservableCollection<NodoViewModel> nodosLocales)
         {
-            string RutaNodoOrigen = string.Empty;
-            NodoViewModel NodoDestino = null;
-            NodoViewModel NodoOrigen = null;
+            string rutaNodoOrigen = string.Empty;
+            NodoViewModel nodoDestino = null;
+            NodoViewModel nodoOrigen = null;
 
             try
             {
-                foreach (TablaDeAsociaciones TM in Tablas)
+                foreach (TablaDeAsociaciones tm in this.Tablas)
                 {
-                    foreach (AsociacionDeColumnas MC in TM.Sociedades)
+                    foreach (AsociacionDeColumnas mc in tm.Sociedades)
                     {
-                        if (MC.ColumnaOrigen == null)
+                        if (mc.ColumnaOrigen == null)
+                        {
                             continue;
+                        }
 
-                        RutaNodoOrigen = MC.ColumnaOrigen.BuscarEnRepositorioDeNodos().RutaCompleta();
-                        NodoOrigen = NodoViewModelExtensiones.RutaANodo(RutaNodoOrigen, NodosLocales);
-                        NodoDestino = MC.ColumnaDestino.BuscarEnRepositorioDeNodos();
+                        rutaNodoOrigen = mc.ColumnaOrigen.BuscarEnRepositorioDeNodos().RutaCompleta();
+                        nodoOrigen = NodoViewModelExtensiones.RutaANodo(rutaNodoOrigen, nodosLocales);
+                        nodoDestino = mc.ColumnaDestino.BuscarEnRepositorioDeNodos();
 
-                        Asociar(NodoOrigen, NodoDestino);
+                        this.Asociar(nodoOrigen, nodoDestino);
                     }
                 }
             }
@@ -315,10 +318,10 @@
             // al objeto interno
             Dictionary<NodoViewModel, DataTable> resultado = new Dictionary<NodoViewModel, DataTable>();
 
-            foreach (TablaDeAsociaciones TA in Tablas)
+            foreach (TablaDeAsociaciones ta in this.Tablas)
             {
-                NodoViewModel NodoTabla = TA.NodoTabla.BuscarEnRepositorioDeNodos();
-                resultado.Add(NodoTabla, NodoTabla.BuscarEnRepositorioDeTablas());
+                NodoViewModel nodoTabla = ta.NodoTabla.BuscarEnRepositorioDeNodos();
+                resultado.Add(nodoTabla, nodoTabla.BuscarEnRepositorioDeTablas());
             }
 
             return resultado;
@@ -326,13 +329,13 @@
         
         public string[] RutasDeNodosDeOrigen()
         {
-            List<string> NodosOrigen = new List<string>();
+            List<string> nodosOrigen = new List<string>();
 
             try
             {
-                foreach (NodoViewModel Nodo in NodosDeOrigen())
+                foreach (NodoViewModel nodo in this.NodosDeOrigen())
                 {
-                    NodosOrigen.Add(Nodo.RutaCompleta());
+                    nodosOrigen.Add(nodo.RutaCompleta());
                 }
             }
             catch (Exception ex)
@@ -340,18 +343,18 @@
                 throw new Exception("Error al listar las rutas de los nodos de origen", ex);
             }
 
-            return NodosOrigen.ToArray();
+            return nodosOrigen.ToArray();
         }
 
         public string[] RutasDeNodosDeDestino()
         {
-            List<string> NodosDestino = new List<string>();
+            List<string> nodosDestino = new List<string>();
             
             try
             {
-                foreach (NodoViewModel Nodo in NodosDeDestino())
+                foreach (NodoViewModel nodo in this.NodosDeDestino())
                 {
-                    NodosDestino.Add(Nodo.RutaCompleta());
+                    nodosDestino.Add(nodo.RutaCompleta());
                 }
             }
             catch (Exception ex)
@@ -359,22 +362,24 @@
                 throw new Exception("Error al listar las rutas de los nodos de destino", ex);
             }
 
-            return NodosDestino.ToArray();
+            return nodosDestino.ToArray();
         }
 
         public NodoViewModel[] NodosDeOrigen()
         {
-            List<NodoViewModel> NodosOrigen = new List<NodoViewModel>();
+            List<NodoViewModel> nodosOrigen = new List<NodoViewModel>();
 
             try
             {
                 // Obtenemos las columnas de origen que son utilizadas en la sincronizacion
-                foreach (TablaDeAsociaciones TM in Tablas)
+                foreach (TablaDeAsociaciones tm in this.Tablas)
                 {
-                    foreach (AsociacionDeColumnas MC in TM.Sociedades)
+                    foreach (AsociacionDeColumnas mc in tm.Sociedades)
                     {
-                        if (MC.ColumnaOrigen != null)
-                            NodosOrigen.Add(MC.ColumnaOrigen.BuscarEnRepositorioDeNodos());
+                        if (mc.ColumnaOrigen != null)
+                        {
+                            nodosOrigen.Add(mc.ColumnaOrigen.BuscarEnRepositorioDeNodos());
+                        }
                     }
                 }
             }
@@ -383,22 +388,24 @@
                 throw new Exception("Error al listar los nodos de origen", ex);
             }
 
-            return NodosOrigen.ToArray();
+            return nodosOrigen.ToArray();
         }
 
         public NodoViewModel[] NodosDeDestino()
         {
-            List<NodoViewModel> NodosDestino = new List<NodoViewModel>();
+            List<NodoViewModel> nodosDestino = new List<NodoViewModel>();
 
             try
             {
                 // Obtenemos las columnas de destino que son utilizadas en la sincronizacion
-                foreach (TablaDeAsociaciones TM in Tablas)
+                foreach (TablaDeAsociaciones tm in this.Tablas)
                 {
-                    foreach (AsociacionDeColumnas MC in TM.Sociedades)
+                    foreach (AsociacionDeColumnas mc in tm.Sociedades)
                     {
-                        if (MC.ColumnaDestino != null)
-                            NodosDestino.Add(MC.ColumnaDestino.BuscarEnRepositorioDeNodos());
+                        if (mc.ColumnaDestino != null)
+                        {
+                            nodosDestino.Add(mc.ColumnaDestino.BuscarEnRepositorioDeNodos());
+                        }
                     }
                 }
             }
@@ -407,7 +414,7 @@
                 throw new Exception("Error al listar los nodos de destino", ex);
             }
 
-            return NodosDestino.ToArray();
+            return nodosDestino.ToArray();
         }
 
         #endregion

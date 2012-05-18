@@ -63,17 +63,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBISAM.cs" />
-    <Compile Include="EventoConsultarCompletadoArgs.cs" />
-    <Compile Include="EventoCrearUsuarioCompletadoArgs.cs" />
-    <Compile Include="EventoEscribirTablaCompletadoArgs.cs" />
-    <Compile Include="EventoLeerTablaCompletadoArgs.cs" />
-    <Compile Include="EventoListarBDsCompletadoArgs.cs" />
-    <Compile Include="EventoListarTablasCompletadoArgs.cs" />
-    <Compile Include="EventoOperacionAsincCompletadaArgs.cs" />
+    <Compile Include="Eventos\EventoConsultarCompletadoArgs.cs" />
+    <Compile Include="Eventos\EventoCrearUsuarioCompletadoArgs.cs" />
+    <Compile Include="Eventos\EventoEscribirTablaCompletadoArgs.cs" />
+    <Compile Include="Eventos\EventoLeerTablaCompletadoArgs.cs" />
+    <Compile Include="Eventos\EventoListarBDsCompletadoArgs.cs" />
+    <Compile Include="Eventos\EventoListarTablasCompletadoArgs.cs" />
+    <Compile Include="Eventos\EventoListarTiendasCompletadoArgs.cs" />
+    <Compile Include="Eventos\EventoOperacionAsincCompletadaArgs.cs" />
     <Compile Include="EventosComunes.cs" />
+    <Compile Include="IBaseDeDatosLocal.cs" />
+    <Compile Include="INetzuela.cs" />
     <Compile Include="Web\ClienteSpuria.Operaciones.cs" />
     <Compile Include="Web\ProxyDinamico.cs" />
-    <Compile Include="IBaseDeDatos.cs" />
+    <Compile Include="IBaseDeDatosComun.cs" />
     <Compile Include="MySQL.cs" />
     <Compile Include="MySQL.Detectar.cs" />
     <Compile Include="Netzuela.cs" />

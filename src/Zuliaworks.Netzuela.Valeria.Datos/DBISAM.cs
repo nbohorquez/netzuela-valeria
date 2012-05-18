@@ -8,7 +8,7 @@
 
     using Zuliaworks.Netzuela.Valeria.Comunes;      // ParametrosDeConexion
 
-    public class DBISAM : EventosComunes, IBaseDeDatos
+    public class DBISAM : EventosComunes, IBaseDeDatosLocal
     {
         #region Constructores
 

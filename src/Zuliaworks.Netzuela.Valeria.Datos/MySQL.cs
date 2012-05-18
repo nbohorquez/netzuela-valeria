@@ -13,9 +13,9 @@
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos MySQL
     /// </summary>
-    public partial class MySQL : EventosComunes, IBaseDeDatos
+    public partial class MySQL : EventosComunes, IBaseDeDatosLocal
     {
-        #region Variables y constantes
+        #region Variables y Constantes
 
         private static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
         {

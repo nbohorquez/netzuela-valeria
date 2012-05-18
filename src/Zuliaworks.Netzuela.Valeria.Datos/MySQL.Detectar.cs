@@ -81,7 +81,7 @@
                 {
                     if (s.Contains(NOMBRE_MYSQL_EN_REGISTRO))
                     {
-                        Registro = Registry.LocalMachine.OpenSubKey(LOCALIZACION_MYSQL_EN_REGISTRO + "\\" +  s);
+                        Registro = Registry.LocalMachine.OpenSubKey(LOCALIZACION_MYSQL_EN_REGISTRO + "\\" + s);
                         string Ruta = (string)Registro.GetValue("Location");
 
                         if (Ruta != null)

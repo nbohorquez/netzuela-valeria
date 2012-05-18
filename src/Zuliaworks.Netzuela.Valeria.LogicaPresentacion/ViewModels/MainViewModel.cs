@@ -11,7 +11,6 @@
     using System.Windows.Threading;                 // DispatcherTimer
     
     using MvvmFoundation.Wpf;                       // PropertyObserver<>, ObservableObject
-
     using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
     using Zuliaworks.Netzuela.Valeria.Logica;       // TablaMapeada
 
@@ -22,16 +21,15 @@
     {
         #region Variables
 
-        private Configuracion _ConfiguracionLocal;
-        private ExploradorViewModel _ExploradorLocal;
-        private ExploradorViewModel _ExploradorRemoto;
-        private SincronizacionViewModel _LocalARemota;
-        private bool _SistemaConfigurado;
-        private readonly PropertyObserver<ConexionLocalViewModel> _ObservadorConexionLocalEstablecida;
-        private readonly PropertyObserver<ConexionRemotaViewModel> _ObservadorConexionRemotaEstablecida;
-        private PropertyObserver<SincronizacionViewModel> _ObservadorSincronizacion;
-        private DispatcherTimer _Temporizador;
-        private string _TiendaID;
+        private readonly PropertyObserver<ConexionLocalViewModel> observadorConexionLocalEstablecida;
+        private readonly PropertyObserver<ConexionRemotaViewModel> observadorConexionRemotaEstablecida;
+        private PropertyObserver<SincronizacionViewModel> observadorSincronizacion;
+        private Configuracion configuracion;
+        private ExploradorViewModel exploradorLocal;
+        private ExploradorViewModel exploradorRemoto;
+        private SincronizacionViewModel localARemota;
+        private DispatcherTimer temporizador;
+        private bool sistemaConfigurado;
 
         #endregion
         
@@ -43,18 +41,25 @@
 
             ConexionLocal = new ConexionLocalViewModel();
             ConexionRemota = new ConexionRemotaViewModel();
+            Opciones = new OpcionesViewModel();
                        
-            _ObservadorConexionLocalEstablecida = new PropertyObserver<ConexionLocalViewModel>(this.ConexionLocal)
+            observadorConexionLocalEstablecida = new PropertyObserver<ConexionLocalViewModel>(this.ConexionLocal)
                 .RegisterHandler(n => n.Estado, this.ConexionLocalActiva);
 
-            _ObservadorConexionRemotaEstablecida = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
+            observadorConexionRemotaEstablecida = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
 
             AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
-                  
-            _ConfiguracionLocal = Configuracion.CargarConfiguracion();
+
+            /*
+            Mensajeria.Mensajero.Register<object>(Mensajeria.ConfiguracionCargada, new Action<object>(this.MensajeroConfiguracionCargada));
+            Mensajeria.Mensajero.Register(Mensajeria.ConfiguracionGuardada, new Action(this.MensajeroConfiguracionGuardada));
+            Mensajeria.Mensajero.NotifyColleagues(Mensajeria.CargarConfiguracion);
+             */
+
+            this.configuracion = Opciones.CargarConfiguracion();
             InicializarConexiones();
-            
+
             // Si las dos conexiones estan establecidas...
             if (LocalARemota != null)
             {
@@ -77,42 +82,43 @@
 
         public ConexionRemotaViewModel ConexionRemota { get; private set; }
         public ConexionLocalViewModel ConexionLocal { get; private set; }
+        public OpcionesViewModel Opciones { get; private set; }
         
         public ExploradorViewModel ExploradorLocal
         {
-            get { return _ExploradorLocal; }
+            get { return exploradorLocal; }
             private set
             {
-                if (value != _ExploradorLocal)
+                if (value != exploradorLocal)
                 {
-                    _ExploradorLocal = value;
-                    RaisePropertyChanged("ExploradorLocal");
+                    exploradorLocal = value;
+                    this.RaisePropertyChanged("ExploradorLocal");
                 }
             }
         }
 
         public ExploradorViewModel ExploradorRemoto
         {
-            get { return _ExploradorRemoto; }
+            get { return exploradorRemoto; }
             private set
             {
-                if (value != _ExploradorRemoto)
+                if (value != exploradorRemoto)
                 {
-                    _ExploradorRemoto = value;
-                    RaisePropertyChanged("ExploradorRemoto");
+                    exploradorRemoto = value;
+                    this.RaisePropertyChanged("ExploradorRemoto");
                 }
             }
         }
 
         public SincronizacionViewModel LocalARemota
         {
-            get { return _LocalARemota; }
+            get { return localARemota; }
             private set
             {
-                if (value != _LocalARemota)
+                if (value != localARemota)
                 {
-                    _LocalARemota = value;
-                    RaisePropertyChanged("LocalARemota");
+                    localARemota = value;
+                    this.RaisePropertyChanged("LocalARemota");
                 }
             }
         }
@@ -129,25 +135,25 @@
 
         private void InicializarTemporizador()
         {
-            _Temporizador = new DispatcherTimer();
-            _Temporizador.Stop();
-            _Temporizador.Interval = new TimeSpan(0, 0, 20);
-            _Temporizador.Tick += new EventHandler(ManejarAlarmaTemporizador);
+            temporizador = new DispatcherTimer();
+            temporizador.Stop();
+            temporizador.Interval = new TimeSpan(0, 0, 20);
+            temporizador.Tick += new EventHandler(ManejarAlarmaTemporizador);
         }
 
         private void InicializarConexiones()
         {
-            ConexionLocal.Parametros = _ConfiguracionLocal.ParametrosConexionLocal;
-            ConexionRemota.Parametros = _ConfiguracionLocal.ParametrosConexionRemota;
+            ConexionLocal.Parametros = configuracion.ParametrosConexionLocal;
+            ConexionRemota.Parametros = configuracion.ParametrosConexionRemota;
 
-            if (ConexionLocal.Parametros != null && _ConfiguracionLocal.UsuarioLocal != null && _ConfiguracionLocal.ContrasenaLocal != null)
+            if (ConexionLocal.Parametros != null && configuracion.UsuarioLocal != null && configuracion.ContrasenaLocal != null)
             {
-                ConexionLocal.Conectar(_ConfiguracionLocal.UsuarioLocal, _ConfiguracionLocal.ContrasenaLocal);
+                ConexionLocal.Conectar(configuracion.UsuarioLocal, configuracion.ContrasenaLocal);
             }
 
-            if (ConexionRemota.Parametros != null && _ConfiguracionLocal.UsuarioRemoto != null && _ConfiguracionLocal.ContrasenaRemota != null)
+            if (ConexionRemota.Parametros != null && configuracion.UsuarioRemoto != null && configuracion.ContrasenaRemota != null)
             {
-                ConexionRemota.Conectar(_ConfiguracionLocal.UsuarioRemoto, _ConfiguracionLocal.ContrasenaRemota);
+                ConexionRemota.Conectar(configuracion.UsuarioRemoto, configuracion.ContrasenaRemota);
             }
         }
 
@@ -163,7 +169,7 @@
             HashSet<string> RutasDeTablaRemotas = new HashSet<string>();
             List<string[]> AsociacionesValidas = new List<string[]>();
 
-            foreach (string[] Asociacion in _ConfiguracionLocal.Asociaciones)
+            foreach (string[] Asociacion in configuracion.Asociaciones)
             {
                 string RutaLocal = RutaColumnaARutaTabla(Asociacion[0]);
                 string RutaRemota = RutaColumnaARutaTabla(Asociacion[1]);
@@ -188,9 +194,32 @@
             ExploradorLocal.OperacionAsincronica = AsincronicoLocal;
             ExploradorRemoto.OperacionAsincronica = AsincronicoRemoto;
 
-            _SistemaConfigurado = true;
+            sistemaConfigurado = true;
             LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, AsociacionesValidas);
         }
+        /*
+        private void MensajeroConfiguracionCargada(object parametro)
+        {
+            this.configuracion = (Configuracion)parametro;
+
+            InicializarConexiones();
+
+            // Si las dos conexiones estan establecidas...
+            if (LocalARemota != null)
+            {
+                InicializarSincronizacion();
+            }
+            else
+            {
+                LocalARemota = new SincronizacionViewModel();
+            }
+        }
+
+        private void MensajeroConfiguracionGuardada()
+        {
+            MessageBox.Show("Configuracion guardada correctamente");
+        }
+        */
 
         private string RutaColumnaARutaTabla(string RutaColumna)
         {
@@ -219,13 +248,19 @@
                 new NodoViewModel(Conexion.Parametros.Servidor + "(" + Conexion.Parametros.Instancia + ")", NivelDeNodo.Servidor)
             };
 
-            return new ExploradorViewModel(Nodos, Conexion.Conexion);            
+            return new ExploradorViewModel(Nodos, Conexion);            
         }
 
         private void ConexionLocalActiva(ConexionLocalViewModel Conexion)
         {
-            if (Conexion.Estado == System.Data.ConnectionState.Open)
+            if (Conexion.Estado == ConnectionState.Open)
             {
+                if (ExploradorLocal != null)
+                {
+                    ExploradorLocal.Dispose();
+                    ExploradorLocal = null;
+                }
+
                 ExploradorLocal = CrearExplorador(Conexion);
                 ExploradorLocal.OperacionAsincronica = false;
 
@@ -238,8 +273,14 @@
 
         private void ConexionRemotaActiva(ConexionRemotaViewModel Conexion)
         {
-            if (Conexion.Estado == System.Data.ConnectionState.Open)
+            if (Conexion.Estado == ConnectionState.Open)
             {
+                if (ExploradorRemoto != null)
+                {
+                    ExploradorRemoto.Dispose();
+                    ExploradorRemoto = null;
+                }
+
                 ExploradorRemoto = CrearExplorador(Conexion);
                 ExploradorRemoto.OperacionAsincronica = true;
 
@@ -254,19 +295,20 @@
         {
             if (Sincronizacion.Listo == false)
             {
-                _Temporizador.Stop();
+                temporizador.Stop();
             }
             else
             {
-                if (_SistemaConfigurado == false)
+                if (sistemaConfigurado == false)
                 {
                     try
                     {
                         ConfigurarSistema();
-                        _SistemaConfigurado = true;
-                        _Temporizador.Start();
-
-                        MessageBox.Show("El sistema se configuró correctamente");                        
+                        if (sistemaConfigurado == true)
+                        {
+                            temporizador.Start();
+                            MessageBox.Show("El sistema se configuró correctamente");
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -275,7 +317,7 @@
                 }
                 else
                 {
-                    _Temporizador.Start();
+                    temporizador.Start();
                 }
             }
         }
@@ -289,14 +331,14 @@
 
             // Creamos un usuario en la base de datos local con los privilegios necesarios 
             // para leer las columnas de origen
-            if (!ConexionLocal.CrearUsuarioNetzuela(NodosOrigen))
+            if (!ConexionLocal.CrearUsuarioOrdinario(NodosOrigen))
             {
                 throw new Exception("No se pudo crear el usuario Netzuela dentro de la base de datos local. La sincronización no puede proceder");
             }
 
             // Cambiamos de usuario
             ConexionLocal.Desconectar();
-            ConexionLocal.ConexionNetzuela();
+            ConexionLocal.ConexionOrdinaria();
 
             // Expandimos los nodos locales en la nueva conexion para poder operar sobre ellos
             HashSet<string> RutasDeTabla = new HashSet<string>();
@@ -320,57 +362,63 @@
             ExploradorLocalViejo.Dispose();
             ExploradorLocalViejo = null;
 
-            GuardarConfiguracion(LocalARemota.Tablas);
-        }
-
-        private void GuardarConfiguracion(List<TablaDeAsociaciones> Tablas)
-        {
-            _ConfiguracionLocal.ParametrosConexionLocal = ConexionLocal.Parametros;
-            _ConfiguracionLocal.ParametrosConexionRemota = ConexionRemota.Parametros;
-            _ConfiguracionLocal.UsuarioLocal = ConexionLocal.UsuarioNetzuela;
-            _ConfiguracionLocal.ContrasenaLocal = ConexionLocal.ContrasenaNetzuela;
-            // Esto esta aqui por joda... cuando tenga el servidor de Netzuela listo, aqui va 
-            // a haber una vaina seria.
-            _ConfiguracionLocal.UsuarioRemoto = "maricoerconio".ConvertirASecureString();
-            _ConfiguracionLocal.ContrasenaRemota = "1234".ConvertirASecureString();
-            _ConfiguracionLocal.Tablas = Tablas;
-
-            Configuracion.GuardarConfiguracion(_ConfiguracionLocal);
+            sistemaConfigurado = true;
+            /*
+            object parametros = new object [] {
+                this.ConexionLocal.Parametros, 
+                this.ConexionRemota.Parametros,
+                this.ConexionLocal.UsuarioNetzuela,
+                this.ConexionLocal.ContrasenaNetzuela,
+                "maricoerconio".ConvertirASecureString(),
+                "1234".ConvertirASecureString(),
+                LocalARemota.Tablas
+            };
+            Mensajeria.Mensajero.NotifyColleagues(Mensajeria.GuardarConfiguracion, parametros);
+             */
+            Opciones.GuardarConfiguracion(new Configuracion()
+            { 
+                Tablas = LocalARemota.Tablas,
+                ContrasenaLocal = this.ConexionLocal.Contrasena,
+                ContrasenaRemota = this.ConexionRemota.Contrasena,
+                ParametrosConexionLocal = this.ConexionLocal.Parametros,
+                ParametrosConexionRemota = this.ConexionRemota.Parametros,
+                UsuarioLocal = this.ConexionLocal.Usuario,
+                UsuarioRemoto = this.ConexionRemota.Usuario
+            });
         }
 
         protected void Dispose(bool borrarCodigoAdministrado)
         {
-            _ConfiguracionLocal = null;
-            _SistemaConfigurado = false;
-            _ObservadorSincronizacion = null;
-            _TiendaID = null;
+            configuracion = null;
+            sistemaConfigurado = false;
+            observadorSincronizacion = null;
             AmbasConexionesEstablecidas -= ManejarAmbasConexionesEstablecidas;
             
             if (borrarCodigoAdministrado)
             {
-                if (_ExploradorLocal != null)
+                if (exploradorLocal != null)
                 {
-                    _ExploradorLocal.Dispose();
-                    _ExploradorLocal = null;
+                    exploradorLocal.Dispose();
+                    exploradorLocal = null;
                 }
 
-                if (_ExploradorRemoto != null)
+                if (exploradorRemoto != null)
                 {
-                    _ExploradorRemoto.Dispose();
-                    _ExploradorRemoto = null;
+                    exploradorRemoto.Dispose();
+                    exploradorRemoto = null;
                 }
 
-                if (_LocalARemota != null)
+                if (localARemota != null)
                 {
-                    _LocalARemota.Dispose();
-                    _LocalARemota = null;
+                    localARemota.Dispose();
+                    localARemota = null;
                 }
 
-                if (_Temporizador != null)
+                if (temporizador != null)
                 {
-                    _Temporizador.Tick -= ManejarAlarmaTemporizador;
-                    _Temporizador.Stop();
-                    _Temporizador = null;
+                    temporizador.Tick -= ManejarAlarmaTemporizador;
+                    temporizador.Stop();
+                    temporizador = null;
                 }
 
                 if (ConexionLocal != null)
@@ -394,7 +442,7 @@
                 LocalARemota = new SincronizacionViewModel();
             }
 
-            _ObservadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
+            observadorSincronizacion = new PropertyObserver<SincronizacionViewModel>(this.LocalARemota)
                 .RegisterHandler(n => n.Listo, this.SincronizacionLista);
         }
 

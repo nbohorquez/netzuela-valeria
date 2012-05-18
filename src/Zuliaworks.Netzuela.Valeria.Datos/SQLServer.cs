@@ -13,7 +13,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos SQLServer
     /// </summary>
-    public partial class SQLServer : EventosComunes, IBaseDeDatos
+    public partial class SQLServer : EventosComunes, IBaseDeDatosLocal
     {
         #region Variables
 
@@ -502,8 +502,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                  * http://lennilobel.wordpress.com/2009/07/29/sql-server-2008-table-valued-parameters-and-c-custom-iterators-a-match-made-in-heaven/
                  */
 
-                DataTable temporal = new DataTable();
-
+                DataSet settmp = new DataSet();
                 this.CambiarBaseDeDatos(baseDeDatos);
 
                 // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
@@ -512,45 +511,81 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 SqlDataAdapter adaptador = new SqlDataAdapter("SELECT " + columnas + " FROM " + nombreTabla, this.conexion);
                 SqlCommandBuilder creadorDeOrden = new SqlCommandBuilder(adaptador);
 
-                adaptador.FillSchema(temporal, SchemaType.Source);
-                adaptador.Fill(temporal);
+                adaptador.FillSchema(settmp, SchemaType.Source);
+                adaptador.Fill(settmp);
+                settmp.Tables[0].TableName = nombreTabla;
 
-                adaptador.InsertCommand = new SqlCommand("Insertar");
+                adaptador.InsertCommand = new SqlCommand("Insertar", this.conexion);
                 adaptador.InsertCommand.CommandType = CommandType.StoredProcedure;
-                adaptador.UpdateCommand = new SqlCommand("Actualizar");
+                adaptador.UpdateCommand = new SqlCommand("Actualizar", this.conexion);
                 adaptador.UpdateCommand.CommandType = CommandType.StoredProcedure;
-                adaptador.DeleteCommand = new SqlCommand("Eliminar");
+                adaptador.DeleteCommand = new SqlCommand("Eliminar", this.conexion);
                 adaptador.DeleteCommand.CommandType = CommandType.StoredProcedure;
 
-                string variableDeEntrada = string.Empty;
-
-                SqlParameter variableDeEntradaSql = new SqlParameter("a_Parametros", variableDeEntrada);
+                SqlParameter variableDeEntradaSql = new SqlParameter("a_Parametros", string.Empty);
                 variableDeEntradaSql.Direction = ParameterDirection.Input;
 
                 adaptador.InsertCommand.Parameters.Add(variableDeEntradaSql);
                 adaptador.UpdateCommand.Parameters.Add(variableDeEntradaSql);
                 adaptador.DeleteCommand.Parameters.Add(variableDeEntradaSql);
 
-                //Temporal.Merge(Tabla, false, MissingSchemaAction.Error);
+                settmp.Merge(tabla, false, MissingSchemaAction.Error);
 
                 SqlRowUpdatingEventHandler actualizandoFila = (r, a) =>
                 {
                     List<string> parametros = new List<string>();
+                    DataRowVersion version = DataRowVersion.Current;
 
-                    foreach (object Dato in a.Row.ItemArray)
+                    if (a.StatementType == StatementType.Delete)
                     {
-                        parametros.Add(Dato.ToString().Replace(",", "."));
+                        version = DataRowVersion.Original;
                     }
 
-                    variableDeEntrada = string.Join(",", parametros.ToArray());
-                    a.Command.Parameters[0].Value = variableDeEntrada;
+                    for (int i = 0; i < a.Row.Table.Columns.Count; i++)
+                    {
+                        parametros.Add(a.Row[i, version].ToString().Replace(",", "."));
+                    }
+
+                    a.Command.Parameters["a_Parametros"].Value = string.Join(",", parametros.ToArray());
                 };
 
                 SqlRowUpdatedEventHandler filaActualizada = (r, a) =>
                 {
                     if (a.Errors != null)
                     {
-                        throw a.Errors;
+                        if (a.Errors != null)
+                        {
+                            switch (a.Status)
+                            {
+                                case UpdateStatus.Continue:
+                                    break;
+                                case UpdateStatus.ErrorsOccurred:
+                                    string msj = "Tipo de error=" + a.Errors.GetType().ToString()
+                                            + "\nFilas afectadas=" + a.RecordsAffected.ToString()
+                                            + "\nFila tiene errores=" + a.Row.HasErrors.ToString()
+                                            + "\nTipo de instruccion ejecutada=" + a.StatementType
+                                            + "\nEstatus de la fila=" + a.Status.ToString()
+                                            + "\nErrores=" + a.Row.RowError;
+
+                                    for (int i = 0; i < a.Row.ItemArray.Length; i++)
+                                    {
+                                        msj += "\nValorActual[" + i.ToString() + "]=" + a.Row[i, DataRowVersion.Current];
+                                    }
+
+                                    foreach (System.Collections.DictionaryEntry de in a.Errors.Data)
+                                    {
+                                        msj += "\nClave=" + de.Key.ToString() + "Valor=" + de.Value.ToString();
+                                    }
+
+                                    throw new Exception(msj, a.Errors);
+                                case UpdateStatus.SkipAllRemainingRows:
+                                    break;
+                                case UpdateStatus.SkipCurrentRow:
+                                    break;
+                                default:
+                                    throw new Exception("Estatus de fila desconocido", a.Errors);
+                            }
+                        }
                     }
                 };
 

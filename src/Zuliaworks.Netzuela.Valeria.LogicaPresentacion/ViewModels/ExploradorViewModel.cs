@@ -21,10 +21,10 @@
     {
         #region Variables
 
-        private Conexion _Conexion;
-        private NodoViewModel _NodoActual;
-        private RelayCommand<NodoViewModel> _ExpandirOrden;
-        private RelayCommand<string> _EstablecerNodoActualOrden;
+        private ConexionViewModel conexion;
+        private NodoViewModel nodoActual;
+        private RelayCommand<NodoViewModel> expandirOrden;
+        private RelayCommand<string> establecerNodoActualOrden;
 
         #endregion
 
@@ -38,7 +38,7 @@
             this.Nodos = new ObservableCollection<NodoViewModel>();
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
-            this._Conexion = null;
+            this.conexion = null;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@
         /// sólo contiene el nodo inicial.</param>
         /// <param name="Conexion">Proveedor de datos. A través de este se obtienen los datos y metadatos
         /// de los nodos del árbol.</param>
-        public ExploradorViewModel(ObservableCollection<NodoViewModel> Nodos, Conexion Conexion)
+        public ExploradorViewModel(ObservableCollection<NodoViewModel> Nodos, ConexionViewModel Conexion)
         {
             this.Nodos = Nodos;
             AsignarEsteExploradorA(Nodos);
@@ -57,7 +57,7 @@
             this.NodoActual = Nodos[0];
             this.NodoTablaActual = new NodoViewModel();
             this.RutaNodoActual = string.Empty;
-            this._Conexion = Conexion;
+            this.conexion = Conexion;
         }
 
         ~ExploradorViewModel()
@@ -94,7 +94,7 @@
                     NodoTablaActual.AgregarARepositorioDeTablas(value);
                 }
 
-                RaisePropertyChanged("TablaActual");
+                this.RaisePropertyChanged("TablaActual");
             }
         }
 
@@ -103,15 +103,15 @@
         /// </summary>
         public NodoViewModel NodoActual
         {
-            get { return _NodoActual; }
+            get { return nodoActual; }
             set
             {
-                if (value != _NodoActual)
+                if (value != nodoActual)
                 {
-                    _NodoActual = value;
-                    RutaNodoActual = _NodoActual.RutaCompleta();
-                    RaisePropertyChanged("RutaNodoActual");
-                    RaisePropertyChanged("NodoActual");
+                    nodoActual = value;
+                    RutaNodoActual = nodoActual.RutaCompleta();
+                    this.RaisePropertyChanged("RutaNodoActual");
+                    this.RaisePropertyChanged("NodoActual");
                 }
             }
         }
@@ -131,7 +131,7 @@
         /// </summary>
         public ICommand ExpandirOrden
         {
-            get { return _ExpandirOrden ?? (_ExpandirOrden 
+            get { return expandirOrden ?? (expandirOrden 
                 = new RelayCommand<NodoViewModel>(Nodo => this.ExpandirAccion(Nodo))); }
         }
         
@@ -140,7 +140,7 @@
         /// </summary>
         public ICommand EstablecerNodoActualOrden
         {
-            get { return _EstablecerNodoActualOrden ?? (_EstablecerNodoActualOrden = 
+            get { return establecerNodoActualOrden ?? (establecerNodoActualOrden = 
                 new RelayCommand<string>(Nombre => this.EstablecerNodoActualAccion(Nombre))); }
         }
 

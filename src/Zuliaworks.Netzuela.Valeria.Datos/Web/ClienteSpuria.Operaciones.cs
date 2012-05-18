@@ -2,15 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;                // ProgressChangedEventArgs, AsyncOperation
-    using System.Data;                          // DataTable
-    using System.IO;                            // MemoryStream
+    using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
+    using System.Data;                                  // DataTable
+    using System.IO;                                    // MemoryStream
     using System.Linq;
-    using System.Security;                      // SecureString
+    using System.Security;                              // SecureString
     using System.Text;
-    using System.Threading;                     // Thread, SendOrPostCallback
-    
-    using Zuliaworks.Netzuela.Spuria.TiposApi;  // DataSetXml
+    using System.Threading;                             // Thread, SendOrPostCallback
+
+    using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
+    using Zuliaworks.Netzuela.Spuria.TiposApi;          // DataSetXml
 
     /// <summary>
     /// 
@@ -20,6 +21,7 @@
         #region Variables
 
         private SendOrPostCallback delegadoDispararCambioEnProgresoDeOperacion;
+        private SendOrPostCallback delegadoDispararListarTiendasCompletado;
         private SendOrPostCallback delegadoDispararListarBDsCompletado;
         private SendOrPostCallback delegadoDispararListarTablasCompletado;
         private SendOrPostCallback delegadoDispararLeerTablaCompletado;
@@ -27,14 +29,14 @@
         private SendOrPostCallback delegadoDispararCrearUsuarioCompletado;
         private SendOrPostCallback delegadoDispararConsultarCompletado;
         private DelegadoComenzarOperacion carpintero;
-        
-        private delegate void DelegadoComenzarOperacion(AsyncOperation Asincronico, string Operacion, object[] Parametros);
+        private delegate void DelegadoComenzarOperacion(AsyncOperation asincronico, string operacion, object[] parametros);
 
         #endregion
 
         #region Eventos
 
         public event EventHandler<ProgressChangedEventArgs> CambioEnProgresoDeOperacion;
+        public event EventHandler<EventoListarTiendasCompletadoArgs> ListarTiendasCompletado;
         public event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado;
         public event EventHandler<EventoListarTablasCompletadoArgs> ListarTablasCompletado;
         public event EventHandler<EventoLeerTablaCompletadoArgs> LeerTablaCompletado;
@@ -53,6 +55,14 @@
             if (this.CambioEnProgresoDeOperacion != null)
             {
                 this.CambioEnProgresoDeOperacion(this, e);
+            }
+        }
+
+        protected virtual void DispararListarTiendasCompletado(EventoListarTiendasCompletadoArgs e)
+        {
+            if (this.ListarTiendasCompletado != null)
+            {
+                this.ListarTiendasCompletado(this, e);
             }
         }
 
@@ -112,7 +122,7 @@
             {
                 if (this.hilos.Contains(tareaId))
                 {
-                    throw new ArgumentException("El argumento TareaID debe ser unico", "TareaID");
+                    throw new ArgumentException("El argumento tareaId debe ser unico", "tareaId");
                 }
                 else
                 {
@@ -135,6 +145,9 @@
                 {
                     switch (operacion)
                     {
+                        case "ListarTiendas":
+                            resultados.Add(this.ListarTiendas());
+                            break;
                         case "ListarBasesDeDatos":
                             resultados.Add(this.ListarBasesDeDatos());
                             break;
@@ -142,13 +155,14 @@
                             resultados.Add(this.ListarTablas((string)parametros[0]));
                             break;
                         case "LeerTabla":
-                            resultados.Add(this.LeerTabla((string)parametros[0], (string)parametros[1]));
+                            resultados.Add(this.LeerTabla((int)parametros[0], (string)parametros[1], (string)parametros[2]));
                             break;
                         case "EscribirTabla":
                             resultados.Add(this.EscribirTabla(
-                                (string)parametros[0],
+                                (int)parametros[0],
                                 (string)parametros[1],
-                                (DataTable)parametros[2]));
+                                (string)parametros[2],
+                                (DataTable)parametros[3]));
                             break;
                         case "CrearUsuario":
                             resultados.Add(this.CrearUsuario(
@@ -187,6 +201,14 @@
 
             switch (operacion)
             {
+                case "ListarTiendas":
+                    {
+                        EventoListarTiendasCompletadoArgs e =
+                            new EventoListarTiendasCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
+                        asincronico.PostOperationCompleted(this.delegadoDispararListarTiendasCompletado, e);
+                        break;
+                    }
+
                 case "ListarBasesDeDatos":
                     {
                         EventoListarBDsCompletadoArgs e =
@@ -246,6 +268,12 @@
             this.DispararCambioEnProgresoDeOperacion(e);
         }
 
+        private void AntesDeDispararListarTiendasCompletado(object estadoOperacion)
+        {
+            EventoListarTiendasCompletadoArgs e = (EventoListarTiendasCompletadoArgs)estadoOperacion;
+            this.DispararListarTiendasCompletado(e);
+        }
+
         private void AntesDeDispararListarBDsCompletado(object estadoOperacion)
         {
             EventoListarBDsCompletadoArgs e = (EventoListarBDsCompletadoArgs)estadoOperacion;
@@ -286,46 +314,55 @@
 
         #region Métodos sincrónicos
 
+        public string[] ListarTiendas()
+        {
+            this.Conectar();
+            string[] resultado = (string[])this.proxy.InvocarMetodo("ListarTiendas", null);
+            this.Desconectar();
+
+            return resultado;
+        }
+
         public string[] ListarBasesDeDatos()
         {
-            Conectar();
-            string[] Resultado = (string[])this.proxy.InvocarMetodo("ListarBasesDeDatos", null);
-            Desconectar();
+            this.Conectar();
+            string[] resultado = (string[])this.proxy.InvocarMetodo("ListarBasesDeDatos", null);
+            this.Desconectar();
 
-            return Resultado;
+            return resultado;
         }
 
         public string[] ListarTablas(string baseDeDatos)
         {
-            Conectar();
-            string[] Resultado = (string[])this.proxy.InvocarMetodo("ListarTablas", baseDeDatos);
-            Desconectar();
+            this.Conectar();
+            string[] resultado = (string[])this.proxy.InvocarMetodo("ListarTablas", baseDeDatos);
+            this.Desconectar();
 
-            return Resultado;
+            return resultado;
         }
 
-        public DataTable LeerTabla(string baseDeDatos, string nombreTabla)
+        public DataTable LeerTabla(int tiendaId, string baseDeDatos, string nombreTabla)
         {
-            Conectar();
+            this.Conectar();
 
-            object TablaXML = this.proxy.InvocarMetodo("LeerTabla", baseDeDatos, nombreTabla);
-            DataTable Tabla = ((DataTableXml)TablaXML).XmlADataTable();
+            object tablaXml = this.proxy.InvocarMetodo("LeerTabla", tiendaId, baseDeDatos, nombreTabla);
+            DataTable tabla = ((DataTableXml)tablaXml).XmlADataTable();
 
-            Desconectar();
+            this.Desconectar();
 
-            return Tabla;
+            return tabla;
         }
 
-        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
+        public bool EscribirTabla(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
         {
-            Conectar();
+            this.Conectar();
 
-            DataTableXml DatosAEnviar = tabla.DataTableAXml(baseDeDatos, nombreTabla);
-            bool Resultado = Convert.ToBoolean(this.proxy.InvocarMetodo("EscribirTabla", DatosAEnviar));
-            
-            Desconectar();
+            DataTableXml datosAEnviar = tabla.DataTableAXml(baseDeDatos, nombreTabla);
+            bool resultado = Convert.ToBoolean(this.proxy.InvocarMetodo("EscribirTabla", tiendaId, datosAEnviar));
 
-            return Resultado;
+            this.Desconectar();
+
+            return resultado;
         }
 
         public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
@@ -333,7 +370,7 @@
             throw new NotImplementedException();
         }
 
-        public DataTable Consultar(string baseDeDatos, string Sql)
+        public DataTable Consultar(string baseDeDatos, string sql)
         {
             throw new NotImplementedException();
         }
@@ -341,6 +378,11 @@
         #endregion
 
         #region Métodos asincrónicos
+
+        public void ListarTiendasAsinc()
+        {
+            this.ListarTiendasAsinc(this.aleatorio.Next());
+        }
 
         public void ListarBasesDeDatosAsinc()
         {
@@ -352,14 +394,14 @@
             this.ListarTablasAsinc(baseDeDatos, this.aleatorio.Next());
         }
 
-        public void LeerTablaAsinc(string baseDeDatos, string tabla)
+        public void LeerTablaAsinc(int tiendaId, string baseDeDatos, string tabla)
         {
-            this.LeerTablaAsinc(baseDeDatos, tabla, this.aleatorio.Next());
+            this.LeerTablaAsinc(tiendaId, baseDeDatos, tabla, this.aleatorio.Next());
         }
 
-        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
+        public void EscribirTablaAsinc(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
         {
-            this.EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla, this.aleatorio.Next());
+            this.EscribirTablaAsinc(tiendaId, baseDeDatos, nombreTabla, tabla, this.aleatorio.Next());
         }
 
         public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
@@ -372,6 +414,19 @@
             this.ConsultarAsinc(baseDeDatos, Sql, this.aleatorio.Next());
         }
 
+        public void ListarTiendasAsinc(object tareaId)
+        {
+            try
+            {
+                AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
+                this.carpintero.BeginInvoke(asincronico, "ListarTiendas", null, null, null);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al iniciar la operacion asincrónica \"ListarTiendasAsinc\"", ex);
+            }
+        }
+
         public void ListarBasesDeDatosAsinc(object tareaId)
         {
             try
@@ -381,7 +436,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al iniciar la operacion asincrónica \"" + "ListarBasesDeDatosAsinc\"", ex);
+                throw new Exception("Error al iniciar la operacion asincrónica \"ListarBasesDeDatosAsinc\"", ex);
             }
         }
 
@@ -396,37 +451,37 @@
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al iniciar la operacion asincrónica \"" + "ListarTablasAsinc\"", ex);
+                throw new Exception("Error al iniciar la operacion asincrónica \"ListarTablasAsinc\"", ex);
             }
         }
 
-        public void LeerTablaAsinc(string baseDeDatos, string tabla, object tareaId)
+        public void LeerTablaAsinc(int tiendaId, string baseDeDatos, string tabla, object tareaId)
         {
             try
             {
-                object[] parametros = new object[2] { baseDeDatos, tabla };
+                object[] parametros = new object[3] { tiendaId, baseDeDatos, tabla };
 
                 AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
                 this.carpintero.BeginInvoke(asincronico, "LeerTabla", parametros, null, null);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al iniciar la operacion asincrónica \"" + "LeerTablaAsinc\"", ex);
+                throw new Exception("Error al iniciar la operacion asincrónica \"LeerTablaAsinc\"", ex);
             }
         }
 
-        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla, object tareaId)
+        public void EscribirTablaAsinc(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla, object tareaId)
         {
             try
             {
-                object[] parametros = new object[3] { baseDeDatos, nombreTabla, tabla };
+                object[] parametros = new object[4] { tiendaId, baseDeDatos, nombreTabla, tabla };
 
                 AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
                 this.carpintero.BeginInvoke(asincronico, "EscribirTabla", parametros, null, null);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al iniciar la operacion asincrónica \"" + "EscribirTablaAsinc\"", ex);
+                throw new Exception("Error al iniciar la operacion asincrónica \"EscribirTablaAsinc\"", ex);
             }
         }
 
@@ -441,7 +496,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al iniciar la operacion asincrónica \"" + "CrearUsuarioAsinc\"", ex);
+                throw new Exception("Error al iniciar la operacion asincrónica \"CrearUsuarioAsinc\"", ex);
             }
         }
 
@@ -456,7 +511,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al iniciar la operacion asincrónica \"" + "ConsultarAsinc\"", ex);
+                throw new Exception("Error al iniciar la operacion asincrónica \"ConsultarAsinc\"", ex);
             }
         }
 

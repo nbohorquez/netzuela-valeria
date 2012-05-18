@@ -66,9 +66,12 @@
     <Compile Include="ManejadorDeExcepciones.cs" />
     <Compile Include="DosArgumentosAUno.cs" />
     <Compile Include="ManipuladorDeTablas.cs" />
+    <Compile Include="Mensajeria.cs" />
     <Compile Include="PasswordBoxVinculable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleccionarTodaLaColumna.cs" />
+    <Compile Include="ViewModels\SeleccionarTiendaViewModel.cs" />
+    <Compile Include="ViewModels\OpcionesViewModel.cs" />
     <Compile Include="ViewModels\ExploradorViewModel.Funciones.cs" />
     <Compile Include="ViewModels\AutentificacionViewModel.cs" />
     <Compile Include="ViewModels\ConexionLocalViewModel.cs" />
@@ -91,6 +94,12 @@
     </Compile>
     <Compile Include="Views\ConexionRemotaView.xaml.cs">
       <DependentUpon>ConexionRemotaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SeleccionarTiendaView.xaml.cs">
+      <DependentUpon>SeleccionarTiendaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OpcionesView.xaml.cs">
+      <DependentUpon>OpcionesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DetectarServidoresLocalesView.xaml.cs">
       <DependentUpon>DetectarServidoresLocalesView.xaml</DependentUpon>
@@ -131,6 +140,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConexionRemotaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SeleccionarTiendaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\OpcionesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

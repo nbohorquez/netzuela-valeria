@@ -11,6 +11,7 @@
 
     using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
     using Zuliaworks.Netzuela.Valeria.Datos;            // SQLServer, MySQL, Oracle y Netzuela
+    using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
 
     /// <summary>
     /// Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
@@ -69,6 +70,34 @@
             remove { this.BD.CambioDeEstado -= value; }
         }
 
+        public event EventHandler<EventoListarTiendasCompletadoArgs> ListarTiendasCompletado
+        {
+            add 
+            { 
+                var tipo = this.BD.GetType();
+                if (tipo.GetEvent("ListarTiendasCompletado") != null)
+                {
+                    ((INetzuela)this.BD).ListarTiendasCompletado += value;
+                }
+                else
+                {
+                    throw new MissingMemberException();
+                }
+            }
+            remove 
+            {
+                var tipo = this.BD.GetType();
+                if (tipo.GetEvent("ListarTiendasCompletado") != null)
+                {
+                    ((INetzuela)this.BD).ListarTiendasCompletado -= value;
+                }
+                else
+                {
+                    throw new MissingMemberException();
+                }
+            }
+        }
+
         public event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado
         {
             add { this.BD.ListarBasesDeDatosCompletado += value; }
@@ -117,7 +146,7 @@
         /// <summary>
         /// Proveedor de datos creado a partir de las especificaciones de conexión.
         /// </summary>
-        public IBaseDeDatos BD { get; private set; }
+        public IBaseDeDatosComun BD { get; private set; }
 
         public ConnectionState Estado 
         { 
@@ -191,6 +220,30 @@
             }
         }
 
+        public string[] ListarTiendas()
+        {
+            string[] resultado = null;
+
+            try
+            {
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("ListarTiendas") != null)
+                {
+                    resultado = ((INetzuela)this.BD).ListarTiendas();
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las tiendas", ex);
+            }
+
+            return resultado;
+        }
+
         public string[] ListarBasesDeDatos()
         {
             string[] resultado = null;
@@ -229,7 +282,39 @@
 
             try
             {
-                resultado = this.BD.LeerTabla(baseDeDatos, tabla);
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("LeerTabla") != null)
+                {
+                    resultado = ((IBaseDeDatosLocal)this.BD).LeerTabla(baseDeDatos, tabla);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al leer la tabla \"" + tabla + "\" de la base de datos \"" + baseDeDatos + "\"", ex);
+            }
+
+            return resultado;
+        }
+
+        public DataTable LeerTabla(int tiendaId, string baseDeDatos, string tabla)
+        {
+            DataTable resultado = null;
+
+            try
+            {
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("LeerTabla") != null)
+                {
+                    resultado = ((INetzuela)this.BD).LeerTabla(tiendaId, baseDeDatos, tabla);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
             }
             catch (Exception ex)
             {
@@ -245,7 +330,39 @@
 
             try
             {
-                resultado = this.BD.EscribirTabla(baseDeDatos, nombreTabla, tabla);
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("EscribirTabla") != null)
+                {
+                    resultado = ((IBaseDeDatosLocal)this.BD).EscribirTabla(baseDeDatos, nombreTabla, tabla);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al escribir la tabla \"" + tabla + "\" en la base de datos \"" + baseDeDatos + "\"", ex);
+            }
+
+            return resultado;
+        }
+
+        public bool EscribirTabla(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
+        {
+            bool resultado = false;
+
+            try
+            {
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("EscribirTabla") != null)
+                {
+                    resultado = ((INetzuela)this.BD).EscribirTabla(tiendaId, baseDeDatos, nombreTabla, tabla);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
             }
             catch (Exception ex)
             {
@@ -291,6 +408,26 @@
 
         #region Métodos asincrónicos
 
+        public void ListarTiendasAsinc()
+        {
+            try
+            {
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("ListarTiendasAsinc") != null)
+                {
+                    ((INetzuela)this.BD).ListarTiendasAsinc();
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las tiendas", ex);
+            }
+        }
+
         public void ListarBasesDeDatosAsinc()
         {
             try
@@ -319,7 +456,35 @@
         {
             try
             {
-                this.BD.LeerTablaAsinc(baseDeDatos, tabla);
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("LeerTablaAsinc") != null)
+                {
+                    ((IBaseDeDatosLocal)this.BD).LeerTablaAsinc(baseDeDatos, tabla);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al leer la tabla \"" + tabla + "\" de la base de datos \"" + baseDeDatos + "\"", ex);
+            }
+        }
+
+        public void LeerTablaAsinc(int tiendaId, string baseDeDatos, string tabla)
+        {
+            try
+            {
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("LeerTablaAsinc") != null)
+                {
+                    ((INetzuela)this.BD).LeerTablaAsinc(tiendaId, baseDeDatos, tabla);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
             }
             catch (Exception ex)
             {
@@ -331,7 +496,35 @@
         {
             try
             {
-                this.BD.EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla);
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("EscribirTablaAsinc") != null)
+                {
+                    ((IBaseDeDatosLocal)this.BD).EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al escribir la tabla \"" + tabla + "\" en la base de datos \"" + baseDeDatos + "\"", ex);
+            }
+        }
+
+        public void EscribirTablaAsinc(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
+        {
+            try
+            {
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("EscribirTablaAsinc") != null)
+                {
+                    ((INetzuela)this.BD).EscribirTablaAsinc(tiendaId, baseDeDatos, nombreTabla, tabla);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
             }
             catch (Exception ex)
             {

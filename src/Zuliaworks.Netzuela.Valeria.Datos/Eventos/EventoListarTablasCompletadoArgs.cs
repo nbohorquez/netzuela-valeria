@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos.Eventos
 {
     using System;
     using System.Collections.Generic;

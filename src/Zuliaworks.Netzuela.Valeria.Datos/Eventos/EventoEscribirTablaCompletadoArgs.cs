@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Datos
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos.Eventos
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Text;
 
-    public class EventoListarBDsCompletadoArgs : AsyncCompletedEventArgs
+    public class EventoEscribirTablaCompletadoArgs : AsyncCompletedEventArgs
     {
         #region Variables
 
@@ -16,7 +16,7 @@
 
         #region Constructores
 
-        public EventoListarBDsCompletadoArgs(object[] Resultados, bool Cancelado, Exception Error, object UsuarioID)
+        public EventoEscribirTablaCompletadoArgs(object[] Resultados, bool Cancelado, Exception Error, object UsuarioID)
             : base(Error, Cancelado, UsuarioID)
         {
             this.resultados = Resultados;
@@ -26,15 +26,15 @@
 
         #region Propiedades
 
-        public string[] Resultado
+        public bool Resultado
         {
             get
             {
                 this.RaiseExceptionIfNecessary();
-                return (string[])this.resultados[0];
+                return Convert.ToBoolean(this.resultados[0]);
             }
         }
-
+            
         #endregion
     }
 }

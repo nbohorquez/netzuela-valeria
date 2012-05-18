@@ -5,6 +5,7 @@
     using System.Collections.Specialized;               // HybridDictionary
     using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
     using System.Linq;
+    using System.Security;                              // SecureString
     using System.Text;
     using System.Threading;                             // Thread, SendOrPostCallback
 
@@ -23,7 +24,6 @@
         #region Variables y Constantes
 
         private const string ContratoSpuria = "IApi";
-
         private Random aleatorio;
         private ProxyDinamico proxy;
         private HybridDictionary hilos;
@@ -40,13 +40,15 @@
             this.hilos = new HybridDictionary();
         }
 
-        public ClienteSpuria(string UriWsdlServicio)
+        public ClienteSpuria(string uriWsdlServicio)
             : this()
         {
-            if (UriWsdlServicio == null)
-                throw new ArgumentNullException("UriWsdlServicio");
+            if (uriWsdlServicio == null)
+            {
+                throw new ArgumentNullException("uriWsdlServicio");
+            }
 
-            this.UriWsdlServicio = UriWsdlServicio;
+            this.UriWsdlServicio = uriWsdlServicio;
         }
 
         ~ClienteSpuria()
@@ -82,11 +84,11 @@
 
         #region Funciones
 
-        public void Armar()
+        public void Armar(SecureString usuario, SecureString contrasena)
         {
             try
             {
-                this.proxy = new ProxyDinamico(this.UriWsdlServicio);
+                this.proxy = new ProxyDinamico(this.UriWsdlServicio, usuario, contrasena);
             }
             catch (Exception ex)
             {
@@ -98,14 +100,11 @@
         {
             try
             {
-                this.Desconectar();
-
                 if (this.proxy != null)
                 {
                     this.proxy.Dispose();
+                    this.proxy = null;
                 }
-
-                this.proxy = null;
             }
             catch (Exception ex)
             {
@@ -117,19 +116,7 @@
         {
             try
             {
-                /*
-                if (this._Proxy == null)
-                {
-                    if (UriWsdlServicio == null)
-                        throw new ArgumentNullException("UriWsdlServicio");
-
-                    Armar();
-                }*/
-
-                if (this.proxy != null)
-                {
-                    this.proxy.Conectar(ContratoSpuria);
-                }
+                this.proxy.Conectar(ContratoSpuria);
             }
             catch (Exception ex)
             {
@@ -141,10 +128,7 @@
         {
             try
             {
-                if (this.proxy != null)
-                {
-                    this.proxy.Desconectar();
-                }
+                this.proxy.Desconectar();
             }
             catch (Exception ex)
             {
@@ -172,14 +156,15 @@
             }
         }
 
-        private bool TareaCancelada(object TareaID)
+        private bool TareaCancelada(object tareaId)
         {
-            return this.hilos[TareaID] == null;
+            return this.hilos[tareaId] == null;
         }
 
         protected virtual void InicializarDelegados()
         {
             this.delegadoDispararCambioEnProgresoDeOperacion = new SendOrPostCallback(AntesDeDispararCambioEnProgresoDeOperacion);
+            this.delegadoDispararListarTiendasCompletado = new SendOrPostCallback(AntesDeDispararListarTiendasCompletado);
             this.delegadoDispararListarBDsCompletado = new SendOrPostCallback(AntesDeDispararListarBDsCompletado);
             this.delegadoDispararListarTablasCompletado = new SendOrPostCallback(AntesDeDispararListarTablasCompletado);
             this.delegadoDispararLeerTablaCompletado = new SendOrPostCallback(AntesDeDispararLeerTablaCompletado);
@@ -193,11 +178,11 @@
 
         #region Implementación de interfaces
 
-        protected override void Dispose(bool BorrarCodigoAdministrado)
+        protected override void Dispose(bool borrarCodigoAdministrado)
         {
             this.UriWsdlServicio = null;
 
-            if (BorrarCodigoAdministrado)
+            if (borrarCodigoAdministrado)
             {
                 if (this.hilos != null)
                 {

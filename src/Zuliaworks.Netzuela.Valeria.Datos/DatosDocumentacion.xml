@@ -12,7 +12,7 @@
             
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatosComun">
             <summary>
             Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
             a las bases de datos.

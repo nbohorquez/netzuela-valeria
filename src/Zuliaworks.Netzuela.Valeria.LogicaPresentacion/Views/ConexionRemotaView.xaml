@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Views="clr-namespace:Zuliaworks.Netzuela.Valeria.LogicaPresentacion.Views"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -27,8 +28,23 @@
                 <Label>Dirección URL</Label>
                 <TextBox Name="txt_Direccion" IsEnabled="{Binding Path=PermitirModificaciones}" Text="{Binding Path=Parametros.Anfitrion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
-
             <Button Margin="0,15,0,0" Content="{Binding Path=BotonConectarDesconectar}" Command="{Binding Path=ConectarDesconectarOrden, Mode=OneTime}"/>
         </StackPanel>
+
+        <Popup Height="150" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarAutentificacionView}" StaysOpen="False" Placement="Right">
+            <Grid Background="White">
+                <GroupBox Header="Autentificación remota" Margin="5">
+                    <Views:AutentificacionView x:Name="view_Autentificacion" DataContext="{Binding Path=Autentificacion}" DataContextChanged="AutentificacionView_DataContextChanged"/>
+                </GroupBox>
+            </Grid>
+        </Popup>
+
+        <Popup Height="150" Width="300" AllowsTransparency="True" IsOpen="{Binding Path=MostrarSeleccionarTiendaView}" StaysOpen="True" Placement="Right">
+            <Grid Background="White">
+                <GroupBox Header="Seleccionar tienda" Margin="5">
+                    <Views:SeleccionarTiendaView x:Name="view_SeleccionarTienda" DataContext="{Binding Path=SeleccionarTienda}"/>
+                </GroupBox>
+            </Grid>
+        </Popup>
     </Grid>
 </UserControl>

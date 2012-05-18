@@ -175,7 +175,7 @@
 
         protected virtual void ManejarCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
         {
-            RaisePropertyChanged("NombreParaMostrar");
+            this.RaisePropertyChanged("NombreParaMostrar");
         }
 
         protected void Dispose(bool BorrarCodigoAdministrado)

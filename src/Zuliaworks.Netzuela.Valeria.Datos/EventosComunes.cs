@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;              // StateChangeEventHandler
+    using System.Data;                      // StateChangeEventHandler
     using System.Linq;
     using System.Text;
+
+    using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
 
     public class EventosComunes
     {
@@ -22,37 +24,37 @@
 
         #region Funciones
 
-        protected void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs args)
+        protected void ManejarCambioDeEstado(object remitente, StateChangeEventArgs args)
         {
             this.DispararCambioDeEstado(args);
         }
 
-        protected void ManejarListarBasesDeDatosCompletado(object Remitente, EventoListarBDsCompletadoArgs args)
+        protected void ManejarListarBasesDeDatosCompletado(object remitente, EventoListarBDsCompletadoArgs args)
         {
             this.DispararListarBasesDeDatosCompletado(args);
         }
 
-        protected void ManejarListarTablasCompletado(object Remitente, EventoListarTablasCompletadoArgs args)
+        protected void ManejarListarTablasCompletado(object remitente, EventoListarTablasCompletadoArgs args)
         {
             this.DispararListarTablasCompletado(args);
         }
 
-        protected void ManejarLeerTablaCompletado(object Remitente, EventoLeerTablaCompletadoArgs args)
+        protected void ManejarLeerTablaCompletado(object remitente, EventoLeerTablaCompletadoArgs args)
         {
             this.DispararLeerTablaCompletado(args);
         }
 
-        protected void ManejarEscribirTablaCompletado(object Remitente, EventoEscribirTablaCompletadoArgs args)
+        protected void ManejarEscribirTablaCompletado(object remitente, EventoEscribirTablaCompletadoArgs args)
         {
             this.DispararEscribirTablaCompletado(args);
         }
 
-        protected void ManejarCrearUsuarioCompletado(object Remitente, EventoCrearUsuarioCompletadoArgs args)
+        protected void ManejarCrearUsuarioCompletado(object remitente, EventoCrearUsuarioCompletadoArgs args)
         {
             this.DispararCrearUsuarioCompletado(args);
         }
 
-        protected void ManejarConsultarCompletado(object Remitente, EventoConsultarCompletadoArgs args)
+        protected void ManejarConsultarCompletado(object remitente, EventoConsultarCompletadoArgs args)
         {
             this.DispararConsultarCompletado(args);
         }

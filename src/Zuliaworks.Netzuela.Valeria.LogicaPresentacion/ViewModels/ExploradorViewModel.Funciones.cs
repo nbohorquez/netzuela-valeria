@@ -2,14 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;           // ObservableCollection
-    using System.Data;                              // DataTable
+    using System.Collections.ObjectModel;               // ObservableCollection
+    using System.Data;                                  // DataTable
     using System.Linq;
     using System.Text;
-    using System.Windows;                           // MessageBox
+    using System.Windows;                               // MessageBox
     
-    using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes, ExpresionGenerica
-    using Zuliaworks.Netzuela.Valeria.Datos;        // EventoEnviarTablasCompletadoArgs
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // Constantes, ExpresionGenerica
+    using Zuliaworks.Netzuela.Valeria.Datos;            // EventoEnviarTablasCompletadoArgs
+    using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
     
     public partial class ExploradorViewModel : IDisposable
     {
@@ -17,14 +18,14 @@
 
         #region Otras
 
-        private void AsignarEsteExploradorA(ObservableCollection<NodoViewModel> Nodos)
+        private void AsignarEsteExploradorA(ObservableCollection<NodoViewModel> nodos)
         {
-            foreach (NodoViewModel Nodo in Nodos)
+            foreach (NodoViewModel nodo in nodos)
             {
-                Nodo.Explorador = this;
-                if (Nodo.Hijos.Count > 0)
+                nodo.Explorador = this;
+                if (nodo.Hijos.Count > 0)
                 {
-                    AsignarEsteExploradorA(Nodo.Hijos);
+                    this.AsignarEsteExploradorA(nodo.Hijos);
                 }
             }
         }
@@ -33,13 +34,13 @@
 
         #region Acciones
 
-        protected void EstablecerNodoActualAccion(string Nombre)
+        protected void EstablecerNodoActualAccion(string nombre)
         {
             try
             {
-                this.NodoActual = (Nombre == null)
+                this.NodoActual = (nombre == null)
                     ? this.NodoActual
-                    : NodoViewModelExtensiones.BuscarNodo(Nombre, NodoTablaActual.Hijos);
+                    : NodoViewModelExtensiones.BuscarNodo(nombre, NodoTablaActual.Hijos);
             }
             catch (Exception ex)
             {
@@ -47,11 +48,11 @@
             }
         }
 
-        protected void ExpandirAccion(NodoViewModel Nodo)
+        protected void ExpandirAccion(NodoViewModel nodo)
         {
             try
             {
-                Expandir(Nodo);
+                this.Expandir(nodo);
             }
             catch (Exception ex)
             {
@@ -63,53 +64,57 @@
 
         #region Expandir
 
-        private void ExpandirServidor(NodoViewModel Item)
+        private void ExpandirServidor(NodoViewModel item)
         {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
 
-            if (Item.Expandido == true)
+            if (item.Expandido == true)
+            {
                 return;
+            }
 
-            EventHandler<EventoListarBDsCompletadoArgs> Retorno = null;
-            string[] BasesDeDatos = null;
+            EventHandler<EventoListarBDsCompletadoArgs> retorno = null;
+            string[] basesDeDatos = null;
 
             // Esta expresion lambda es llamada mas abajo.
             ExpresionGenerica CrearNodos = () =>
             {
-                if (BasesDeDatos != null)
+                if (basesDeDatos != null)
                 {
-                    Item.Expandido = true;
+                    item.Expandido = true;
 
-                    var Eliminar = from Hijo in Item.Hijos
-                                   where !(from BD in BasesDeDatos
-                                           select BD).Contains(Hijo.Nombre)
-                                   select Hijo;
+                    var eliminar = from hijo in item.Hijos
+                                   where !(from bd in basesDeDatos
+                                           select bd).Contains(hijo.Nombre)
+                                   select hijo;
 
-                    var Agregar = from BD in BasesDeDatos
-                                  where !(from Hijo in Item.Hijos
-                                          select Hijo.Nombre).Contains(BD)
-                                  select BD;
+                    var agregar = from bd in basesDeDatos
+                                  where !(from hijo in item.Hijos
+                                          select hijo.Nombre).Contains(bd)
+                                  select bd;
 
-                    foreach (var Hijo in Eliminar)
+                    foreach (var hijo in eliminar)
                     {
-                        Hijo.Dispose();
+                        hijo.Dispose();
                     }
 
-                    foreach (var BD in Agregar)
+                    foreach (var bd in agregar)
                     {
-                        NodoViewModel N = new NodoViewModel(BD, Item);
+                        NodoViewModel n = new NodoViewModel(bd, item);
                     }
                 }
             };
 
             // Este es el retorno en caso de hacerse una llamada asincronica
-            Retorno = (r, a) =>
+            retorno = (r, a) =>
             {
                 // Esto va metido entre try/cath porque se ejecuta solo
                 try
                 {
-                    _Conexion.ListarBasesDeDatosCompletado -= Retorno;
+                    conexion.ListarBasesDeDatosCompletado -= retorno;
 
                     if (a.Error != null)
                     {
@@ -121,7 +126,7 @@
                     }
                     else if (a.Resultado != null)
                     {
-                        BasesDeDatos = a.Resultado;
+                        basesDeDatos = a.Resultado;
                         CrearNodos();
                     }
                 }
@@ -131,65 +136,69 @@
                 }
             };
 
-            if (OperacionAsincronica)
+            if (this.OperacionAsincronica)
             {
-                this._Conexion.ListarBasesDeDatosCompletado -= Retorno;
-                this._Conexion.ListarBasesDeDatosCompletado += Retorno;
-                this._Conexion.ListarBasesDeDatosAsinc();
+                this.conexion.ListarBasesDeDatosCompletado -= retorno;
+                this.conexion.ListarBasesDeDatosCompletado += retorno;
+                this.conexion.ListarBasesDeDatosAsinc();
             }
             else
             {
-                BasesDeDatos = this._Conexion.ListarBasesDeDatos();
+                basesDeDatos = this.conexion.ListarBasesDeDatos();
                 CrearNodos();
             }
         }
 
-        private void ExpandirBaseDeDatos(NodoViewModel Item)
+        private void ExpandirBaseDeDatos(NodoViewModel item)
         {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
 
-            if (Item.Expandido == true)
+            if (item.Expandido == true)
+            {
                 return;
+            }
 
-            EventHandler<EventoListarTablasCompletadoArgs> Retorno = null;
-            string[] Tablas = null;
+            EventHandler<EventoListarTablasCompletadoArgs> retorno = null;
+            string[] tablas = null;
 
             // Esta expresion lambda es llamada mas abajo.
             ExpresionGenerica CrearNodos = () =>
             {
-                if (Tablas != null)
+                if (tablas != null)
                 {
-                    Item.Expandido = true;
+                    item.Expandido = true;
 
-                    var Eliminar = from Hijo in Item.Hijos
-                                   where !(from Tabla in Tablas
-                                           select Tabla).Contains(Hijo.Nombre)
-                                   select Hijo;
+                    var eliminar = from hijo in item.Hijos
+                                   where !(from tabla in tablas
+                                           select tabla).Contains(hijo.Nombre)
+                                   select hijo;
 
-                    var Agregar = from Tabla in Tablas
-                                  where !(from Hijo in Item.Hijos
-                                          select Hijo.Nombre).Contains(Tabla)
-                                  select Tabla;
+                    var agregar = from tabla in tablas
+                                  where !(from hijo in item.Hijos
+                                          select hijo.Nombre).Contains(tabla)
+                                  select tabla;
 
-                    foreach (var Hijo in Eliminar)
+                    foreach (var hijo in eliminar)
                     {
-                        Hijo.Dispose();
+                        hijo.Dispose();
                     }
 
-                    foreach (var Tabla in Agregar)
+                    foreach (var tabla in agregar)
                     {
-                        NodoViewModel N = new NodoViewModel(Tabla, Item);
+                        NodoViewModel n = new NodoViewModel(tabla, item);
                     }
                 }
             };
 
             // Este es el retorno en caso de hacerse una llamada asincronica
-            Retorno = (r, a) =>
+            retorno = (r, a) =>
             {
                 try
                 {
-                    this._Conexion.ListarTablasCompletado -= Retorno;
+                    this.conexion.ListarTablasCompletado -= retorno;
 
                     if (a.Error != null)
                     {
@@ -201,7 +210,7 @@
                     }
                     else if (a.Resultado != null)
                     {
-                        Tablas = a.Resultado;
+                        tablas = a.Resultado;
                         CrearNodos();
                     }
                 }
@@ -211,66 +220,68 @@
                 }
             };
 
-            if (OperacionAsincronica)
+            if (this.OperacionAsincronica)
             {
-                this._Conexion.ListarTablasCompletado -= Retorno;
-                this._Conexion.ListarTablasCompletado += Retorno;
-                this._Conexion.ListarTablasAsinc(Item.Nombre);
+                this.conexion.ListarTablasCompletado -= retorno;
+                this.conexion.ListarTablasCompletado += retorno;
+                this.conexion.ListarTablasAsinc(item.Nombre);
             }
             else
             {
-                Tablas = this._Conexion.ListarTablas(Item.Nombre);
+                tablas = this.conexion.ListarTablas(item.Nombre);
                 CrearNodos();
             }
         }
 
-        private void ExpandirTabla(NodoViewModel Item)
+        private void ExpandirTabla(NodoViewModel item)
         {
-            if (Item == null)
+            if (item == null)
+            {
                 throw new ArgumentNullException("Item");
+            }
 
-            DataTable Tabla = null;
-            EventHandler<EventoLeerTablaCompletadoArgs> Retorno = null;
+            DataTable tabla = null;
+            EventHandler<EventoLeerTablaCompletadoArgs> retorno = null;
 
             ExpresionGenerica AjustarExplorador = () =>
             {
-                Item.Expandido = true;
+                item.Expandido = true;
 
                 /* 
                     * NodoTablaActual esta atado a TablaActual: el primero es el indice dentro del 
                     * diccionario Tablas para ubicar el segundo.
                     */
 
-                NodoTablaActual = Item;
-                TablaActual = Tabla;
+                this.NodoTablaActual = item;
+                this.TablaActual = tabla;
             };
 
             // Esta expresion lambda es llamada mas abajo.
             ExpresionGenerica CrearNodos = () =>
             {
-                if (Tabla != null)
+                if (tabla != null)
                 {
                     //Tabla.TableName = Item.RutaCompleta();
-                    Tabla.TableName = Item.Nombre;
+                    tabla.TableName = item.Nombre;
 
-                    var Eliminar = from Hijo in Item.Hijos
-                                   where !(from Columna in Tabla.Columns.Cast<DataColumn>()
-                                           select Columna.ColumnName).Contains(Hijo.Nombre)
-                                   select Hijo;
+                    var eliminar = from hijo in item.Hijos
+                                   where !(from columna in tabla.Columns.Cast<DataColumn>()
+                                           select columna.ColumnName).Contains(hijo.Nombre)
+                                   select hijo;
 
-                    var Agregar = from Columna in Tabla.Columns.Cast<DataColumn>()
-                                  where !(from Hijo in Item.Hijos
-                                          select Hijo.Nombre).Contains(Columna.ColumnName)
-                                  select Columna;
+                    var agregar = from columna in tabla.Columns.Cast<DataColumn>()
+                                  where !(from hijo in item.Hijos
+                                          select hijo.Nombre).Contains(columna.ColumnName)
+                                  select columna;
 
-                    foreach (var Hijo in Eliminar)
+                    foreach (var hijo in eliminar)
                     {
-                        Hijo.Dispose();
+                        hijo.Dispose();
                     }
 
-                    foreach (var Columna in Agregar)
+                    foreach (var columna in agregar)
                     {
-                        NodoViewModel N = new NodoViewModel(Columna.ColumnName, Item);
+                        NodoViewModel n = new NodoViewModel(columna.ColumnName, item);
                     }
                                         
                     AjustarExplorador();
@@ -278,11 +289,11 @@
             };
 
             // Este es el retorno en caso de hacerse una llamada asincronica
-            Retorno = (r, a) =>
+            retorno = (r, a) =>
             {
                 try
                 {
-                    this._Conexion.LeerTablaCompletado -= Retorno;
+                    this.conexion.LeerTablaCompletado -= retorno;
 
                     if (a.Error != null)
                     {
@@ -294,7 +305,7 @@
                     }
                     else if (a.Resultado != null)
                     {
-                        Tabla = a.Resultado;
+                        tabla = a.Resultado;
                         CrearNodos();
                     }
                 }
@@ -304,64 +315,68 @@
                 }
             };
 
-            if (Item.ExisteEnRepositorioDeTablas())
+            if (item.ExisteEnRepositorioDeTablas())
             {
-                Tabla = Item.BuscarEnRepositorioDeTablas();
+                tabla = item.BuscarEnRepositorioDeTablas();
                 AjustarExplorador();
             }
             else
             {
-                if (OperacionAsincronica)
+                if (this.OperacionAsincronica)
                 {
-                    this._Conexion.LeerTablaCompletado -= Retorno;
-                    this._Conexion.LeerTablaCompletado += Retorno;
-                    this._Conexion.LeerTablaAsinc(Item.Padre.Nombre, Item.Nombre);
+                    this.conexion.LeerTablaCompletado -= retorno;
+                    this.conexion.LeerTablaCompletado += retorno;
+                    this.conexion.LeerTablaAsinc(item.Padre.Nombre, item.Nombre);
                 }
                 else
                 {
-                    Tabla = this._Conexion.LeerTabla(Item.Padre.Nombre, Item.Nombre);
+                    tabla = this.conexion.LeerTabla(item.Padre.Nombre, item.Nombre);
                     CrearNodos();
                 }
             }
         }
 
-        private void ExpandirColumna(NodoViewModel Item)
+        private void ExpandirColumna(NodoViewModel item)
         {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
+            if (item == null)
+            {
+                throw new ArgumentNullException("item");
+            }
 
-            NodoViewModel Padre = Item.Padre;
-            ExpandirTabla(Padre);
+            NodoViewModel padre = item.Padre;
+            this.ExpandirTabla(padre);
 
-            Item.Expandido = true;
+            item.Expandido = true;
         }
 
-        public void ExpandirRuta(string Ruta)
+        public void ExpandirRuta(string ruta)
         {
-            string[] PasosDeLaRuta = Ruta.Split('\\');
+            string[] pasosDeLaRuta = ruta.Split('\\');
 
-            ObservableCollection<NodoViewModel> Lista = Nodos;
-            NodoViewModel Nodo = null;
+            ObservableCollection<NodoViewModel> lista = Nodos;
+            NodoViewModel nodo = null;
 
             try
             {
-                foreach (string Paso in PasosDeLaRuta)
+                foreach (string paso in pasosDeLaRuta)
                 {
-                    if (Paso == string.Empty)
-                        continue;
-
-                    Nodo = NodoViewModelExtensiones.RutaANodo(Paso, Lista);
-
-                    if (Nodo != null)
+                    if (paso == string.Empty)
                     {
-                        Expandir(Nodo);
-                        Lista = Nodo.Hijos;
+                        continue;
+                    }
+
+                    nodo = NodoViewModelExtensiones.RutaANodo(paso, lista);
+
+                    if (nodo != null)
+                    {
+                        this.Expandir(nodo);
+                        lista = nodo.Hijos;
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al expandir la ruta: " + Ruta, ex);
+                throw new Exception("Error al expandir la ruta: " + ruta, ex);
             }
         }
 
@@ -372,7 +387,7 @@
         {
             try
             {
-                ExpandirTodo(this.Nodos);
+                this.ExpandirTodo(this.Nodos);
             }
             catch (Exception ex)
             {
@@ -383,23 +398,27 @@
         /// <summary>
         /// Expande todos los nodos del árbol de nodos especificado.
         /// </summary>
-        /// <param name="Nodos">Arbol a expandir.</param>
-        /// <exception cref="ArgumentNullException">Si <paramref name="Nodos"/> es una referencia 
+        /// <param name="nodos">Arbol a expandir.</param>
+        /// <exception cref="ArgumentNullException">Si <paramref name="nodos"/> es una referencia 
         /// nula.</exception>
-        public void ExpandirTodo(ObservableCollection<NodoViewModel> Nodos)
+        public void ExpandirTodo(ObservableCollection<NodoViewModel> nodos)
         {
-            if (Nodos == null)
+            if (nodos == null)
+            {
                 throw new ArgumentNullException("Nodos");
+            }
 
             try
             {
                 // Este mismo ciclo no quiso funcionar con un foreach porque se perdia la numeracion
-                for (int i = 0; i < Nodos.Count; i++)
+                for (int i = 0; i < nodos.Count; i++)
                 {
-                    Expandir(Nodos[i]);
+                    this.Expandir(nodos[i]);
 
-                    if (Nodos[i].Hijos.Count > 0)
-                        ExpandirTodo(Nodos[i].Hijos);
+                    if (nodos[i].Hijos.Count > 0)
+                    {
+                        this.ExpandirTodo(nodos[i].Hijos);
+                    }
                 }
             }
             catch (Exception ex)
@@ -411,79 +430,85 @@
         /// <summary>
         /// Obtiene el contenido del nodo especificado desde el proveedor de datos.
         /// </summary>
-        /// <param name="Item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
+        /// <param name="item">Nodo a expandir. El nivel de este nodo solo puede ser uno de los 
         /// especificados en <see cref="Constantes.NivelDeNodo"/>.</param>
-        /// <exception cref="ArgumentNullException">Si <paramref name="Item"/> es una referencia 
+        /// <exception cref="ArgumentNullException">Si <paramref name="item"/> es una referencia 
         /// nula.</exception>
-        public void Expandir(NodoViewModel Item)
+        public void Expandir(NodoViewModel item)
         {
-            if (Item == null)
+            if (item == null)
+            {
                 throw new ArgumentNullException("Item");
+            }
 
             try
             {
-                switch (Item.Nivel)
+                switch (item.Nivel)
                 {
                     case NivelDeNodo.Servidor:
-                        ExpandirServidor(Item);
+                        this.ExpandirServidor(item);
                         break;
                     case NivelDeNodo.BaseDeDatos:
-                        ExpandirBaseDeDatos(Item);
+                        this.ExpandirBaseDeDatos(item);
                         break;
                     case NivelDeNodo.Tabla:
-                        ExpandirTabla(Item);
+                        this.ExpandirTabla(item);
                         break;
                     case NivelDeNodo.Columna:
-                        ExpandirColumna(Item);
+                        this.ExpandirColumna(item);
                         break;
                     default:
                         break;
                 }
 
-                NodoActual = Item;
+                this.NodoActual = item;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al expandir el NodoViewModel " + Item.Nombre, ex); 
+                throw new Exception("Error al expandir el NodoViewModel " + item.Nombre, ex); 
             }
         }
 
-        public void Reexpandir(NodoViewModel Item)
+        public void Reexpandir(NodoViewModel item)
         {
-            if (Item == null)
-                throw new ArgumentNullException("Item");
-
-            Item.Expandido = false;
-
-            if (Item.ExisteEnRepositorioDeTablas())
+            if (item == null)
             {
-                Item.QuitarDeRepositorioDeTablas();
+                throw new ArgumentNullException("Item");
             }
 
-            Expandir(Item);
+            item.Expandido = false;
+
+            if (item.ExisteEnRepositorioDeTablas())
+            {
+                item.QuitarDeRepositorioDeTablas();
+            }
+
+            this.Expandir(item);
         }
 
         #endregion
 
         #region Funciones de tablas
 
-        public bool EscribirTabla(NodoViewModel Nodo, DataTable Tabla)
+        public bool EscribirTabla(NodoViewModel nodo, DataTable tabla)
         {
-            if (Nodo.Nivel != NivelDeNodo.Tabla)
+            if (nodo.Nivel != NivelDeNodo.Tabla)
+            {
                 return false;
+            }
 
-            bool Resultado = false;
-            EventHandler<EventoEscribirTablaCompletadoArgs> Retorno = null;
+            bool resultado = false;
+            EventHandler<EventoEscribirTablaCompletadoArgs> retorno = null;
 
-            Retorno = (r, a) =>
+            retorno = (r, a) =>
             {
                 // Esto va metido entre try/cath porque se ejecuta solo
                 try
                 {
-                    bool R = false;
-                    string Mensaje = string.Empty;
+                    bool re = false;
+                    string mensaje = string.Empty;
 
-                    this._Conexion.EscribirTablaCompletado -= Retorno;
+                    this.conexion.EscribirTablaCompletado -= retorno;
 
                     if (a.Error != null)
                     {
@@ -491,15 +516,15 @@
                     }
                     else if (a.Cancelled)
                     {
-                        Mensaje += "Operacion EscribirTablaAsinc cancelada";
+                        mensaje += "Operacion EscribirTablaAsinc cancelada";
                     }
                     else if (a.Resultado != null)
                     {
-                        R = a.Resultado;
-                        Mensaje += "El resultado de la operacion EscribirTablaAsinc fue: " + R.ToString();
+                        re = a.Resultado;
+                        mensaje += "El resultado de la operacion EscribirTablaAsinc fue: " + re.ToString();
                     }
 
-                    MessageBox.Show(Mensaje);
+                    MessageBox.Show(mensaje);
                 }
                 catch (Exception ex)
                 {
@@ -509,15 +534,15 @@
 
             try
             {
-                if (OperacionAsincronica)
+                if (this.OperacionAsincronica)
                 {
-                    this._Conexion.EscribirTablaCompletado -= Retorno;
-                    this._Conexion.EscribirTablaCompletado += Retorno;
-                    this._Conexion.EscribirTablaAsinc(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);                    
+                    this.conexion.EscribirTablaCompletado -= retorno;
+                    this.conexion.EscribirTablaCompletado += retorno;
+                    this.conexion.EscribirTablaAsinc(nodo.Padre.Nombre, nodo.Nombre, tabla);                    
                 }
                 else
                 {
-                    Resultado = this._Conexion.EscribirTabla(Nodo.Padre.Nombre, Nodo.Nombre, Tabla);
+                    resultado = this.conexion.EscribirTabla(nodo.Padre.Nombre, nodo.Nombre, tabla);
                 }
             }
             catch (Exception ex)
@@ -525,7 +550,7 @@
                 throw ex;
             }
 
-            return Resultado;
+            return resultado;
         }
 
         #endregion
@@ -534,11 +559,11 @@
 
         protected void Dispose(bool BorrarCodigoAdministrado)
         {
-            if (this._Conexion != null)
-                this._Conexion = null;
+            if (this.conexion != null)
+                this.conexion = null;
 
-            if (_NodoActual != null)
-                _NodoActual = null;
+            if (nodoActual != null)
+                nodoActual = null;
 
             if (NodoTablaActual != null)
                 NodoTablaActual = null;

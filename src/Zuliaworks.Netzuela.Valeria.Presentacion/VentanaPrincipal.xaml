@@ -122,24 +122,11 @@
             <TabItem Header="Opciones" Name="tab_Opciones">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
 
-                    <GroupBox Grid.Row="0" Header="Acceso" Name="grp_Acceso" Style="{StaticResource est_Agrupador}" >
-                        <StackPanel>
-                            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                <Label Margin="10,1" Grid.Row="0">Nombre de usuario:</Label>
-                                <TextBox Margin="1" Width="200"/>
-                            </StackPanel>
-                            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                                <Label Margin="10,1" Grid.Row="0">Contraseña:</Label>
-                                <PasswordBox Margin="1" Width="200"/>
-                            </StackPanel>
-                        </StackPanel>
+                    <GroupBox Grid.Row="0" Header="Configuración" Name="grp_Configuracion" Style="{StaticResource est_Agrupador}">
+                        <Views:OpcionesView DataContext="{Binding Path=Opciones}"/>
                     </GroupBox>
                 </Grid>
             </TabItem>

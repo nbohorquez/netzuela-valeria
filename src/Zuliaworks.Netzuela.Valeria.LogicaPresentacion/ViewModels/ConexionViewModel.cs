@@ -1,75 +1,166 @@
 ﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 {
-    using MvvmFoundation.Wpf;                       // ObservableObject
-
     using System;
     using System.Collections.Generic;
-    using System.Data;                              // DataTable, ConnectionState
+    using System.Data;                                  // DataTable, ConnectionState
     using System.Linq;
-    using System.Security;                          // SecureString
+    using System.Security;                              // SecureString
     using System.Text;
-    using System.Windows;                           // MessageBox
-    using System.Windows.Input;                     // ICommand
+    using System.Windows;                               // MessageBox
+    using System.Windows.Input;                         // ICommand
 
-    using Zuliaworks.Netzuela.Valeria.Comunes;      // DatosDeConexion
-    using Zuliaworks.Netzuela.Valeria.Logica;       // Conexion
+    using MvvmFoundation.Wpf;                           // ObservableObject
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
+    using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
+    using Zuliaworks.Netzuela.Valeria.Logica;           // Conexion
 
     public class ConexionViewModel : ObservableObject
     {
         #region Variables
 
-        private RelayCommand _ConectarDesconectarOrden;
-        private bool _PermitirModificaciones;
-        protected Conexion _Conexion;
-
+        private RelayCommand conectarDesconectarOrden;
+        private bool permitirModificaciones;
+        protected bool mostrarAutentificacionView;
+        protected AutentificacionViewModel autentificacion;
+        protected PropertyObserver<AutentificacionViewModel> observadorAutentificacion;
+        protected Conexion conexion;
+        
         #endregion
 
         #region Constructores
 
         public ConexionViewModel()
         {
-            this._Conexion = new Conexion();
+            this.conexion = new Conexion();
         }
 
         public ConexionViewModel(Conexion Conexion)
         {
             if (Conexion == null)
+            {
                 throw new ArgumentNullException("Conexion");
+            }
 
-            this._Conexion = Conexion;
+            this.conexion = Conexion;
         }
 
         public ConexionViewModel(ParametrosDeConexion Parametros)
         {
             if (Parametros == null)
+            {
                 throw new ArgumentNullException("Parametros");
+            }
 
-            this._Conexion = new Conexion(Parametros);
+            this.conexion = new Conexion(Parametros);
+        }
+
+        #endregion
+
+        #region Eventos
+
+        public event StateChangeEventHandler CambioDeEstado
+        {
+            add { this.Conexion.CambioDeEstado += value; }
+            remove { this.Conexion.CambioDeEstado -= value; }
+        }
+
+        public event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado
+        {
+            add { this.Conexion.ListarBasesDeDatosCompletado += value; }
+            remove { this.Conexion.ListarBasesDeDatosCompletado -= value; }
+        }
+
+        public event EventHandler<EventoListarTablasCompletadoArgs> ListarTablasCompletado
+        {
+            add { this.Conexion.ListarTablasCompletado += value; }
+            remove { this.Conexion.ListarTablasCompletado -= value; }
+        }
+
+        public event EventHandler<EventoLeerTablaCompletadoArgs> LeerTablaCompletado
+        {
+            add { this.Conexion.LeerTablaCompletado += value; }
+            remove { this.Conexion.LeerTablaCompletado -= value; }
+        }
+
+        public event EventHandler<EventoEscribirTablaCompletadoArgs> EscribirTablaCompletado
+        {
+            add { this.Conexion.EscribirTablaCompletado += value; }
+            remove { this.Conexion.EscribirTablaCompletado -= value; }
+        }
+
+        public event EventHandler<EventoCrearUsuarioCompletadoArgs> CrearUsuarioCompletado
+        {
+            add { this.Conexion.CrearUsuarioCompletado += value; }
+            remove { this.Conexion.CrearUsuarioCompletado -= value; }
+        }
+
+        public event EventHandler<EventoConsultarCompletadoArgs> ConsultarCompletado
+        {
+            add { this.Conexion.ConsultarCompletado += value; }
+            remove { this.Conexion.ConsultarCompletado -= value; }
         }
 
         #endregion
 
         #region Propiedades
 
+        public SecureString Usuario { get; protected set; }
+        public SecureString Contrasena { get; protected set; }
+
         public Conexion Conexion
         {
-            get { return this._Conexion; }
+            get { return this.conexion; }
         }
-
+        
         public ConnectionState Estado
         {
-            get { return this._Conexion.Estado; }
+            get { return this.conexion.Estado; }
+        }
+
+        public AutentificacionViewModel Autentificacion
+        {
+            get
+            {
+                return autentificacion;
+            }
+            protected set
+            {
+                if (value != autentificacion)
+                {
+                    autentificacion = value;
+                    this.RaisePropertyChanged("Autentificacion");
+                }
+            }
+        }
+
+        public bool MostrarAutentificacionView
+        {
+            get
+            {
+                return mostrarAutentificacionView;
+            }
+            set
+            {
+                if (value != mostrarAutentificacionView)
+                {
+                    mostrarAutentificacionView = value;
+                    this.RaisePropertyChanged("MostrarAutentificacionView");
+                }
+            }
         }
 
         public ParametrosDeConexion Parametros
         {
-            get { return this._Conexion.Parametros; }
+            get 
+            { 
+                return this.conexion.Parametros; 
+            }
             set
             {
-                if (value != this._Conexion.Parametros)
+                if (value != this.conexion.Parametros)
                 {
-                    this._Conexion.Parametros = value;
-                    RaisePropertyChanged("Parametros");
+                    this.conexion.Parametros = value;
+                    this.RaisePropertyChanged("Parametros");
                 }
             }
         }
@@ -121,18 +212,54 @@
 
         public ICommand ConectarDesconectarOrden
         {
-            get { return _ConectarDesconectarOrden ?? (_ConectarDesconectarOrden = new RelayCommand(this.ConectarDesconectarAccion)); }
+            get { return conectarDesconectarOrden ?? (conectarDesconectarOrden = new RelayCommand(this.ConectarDesconectarAccion)); }
         }
 
         #endregion
 
         #region Funciones
-
+        
         private void ConectarDesconectarAccion()
         {
             try
             {
-                ConectarDesconectar();
+                this.ConectarDesconectar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+            }
+        }
+
+        protected void AbrirAutentificacion()
+        {
+            if (this.Autentificacion != null)
+            {
+                this.Autentificacion.Dispose();
+                this.Autentificacion = null;
+            }
+
+            this.Autentificacion = new AutentificacionViewModel();
+
+            observadorAutentificacion = new PropertyObserver<AutentificacionViewModel>(this.Autentificacion)
+                .RegisterHandler(n => n.MostrarView, this.CerrarAutentificacion);
+
+            this.MostrarAutentificacionView = true;
+        }
+
+        protected virtual void CerrarAutentificacion(AutentificacionViewModel AutentificacionVM)
+        {
+            try
+            {
+                if (AutentificacionVM.MostrarView == false)
+                {
+                    this.MostrarAutentificacionView = false;
+                    this.Usuario = AutentificacionVM.Usuario.Copy();
+                    this.Contrasena = AutentificacionVM.Contrasena.Copy();
+                    AutentificacionVM.Dispose();
+                    this.Autentificacion = null;
+                    this.ConexionOrdinaria();
+                }
             }
             catch (Exception ex)
             {
@@ -142,39 +269,64 @@
 
         protected virtual void ConectarDesconectar()
         {
-            if (Estado == ConnectionState.Open)
+            if (this.Estado == ConnectionState.Open)
             {
-                Desconectar();
+                this.Desconectar();
             }
             else
             {
-                Conectar(null, null);
-            }            
+                this.AbrirAutentificacion();
+            }
+        }
+
+        public void ConexionOrdinaria()
+        {
+            try
+            {
+                this.Conectar(Usuario, Contrasena);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al tratar de establecer la conexión local con el usuario ordinario", ex);
+            }
         }
 
         public void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
         {            
-            RaisePropertyChanged("Estado");                     // Para la gente de MainViewModel
-            RaisePropertyChanged("EstadoString");               // Para la gente de BarraDeEstadoView
-            RaisePropertyChanged("BotonConectarDesconectar");   // Para la gente de ConexionLocalView y ConexionRemotaView
-            RaisePropertyChanged("PermitirModificaciones");     // Para la gente de ConexionLocalView y ConexionRemotaView
+            this.RaisePropertyChanged("Estado");                     // Para la gente de MainViewModel
+            this.RaisePropertyChanged("EstadoString");               // Para la gente de BarraDeEstadoView
+            this.RaisePropertyChanged("BotonConectarDesconectar");   // Para la gente de ConexionLocalView y ConexionRemotaView
+            this.RaisePropertyChanged("PermitirModificaciones");     // Para la gente de ConexionLocalView y ConexionRemotaView
         }
+
+        public void ResolverDatosDeConexion()
+        {
+            try
+            {
+                this.conexion.ResolverDatosDeConexion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al tratar de resolver los datos de conexión", ex);
+            }
+        }
+
+        #region Métodos sincrónicos
 
         public void Conectar(SecureString Usuario, SecureString Contrasena)
         {
-            ResolverDatosDeConexion();
+            this.ResolverDatosDeConexion();
             
             try
             {
                 // Esto es para evitar que aparezca registrado el mismo manejador dos veces
-                this._Conexion.CambioDeEstado -= ManejarCambioDeEstado;
-                this._Conexion.CambioDeEstado += ManejarCambioDeEstado;
-
-                this._Conexion.Conectar(Usuario, Contrasena);
+                this.CambioDeEstado -= this.ManejarCambioDeEstado;
+                this.CambioDeEstado += this.ManejarCambioDeEstado;
+                this.Conexion.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error de conexión", ex);
+                throw ex;
             }
         }
 
@@ -182,25 +334,149 @@
         {
             try
             {
-                this._Conexion.Desconectar();
+                this.conexion.Desconectar();
             }
             catch (Exception ex)
             {
-                throw new Exception("Error de desconexión", ex);
+                throw ex;
             }
         }
 
-        public void ResolverDatosDeConexion()
+        public string[] ListarBasesDeDatos()
         {
+            string[] resultado = null;
+
             try
             {
-                this._Conexion.ResolverDatosDeConexion();
+                resultado = this.Conexion.ListarBasesDeDatos();
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al tratar de resolver los datos de conexión", ex);
+                throw ex;
+            }
+
+            return resultado;
+        }
+
+        public string[] ListarTablas(string baseDeDatos)
+        {
+            string[] resultado = null;
+
+            try
+            {
+                resultado = this.Conexion.ListarTablas(baseDeDatos);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
+        public virtual DataTable LeerTabla(string baseDeDatos, string tabla)
+        {
+            return new DataTable();
+        }
+
+        public virtual bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
+        {
+            return false;
+        }
+
+        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnasAutorizadas, int privilegios)
+        {
+            bool resultado = false;
+
+            try
+            {
+                resultado = this.Conexion.CrearUsuario(usuario, contrasena, columnasAutorizadas, Privilegios.Seleccionar);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
+        public DataTable Consultar(string baseDeDatos, string sql)
+        {
+            DataTable resultado = null;
+
+            try
+            {
+                resultado = this.Conexion.Consultar(baseDeDatos, sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
+        #endregion
+
+        #region Métodos asincrónicos
+
+        public void ListarBasesDeDatosAsinc()
+        {
+            try
+            {
+                this.Conexion.ListarBasesDeDatosAsinc();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
+
+        public void ListarTablasAsinc(string baseDeDatos)
+        {
+            try
+            {
+                this.Conexion.ListarTablasAsinc(baseDeDatos);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public virtual void LeerTablaAsinc(string baseDeDatos, string tabla)
+        {
+        }
+
+        public virtual void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
+        {
+        }
+
+        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
+        {
+            try
+            {
+                this.Conexion.CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void ConsultarAsinc(string baseDeDatos, string sql)
+        {
+            try
+            {
+                this.Conexion.ConsultarAsinc(baseDeDatos, sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
 
         #endregion
     }

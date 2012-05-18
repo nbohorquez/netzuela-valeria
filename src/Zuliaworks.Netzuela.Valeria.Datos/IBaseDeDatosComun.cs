@@ -8,12 +8,13 @@
     using System.Text;
     
     using Zuliaworks.Netzuela.Valeria.Comunes;
+    using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
 
     /// <summary>
     /// Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
     /// a las bases de datos.
     /// </summary>    
-    public interface IBaseDeDatos : IDisposable
+    public interface IBaseDeDatosComun : IDisposable
     {
         #region Eventos
 
@@ -42,24 +43,20 @@
         void Desconectar();
         string[] ListarBasesDeDatos();
         string[] ListarTablas(string baseDeDatos);
-        DataTable LeerTabla(string baseDeDatos, string tabla);
-        bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla);
         bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios);
-        DataTable Consultar(string baseDeDatos, string Sql);
+        DataTable Consultar(string baseDeDatos, string sql);
 
-        #endregion
+        #endregion // Métodos sincrónicos
 
         #region Métodos asincrónicos
 
         void ListarBasesDeDatosAsinc();
         void ListarTablasAsinc(string baseDeDatos);
-        void LeerTablaAsinc(string baseDeDatos, string tabla);
-        void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla);
         void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios);
-        void ConsultarAsinc(string baseDeDatos, string Sql);
+        void ConsultarAsinc(string baseDeDatos, string sql);
 
-        #endregion
+        #endregion // Métodos asincrónicos
 
-        #endregion
+        #endregion // Prototipos de funciones
     }
 }

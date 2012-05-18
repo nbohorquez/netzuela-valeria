@@ -15,11 +15,11 @@
     using System.Windows.Shapes;
 
     /// <summary>
-    /// Lógica de interacción para AutentificacionView.xaml
+    /// Lógica de interacción para ListadoTiendasView.xaml
     /// </summary>
-    public partial class AutentificacionView : UserControl
+    public partial class SeleccionarTiendaView : UserControl
     {
-        public AutentificacionView()
+        public SeleccionarTiendaView()
         {
             InitializeComponent();
         }

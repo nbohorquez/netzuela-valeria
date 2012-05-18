@@ -13,7 +13,7 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 
             Resultado.Add("==========================================================\n");
             Resultado.Add("Pila de excepciones:\n\n");
-            for (int i = 0; ; ex = ex.InnerException, i++)
+            for (int i = 0; true; ex = ex.InnerException, i++)
             {
                 Resultado.Add("EXCEPCION NIVEL " + i.ToString() + ": ");
                 Resultado.Add(ex.Source + ".dll: \"" + ex.Message + "\"" + "\n");

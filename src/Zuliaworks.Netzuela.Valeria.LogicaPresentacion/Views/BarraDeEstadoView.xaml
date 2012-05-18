@@ -22,6 +22,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
@@ -37,6 +38,13 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Conexión remota: "/>
                     <TextBlock Text="{Binding Path=ConexionRemota.EstadoString}"/>
+                </StackPanel>
+            </StatusBarItem>
+            <Separator Grid.Column="1" Height="Auto" HorizontalAlignment="Right"/>
+            <StatusBarItem Grid.Column="2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Tienda: "/>
+                    <TextBlock Text="{Binding Path=ConexionRemota.NombreTienda}"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>

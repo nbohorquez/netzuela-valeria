@@ -19,8 +19,8 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
     {
         #region Variables
 
-        private RelayCommand _AccederOrden;
-        private bool _MostrarView;
+        private RelayCommand accederOrden;
+        private bool mostrarView;
 
         #endregion
 
@@ -57,20 +57,20 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
                 
         public bool MostrarView 
         {
-            get { return _MostrarView; }
+            get { return mostrarView; }
             private set
             {
-                if (value != _MostrarView)
+                if (value != mostrarView)
                 {
-                    _MostrarView = value;
-                    RaisePropertyChanged("MostrarView");
+                    mostrarView = value;
+                    this.RaisePropertyChanged("MostrarView");
                 }
             }
         }
 
         public ICommand AccederOrden
         {
-            get { return _AccederOrden ?? (_AccederOrden = new RelayCommand(() => this.MostrarView = false)); }
+            get { return accederOrden ?? (accederOrden = new RelayCommand(() => this.MostrarView = false)); }
         }
         
         #endregion
@@ -79,13 +79,22 @@ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion.ViewModels
 
         protected void Dispose(bool borrarCodigoAdministrado)
         {
-            _AccederOrden = null;
-            _MostrarView = false;
+            accederOrden = null;
+            mostrarView = false;
 
             if (borrarCodigoAdministrado)
             {
-                Usuario.Dispose();
-                Contrasena.Dispose();
+                if (Usuario != null)
+                {
+                    Usuario.Dispose();
+                    Usuario = null;
+                }
+
+                if (Contrasena != null)
+                {
+                    Contrasena.Dispose();
+                    Contrasena = null;
+                }
             }
         }
 

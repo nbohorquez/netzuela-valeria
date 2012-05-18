@@ -12,7 +12,7 @@
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos Oracle
     /// </summary>
-    public class Oracle : EventosComunes, IBaseDeDatos
+    public class Oracle : EventosComunes, IBaseDeDatosLocal
     {
         #region Variables
 

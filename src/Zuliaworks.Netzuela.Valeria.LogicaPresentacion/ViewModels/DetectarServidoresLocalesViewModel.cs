@@ -19,8 +19,8 @@
     {
         #region Variables
 
-        private RelayCommand _SeleccionarOrden;
-        private bool _MostrarView;
+        private RelayCommand seleccionarOrden;
+        private bool mostrarView;
 
         #endregion
 
@@ -44,20 +44,20 @@
         public ParametrosDeConexion Parametros { get; set; }
         public bool MostrarView
         {
-            get { return _MostrarView; }
+            get { return mostrarView; }
             private set
             {
-                if (value != _MostrarView)
+                if (value != mostrarView)
                 {
-                    _MostrarView = value;
-                    RaisePropertyChanged("MostrarView");
+                    mostrarView = value;
+                    this.RaisePropertyChanged("MostrarView");
                 }
             }
         }
 
         public ICommand SeleccionarOrden
         {
-            get { return _SeleccionarOrden ?? (_SeleccionarOrden = new RelayCommand(() => this.MostrarView = false)); }
+            get { return seleccionarOrden ?? (seleccionarOrden = new RelayCommand(() => this.MostrarView = false)); }
         }
 
         #endregion
@@ -66,8 +66,8 @@
 
         protected void Dispose(bool borrarCodigoAdministrado)
         {
-            _SeleccionarOrden = null;
-            _MostrarView = false;
+            seleccionarOrden = null;
+            mostrarView = false;
             Parametros = null;
             
             if (borrarCodigoAdministrado)

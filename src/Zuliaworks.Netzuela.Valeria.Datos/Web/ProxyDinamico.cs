@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Data;                                      // DataSet
     using System.Linq;
+    using System.Security;                                  // SecureString
     using System.Security.Cryptography.X509Certificates;    // StoreLocation, StoreName, X509FindType
     using System.ServiceModel;                              // WSHttpBinding
     using System.ServiceModel.Channels;
@@ -31,6 +32,8 @@
         private DynamicProxy proxyDinamico;
         private string uriWsdlServicio;
         private bool uriWsdlServicioModificado;
+        private SecureString usuario;
+        private SecureString contrasena;
 
         #endregion
 
@@ -40,14 +43,14 @@
         { 
         }
 
-        public ProxyDinamico(string UriWsdlServicio)
+        public ProxyDinamico(string uriWsdlServicio)
         {
-            if (UriWsdlServicio == null)
+            if (uriWsdlServicio == null)
             {
                 throw new ArgumentNullException("UriWsdlServicio");
             }
 
-            this.UriWsdlServicio = UriWsdlServicio;
+            this.UriWsdlServicio = uriWsdlServicio;
             this.uriWsdlServicioModificado = false;
             this.CrearFabrica();            
             
@@ -66,6 +69,13 @@
                 Namespace = Constantes.Namespace,
                 Security = this.seguridad
             };
+        }
+
+        public ProxyDinamico(string uriWsdlServicio, SecureString usuario, SecureString contrasena)
+            : this(uriWsdlServicio)
+        {
+            this.usuario = usuario;
+            this.contrasena = contrasena;
         }
 
         ~ProxyDinamico()
@@ -179,16 +189,19 @@
             {
                 var credenciales = (ClientCredentials)this.proxyDinamico.GetProperty("ClientCredentials");
                 //Credenciales.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-                credenciales.UserName.UserName = "molleja@abc.com";
-                credenciales.UserName.Password = "41ssdas#ASX";
+                credenciales.UserName.UserName = this.usuario.ConvertirAUnsecureString();
+                credenciales.UserName.Password = this.contrasena.ConvertirAUnsecureString();
 
                 // Con codigo de: http://stackoverflow.com/questions/1544830/wcf-transportcredentialonly-not-sending-username-and-password
                 using (OperationContextScope scope = new OperationContextScope((IClientChannel)this.proxyDinamico.GetProperty("InnerChannel")))
                 {
-                    var propiedadPeticionHttp = new HttpRequestMessageProperty();
-                    string autorizacion = (credenciales.UserName.UserName + ":" + credenciales.UserName.Password).CodificarBase64();
-                    propiedadPeticionHttp.Headers[System.Net.HttpRequestHeader.Authorization] = "Basic " + autorizacion;
-                    OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = propiedadPeticionHttp;
+                    if (this.usuario != null && this.contrasena != null)
+                    {
+                        var propiedadPeticionHttp = new HttpRequestMessageProperty();
+                        string autorizacion = (this.usuario.ConvertirAUnsecureString() + ":" + this.contrasena.ConvertirAUnsecureString()).CodificarBase64();
+                        propiedadPeticionHttp.Headers[System.Net.HttpRequestHeader.Authorization] = "Basic " + autorizacion;
+                        OperationContext.Current.OutgoingMessageProperties[HttpRequestMessageProperty.Name] = propiedadPeticionHttp;
+                    }
 
                     resultado = this.proxyDinamico.CallMethod(metodo, argumentos);
                 }
@@ -251,11 +264,24 @@
 
         protected override void Dispose(bool BorrarCodigoAdministrado)
         {
+            this.uriWsdlServicio = null;
+            this.uriWsdlServicioModificado = false;
             this.fabrica = null;
             this.Desconectar();
 
             if (BorrarCodigoAdministrado)
             {
+                if (usuario != null)
+                {
+                    usuario.Dispose();
+                    usuario = null;
+                }
+
+                if (contrasena != null)
+                {
+                    contrasena.Dispose();
+                    contrasena = null;
+                }
             }
         }
 

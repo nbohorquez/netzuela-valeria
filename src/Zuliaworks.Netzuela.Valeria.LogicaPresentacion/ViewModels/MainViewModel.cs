@@ -51,12 +51,6 @@
 
             AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
 
-            /*
-            Mensajeria.Mensajero.Register<object>(Mensajeria.ConfiguracionCargada, new Action<object>(this.MensajeroConfiguracionCargada));
-            Mensajeria.Mensajero.Register(Mensajeria.ConfiguracionGuardada, new Action(this.MensajeroConfiguracionGuardada));
-            Mensajeria.Mensajero.NotifyColleagues(Mensajeria.CargarConfiguracion);
-             */
-
             this.configuracion = Opciones.CargarConfiguracion();
             InicializarConexiones();
 
@@ -154,6 +148,7 @@
             if (ConexionRemota.Parametros != null && configuracion.UsuarioRemoto != null && configuracion.ContrasenaRemota != null)
             {
                 ConexionRemota.Conectar(configuracion.UsuarioRemoto, configuracion.ContrasenaRemota);
+                ConexionRemota.TiendaId = configuracion.TiendaId;
             }
         }
 
@@ -197,29 +192,6 @@
             sistemaConfigurado = true;
             LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, AsociacionesValidas);
         }
-        /*
-        private void MensajeroConfiguracionCargada(object parametro)
-        {
-            this.configuracion = (Configuracion)parametro;
-
-            InicializarConexiones();
-
-            // Si las dos conexiones estan establecidas...
-            if (LocalARemota != null)
-            {
-                InicializarSincronizacion();
-            }
-            else
-            {
-                LocalARemota = new SincronizacionViewModel();
-            }
-        }
-
-        private void MensajeroConfiguracionGuardada()
-        {
-            MessageBox.Show("Configuracion guardada correctamente");
-        }
-        */
 
         private string RutaColumnaARutaTabla(string RutaColumna)
         {
@@ -324,14 +296,12 @@
 
         private void ConfigurarSistema()
         {
-            string[] NodosOrigen = LocalARemota.RutasDeNodosDeOrigen();
-
-            // Guardamos el arbol de nodos de ExploradorLocal. Sera util unos pasos mas adelante
-            ExploradorViewModel ExploradorLocalViejo = ExploradorLocal;
-
+            string[] nodosOrigen = LocalARemota.RutasDeNodosDeOrigen();
+            List<string[]> asociaciones = LocalARemota.Asociaciones();
+            
             // Creamos un usuario en la base de datos local con los privilegios necesarios 
             // para leer las columnas de origen
-            if (!ConexionLocal.CrearUsuarioOrdinario(NodosOrigen))
+            if (!ConexionLocal.CrearUsuarioOrdinario(nodosOrigen))
             {
                 throw new Exception("No se pudo crear el usuario Netzuela dentro de la base de datos local. La sincronización no puede proceder");
             }
@@ -343,7 +313,7 @@
             // Expandimos los nodos locales en la nueva conexion para poder operar sobre ellos
             HashSet<string> RutasDeTabla = new HashSet<string>();
 
-            foreach (string RutaDeColumna in NodosOrigen)
+            foreach (string RutaDeColumna in nodosOrigen)
             {
                 string RutaDeTabla = RutaColumnaARutaTabla(RutaDeColumna);
 
@@ -355,28 +325,12 @@
             }
             
             // Atamos nuevamente las columnas de origen (recien cargadas) a las columnas destino
-            LocalARemota.RecargarTablasLocales(ExploradorLocal.Nodos);
-
-            // Ahora tenemos que borrar todos los nodos y tablas que no se van a utilizar mas. Para ello, 
-            // simplemente borramos todo el ExploradorLocal viejo.
-            ExploradorLocalViejo.Dispose();
-            ExploradorLocalViejo = null;
-
+            LocalARemota.Sincronizar(ExploradorLocal.Nodos, ExploradorRemoto.Nodos, asociaciones);
+            
             sistemaConfigurado = true;
-            /*
-            object parametros = new object [] {
-                this.ConexionLocal.Parametros, 
-                this.ConexionRemota.Parametros,
-                this.ConexionLocal.UsuarioNetzuela,
-                this.ConexionLocal.ContrasenaNetzuela,
-                "maricoerconio".ConvertirASecureString(),
-                "1234".ConvertirASecureString(),
-                LocalARemota.Tablas
-            };
-            Mensajeria.Mensajero.NotifyColleagues(Mensajeria.GuardarConfiguracion, parametros);
-             */
             Opciones.GuardarConfiguracion(new Configuracion()
-            { 
+            {
+                TiendaId = ConexionRemota.TiendaId,
                 Tablas = LocalARemota.Tablas,
                 ContrasenaLocal = this.ConexionLocal.Contrasena,
                 ContrasenaRemota = this.ConexionRemota.Contrasena,
@@ -458,7 +412,7 @@
         {
             try
             {
-                //_Temporizador.Stop();
+                //temporizador.Stop();
 
                 NodoViewModel[] NodosOrigen = LocalARemota.NodosDeOrigen();
                 NodoViewModel[] NodosDestino = LocalARemota.NodosDeDestino();

@@ -60,44 +60,44 @@
 
         public event StateChangeEventHandler CambioDeEstado
         {
-            add { this.Conexion.CambioDeEstado += value; }
-            remove { this.Conexion.CambioDeEstado -= value; }
+            add { this.conexion.CambioDeEstado += value; }
+            remove { this.conexion.CambioDeEstado -= value; }
         }
 
         public event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado
         {
-            add { this.Conexion.ListarBasesDeDatosCompletado += value; }
-            remove { this.Conexion.ListarBasesDeDatosCompletado -= value; }
+            add { this.conexion.ListarBasesDeDatosCompletado += value; }
+            remove { this.conexion.ListarBasesDeDatosCompletado -= value; }
         }
 
         public event EventHandler<EventoListarTablasCompletadoArgs> ListarTablasCompletado
         {
-            add { this.Conexion.ListarTablasCompletado += value; }
-            remove { this.Conexion.ListarTablasCompletado -= value; }
+            add { this.conexion.ListarTablasCompletado += value; }
+            remove { this.conexion.ListarTablasCompletado -= value; }
         }
 
         public event EventHandler<EventoLeerTablaCompletadoArgs> LeerTablaCompletado
         {
-            add { this.Conexion.LeerTablaCompletado += value; }
-            remove { this.Conexion.LeerTablaCompletado -= value; }
+            add { this.conexion.LeerTablaCompletado += value; }
+            remove { this.conexion.LeerTablaCompletado -= value; }
         }
 
         public event EventHandler<EventoEscribirTablaCompletadoArgs> EscribirTablaCompletado
         {
-            add { this.Conexion.EscribirTablaCompletado += value; }
-            remove { this.Conexion.EscribirTablaCompletado -= value; }
+            add { this.conexion.EscribirTablaCompletado += value; }
+            remove { this.conexion.EscribirTablaCompletado -= value; }
         }
 
         public event EventHandler<EventoCrearUsuarioCompletadoArgs> CrearUsuarioCompletado
         {
-            add { this.Conexion.CrearUsuarioCompletado += value; }
-            remove { this.Conexion.CrearUsuarioCompletado -= value; }
+            add { this.conexion.CrearUsuarioCompletado += value; }
+            remove { this.conexion.CrearUsuarioCompletado -= value; }
         }
 
         public event EventHandler<EventoConsultarCompletadoArgs> ConsultarCompletado
         {
-            add { this.Conexion.ConsultarCompletado += value; }
-            remove { this.Conexion.ConsultarCompletado -= value; }
+            add { this.conexion.ConsultarCompletado += value; }
+            remove { this.conexion.ConsultarCompletado -= value; }
         }
 
         #endregion
@@ -106,12 +106,12 @@
 
         public SecureString Usuario { get; protected set; }
         public SecureString Contrasena { get; protected set; }
-
+        /*
         public Conexion Conexion
         {
             get { return this.conexion; }
         }
-        
+        */
         public ConnectionState Estado
         {
             get { return this.conexion.Estado; }
@@ -322,7 +322,7 @@
                 // Esto es para evitar que aparezca registrado el mismo manejador dos veces
                 this.CambioDeEstado -= this.ManejarCambioDeEstado;
                 this.CambioDeEstado += this.ManejarCambioDeEstado;
-                this.Conexion.Conectar(Usuario, Contrasena);
+                this.conexion.Conectar(Usuario, Contrasena);
             }
             catch (Exception ex)
             {
@@ -348,7 +348,7 @@
 
             try
             {
-                resultado = this.Conexion.ListarBasesDeDatos();
+                resultado = this.conexion.ListarBasesDeDatos();
             }
             catch (Exception ex)
             {
@@ -364,7 +364,7 @@
 
             try
             {
-                resultado = this.Conexion.ListarTablas(baseDeDatos);
+                resultado = this.conexion.ListarTablas(baseDeDatos);
             }
             catch (Exception ex)
             {
@@ -390,7 +390,7 @@
 
             try
             {
-                resultado = this.Conexion.CrearUsuario(usuario, contrasena, columnasAutorizadas, Privilegios.Seleccionar);
+                resultado = this.conexion.CrearUsuario(usuario, contrasena, columnasAutorizadas, Privilegios.Seleccionar);
             }
             catch (Exception ex)
             {
@@ -406,7 +406,7 @@
 
             try
             {
-                resultado = this.Conexion.Consultar(baseDeDatos, sql);
+                resultado = this.conexion.Consultar(baseDeDatos, sql);
             }
             catch (Exception ex)
             {
@@ -424,7 +424,7 @@
         {
             try
             {
-                this.Conexion.ListarBasesDeDatosAsinc();
+                this.conexion.ListarBasesDeDatosAsinc();
             }
             catch (Exception ex)
             {
@@ -436,7 +436,7 @@
         {
             try
             {
-                this.Conexion.ListarTablasAsinc(baseDeDatos);
+                this.conexion.ListarTablasAsinc(baseDeDatos);
             }
             catch (Exception ex)
             {
@@ -456,7 +456,7 @@
         {
             try
             {
-                this.Conexion.CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios);
+                this.conexion.CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios);
             }
             catch (Exception ex)
             {
@@ -468,7 +468,7 @@
         {
             try
             {
-                this.Conexion.ConsultarAsinc(baseDeDatos, sql);
+                this.conexion.ConsultarAsinc(baseDeDatos, sql);
             }
             catch (Exception ex)
             {

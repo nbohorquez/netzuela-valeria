@@ -21,8 +21,6 @@
 
         public OpcionesViewModel()
         {
-            Mensajeria.Mensajero.Register<object[]>(Mensajeria.GuardarConfiguracion, new Action<object[]>(this.MensajeroGuardarConfiguracion));
-            Mensajeria.Mensajero.Register(Mensajeria.CargarConfiguracion, new Action(this.MensajeroCargarConfiguracion));
         }
 
         ~OpcionesViewModel()
@@ -46,27 +44,7 @@
             {
             }
         }
-
-        private void MensajeroCargarConfiguracion()
-        {
-            Configuracion conf = this.CargarConfiguracion();
-            Mensajeria.Mensajero.NotifyColleagues(Mensajeria.ConfiguracionCargada, conf);
-        }
-
-        private void MensajeroGuardarConfiguracion(object[] parametros)
-        {
-            Configuracion conf = new Configuracion();
-            conf.ParametrosConexionLocal = (ParametrosDeConexion)parametros[0];
-            conf.ParametrosConexionRemota = (ParametrosDeConexion)parametros[1];
-            conf.UsuarioLocal = (SecureString)parametros[2];
-            conf.ContrasenaLocal = (SecureString)parametros[3];
-            conf.UsuarioRemoto = (SecureString)parametros[4];
-            conf.ContrasenaRemota = (SecureString)parametros[5];
-            conf.Tablas = (List<TablaDeAsociaciones>)parametros[6];
-
-            this.GuardarConfiguracion(conf);
-        }
-
+        
         public Configuracion CargarConfiguracion()
         {
             Configuracion Resultado = new Configuracion();
@@ -87,6 +65,7 @@
             {
                 Resultado.UsuarioRemoto = (SecureString)Credenciales[0];
                 Resultado.ContrasenaRemota = (SecureString)Credenciales[1];
+                Resultado.TiendaId = Int32.Parse(((SecureString)Credenciales[2]).ConvertirAUnsecureString());
             }
 
             Resultado.Asociaciones = CargarGuardar.CargarTablas();
@@ -124,8 +103,8 @@
 
                 ParametrosDeConexionElement ParametrosLocales = new ParametrosDeConexionElement(Preferencias.ParametrosConexionLocal);
                 ParametrosDeConexionElement ParametrosRemotos = new ParametrosDeConexionElement(Preferencias.ParametrosConexionRemota);
-                ParametrosLocales.ID = "Local";
-                ParametrosRemotos.ID = "Remoto";
+                ParametrosLocales.Id = "Local";
+                ParametrosRemotos.Id = "Remoto";
 
                 ColeccionParametros.Add(ParametrosLocales);
                 ColeccionParametros.Add(ParametrosRemotos);
@@ -138,14 +117,28 @@
                 UsuarioContrasenaElement LlaveLocal = new UsuarioContrasenaElement();
                 UsuarioContrasenaElement LlaveRemota = new UsuarioContrasenaElement();
 
-                LlaveLocal.ID = "Local";
+                LlaveLocal.Id = "Local";
+                LlaveLocal.Llave = string.Format(
+                    "{0}:{1}", 
+                    Preferencias.UsuarioLocal.ConvertirAUnsecureString(), 
+                    Preferencias.ContrasenaLocal.ConvertirAUnsecureString()
+                ).ConvertirASecureString().Encriptar();
+                /*
                 LlaveLocal.Usuario = Preferencias.UsuarioLocal.Encriptar();
                 LlaveLocal.Contrasena = Preferencias.ContrasenaLocal.Encriptar();
-
+                */
                 
-                LlaveRemota.ID = "Remoto";
+                LlaveRemota.Id = "Remoto";
+                LlaveRemota.Llave = string.Format(
+                    "{0}:{1}:{2}", 
+                    Preferencias.UsuarioRemoto.ConvertirAUnsecureString(), 
+                    Preferencias.ContrasenaRemota.ConvertirAUnsecureString(),
+                    Preferencias.TiendaId
+                ).ConvertirASecureString().Encriptar();
+                /*
                 LlaveRemota.Usuario = Preferencias.UsuarioRemoto.Encriptar();
                 LlaveRemota.Contrasena = Preferencias.ContrasenaRemota.Encriptar();
+                 */
 
                 ColeccionDeLlaves.Add(LlaveLocal);
                 ColeccionDeLlaves.Add(LlaveRemota);
@@ -174,7 +167,7 @@
                     }
 
                     Tabla = new TablaDeAsociacionesElement();
-                    Tabla.ID = T.NodoTabla.Nombre;
+                    Tabla.Id = T.NodoTabla.Nombre;
                     Tabla.TablaMapeada = ColeccionColumnas;
 
                     ColeccionTablas.Add(Tabla);

@@ -34,7 +34,7 @@
         #region Propiedades
 
         [ConfigurationProperty("id", IsRequired = true)]
-        public string ID
+        public string Id
         {
             get { return (string)base["id"]; }
             set { base["id"] = value; }

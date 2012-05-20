@@ -417,6 +417,35 @@
             return nodosDestino.ToArray();
         }
 
+        public List<string[]> Asociaciones()
+        {
+            List<string[]> resultado = new List<string[]>();
+
+            try
+            {
+                foreach (TablaDeAsociaciones ta in Tablas)
+                {
+                    foreach (AsociacionDeColumnas ac in ta.Sociedades)
+                    {
+                        if (ac.ColumnaDestino != null && ac.ColumnaOrigen != null)
+                        {
+                            resultado.Add(new string[] 
+                            {
+                                ac.ColumnaOrigen.BuscarEnRepositorioDeNodos().RutaCompleta(),
+                                ac.ColumnaDestino.BuscarEnRepositorioDeNodos().RutaCompleta()
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar las asociaciones de columnas", ex);
+            }
+
+            return resultado;
+        }
+
         #endregion
 
         #region Implementacion de interfaces

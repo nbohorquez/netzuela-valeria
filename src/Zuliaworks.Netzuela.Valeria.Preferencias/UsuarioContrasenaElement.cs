@@ -19,12 +19,20 @@
         #region Propiedades
 
         [ConfigurationProperty("id", IsRequired = true)]
-        public string ID
+        public string Id
         {
             get { return (string)base["id"]; }
             set { base["id"] = value; }
         }
 
+        [ConfigurationProperty("llave", IsRequired = true)]
+        public string Llave
+        {
+            get { return (string)base["llave"]; }
+            set { base["llave"] = value; }
+        }
+
+        /*
         [ConfigurationProperty("usuario", IsRequired = true)]
         public string Usuario
         {
@@ -38,7 +46,7 @@
             get { return (string)base["contrasena"]; }
             set { base["contrasena"] = value; }
         }
-
+        */
         #endregion
     }
 }

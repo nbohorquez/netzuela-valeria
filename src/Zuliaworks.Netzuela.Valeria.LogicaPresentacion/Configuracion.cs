@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
+﻿ namespace Zuliaworks.Netzuela.Valeria.LogicaPresentacion
 {
     using System;
     using System.Collections.Generic;
@@ -28,6 +28,7 @@
         public ParametrosDeConexion ParametrosConexionRemota { get; set; }
         public SecureString UsuarioLocal { get; set; }
         public SecureString ContrasenaLocal { get; set; }
+        public int TiendaId { get; set; }
         public SecureString UsuarioRemoto { get; set; }
         public SecureString ContrasenaRemota { get; set; }
         public List<string[]> Asociaciones { get; set; }

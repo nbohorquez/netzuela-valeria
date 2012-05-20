@@ -54,8 +54,8 @@
 
         public event EventHandler<EventoListarTiendasCompletadoArgs> ListarTiendasCompletado
         {
-            add { this.Conexion.ListarTiendasCompletado += value; }
-            remove { this.Conexion.ListarTiendasCompletado -= value; }
+            add { this.conexion.ListarTiendasCompletado += value; }
+            remove { this.conexion.ListarTiendasCompletado -= value; }
         }
 
         #endregion
@@ -131,7 +131,7 @@
                 SeleccionarTienda = null;
             }
 
-            SeleccionarTienda = new SeleccionarTiendaViewModel(this.Conexion);
+            SeleccionarTienda = new SeleccionarTiendaViewModel(this.conexion);
 
             observadorSeleccion = new PropertyObserver<SeleccionarTiendaViewModel>(this.SeleccionarTienda)
                 .RegisterHandler(n => n.MostrarView, this.CerrarSeleccionarTienda);
@@ -208,7 +208,7 @@
 
             try
             {
-                resultado = this.Conexion.ListarTiendas();
+                resultado = this.conexion.ListarTiendas();
             }
             catch (Exception ex)
             {
@@ -224,7 +224,7 @@
 
             try
             {
-                resultado = this.Conexion.LeerTabla(this.TiendaId, baseDeDatos, tabla);
+                resultado = this.conexion.LeerTabla(this.TiendaId, baseDeDatos, tabla);
             }
             catch (Exception ex)
             {
@@ -240,7 +240,7 @@
 
             try
             {
-                resultado = this.Conexion.EscribirTabla(this.TiendaId, baseDeDatos, nombreTabla, tabla);
+                resultado = this.conexion.EscribirTabla(this.TiendaId, baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {
@@ -258,7 +258,7 @@
         {
             try
             {
-                this.Conexion.ListarTiendasAsinc();
+                this.conexion.ListarTiendasAsinc();
             }
             catch (Exception ex)
             {
@@ -270,7 +270,7 @@
         {
             try
             {
-                this.Conexion.LeerTablaAsinc(this.TiendaId, baseDeDatos, tabla);
+                this.conexion.LeerTablaAsinc(this.TiendaId, baseDeDatos, tabla);
             }
             catch (Exception ex)
             {
@@ -282,7 +282,7 @@
         {
             try
             {
-                this.Conexion.EscribirTablaAsinc(this.TiendaId, baseDeDatos, nombreTabla, tabla);
+                this.conexion.EscribirTablaAsinc(this.TiendaId, baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {

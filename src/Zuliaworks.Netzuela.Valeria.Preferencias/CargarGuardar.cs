@@ -44,7 +44,7 @@
                 {
                     foreach (ParametrosDeConexionElement param in conexionesGuardadas.ParametrosDeConexion)
                     {
-                        if (param.ID == id)
+                        if (param.Id == id)
                         {
                             resultado = param.ConvertirAParametrosDeConexion();
                         }
@@ -90,12 +90,22 @@
                 {
                     foreach (UsuarioContrasenaElement usuCon in credenciales.LlavesDeAcceso)
                     {
-                        if (usuCon.ID == id)
+                        if (usuCon.Id == id)
                         {
+                            resultado = new List<SecureString>();
+                            SecureString tmp = usuCon.Llave.DesencriptarSS();
+
+                            foreach (string s in tmp.ConvertirAUnsecureString().Split(':'))
+                            {
+                                resultado.Add(s.ConvertirASecureString());
+                            }
+
+                            /*
                             resultado = new List<SecureString>();
 
                             resultado.Add(usuCon.Usuario.DesencriptarSS());
                             resultado.Add(usuCon.Contrasena.DesencriptarSS());
+                             */
                         }
                     }
                 }

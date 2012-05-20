@@ -262,7 +262,7 @@
 
             try
             {
-                resultado = this.Conexion.LeerTabla(baseDeDatos, tabla);
+                resultado = this.conexion.LeerTabla(baseDeDatos, tabla);
             }
             catch (Exception ex)
             {
@@ -278,7 +278,7 @@
 
             try
             {
-                resultado = this.Conexion.EscribirTabla(baseDeDatos, nombreTabla, tabla);
+                resultado = this.conexion.EscribirTabla(baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {
@@ -296,7 +296,7 @@
         {
             try
             {
-                this.Conexion.LeerTablaAsinc(baseDeDatos, tabla);
+                this.conexion.LeerTablaAsinc(baseDeDatos, tabla);
             }
             catch (Exception ex)
             {
@@ -308,7 +308,7 @@
         {
             try
             {
-                this.Conexion.EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla);
+                this.conexion.EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)
             {

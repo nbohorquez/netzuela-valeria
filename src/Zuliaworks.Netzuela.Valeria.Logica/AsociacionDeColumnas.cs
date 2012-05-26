@@ -103,15 +103,22 @@
 
                 if (valorNuevo == null)
                 {
-                    this.columnaOrigen = valorNuevo;
+                    if (valorAnterior != null)
+                    {
+                        if (valorAnterior.ExisteEnRepositorio())
+                        {
+                            valorAnterior.QuitarDeRepositorio();
+                        }
+                    }
 
+                    this.columnaOrigen = valorNuevo;
                     this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", valorAnterior, valorNuevo));
                 }
                 else if (valorNuevo != this.ColumnaDestino && valorNuevo != this.columnaOrigen)
                 {
                     if (valorNuevo.Nivel != NivelDeNodo.Columna)
                     {
-                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "NodoOrigen");
+                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "nodoOrigen");
                     }
 
                     if (this.TablaPadre != null)
@@ -120,7 +127,6 @@
                         {
                             valorNuevo.Sociedad = this;
                             this.columnaOrigen = valorNuevo;
-
                             this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", valorAnterior, valorNuevo));
                         }
                     }
@@ -128,7 +134,6 @@
                     {
                         valorNuevo.Sociedad = this;
                         this.columnaOrigen = valorNuevo;
-
                         this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Origen", valorAnterior, valorNuevo));
                     }
                 }
@@ -152,15 +157,22 @@
 
                 if (valorNuevo == null)
                 {
-                    this.columnaDestino = valorNuevo;
+                    if (valorAnterior != null)
+                    {
+                        if (valorAnterior.ExisteEnRepositorio())
+                        {
+                            valorAnterior.QuitarDeRepositorio();
+                        }
+                    }
 
+                    this.columnaDestino = valorNuevo;
                     this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", valorAnterior, valorNuevo));
                 }
                 else if (valorNuevo != this.ColumnaOrigen && valorNuevo != this.columnaDestino)
                 {
                     if (valorNuevo.Nivel != NivelDeNodo.Columna)
                     {
-                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "NodoOrigen");
+                        throw new ArgumentException("El nodo tiene que ser una columna de una tabla", "nodoDestino");
                     }
 
                     if (this.TablaPadre != null)
@@ -169,7 +181,6 @@
                         {
                             valorNuevo.Sociedad = this;
                             this.columnaDestino = valorNuevo;
-
                             this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", valorAnterior, valorNuevo));
                         }
                     }
@@ -177,7 +188,6 @@
                     {
                         valorNuevo.Sociedad = this;
                         this.columnaDestino = valorNuevo;
-
                         this.DispararCambioEnColumnas(new EventoCambioEnColumnasArgs("Destino", valorAnterior, valorNuevo));
                     }
                 }
@@ -233,7 +243,7 @@
         {
             try
             {
-                this.ColumnaOrigen.Sociedad = null;
+                //this.ColumnaOrigen.Sociedad = null;
                 this.ColumnaOrigen = null;
             }
             catch (Exception ex)
@@ -246,7 +256,7 @@
         {
             try
             {
-                this.ColumnaDestino.Sociedad = null;
+                //this.ColumnaDestino.Sociedad = null;
                 this.ColumnaDestino = null;
             }
             catch (Exception ex)

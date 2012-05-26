@@ -20,54 +20,58 @@
     {
         #region Variables
 
-        private Nodo _Nodo;
+        private Nodo nodo;
 
         #endregion
 
         #region Constructores
         
-        private NodoViewModel(Nodo Nodo)
+        private NodoViewModel(Nodo nodo)
         {
-            _Nodo = Nodo;
-            InicializacionComun1();
+            this.nodo = nodo;
+            this.InicializacionComun1();
         }
 
         public NodoViewModel()
         {
-            _Nodo = new Nodo();
-            InicializacionComun1();
+            this.nodo = new Nodo();
+            this.InicializacionComun1();
         }
             
-        public NodoViewModel(string Nombre)
+        public NodoViewModel(string nombre)
         {
-            _Nodo = new Nodo(Nombre);
-            InicializacionComun1();
+            this.nodo = new Nodo(nombre);
+            this.InicializacionComun1();
         }
             
-        public NodoViewModel(string Nombre, int Nivel)
+        public NodoViewModel(string nombre, int nivel)
         {
-            _Nodo = new Nodo(Nombre, Nivel);
-            InicializacionComun1();
+            this.nodo = new Nodo(nombre, nivel);
+            this.InicializacionComun1();
         }            
 
-        public NodoViewModel(string Nombre, NodoViewModel Padre)
+        public NodoViewModel(string nombre, NodoViewModel padre)
         {
-            if (Padre == null)
-                throw new ArgumentNullException("Padre");
+            if (padre == null)
+            {
+                throw new ArgumentNullException("padre");
+            }
 
-            _Nodo = new Nodo(Nombre);
-            InicializacionComun2(Padre);
+            this.nodo = new Nodo(nombre);
+            this.InicializacionComun2(padre);
         }
 
-        public NodoViewModel(string Nombre, NodoViewModel Padre, string[] Hijos)
+        public NodoViewModel(string nombre, NodoViewModel padre, string[] hijos)
         {
-            if (Padre == null)
-                throw new ArgumentNullException("Padre");
+            if (padre == null)
+            {
+                throw new ArgumentNullException("padre");
+            }
 
-            _Nodo = new Nodo(Nombre);
-            InicializacionComun2(Padre);
+            this.nodo = new Nodo(nombre);
+            this.InicializacionComun2(padre);
 
-            foreach (string s in Hijos)
+            foreach (string s in hijos)
             {
                 NodoViewModel N = new NodoViewModel(s, this);
             }
@@ -75,15 +79,17 @@
             this.Expandido = true;        
         }
 
-        public NodoViewModel(string Nombre, NodoViewModel Padre, ObservableCollection<NodoViewModel> Hijos)
+        public NodoViewModel(string nombre, NodoViewModel padre, ObservableCollection<NodoViewModel> hijos)
         {
-            if (Padre == null)
-                throw new ArgumentNullException("Padre");
+            if (padre == null)
+            {
+                throw new ArgumentNullException("padre");
+            }
 
-            _Nodo = new Nodo(Nombre);
-            InicializacionComun2(Padre);
+            nodo = new Nodo(nombre);
+            InicializacionComun2(padre);
 
-            foreach (NodoViewModel n in Hijos)
+            foreach (NodoViewModel n in hijos)
             {
                 this.AgregarHijo(n);
             }
@@ -102,8 +108,8 @@
 
         public string Nombre
         {
-            get { return _Nodo.Nombre; }
-            set { _Nodo.Nombre = value; }
+            get { return nodo.Nombre; }
+            set { nodo.Nombre = value; }
         }
 
         public string NombreParaMostrar
@@ -114,11 +120,11 @@
 
                 if (this.Sociedad != null)
                 {
-                    if (this._Nodo == this.Sociedad.ColumnaDestino)
+                    if (this.nodo == this.Sociedad.ColumnaDestino)
                     {
                         Resultado += (this.Sociedad.ColumnaOrigen == null) ? "" : "<-" + this.Sociedad.ColumnaOrigen.Nombre;
                     }
-                    else if (this._Nodo == this.Sociedad.ColumnaOrigen)
+                    else if (this.nodo == this.Sociedad.ColumnaOrigen)
                     {
                         Resultado += (this.Sociedad.ColumnaDestino == null) ? "" : "->" + this.Sociedad.ColumnaDestino.Nombre;
                     }
@@ -130,8 +136,8 @@
 
         public int Nivel
         {
-            get { return _Nodo.Nivel; }
-            set { _Nodo.Nivel = value; }
+            get { return nodo.Nivel; }
+            set { nodo.Nivel = value; }
         }
 
         public NodoViewModel Padre { get; set; }
@@ -139,14 +145,14 @@
         
         public AsociacionDeColumnas Sociedad
         {
-            get { return _Nodo.Sociedad; }
-            private set { _Nodo.Sociedad = value; }
+            get { return nodo.Sociedad; }
+            private set { nodo.Sociedad = value; }
         }
 
         public TablaDeAsociaciones TablaDeSocios
         {
-            get { return _Nodo.TablaDeSocios; }
-            private set { _Nodo.TablaDeSocios = value; }
+            get { return nodo.TablaDeSocios; }
+            private set { nodo.TablaDeSocios = value; }
         }
 
         public ExploradorViewModel Explorador { get; set; }
@@ -162,23 +168,23 @@
             this.Hijos = new ObservableCollection<NodoViewModel>();
             this.Expandido = false;
             this.Explorador = null;
-            _Nodo.AgregarARepositorioDeNodos(this);
+            nodo.AgregarARepositorioDeNodos(this);
         }
 
-        private void InicializacionComun2(NodoViewModel Padre)
+        private void InicializacionComun2(NodoViewModel padre)
         {
-            Padre.AgregarHijo(this);
+            padre.AgregarHijo(this);
             this.Hijos = new ObservableCollection<NodoViewModel>();
             this.Expandido = false;
-            _Nodo.AgregarARepositorioDeNodos(this);
+            nodo.AgregarARepositorioDeNodos(this);
         }
 
-        protected virtual void ManejarCambioEnColumnas(object Remitente, EventoCambioEnColumnasArgs Argumentos)
+        protected virtual void ManejarCambioEnColumnas(object remitente, EventoCambioEnColumnasArgs argumentos)
         {
             this.RaisePropertyChanged("NombreParaMostrar");
         }
 
-        protected void Dispose(bool BorrarCodigoAdministrado)
+        protected void Dispose(bool borrarCodigoAdministrado)
         {
             if (Sociedad != null)
             {
@@ -192,19 +198,19 @@
                 this.QuitarDeRepositorioDeTablas();
             }
 
-            Explorador = null;
+            this.Explorador = null;
 
-            if (BorrarCodigoAdministrado)
+            if (borrarCodigoAdministrado)
             {
-                if (_Nodo != null)
+                if (nodo != null)
                 {
                     if (this.ExisteEnRepositorioDeNodos())
                     {
-                        _Nodo.QuitarDeRepositorioDeNodos();
+                        nodo.QuitarDeRepositorioDeNodos();
                     }
 
-                    _Nodo.Dispose();
-                    _Nodo = null;
+                    nodo.Dispose();
+                    nodo = null;
                 }
 
                 if (Padre != null)
@@ -254,22 +260,23 @@
             }
         }
 
-        public void AgregarHijo(NodoViewModel Nodo)
+        public void AgregarHijo(NodoViewModel nodo)
         {
-            if (Nodo == null)
-                throw new ArgumentNullException("Nodo");
+            if (nodo == null)
+            {
+                throw new ArgumentNullException("nodo");
+            }
 
             try
             {
-                Nodo.Padre = this;
-                Nodo.Nivel = this.Nivel + 1;
-                Nodo.Explorador = this.Explorador;
-
-                this.Hijos.Add(Nodo);
+                nodo.Padre = this;
+                nodo.Nivel = this.Nivel + 1;
+                nodo.Explorador = this.Explorador;
+                this.Hijos.Add(nodo);
             }
             catch (Exception ex)
             {
-                throw new Exception("No se pudo agregar el hijo \"" + Nodo.Nombre + "\" al NodoViewModel \"" + this.Nombre + "\"", ex);
+                throw new Exception("No se pudo agregar el hijo \"" + nodo.Nombre + "\" al NodoViewModel \"" + this.Nombre + "\"", ex);
             }
         }
 
@@ -277,23 +284,23 @@
         {
             try
             {
-                List<Nodo> Lista = new List<Nodo>();
+                List<Nodo> lista = new List<Nodo>();
 
-                foreach (NodoViewModel N in Hijos)
+                foreach (NodoViewModel n in Hijos)
                 {
-                    Lista.Add(N._Nodo);
+                    lista.Add(n.nodo);
                 }
 
-                _Nodo.CrearTablaDeAsociaciones(Lista);
+                nodo.CrearTablaDeAsociaciones(lista);
 
-                foreach (NodoViewModel Hijo in Hijos)
+                foreach (NodoViewModel hijo in Hijos)
                 {
                     /*
                      * Quiero ser notificado cuando ocurra una cambio en ColumnaOrigen o 
                      * ColumnaDestino del MapeoDeColumnas asociado a este NodoViewModel.
                      */
-                    Hijo.Sociedad.CambioEnColumnas -= Hijo.ManejarCambioEnColumnas;
-                    Hijo.Sociedad.CambioEnColumnas += Hijo.ManejarCambioEnColumnas;
+                    hijo.Sociedad.CambioEnColumnas -= hijo.ManejarCambioEnColumnas;
+                    hijo.Sociedad.CambioEnColumnas += hijo.ManejarCambioEnColumnas;
                 }
             }
             catch (Exception ex)
@@ -304,18 +311,24 @@
             return TablaDeSocios;
         }
 
-        public void AsociarCon(NodoViewModel NodoOrigen)
+        public void AsociarCon(NodoViewModel nodoOrigen)
         {
             try
             {
-                if (NodoOrigen == null)
-                    throw new ArgumentNullException("NodoOrigen");                
-
-                _Nodo.AsociarCon(NodoOrigen._Nodo);
+                if (nodoOrigen == null)
+                {
+                    throw new ArgumentNullException("nodoOrigen");
+                }
+                
+                if (nodoOrigen.Sociedad != null)
+                {
+                    nodoOrigen.Desasociarse();
+                }
 
                 // El nuevo nodo tambien quiere saber cuándo ocurre un cambio en las columnas
-                this.Sociedad.CambioEnColumnas -= NodoOrigen.ManejarCambioEnColumnas;
-                this.Sociedad.CambioEnColumnas += NodoOrigen.ManejarCambioEnColumnas;
+                this.Sociedad.CambioEnColumnas -= nodoOrigen.ManejarCambioEnColumnas;
+                this.Sociedad.CambioEnColumnas += nodoOrigen.ManejarCambioEnColumnas;
+                this.nodo.AsociarCon(nodoOrigen.nodo);
             }
             catch (Exception ex)
             {
@@ -328,8 +341,9 @@
             try
             {
                 NodoViewModel NodoOrigen = this.Sociedad.ColumnaOrigen.BuscarEnRepositorioDeNodos();
-                _Nodo.Desasociarse();
+                nodo.Desasociarse();
                 this.Sociedad.CambioEnColumnas -= NodoOrigen.ManejarCambioEnColumnas;
+                this.Sociedad = null;
             }
             catch (Exception ex)
             {

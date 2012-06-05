@@ -29,6 +29,7 @@
         public SecureString UsuarioLocal { get; set; }
         public SecureString ContrasenaLocal { get; set; }
         public int TiendaId { get; set; }
+        public string NombreTienda { get; set; }
         public SecureString UsuarioRemoto { get; set; }
         public SecureString ContrasenaRemota { get; set; }
         public List<string[]> Asociaciones { get; set; }

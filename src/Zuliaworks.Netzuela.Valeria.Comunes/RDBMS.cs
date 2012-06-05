@@ -10,7 +10,7 @@
     /// <summary>
     /// SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
     /// </summary>
-    public static class SGBDR
+    public static class RDBMS
     {
         public const string Netzuela = "Netzuela";          // No es realmente un SGBDR pero...
         public const string SqlServer = "SQL Server";

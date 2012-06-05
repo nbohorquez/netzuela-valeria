@@ -6,6 +6,9 @@
     using System.Linq;
     using System.Security;                              // SecureString
     using System.Text;
+    
+    
+    using System.Windows;
 
     using MvvmFoundation.Wpf;                           // PropertyObserver<>, ObservableObject
     using Zuliaworks.Netzuela.Valeria.Comunes;          // Constantes
@@ -17,10 +20,17 @@
     /// </summary>
     public class OpcionesViewModel : ObservableObject, IDisposable
     {
+        #region Variables
+
+        private TimeSpan intervaloCompensacion;
+
+        #endregion
+
         #region Constructores
 
         public OpcionesViewModel()
         {
+            this.IntervaloCompensacion = new TimeSpan(0, 5, 0);
         }
 
         ~OpcionesViewModel()
@@ -32,7 +42,37 @@
 
         #region Propiedades
 
-        public int IntervaloSincronizacion { get; set; }
+        public TimeSpan IntervaloCompensacion 
+        {
+            get { return this.intervaloCompensacion; }
+            set
+            {
+                if (value != this.intervaloCompensacion)
+                {
+                    this.intervaloCompensacion = value;
+                    this.RaisePropertyChanged("IntervaloCompensacion");
+                }
+            } 
+        }
+
+        public string IntervaloCompensacionString
+        {
+            get { return this.IntervaloCompensacion.ToString(); }
+        }
+
+        public int BarraDeDesplazamiento
+        {
+            get { return (int)this.IntervaloCompensacion.TotalSeconds; }
+            set 
+            {
+                if (value != this.BarraDeDesplazamiento)
+                {
+                    this.IntervaloCompensacion = new TimeSpan(0, 0, value);
+                    this.RaisePropertyChanged("BarraDeDesplazamiento");
+                    this.RaisePropertyChanged("IntervaloCompensacionString");
+                }
+            }
+        }
 
         #endregion
 
@@ -66,6 +106,7 @@
                 Resultado.UsuarioRemoto = (SecureString)Credenciales[0];
                 Resultado.ContrasenaRemota = (SecureString)Credenciales[1];
                 Resultado.TiendaId = Int32.Parse(((SecureString)Credenciales[2]).ConvertirAUnsecureString());
+                Resultado.NombreTienda = ((SecureString)Credenciales[3]).ConvertirAUnsecureString();
             }
 
             Resultado.Asociaciones = CargarGuardar.CargarTablas();
@@ -123,22 +164,15 @@
                     Preferencias.UsuarioLocal.ConvertirAUnsecureString(), 
                     Preferencias.ContrasenaLocal.ConvertirAUnsecureString()
                 ).ConvertirASecureString().Encriptar();
-                /*
-                LlaveLocal.Usuario = Preferencias.UsuarioLocal.Encriptar();
-                LlaveLocal.Contrasena = Preferencias.ContrasenaLocal.Encriptar();
-                */
                 
                 LlaveRemota.Id = "Remoto";
                 LlaveRemota.Llave = string.Format(
-                    "{0}:{1}:{2}", 
+                    "{0}:{1}:{2}:{3}", 
                     Preferencias.UsuarioRemoto.ConvertirAUnsecureString(), 
                     Preferencias.ContrasenaRemota.ConvertirAUnsecureString(),
-                    Preferencias.TiendaId
+                    Preferencias.TiendaId,
+                    Preferencias.NombreTienda
                 ).ConvertirASecureString().Encriptar();
-                /*
-                LlaveRemota.Usuario = Preferencias.UsuarioRemoto.Encriptar();
-                LlaveRemota.Contrasena = Preferencias.ContrasenaRemota.Encriptar();
-                 */
 
                 ColeccionDeLlaves.Add(LlaveLocal);
                 ColeccionDeLlaves.Add(LlaveRemota);

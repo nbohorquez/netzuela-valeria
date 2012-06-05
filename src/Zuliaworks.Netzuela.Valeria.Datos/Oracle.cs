@@ -57,7 +57,7 @@
             List<ServidorLocal.Instancia> Instancias = new List<ServidorLocal.Instancia>();
 
             ServidorLocal Serv = new ServidorLocal();
-            Serv.Nombre = SGBDR.Oracle;
+            Serv.Nombre = RDBMS.Oracle;
             Serv.Instancias = Instancias;
             return Serv;
         }

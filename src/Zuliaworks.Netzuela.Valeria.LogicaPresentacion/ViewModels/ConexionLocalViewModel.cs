@@ -27,6 +27,7 @@
         private DetectarServidoresLocalesViewModel servidoresDetectados;
         private SecureString usuarioProtegido;
         private SecureString contrasenaProtegida;
+        private const string UsuarioOrdinario = "netzuela";
 
         #endregion
 
@@ -239,7 +240,7 @@
         {
             bool Resultado = false;
             // ¿Será un problema de seguridad grave colocar el nombre "netzuela" asi tan a la vista?
-            Usuario = "netzuela".ConvertirASecureString();
+            Usuario = ConexionLocalViewModel.UsuarioOrdinario.ConvertirASecureString();
             Contrasena = generadorDeContrasenas.Generate().ConvertirASecureString();
 
             try

@@ -214,7 +214,6 @@
             // Desasociamos el nodo origen, no el destino
             NodoViewModel nodoOrigen = nodoDestino.Sociedad.ColumnaOrigen.BuscarEnRepositorioDeNodos();
             nodoOrigen.Desasociarse();
-            //nodoDestino.Desasociarse();
         }
 
         protected void Dispose(bool borrarCodigoAdministrado)

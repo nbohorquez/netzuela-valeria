@@ -113,7 +113,7 @@
             }
 
             ServidorLocal Serv = new ServidorLocal();
-            Serv.Nombre = SGBDR.SqlServer;
+            Serv.Nombre = RDBMS.SqlServer;
             Serv.Instancias = ListaDeInstancias;
 
             return Serv;

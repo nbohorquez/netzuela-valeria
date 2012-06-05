@@ -22,9 +22,9 @@
 
         #region Constructores
 
-        public ServidorPredeterminado(ParametrosDeConexion ServidorBD)
+        public ServidorPredeterminado(ParametrosDeConexion servidorBd)
         {
-            this.DatosDeConexion = ServidorBD;
+            this.DatosDeConexion = servidorBd;
             this.estado = ConnectionState.Closed;
         }
 

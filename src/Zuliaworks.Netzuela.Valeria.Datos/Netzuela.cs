@@ -79,8 +79,11 @@
             
             if (BorrarCodigoAdministrado)
             {
-                this.cliente.Dispose();
-                this.cliente = null;
+                if (this.cliente != null)
+                {
+                    this.cliente.Dispose();
+                    this.cliente = null;
+                }
             }
         }
 

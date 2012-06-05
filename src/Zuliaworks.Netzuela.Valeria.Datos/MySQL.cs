@@ -17,7 +17,7 @@
     {
         #region Variables y Constantes
 
-        private static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
+        private static readonly Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
         {
             { Privilegios.NoValido, string.Empty },
             { Privilegios.Seleccionar, "SELECT" },
@@ -36,10 +36,9 @@
 
         #region Constructores
 
-        public MySQL(ParametrosDeConexion ServidorBD)
+        public MySQL(ParametrosDeConexion servidorBd)
         {
-            this.DatosDeConexion = ServidorBD;
-
+            this.DatosDeConexion = servidorBd;
             this.conexion = new MySqlConnection();
             this.conexion.StateChange -= this.ManejarCambioDeEstado;
             this.conexion.StateChange += this.ManejarCambioDeEstado;
@@ -54,13 +53,17 @@
 
         #region Funciones
 
-        protected void Dispose(bool BorrarCodigoAdministrado)
+        protected void Dispose(bool borrarCodigoAdministrado)
         {
             this.DatosDeConexion = null;
 
-            if (BorrarCodigoAdministrado)
+            if (borrarCodigoAdministrado)
             {
-                this.conexion.Dispose();
+                if (this.conexion != null)
+                {
+                    this.conexion.Dispose();
+                    this.conexion = null;
+                }
             }
         }
 
@@ -79,8 +82,8 @@
                 throw new ArgumentNullException("sql");
             }
             
-            MySqlCommand Orden = new MySqlCommand(sql, this.conexion);
-            Orden.ExecuteNonQuery();
+            MySqlCommand orden = new MySqlCommand(sql, this.conexion);
+            orden.ExecuteNonQuery();
         }
 
         private string[] LectorSimple(string sql)
@@ -90,20 +93,18 @@
                 throw new ArgumentNullException("sql");
             }
 
-            MySqlDataReader Lector = null;
-            List<string> Resultado = new List<string>();
+            MySqlDataReader lector = null;
+            List<string> resultado = new List<string>();
+            MySqlCommand orden = new MySqlCommand(sql, this.conexion);
+            lector = orden.ExecuteReader();
 
-            MySqlCommand Orden = new MySqlCommand(sql, this.conexion);
-
-            Lector = Orden.ExecuteReader();
-            while (Lector.Read())
+            while (lector.Read())
             {
-                Resultado.Add(Lector.GetString(0));
+                resultado.Add(lector.GetString(0));
             }
 
-            Lector.Close();
-
-            return Resultado.ToArray();
+            lector.Close();
+            return resultado.ToArray();
         }
 
         private DataTable LectorAvanzado(string sql)
@@ -259,10 +260,10 @@
             rutaDeConexion.AgregarString("Persist Security Info=false;");
 
             // 5) Nombre de usuario
-            rutaDeConexion.AgregarString(("Username=" + usuario.ConvertirAUnsecureString()) + ";");
+            rutaDeConexion.AgregarString("Username=" + usuario.ConvertirAUnsecureString() + ";");
 
             // 6) Contraseña
-            rutaDeConexion.AgregarString(("Password=" + contrasena.ConvertirAUnsecureString()));
+            rutaDeConexion.AgregarString("Password=" + contrasena.ConvertirAUnsecureString());
 
             /*
              * De la instruccion anterior (agregar password) hasta la siguiente (return) hay un hueco de 
@@ -296,7 +297,6 @@
             try
             {
                 this.Desconectar();
-
                 this.conexion.ConnectionString = this.CrearRutaDeAcceso(this.DatosDeConexion, usuario, contrasena).ConvertirAUnsecureString();
                 this.conexion.Open();
             }
@@ -586,11 +586,11 @@
             // 1) Determinamos los privilegios otorgados al nuevo usuario
             List<string> privilegiosLista = new List<string>();
 
-            for (int i = 0; i < PrivilegiosAOrdenes.Count; i++)
+            for (int i = 0; i < MySQL.PrivilegiosAOrdenes.Count; i++)
             {
                 if ((privilegios & (1 << i)) == 1)
                 {
-                    privilegiosLista.Add(PrivilegiosAOrdenes[(1 << i)]);
+                    privilegiosLista.Add(MySQL.PrivilegiosAOrdenes[(1 << i)]);
                 }
             }
 
@@ -689,27 +689,27 @@
             throw new NotImplementedException();
         }
 
-        public void ListarTablasAsinc(string BaseDeDatos)
+        public void ListarTablasAsinc(string baseDeDatos)
         {
             throw new NotImplementedException();
         }
 
-        public void LeerTablaAsinc(string BaseDeDatos, string Tabla)
+        public void LeerTablaAsinc(string baseDeDatos, string tabla)
         {
             throw new NotImplementedException();
         }
 
-        public void EscribirTablaAsinc(string BaseDeDatos, string NombreTabla, DataTable Tabla)
+        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
             throw new NotImplementedException();
         }
 
-        public void CrearUsuarioAsinc(SecureString Usuario, SecureString Contrasena, string[] Columnas, int Privilegios)
+        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
             throw new NotImplementedException();
         }
 
-        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        public void ConsultarAsinc(string baseDeDatos, string sql)
         {
             throw new NotImplementedException();
         }

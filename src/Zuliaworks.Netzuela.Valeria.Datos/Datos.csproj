@@ -36,7 +36,14 @@
     <DocumentationFile>DatosDocumentacion.xml</DocumentationFile>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DbisamClient, Version=2.3.1.0, Culture=neutral, PublicKeyToken=f06b6d18bf0b8db8, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Archivos de programa\DBISAMNet2\bin\DbisamClient.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MySql.Data.dll</HintPath>
@@ -63,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBISAM.cs" />
+    <Compile Include="DBISAM.Detectar.cs" />
     <Compile Include="Eventos\EventoConsultarCompletadoArgs.cs" />
     <Compile Include="Eventos\EventoCrearUsuarioCompletadoArgs.cs" />
     <Compile Include="Eventos\EventoEscribirTablaCompletadoArgs.cs" />
@@ -98,7 +106,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetDir) D:\Dropbox\lib2linux</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)\*$(TargetExt) D:\Dropbox\lib2linux</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

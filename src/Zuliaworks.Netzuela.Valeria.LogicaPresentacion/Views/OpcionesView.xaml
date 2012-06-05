@@ -12,7 +12,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0">Intervalo de sincronización:</Label>
-        <Slider Grid.Row="0" Grid.Column="1" Name="sldr_Sincronizacion" Minimum="0" Maximum="100" IsSnapToTickEnabled="True" Width="100" />
+        <StackPanel Orientation="Horizontal">
+            <Label>Intervalo de sincronización:</Label>
+            <Slider Name="sldr_Sincronizacion" Minimum="30" Maximum="3600" IsSnapToTickEnabled="True" TickFrequency="15" Width="250" Value="{Binding Path=BarraDeDesplazamiento, Mode=TwoWay}"/>
+            <TextBlock Text="{Binding Path=IntervaloCompensacionString}"/>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

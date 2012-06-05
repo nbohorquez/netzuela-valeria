@@ -62,7 +62,7 @@
             List<ServidorLocal.Instancia> instancias = DetectarInstanciasInstaladas(archivosDeConfiguracion).ToList();
 
             ServidorLocal serv = new ServidorLocal();
-            serv.Nombre = SGBDR.MySQL;
+            serv.Nombre = RDBMS.MySQL;
             serv.Instancias = instancias;
             return serv;
         }

@@ -518,13 +518,13 @@
                     {
                         mensaje += "Operacion EscribirTablaAsinc cancelada";
                     }
-                    else if (a.Resultado != null)
+                    else
                     {
                         re = a.Resultado;
                         mensaje += "El resultado de la operacion EscribirTablaAsinc fue: " + re.ToString();
                     }
 
-                    MessageBox.Show(mensaje);
+                    //MessageBox.Show(mensaje);
                 }
                 catch (Exception ex)
                 {

@@ -59,7 +59,7 @@
     <Compile Include="MetodosDeConexion.cs" />
     <Compile Include="NivelDeNodo.cs" />
     <Compile Include="Privilegios.cs" />
-    <Compile Include="SGBDR.cs" />
+    <Compile Include="RDBMS.cs" />
     <Compile Include="Criptografia.cs" />
     <Compile Include="IEnumerableExtensiones.cs" />
     <Compile Include="PasswordGenerator.cs" />
@@ -72,7 +72,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetDir) D:\Dropbox\lib2linux</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)\*$(TargetExt) D:\Dropbox\lib2linux</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

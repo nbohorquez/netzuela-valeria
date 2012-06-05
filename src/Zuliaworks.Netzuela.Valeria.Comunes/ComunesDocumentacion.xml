@@ -22,11 +22,6 @@
             Esta clase se usa en todas partes.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.SGBDR">
-            <summary>
-            SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.Desechable">
             <summary>
             Esta clase implementa un modelo de IDisposable.
@@ -60,6 +55,11 @@
             </summary>
             <param name="stringNoSegura">Cadena de caracteres no seguros a convertir.</param>
             <returns>Cadena de caracteres convertida.</returns>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.RDBMS">
+            <summary>
+            SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
+            </summary>
         </member>
     </members>
 </doc>

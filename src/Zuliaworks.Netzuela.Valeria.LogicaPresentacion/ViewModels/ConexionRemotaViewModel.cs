@@ -22,6 +22,7 @@
 
         private SeleccionarTiendaViewModel seleccionarTienda;
         private PropertyObserver<SeleccionarTiendaViewModel> observadorSeleccion;
+        private string nombreTienda;
         private bool mostrarSeleccionarTiendaView;
         
         #endregion
@@ -63,7 +64,22 @@
         #region Propiedades
 
         public int TiendaId { get; set; }
-        public string NombreTienda { get; set; }
+
+        public string NombreTienda 
+        { 
+            get
+            {
+                return this.nombreTienda;
+            }
+            set
+            {
+                if (value != this.nombreTienda)
+                {
+                    this.nombreTienda = value;
+                    this.RaisePropertyChanged("NombreTienda");
+                }
+            }
+        }
 
         public SeleccionarTiendaViewModel SeleccionarTienda
         {
@@ -149,7 +165,6 @@
 
                     this.TiendaId = seleccionarTiendaVM.Seleccion.Id;
                     this.NombreTienda = seleccionarTiendaVM.Seleccion.Nombre;
-                    this.RaisePropertyChanged("NombreTienda");
 
                     seleccionarTiendaVM.Dispose();
                     SeleccionarTienda = null;

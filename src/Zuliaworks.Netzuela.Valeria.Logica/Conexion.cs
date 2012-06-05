@@ -29,13 +29,20 @@
             this.Parametros = new ParametrosDeConexion()
             {
                 Anfitrion = string.Empty,
-                Servidor = SGBDR.Predeterminado,
+                Servidor = string.Empty,
                 Instancia = string.Empty,
                 ArgumentoDeConexion = string.Empty,
                 MetodoDeConexion = string.Empty
             };
 
-            this.BD = new ServidorPredeterminado(this.Parametros);
+            this.BD = new ServidorPredeterminado(new ParametrosDeConexion()
+            {
+                Anfitrion = string.Empty,
+                Servidor = string.Empty,
+                Instancia = string.Empty,
+                ArgumentoDeConexion = string.Empty,
+                MetodoDeConexion = string.Empty
+            });
         }
 
         /// <summary>
@@ -165,18 +172,27 @@
             }
             else
             {
+                if (this.BD != null)
+                {
+                    this.BD.Dispose();
+                    this.BD = null;
+                }
+
                 switch (this.Parametros.Servidor)
                 {
-                    case SGBDR.SqlServer:
+                    case RDBMS.SqlServer:
                         this.BD = new SQLServer(this.Parametros);
                         break;
-                    case SGBDR.Oracle:
+                    case RDBMS.Oracle:
                         this.BD = new Oracle(this.Parametros);
                         break;
-                    case SGBDR.MySQL:
+                    case RDBMS.DbIsam:
+                        this.BD = new DBISAM(this.Parametros);
+                        break;
+                    case RDBMS.MySQL:
                         this.BD = new MySQL(this.Parametros);
                         break;
-                    case SGBDR.Netzuela:
+                    case RDBMS.Netzuela:
                         this.BD = new Datos.Netzuela(this.Parametros);
                         break;
                     default:

@@ -19,16 +19,20 @@
     /// </summary>
     public partial class MainViewModel : ObservableObject, IDisposable
     {
-        #region Variables
+        #region Variables y Constantes
 
+        private static TimeSpan intervaloTemporizador = new TimeSpan(0, 0, 1);
+        private static TimeSpan tiempoCero = new TimeSpan(0, 0, 0);
         private readonly PropertyObserver<ConexionLocalViewModel> observadorConexionLocalEstablecida;
         private readonly PropertyObserver<ConexionRemotaViewModel> observadorConexionRemotaEstablecida;
+        private readonly PropertyObserver<OpcionesViewModel> observadorIntervaloCompensacion;
         private PropertyObserver<SincronizacionViewModel> observadorSincronizacion;
         private Configuracion configuracion;
         private ExploradorViewModel exploradorLocal;
         private ExploradorViewModel exploradorRemoto;
         private SincronizacionViewModel localARemota;
         private DispatcherTimer temporizador;
+        private TimeSpan contador;
         private bool sistemaConfigurado;
 
         #endregion
@@ -37,31 +41,34 @@
 
         public MainViewModel()
         {
-            InicializarTemporizador();
+            this.InicializarTemporizador();
+            
+            this.ConexionLocal = new ConexionLocalViewModel();
+            this.ConexionRemota = new ConexionRemotaViewModel();
+            this.Opciones = new OpcionesViewModel();
+            
+            this.observadorIntervaloCompensacion = new PropertyObserver<OpcionesViewModel>(this.Opciones)
+                .RegisterHandler(n => n.IntervaloCompensacion, (o) => this.Contador = o.IntervaloCompensacion);
 
-            ConexionLocal = new ConexionLocalViewModel();
-            ConexionRemota = new ConexionRemotaViewModel();
-            Opciones = new OpcionesViewModel();
-                       
-            observadorConexionLocalEstablecida = new PropertyObserver<ConexionLocalViewModel>(this.ConexionLocal)
+            this.observadorConexionLocalEstablecida = new PropertyObserver<ConexionLocalViewModel>(this.ConexionLocal)
                 .RegisterHandler(n => n.Estado, this.ConexionLocalActiva);
 
-            observadorConexionRemotaEstablecida = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
+            this.observadorConexionRemotaEstablecida = new PropertyObserver<ConexionRemotaViewModel>(this.ConexionRemota)
                 .RegisterHandler(n => n.Estado, this.ConexionRemotaActiva);
 
-            AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
+            this.AmbasConexionesEstablecidas += new EventHandler<EventArgs>(ManejarAmbasConexionesEstablecidas);
 
             this.configuracion = Opciones.CargarConfiguracion();
-            InicializarConexiones();
+            this.InicializarConexiones();
 
             // Si las dos conexiones estan establecidas...
-            if (LocalARemota != null)
+            if (this.LocalARemota != null)
             {
-                InicializarSincronizacion();
+                this.InicializarSincronizacion();
             }
             else
             {
-                LocalARemota = new SincronizacionViewModel();
+                this.LocalARemota = new SincronizacionViewModel();
             }
         }
 
@@ -117,6 +124,25 @@
             }
         }
 
+        public string ContadorString
+        {
+            get { return this.contador.ToString(); }
+        }
+
+        public TimeSpan Contador
+        {
+            get { return this.contador; }
+            set
+            {
+                if (value != this.contador)
+                {
+                    this.contador = value;
+                    this.RaisePropertyChanged("Contador");
+                    this.RaisePropertyChanged("ContadorString");
+                }
+            }
+        }
+        
         #endregion
 
         #region Eventos
@@ -131,24 +157,25 @@
         {
             temporizador = new DispatcherTimer();
             temporizador.Stop();
-            temporizador.Interval = new TimeSpan(0, 0, 20);
+            temporizador.Interval = MainViewModel.intervaloTemporizador;
             temporizador.Tick += new EventHandler(ManejarAlarmaTemporizador);
         }
 
         private void InicializarConexiones()
         {
-            ConexionLocal.Parametros = configuracion.ParametrosConexionLocal;
-            ConexionRemota.Parametros = configuracion.ParametrosConexionRemota;
-
             if (ConexionLocal.Parametros != null && configuracion.UsuarioLocal != null && configuracion.ContrasenaLocal != null)
             {
+                ConexionLocal.Parametros = configuracion.ParametrosConexionLocal;
                 ConexionLocal.Conectar(configuracion.UsuarioLocal, configuracion.ContrasenaLocal);
             }
+
+            ConexionRemota.Parametros = configuracion.ParametrosConexionRemota;
 
             if (ConexionRemota.Parametros != null && configuracion.UsuarioRemoto != null && configuracion.ContrasenaRemota != null)
             {
                 ConexionRemota.Conectar(configuracion.UsuarioRemoto, configuracion.ContrasenaRemota);
                 ConexionRemota.TiendaId = configuracion.TiendaId;
+                ConexionRemota.NombreTienda = configuracion.NombreTienda;
             }
         }
 
@@ -331,6 +358,7 @@
             Opciones.GuardarConfiguracion(new Configuracion()
             {
                 TiendaId = ConexionRemota.TiendaId,
+                NombreTienda = ConexionRemota.NombreTienda,
                 Tablas = LocalARemota.Tablas,
                 ContrasenaLocal = this.ConexionLocal.Contrasena,
                 ContrasenaRemota = this.ConexionRemota.Contrasena,
@@ -339,6 +367,54 @@
                 UsuarioLocal = this.ConexionLocal.Usuario,
                 UsuarioRemoto = this.ConexionRemota.Usuario
             });
+        }
+
+        private void CompensarBasesDeDatos()
+        {
+            NodoViewModel[] NodosOrigen = LocalARemota.NodosDeOrigen();
+            NodoViewModel[] NodosDestino = LocalARemota.NodosDeDestino();
+
+            // Expandimos nuevamente los nodos locales para verificar cambios
+            HashSet<NodoViewModel> Tablas = new HashSet<NodoViewModel>();
+
+            foreach (NodoViewModel NodoColumna in NodosOrigen)
+            {
+                // Si ya esta tabla fue expandida, no la expandamos otra vez
+                if (Tablas.Add(NodoColumna.Padre))
+                {
+                    ExploradorLocal.Reexpandir(NodoColumna.Padre);
+                }
+            }
+
+            Tablas.Clear();
+
+            // Expandimos nuevamente los nodos remotos para saber que cambios hay que hacerles
+            bool anterior = ExploradorRemoto.OperacionAsincronica;
+            ExploradorRemoto.OperacionAsincronica = false;
+
+            foreach (NodoViewModel NodoColumna in NodosDestino)
+            {
+                // Si ya esta tabla fue expandida, no la expandamos otra vez
+                if (Tablas.Add(NodoColumna.Padre))
+                {
+                    ExploradorRemoto.Reexpandir(NodoColumna.Padre);
+                }
+            }
+
+            ExploradorRemoto.OperacionAsincronica = anterior;
+            LocalARemota.ActualizarTodasLasTablas();
+
+            foreach (KeyValuePair<NodoViewModel, DataTable> Par in LocalARemota.TablasAEnviar())
+            {
+                DataTable t = Par.Value.GetChanges();
+
+                if (t != null)
+                {
+                    ExploradorRemoto.EscribirTabla(Par.Key, t);
+                    t.Dispose();
+                    Par.Value.AcceptChanges();
+                }
+            }
         }
 
         protected void Dispose(bool borrarCodigoAdministrado)
@@ -410,58 +486,24 @@
 
         protected virtual void ManejarAlarmaTemporizador(object Remitente, EventArgs Argumentos)
         {
-            try
+            this.Contador = this.Contador.Subtract(MainViewModel.intervaloTemporizador);
+
+            if (this.Contador <= MainViewModel.tiempoCero)
             {
-                //temporizador.Stop();
-
-                NodoViewModel[] NodosOrigen = LocalARemota.NodosDeOrigen();
-                NodoViewModel[] NodosDestino = LocalARemota.NodosDeDestino();
-
-                // Expandimos nuevamente los nodos locales para verificar cambios
-                HashSet<NodoViewModel> Tablas = new HashSet<NodoViewModel>();
-
-                foreach (NodoViewModel NodoColumna in NodosOrigen)
+                try
                 {
-                    // Si ya esta tabla fue expandida, no la expandamos otra vez
-                    if (Tablas.Add(NodoColumna.Padre))
-                    {
-                        ExploradorLocal.Reexpandir(NodoColumna.Padre);
-                    }
+                    //this.temporizador.Stop();
+                    this.Contador = this.Opciones.IntervaloCompensacion;
+                    this.CompensarBasesDeDatos();
                 }
-
-                Tablas.Clear();
-
-                // Expandimos nuevamente los nodos remotos para saber que cambios hay que hacerles
-                bool anterior = ExploradorRemoto.OperacionAsincronica;
-                ExploradorRemoto.OperacionAsincronica = false;
-
-                foreach (NodoViewModel NodoColumna in NodosDestino)
+                catch (Exception ex)
                 {
-                    // Si ya esta tabla fue expandida, no la expandamos otra vez
-                    if (Tablas.Add(NodoColumna.Padre))
-                    {
-                        ExploradorRemoto.Reexpandir(NodoColumna.Padre);
-                    }
+                    MessageBox.Show(ex.MostrarPilaDeExcepciones());
                 }
-
-                ExploradorRemoto.OperacionAsincronica = anterior;
-                LocalARemota.ActualizarTodasLasTablas();
-
-                foreach (KeyValuePair<NodoViewModel, DataTable> Par in LocalARemota.TablasAEnviar())
+                finally
                 {
-                    DataTable t = Par.Value.GetChanges();
-                    
-                    if (t != null)
-                    {
-                        ExploradorRemoto.EscribirTabla(Par.Key, t);
-                        t.Dispose();
-                        Par.Value.AcceptChanges();
-                    }
+                    //this.temporizador.Start();
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
         }
 

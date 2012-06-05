@@ -14,5 +14,6 @@
         public const string CanalizacionesConNombre = "Canalizaciones con nombre";
         public const string TcpIp = "TCP/IP";
         public const string Via = "VIA";
+        public const string Archivo = "Archivo";
     }
 }

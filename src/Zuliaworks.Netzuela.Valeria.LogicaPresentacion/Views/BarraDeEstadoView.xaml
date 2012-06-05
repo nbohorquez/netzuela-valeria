@@ -20,31 +20,41 @@
                 <ItemsPanelTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem Grid.Column="0">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Conexión local: "/>
-                    <TextBlock Text="{Binding Path=ConexionLocal.EstadoString}"/>
+                    <TextBlock Text="Tienda: "/>
+                    <TextBlock Text="{Binding Path=ConexionRemota.NombreTienda}"/>
                 </StackPanel>
             </StatusBarItem>
             <Separator Grid.Column="0" Height="Auto" HorizontalAlignment="Right"/>
             <StatusBarItem Grid.Column="1">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Conexión remota: "/>
-                    <TextBlock Text="{Binding Path=ConexionRemota.EstadoString}"/>
+                    <TextBlock Text="Conexión local: "/>
+                    <TextBlock Text="{Binding Path=ConexionLocal.EstadoString}"/>
                 </StackPanel>
             </StatusBarItem>
             <Separator Grid.Column="1" Height="Auto" HorizontalAlignment="Right"/>
             <StatusBarItem Grid.Column="2">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Tienda: "/>
-                    <TextBlock Text="{Binding Path=ConexionRemota.NombreTienda}"/>
+                    <TextBlock Text="Conexión remota: "/>
+                    <TextBlock Text="{Binding Path=ConexionRemota.EstadoString}"/>
+                </StackPanel>
+            </StatusBarItem>
+            <Separator Grid.Column="2" Height="Auto" HorizontalAlignment="Right"/>
+            <StatusBarItem Grid.Column="3">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Proxima sincronizacion: "/>
+                    <TextBlock Text="{Binding Path=ContadorString}"/>
+                    <TextBlock Text="Estatus: "/>
+                    <TextBlock Text="{Binding Path=EstadoUltimaSincronizacion}"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>

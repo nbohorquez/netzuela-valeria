@@ -15,9 +15,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
     /// </summary>
     public partial class SQLServer : EventosComunes, IBaseDeDatosLocal
     {
-        #region Variables
+        #region Variables y Constantes
 
-        private static Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
+        private static readonly Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
         {
             { Privilegios.NoValido, string.Empty },
             { Privilegios.Seleccionar, "SELECT" },
@@ -36,9 +36,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Constructores
 
-        public SQLServer(ParametrosDeConexion ServidorBD)
+        public SQLServer(ParametrosDeConexion servidorBd)
         {
-            this.DatosDeConexion = ServidorBD;
+            this.DatosDeConexion = servidorBd;
 
             this.conexion = new SqlConnection();
 
@@ -56,21 +56,25 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         #region Funciones
 
-        protected void Dispose(bool BorrarCodigoAdministrado)
+        protected void Dispose(bool borrarCodigoAdministrado)
         {
             this.DatosDeConexion = null;
 
-            if (BorrarCodigoAdministrado)
+            if (borrarCodigoAdministrado)
             {
-                this.conexion.Dispose();
+                if (this.conexion != null)
+                {
+                    this.conexion.Dispose();
+                    this.conexion = null;
+                }
             }
         }
 
-        private void CambiarBaseDeDatos(string BaseDeDatos)
+        private void CambiarBaseDeDatos(string baseDeDatos)
         {
-            if (this.conexion.Database != BaseDeDatos)
+            if (this.conexion.Database != baseDeDatos)
             {
-                this.conexion.ChangeDatabase(BaseDeDatos);
+                this.conexion.ChangeDatabase(baseDeDatos);
             }
         }
 
@@ -130,7 +134,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             return string.Join(", ", descripcion.ToArray());
         }
 
-        private string RutaServidorFormatoTCPIP(ParametrosDeConexion seleccion)
+        private string RutaServidorFormatoTcpIp(ParametrosDeConexion seleccion)
         {
             List<string> rutaDeConexion = new List<string>();
             
@@ -316,7 +320,7 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 (seleccion.MetodoDeConexion == MetodosDeConexion.MemoriaCompartida) ||
                 (seleccion.MetodoDeConexion == MetodosDeConexion.Via))
             {
-                rutaDeConexion.AgregarString(this.RutaServidorFormatoTCPIP(seleccion) + ";");
+                rutaDeConexion.AgregarString(this.RutaServidorFormatoTcpIp(seleccion) + ";");
             }
             else if (seleccion.MetodoDeConexion == MetodosDeConexion.CanalizacionesConNombre)
             {
@@ -333,10 +337,10 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             rutaDeConexion.AgregarString("Persist Security Info=false;");
             
             // 5) Nombre de usuario
-            rutaDeConexion.AgregarString(("User ID=" + usuario.ConvertirAUnsecureString()) + ";");
+            rutaDeConexion.AgregarString("User ID=" + usuario.ConvertirAUnsecureString() + ";");
 
             // 6) Contraseña
-            rutaDeConexion.AgregarString(("Password=" + contrasena.ConvertirAUnsecureString()));
+            rutaDeConexion.AgregarString("Password=" + contrasena.ConvertirAUnsecureString());
 
             /*
              * De la instruccion anterior (agregar password) hasta la siguiente (return) hay un hueco de 
@@ -441,9 +445,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
                 string[] resultadoBruto = this.LectorSimple("SELECT name FROM " + baseDeDatos + "..sysobjects WHERE xtype = 'U' OR xtype = 'V' ORDER BY name");
                 resultado = new List<string>();
 
-                foreach (string S in resultadoBruto)
+                foreach (string s in resultadoBruto)
                 {
-                    resultado.Add(S);
+                    resultado.Add(s);
                 }
             }
             catch (SqlException ex)
@@ -464,13 +468,13 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
                 // Tenemos que ver primero cuales son las columnas a las que tenemos acceso
                 //DataTable Descripcion = LectorAvanzado("EXEC sp_columns @table_name = " + Tabla);
-                string Columnas = this.DescribirTabla(tabla);
+                string columnas = this.DescribirTabla(tabla);
 
                 /*
                  * Ahora si seleccionamos solo las columnas visibles. Un SELECT * FROM podria 
                  * generar un error si el usuario no tiene los privilegios suficientes
                  */
-                tablaLeida = this.LectorAvanzado("SELECT " + Columnas + " FROM " + tabla);
+                tablaLeida = this.LectorAvanzado("SELECT " + columnas + " FROM " + tabla);
             }
             catch (SqlException ex)
             {
@@ -667,11 +671,11 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             // 1) Determinamos los privilegios otorgados al nuevo usuario
             List<string> privilegiosLista = new List<string>();
 
-            for (int i = 0; i < PrivilegiosAOrdenes.Count; i++)
+            for (int i = 0; i < SQLServer.PrivilegiosAOrdenes.Count; i++)
             {
                 if ((privilegios & (1 << i)) == 1)
                 {
-                    privilegiosLista.Add(PrivilegiosAOrdenes[(1 << i)]);
+                    privilegiosLista.Add(SQLServer.PrivilegiosAOrdenes[(1 << i)]);
                 }
             }
 

@@ -24,6 +24,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
@@ -51,45 +52,17 @@
             <Separator Grid.Column="2" Height="Auto" HorizontalAlignment="Right"/>
             <StatusBarItem Grid.Column="3">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Proxima sincronizacion: "/>
-                    <TextBlock Text="{Binding Path=ContadorString}"/>
+                    <TextBlock Text="Próxima sincronización: "/>
+                    <TextBlock Text="{Binding Path=ContadorString}" />
+                </StackPanel>
+            </StatusBarItem>
+            <Separator Grid.Column="3" Height="Auto" HorizontalAlignment="Right"/>
+            <StatusBarItem Grid.Column="4">
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Estatus: "/>
-                    <TextBlock Text="{Binding Path=EstadoUltimaSincronizacion}"/>
+                    <TextBlock Text="{Binding Path=ConexionRemota.ResultadoEscribirTabla}" />
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
     </Grid>
-    
-    <!--
-    <Grid>
-        <StatusBar Name="bar_BarraDeEstado" Grid.Column="0" Grid.Row="4" Style="{StaticResource est_BarraDeEstado}">
-            <StatusBar.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="4*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                </ItemsPanelTemplate>
-            </StatusBar.ItemsPanel>
-            <StatusBarItem Grid.Column="0">
-                <TextBlock Text="{Binding Path=EstadoConexion, Converter={StaticResource EstadoDeConexion}}"></TextBlock>
-            </StatusBarItem>
-            <Separator Grid.Column="0" Height="Auto" HorizontalAlignment="Right"/>
-            <StatusBarItem Grid.Column="1">
-                <ProgressBar Value="30" Width="80" Height="18"/>
-            </StatusBarItem>
-            <Separator Grid.Column="1" Height="Auto" HorizontalAlignment="Right"/>
-            <StatusBarItem Grid.Column="2">
-                <TextBlock>Set</TextBlock>
-            </StatusBarItem>
-            <Separator Grid.Column="2" Height="Auto" HorizontalAlignment="Right"/>
-            <StatusBarItem Grid.Column="3">
-                <TextBlock>Go!</TextBlock>
-            </StatusBarItem>
-        </StatusBar>
-    </Grid>-->
 </UserControl>

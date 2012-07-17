@@ -138,8 +138,9 @@
             {
                 this.Desconectar();
 
-                this.cliente.UriWsdlServicio = this.DatosDeConexion.Anfitrion;
-                this.cliente.Armar(usuario, contrasena);
+                this.cliente.UriBaseServicio = this.DatosDeConexion.Anfitrion;
+                //this.cliente.Armar(usuario, contrasena);
+                this.cliente.Conectar(usuario, contrasena);
                 
                 // Esto hay que borrarlo
                 this.Estado = ConnectionState.Open;
@@ -156,7 +157,8 @@
             {
                 if (this.cliente != null)
                 {
-                    this.cliente.Desarmar();
+                    //this.cliente.Desarmar();
+                    this.cliente.Desconectar();
                 }
                 
                 // Esto hay que borrarlo

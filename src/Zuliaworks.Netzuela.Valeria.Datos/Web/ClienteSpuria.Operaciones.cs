@@ -5,13 +5,16 @@
     using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
     using System.Data;                                  // DataTable
     using System.IO;                                    // MemoryStream
-    using System.Linq;
+    using System.Net;
     using System.Security;                              // SecureString
-    using System.Text;
     using System.Threading;                             // Thread, SendOrPostCallback
+    using System.Web;
 
+    using ServiceStack.ServiceClient.Web;               // JsonServiceClient
     using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
-    using Zuliaworks.Netzuela.Spuria.TiposApi;          // DataSetXml
+    using Zuliaworks.Netzuela.Spuria.Tipos;
+    using ServiceStack.ServiceModel.Serialization;             // DataSetXml
+    
 
     /// <summary>
     /// 
@@ -316,53 +319,210 @@
 
         public string[] ListarTiendas()
         {
-            this.Conectar();
-            string[] resultado = (string[])this.proxy.InvocarMetodo("ListarTiendas", null);
-            this.Desconectar();
+            /*
+            string[] resultado = new string[] { };
+            
+            using (cliente = new JsonServiceClient(this.uriServidorJsonSync + "ListarTiendas"))
+            {
+                var peticion = new ListarTiendas();
+                var respuesta = cliente.Send<ListarTiendasResponse>(peticion);
 
+                if (respuesta.ResponseStatus.ErrorCode != null)
+                {
+                    throw new Exception(respuesta.ResponseStatus.Message);
+                }
+                
+                resultado = respuesta.Tiendas;
+            }
+            
             return resultado;
+            */
+            
+            string[] resultado = new string[] { };
+
+            var peticionWeb = (HttpWebRequest)HttpWebRequest.Create(this.uriServidorJsonSync + "ListarTiendas");
+            peticionWeb.Method = "GET";
+            peticionWeb.ContentType = "application/json";
+            this.AgregarCookies(peticionWeb);
+            
+            var respuesta = this.ObtenerRespuesta<ListarTiendasResponse>(peticionWeb);
+            if (respuesta.ResponseStatus.ErrorCode != null)
+            {
+                throw new Exception(respuesta.ResponseStatus.Message);
+            }
+
+            return respuesta.Tiendas;
         }
 
         public string[] ListarBasesDeDatos()
         {
+            /*
             this.Conectar();
             string[] resultado = (string[])this.proxy.InvocarMetodo("ListarBasesDeDatos", null);
             this.Desconectar();
 
             return resultado;
+            */
+            /*
+            string[] resultado = new string[] { };
+
+            using (cliente = new JsonServiceClient(this.uriServidorJsonSync + "ListarBasesDeDatos"))
+            {
+                var peticion = new ListarBasesDeDatos();
+                var respuesta = cliente.Send<ListarBasesDeDatosResponse>(peticion);
+
+                if (respuesta.ResponseStatus.ErrorCode != null)
+                {
+                    throw new Exception(respuesta.ResponseStatus.Message);
+                }
+
+                resultado = respuesta.BasesDeDatos;
+            }
+
+            return resultado;*/
+
+            string[] resultado = new string[] { };
+            var peticionWeb = (HttpWebRequest)HttpWebRequest.Create(this.uriServidorJsonSync + "ListarBasesDeDatos");
+            peticionWeb.Method = "GET";
+            peticionWeb.ContentType = "application/json";
+            this.AgregarCookies(peticionWeb);
+            
+            var respuesta = this.ObtenerRespuesta<ListarBasesDeDatosResponse>(peticionWeb);
+            if (respuesta.ResponseStatus.ErrorCode != null)
+            {
+                throw new Exception(respuesta.ResponseStatus.Message);
+            }
+
+            return respuesta.BasesDeDatos;
         }
 
         public string[] ListarTablas(string baseDeDatos)
         {
-            this.Conectar();
-            string[] resultado = (string[])this.proxy.InvocarMetodo("ListarTablas", baseDeDatos);
-            this.Desconectar();
+            /*
+            string[] resultado = new string[] { };
+
+            using (cliente = new JsonServiceClient(this.uriServidorJsonSync + "ListarTablas"))
+            {
+                var peticion = new ListarTablas() { BaseDeDatos = baseDeDatos };
+                var respuesta = cliente.Send<ListarTablasResponse>(peticion);
+
+                if (respuesta.ResponseStatus.ErrorCode != null)
+                {
+                    throw new Exception(respuesta.ResponseStatus.Message);
+                }
+
+                resultado = respuesta.Tablas;
+            }
 
             return resultado;
+             */
+
+            string[] resultado = new string[] { };
+
+            var peticion = new ListarTablas() { BaseDeDatos = baseDeDatos };
+            var peticionWeb = (HttpWebRequest)HttpWebRequest.Create(this.uriServidorJsonSync + "ListarTablas");
+            peticionWeb.Method = "POST";
+            peticionWeb.ContentType = "application/json"; 
+            this.AgregarCookies(peticionWeb);
+            JsonDataContractSerializer.Instance.SerializeToStream<ListarTablas>(peticion, peticionWeb.GetRequestStream());
+            
+            var respuesta = this.ObtenerRespuesta<ListarTablasResponse>(peticionWeb);
+            if (respuesta.ResponseStatus.ErrorCode != null)
+            {
+                throw new Exception(respuesta.ResponseStatus.Message);
+            }
+
+            return respuesta.Tablas;
         }
 
         public DataTable LeerTabla(int tiendaId, string baseDeDatos, string nombreTabla)
         {
-            this.Conectar();
+            /*
+            DataTable tabla = new DataTable(nombreTabla);
 
-            object tablaXml = this.proxy.InvocarMetodo("LeerTabla", tiendaId, baseDeDatos, nombreTabla);
-            DataTable tabla = ((DataTableXml)tablaXml).XmlADataTable();
+            using (cliente = new JsonServiceClient(this.uriServidorJsonSync + "LeerTabla"))
+            {
+                var peticion = new LeerTabla() { 
+                    TiendaId = tiendaId,
+                    BaseDeDatos = baseDeDatos,
+                    Tabla = nombreTabla
+                };
+                var respuesta = cliente.Send<LeerTablaResponse>(peticion);
 
-            this.Desconectar();
+                if (respuesta.ResponseStatus.ErrorCode != null)
+                {
+                    throw new Exception(respuesta.ResponseStatus.Message);
+                }
+
+                tabla.Dispose();
+                tabla = respuesta.Tabla.XmlADataTable();
+            }
 
             return tabla;
+             */
+            var peticion = new LeerTabla()
+            {
+                TiendaId = tiendaId,
+                BaseDeDatos = baseDeDatos,
+                Tabla = nombreTabla
+            };
+            var peticionWeb = (HttpWebRequest)HttpWebRequest.Create(this.uriServidorJsonSync + "LeerTabla");
+            peticionWeb.Method = "POST";
+            peticionWeb.ContentType = "application/json";            
+            this.AgregarCookies(peticionWeb);
+            JsonDataContractSerializer.Instance.SerializeToStream<LeerTabla>(peticion, peticionWeb.GetRequestStream()); 
+            
+            var respuesta = this.ObtenerRespuesta<LeerTablaResponse>(peticionWeb);
+            if (respuesta.ResponseStatus.ErrorCode != null)
+            {
+                throw new Exception(respuesta.ResponseStatus.Message);
+            }
+
+            return respuesta.Tabla.XmlADataTable();
         }
 
         public bool EscribirTabla(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
         {
-            this.Conectar();
+            /*
+            bool resultado = false;
 
-            DataTableXml datosAEnviar = tabla.DataTableAXml(baseDeDatos, nombreTabla);
-            bool resultado = Convert.ToBoolean(this.proxy.InvocarMetodo("EscribirTabla", tiendaId, datosAEnviar));
+            using (cliente = new JsonServiceClient(this.uriServidorJsonSync + "EscribirTabla"))
+            {
+                var peticion = new EscribirTabla()
+                {
+                    TiendaId = tiendaId,
+                    TablaXml = tabla.DataTableAXml(baseDeDatos, nombreTabla)
+                };
+                var respuesta = cliente.Send<EscribirTablaResponse>(peticion);
 
-            this.Desconectar();
+                if (respuesta.ResponseStatus.ErrorCode != null)
+                {
+                    throw new Exception(respuesta.ResponseStatus.Message);
+                }
+
+                resultado = respuesta.Exito;
+            }
 
             return resultado;
+             */
+            var peticion = new EscribirTabla()
+            {
+                TiendaId = tiendaId,
+                TablaXml = tabla.DataTableAXml(baseDeDatos, nombreTabla)
+            };
+            var peticionWeb = (HttpWebRequest)HttpWebRequest.Create(this.uriServidorJsonSync + "EscribirTabla");
+            peticionWeb.Method = "POST";
+            peticionWeb.ContentType = "application/json";
+            this.AgregarCookies(peticionWeb);
+            JsonDataContractSerializer.Instance.SerializeToStream<EscribirTabla>(peticion, peticionWeb.GetRequestStream());
+
+            var respuesta = this.ObtenerRespuesta<EscribirTablaResponse>(peticionWeb);
+            if (respuesta.ResponseStatus.ErrorCode != null)
+            {
+                throw new Exception(respuesta.ResponseStatus.Message);
+            }
+
+            return respuesta.Exito;
         }
 
         public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)

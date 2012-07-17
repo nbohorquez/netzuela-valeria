@@ -523,8 +523,6 @@
                         re = a.Resultado;
                         mensaje += "El resultado de la operacion EscribirTablaAsinc fue: " + re.ToString();
                     }
-
-                    //MessageBox.Show(mensaje);
                 }
                 catch (Exception ex)
                 {
@@ -536,8 +534,8 @@
             {
                 if (this.OperacionAsincronica)
                 {
-                    this.conexion.EscribirTablaCompletado -= retorno;
-                    this.conexion.EscribirTablaCompletado += retorno;
+                    //this.conexion.EscribirTablaCompletado -= retorno;
+                    //this.conexion.EscribirTablaCompletado += retorno;
                     this.conexion.EscribirTablaAsinc(nodo.Padre.Nombre, nodo.Nombre, tabla);                    
                 }
                 else

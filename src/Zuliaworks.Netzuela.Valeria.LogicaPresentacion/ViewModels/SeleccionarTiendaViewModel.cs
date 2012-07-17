@@ -19,17 +19,17 @@
 
         private RelayCommand seleccionarOrden;
         private bool mostrarView;
-        private Conexion conexion;
+        private ConexionRemotaViewModel conexion;
         private ObservableCollection<Tienda> listaTiendas;
 
         #endregion
 
         #region Constructores
 
-        public SeleccionarTiendaViewModel(Conexion Conexion)
+        public SeleccionarTiendaViewModel(ConexionRemotaViewModel conexion)
         {
             this.MostrarView = true;
-            this.conexion = Conexion;
+            this.conexion = conexion;
             
             this.conexion.ListarTiendasCompletado -= this.ManejarListarTiendasCompletado;
             this.conexion.ListarTiendasCompletado += this.ManejarListarTiendasCompletado;
@@ -90,22 +90,29 @@
         
         private void ManejarListarTiendasCompletado(object remitente, EventoListarTiendasCompletadoArgs args)
         {
-            if (this.ListaTiendas != null)
+            try
             {
-                this.ListaTiendas.Clear();
-                this.ListaTiendas = null;
+                if (this.ListaTiendas != null)
+                {
+                    this.ListaTiendas.Clear();
+                    this.ListaTiendas = null;
+                }
+
+                this.ListaTiendas = new ObservableCollection<Tienda>();
+
+                foreach (string t in args.Resultado)
+                {
+                    string[] fila = t.Split(':');
+                    this.ListaTiendas.Add(new Tienda()
+                    {
+                        Id = int.Parse(fila[0]),
+                        Nombre = fila[1]
+                    });
+                }
             }
-
-            this.ListaTiendas = new ObservableCollection<Tienda>();
-
-            foreach (string t in args.Resultado)
+            catch (Exception ex)
             {
-                string[] fila = t.Split(':');
-                this.ListaTiendas.Add(new Tienda() 
-                { 
-                    Id = int.Parse(fila[0]),
-                    Nombre = fila[1]
-                });
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
             }
         }
         

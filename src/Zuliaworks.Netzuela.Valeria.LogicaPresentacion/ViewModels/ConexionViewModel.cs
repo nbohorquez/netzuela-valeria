@@ -291,8 +291,8 @@
             }
         }
 
-        public void ManejarCambioDeEstado(object Remitente, StateChangeEventArgs Argumentos)
-        {            
+        public void ManejarCambioDeEstado(object remitente, StateChangeEventArgs args)
+        {
             this.RaisePropertyChanged("Estado");                     // Para la gente de MainViewModel
             this.RaisePropertyChanged("EstadoString");               // Para la gente de BarraDeEstadoView
             this.RaisePropertyChanged("BotonConectarDesconectar");   // Para la gente de ConexionLocalView y ConexionRemotaView

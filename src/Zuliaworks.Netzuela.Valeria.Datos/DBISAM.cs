@@ -343,7 +343,8 @@
             */
             
             rutaDeConexion.AgregarString("engine=4;");
-
+            
+            // 1) Informacion de conexion
             switch (seleccion.MetodoDeConexion)
             {
                 case MetodosDeConexion.TcpIp:
@@ -353,7 +354,10 @@
                 default:
                     break;
             }
-            
+
+            // 2) Base de datos
+            rutaDeConexion.AgregarString("database=prueba;");
+
             // 3) Nombre de usuario
             rutaDeConexion.AgregarString("user=" + usuario.ConvertirAUnsecureString() + ";");
 

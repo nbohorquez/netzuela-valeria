@@ -49,23 +49,29 @@
       <HintPath>..\lib\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ServiceStack">
+      <HintPath>..\..\lib\ServiceStack.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\..\lib\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\..\lib\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TiposApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Tipos, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Dropbox\lib2win\TiposApi.dll</HintPath>
-    </Reference>
-    <Reference Include="WcfSamples.DynamicProxy, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Bibliotecas\WCFDynamicProxy\src\bin\Debug\WcfSamples.DynamicProxy.dll</HintPath>
+      <HintPath>..\..\lib\Tipos.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -83,7 +89,6 @@
     <Compile Include="IBaseDeDatosLocal.cs" />
     <Compile Include="INetzuela.cs" />
     <Compile Include="Web\ClienteSpuria.Operaciones.cs" />
-    <Compile Include="Web\ProxyDinamico.cs" />
     <Compile Include="IBaseDeDatosComun.cs" />
     <Compile Include="MySQL.cs" />
     <Compile Include="MySQL.Detectar.cs" />

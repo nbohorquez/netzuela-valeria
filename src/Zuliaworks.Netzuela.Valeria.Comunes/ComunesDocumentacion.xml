@@ -17,6 +17,11 @@
             <param name="enumerable">Coleccion de objetos</param>
             <returns>ObservableColeccion de objetos tipo T</returns>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.RDBMS">
+            <summary>
+            SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ParametrosDeConexion">
             <summary>
             Esta clase se usa en todas partes.
@@ -55,11 +60,6 @@
             </summary>
             <param name="stringNoSegura">Cadena de caracteres no seguros a convertir.</param>
             <returns>Cadena de caracteres convertida.</returns>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.RDBMS">
-            <summary>
-            SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
-            </summary>
         </member>
     </members>
 </doc>

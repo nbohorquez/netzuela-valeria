@@ -2,17 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;           // ObservableCollection
-    using System.Data;                              // DataTable
+    using System.Collections.ObjectModel;               // ObservableCollection
+    using System.Data;                                  // DataTable
     using System.Linq;
-    using System.Security;                          // SecureString
+    using System.Security;                              // SecureString
     using System.Text;
-    using System.Windows;                           // MessageBox
-    using System.Windows.Threading;                 // DispatcherTimer
+    using System.Windows;                               // MessageBox
+    using System.Windows.Threading;                     // DispatcherTimer
     
-    using MvvmFoundation.Wpf;                       // PropertyObserver<>, ObservableObject
-    using Zuliaworks.Netzuela.Valeria.Comunes;      // Constantes
-    using Zuliaworks.Netzuela.Valeria.Logica;       // TablaMapeada
+    using MvvmFoundation.Wpf;                           // PropertyObserver<>, ObservableObject
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // Constantes
+    using Zuliaworks.Netzuela.Valeria.Datos.Eventos;    // EventoEscribirTablaCompletado
+    using Zuliaworks.Netzuela.Valeria.Logica;           // TablaMapeada
 
     /// <summary>
     /// 
@@ -465,7 +466,7 @@
             }
         }
 
-        protected virtual void ManejarAmbasConexionesEstablecidas(object Remitente, EventArgs Args)
+        protected virtual void ManejarAmbasConexionesEstablecidas(object remitente, EventArgs args)
         {
             if (LocalARemota == null)
             {
@@ -484,7 +485,7 @@
             }
         }
 
-        protected virtual void ManejarAlarmaTemporizador(object Remitente, EventArgs Argumentos)
+        protected virtual void ManejarAlarmaTemporizador(object remitente, EventArgs args)
         {
             this.Contador = this.Contador.Subtract(MainViewModel.intervaloTemporizador);
 

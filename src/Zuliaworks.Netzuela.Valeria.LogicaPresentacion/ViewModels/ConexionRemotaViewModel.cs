@@ -23,6 +23,7 @@
         private SeleccionarTiendaViewModel seleccionarTienda;
         private PropertyObserver<SeleccionarTiendaViewModel> observadorSeleccion;
         private string nombreTienda;
+        private string resultadoEscribirTabla;
         private bool mostrarSeleccionarTiendaView;
         
         #endregion
@@ -41,7 +42,7 @@
 
         public ConexionRemotaViewModel(ParametrosDeConexion parametros)
             : base(parametros)
-        { 
+        {
         }
 
         ~ConexionRemotaViewModel()
@@ -113,9 +114,50 @@
             }
         }
 
+        public string ResultadoEscribirTabla
+        {
+            get
+            {
+                return this.resultadoEscribirTabla;
+            }
+            set
+            {
+                if (value != this.resultadoEscribirTabla)
+                {
+                    this.resultadoEscribirTabla = value;
+                    this.RaisePropertyChanged("ResultadoEscribirTabla");
+                }
+            }
+        }
+
         #endregion
 
         #region Funciones
+
+        protected void ManejarEscribirTablaCompletado(object remitente, EventoEscribirTablaCompletadoArgs args)
+        {
+            try
+            {
+                this.conexion.EscribirTablaCompletado -= this.ManejarEscribirTablaCompletado;
+
+                if (args.Error != null)
+                {
+                    this.ResultadoEscribirTabla = "Error: " + args.Error.Message;
+                }
+                else if (args.Cancelled)
+                {
+                    this.ResultadoEscribirTabla = "Cancelada";
+                }
+                else
+                {
+                    this.ResultadoEscribirTabla = args.Resultado == true ? "OK" : "No Ok";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.MostrarPilaDeExcepciones());
+            }
+        }
 
         protected override void CerrarAutentificacion(AutentificacionViewModel AutentificacionVM)
         {
@@ -147,7 +189,7 @@
                 SeleccionarTienda = null;
             }
 
-            SeleccionarTienda = new SeleccionarTiendaViewModel(this.conexion);
+            SeleccionarTienda = new SeleccionarTiendaViewModel(this);
 
             observadorSeleccion = new PropertyObserver<SeleccionarTiendaViewModel>(this.SeleccionarTienda)
                 .RegisterHandler(n => n.MostrarView, this.CerrarSeleccionarTienda);
@@ -297,6 +339,10 @@
         {
             try
             {
+                /* Esto esta horrible aqui... no se supone que deba registrar y desregistrar el manejador del evento
+                 * cada vez que se llame a esta funcion */
+                this.conexion.EscribirTablaCompletado -= this.ManejarEscribirTablaCompletado;
+                this.conexion.EscribirTablaCompletado += this.ManejarEscribirTablaCompletado;
                 this.conexion.EscribirTablaAsinc(this.TiendaId, baseDeDatos, nombreTabla, tabla);
             }
             catch (Exception ex)

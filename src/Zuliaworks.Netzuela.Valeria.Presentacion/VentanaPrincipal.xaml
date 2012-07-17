@@ -61,7 +61,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Column="0" Grid.Row="0" Background="DarkSeaGreen">
+        <Border Grid.Column="0" Grid.Row="0" Background="CornflowerBlue">
             <Label Style="{StaticResource est_Titulo}">netzuela</Label>
         </Border>
 

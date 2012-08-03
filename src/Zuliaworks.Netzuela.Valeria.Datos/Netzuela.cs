@@ -1,11 +1,8 @@
 ﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
     using System;
-    using System.Collections.Generic;
     using System.Data;                                  // ConnectionState, DataTable
-    using System.Linq;
     using System.Security;                              // SecureString
-    using System.Text;
 
     using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
     using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
@@ -139,7 +136,6 @@
                 this.Desconectar();
 
                 this.cliente.UriBaseServicio = this.DatosDeConexion.Anfitrion;
-                //this.cliente.Armar(usuario, contrasena);
                 this.cliente.Conectar(usuario, contrasena);
                 
                 // Esto hay que borrarlo
@@ -157,7 +153,6 @@
             {
                 if (this.cliente != null)
                 {
-                    //this.cliente.Desarmar();
                     this.cliente.Desconectar();
                 }
                 

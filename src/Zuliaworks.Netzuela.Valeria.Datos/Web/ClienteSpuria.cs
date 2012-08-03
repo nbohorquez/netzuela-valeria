@@ -1,19 +1,15 @@
 ﻿namespace Zuliaworks.Netzuela.Valeria.Datos.Web
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.Specialized;               // HybridDictionary
     using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
     using System.IO;
-    using System.Linq;
     using System.Net;
     using System.Security;                              // SecureString
-    using System.Text;
     using System.Threading;                             // Thread, SendOrPostCallback
 
     using ServiceStack.Service;                         // IServiceClient
     using ServiceStack.ServiceClient.Web;               // JsonServiceClient
-    using ServiceStack.ServiceModel.Extensions;         // Parse
     using ServiceStack.ServiceModel.Serialization;      // JsonDataContractDeserializer
     using Zuliaworks.Netzuela.Spuria.Tipos;
     using Zuliaworks.Netzuela.Valeria.Comunes;
@@ -39,11 +35,9 @@
         private const string SOAP12 = "/soap12/";
         private const string SYNC = "/syncreply/";
         private const string ASYNC = "/asynconeway/";
-        //private const string ContratoSpuria = "IApi";
 
         private IServiceClient cliente;
         private Random aleatorio;
-        //private ProxyDinamico proxy;
         private HybridDictionary hilos;
         private string uriBaseServidor;
         private string uriServidorJsonSync;
@@ -85,21 +79,10 @@
         {
             get 
             { 
-                //return (this.proxy == null) ? this.uriWsdlServicio : this.proxy.UriWsdlServicio; 
                 return this.uriBaseServidor; 
             }
             set
             {
-                /*
-                if (this.proxy == null)
-                {
-                    this.uriWsdlServicio = value;
-                }
-                else
-                {
-                    this.proxy.UriWsdlServicio = value;
-                }
-                 */
                 this.uriBaseServidor = value;
                 this.uriServidorJsonSync = value + JSON + SYNC;
             }
@@ -108,49 +91,20 @@
         #endregion
 
         #region Funciones
-        /*
-        public void Armar(SecureString usuario, SecureString contrasena)
-        {
-            try
-            {
-                this.proxy = new ProxyDinamico(this.UriWsdlServicio, usuario, contrasena);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error creando ProxyDinamico con argumento: \"" + this.UriWsdlServicio + "\"", ex);
-            }
-        }
 
-        public void Desarmar()
-        {
-            try
-            {
-                if (this.proxy != null)
-                {
-                    this.proxy.Dispose();
-                    this.proxy = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error creando ProxyDinamico con argumento: \"" + this.UriWsdlServicio + "\"", ex);
-            }
-        }
-        */
         public void Conectar(SecureString usuario, SecureString contrasena)
         {
             try
             {
-                using (cliente = new JsonServiceClient(this.uriServidorJsonSync + "Auth"))
+                using (cliente = new JsonServiceClient(this.UriBaseServicio))
                 {
                     var peticion = new Auth()
                     {
                         UserName = usuario.ConvertirAUnsecureString(),
                         Password = contrasena.ConvertirAUnsecureString(),
                         RememberMe = true
-                    };
+                    };                    
                     var respuesta = cliente.Send<AuthResponse>(peticion);
-
                     if (respuesta.ResponseStatus.ErrorCode != null)
                     {
                         throw new Exception(respuesta.ResponseStatus.Message);
@@ -158,31 +112,6 @@
 
                     this.cookies.Add(new Cookie("ss-id", respuesta.SessionId, "/", this.UriBaseServicio));
                 }
-                /*
-                var jsonPeticion = "{\"UserName\":\"" + usuario.ConvertirAUnsecureString() + "\"";
-                jsonPeticion += ",\"Password\":\"" + contrasena.ConvertirAUnsecureString() + "\"";
-                jsonPeticion += ",\"RememberMe\":\"true\"}";
-
-                var Webpeticion = HttpWebRequest.Create(this.uriServidorJsonSync + "Auth");
-                Webpeticion.Method = "POST";
-                Webpeticion.ContentType = "application/json";
-
-                using (var writer = new StreamWriter(Webpeticion.GetRequestStream()))
-                {
-                    writer.Write(jsonPeticion);
-                }
-
-                var respuestaWeb = Webpeticion.GetResponse();
-                var jsonRespuesta = new StreamReader(respuestaWeb.GetResponseStream()).ReadToEnd();
-                var respuesta = (AuthResponse)JsonDataContractDeserializer.Instance.DeserializeFromString(jsonRespuesta, typeof(AuthResponse));
-
-                if (respuesta.ResponseStatus.ErrorCode != null)
-                {
-                    throw new Exception(respuesta.ResponseStatus.Message);
-                }
-
-                this.cookies.Add(new Cookie("ss-id", respuesta.SessionId, "/", this.UriBaseServicio));
-                 */
             }
             catch (Exception ex)
             {
@@ -277,13 +206,6 @@
                     this.hilos.Clear();
                     this.hilos = null;
                 }
-                /*
-                if (this.proxy != null)
-                {
-                    this.proxy.Dispose();
-                    this.proxy = null;
-                }
-                 */
             }
         }
                 

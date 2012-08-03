@@ -6422,7 +6422,7 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>07/17/2012 00:13:45</timestamp>
+    <timestamp>07/18/2012 00:49:54</timestamp>
     <milliseconds>531</milliseconds>
     <violations />
   </sourcecode>
@@ -6431,7 +6431,7 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>07/17/2012 00:13:45</timestamp>
+    <timestamp>07/18/2012 00:49:54</timestamp>
     <milliseconds>531</milliseconds>
     <violations />
   </sourcecode>
@@ -6440,8 +6440,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>07/17/2012 00:13:45</timestamp>
-    <milliseconds>671</milliseconds>
+    <timestamp>07/18/2012 00:49:54</timestamp>
+    <milliseconds>625</milliseconds>
     <violations />
   </sourcecode>
   <sourcecode name="BarraDeEstadoView.g.cs" parser="StyleCop.CSharp.CsParser">
@@ -6449,8 +6449,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>07/17/2012 00:13:45</timestamp>
-    <milliseconds>562</milliseconds>
+    <timestamp>07/18/2012 00:49:54</timestamp>
+    <milliseconds>578</milliseconds>
     <violations />
   </sourcecode>
   <sourcecode name="SeleccionarTiendaView.g.cs" parser="StyleCop.CSharp.CsParser">
@@ -6458,8 +6458,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>07/17/2012 00:13:45</timestamp>
-    <milliseconds>718</milliseconds>
+    <timestamp>07/18/2012 00:49:54</timestamp>
+    <milliseconds>640</milliseconds>
     <violations />
   </sourcecode>
   <sourcecode name="ConexionRemotaView.g.cs" parser="StyleCop.CSharp.CsParser">
@@ -6467,8 +6467,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>07/17/2012 00:13:45</timestamp>
-    <milliseconds>703</milliseconds>
+    <timestamp>07/18/2012 00:49:54</timestamp>
+    <milliseconds>625</milliseconds>
     <violations />
   </sourcecode>
   <sourcecode name="DetectarServidoresLocalesView.g.cs" parser="StyleCop.CSharp.CsParser">
@@ -6476,8 +6476,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>07/17/2012 00:13:45</timestamp>
-    <milliseconds>734</milliseconds>
+    <timestamp>07/18/2012 00:49:54</timestamp>
+    <milliseconds>828</milliseconds>
     <violations />
   </sourcecode>
   <sourcecode name="OpcionesView.g.cs" parser="StyleCop.CSharp.CsParser">
@@ -6485,8 +6485,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>07/17/2012 00:13:45</timestamp>
-    <milliseconds>718</milliseconds>
+    <timestamp>07/18/2012 00:49:54</timestamp>
+    <milliseconds>765</milliseconds>
     <violations />
   </sourcecode>
   <sourcecode name="ExploradorView.g.cs" parser="StyleCop.CSharp.CsParser">
@@ -6494,8 +6494,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>07/17/2012 00:13:45</timestamp>
-    <milliseconds>765</milliseconds>
+    <timestamp>07/18/2012 00:49:54</timestamp>
+    <milliseconds>937</milliseconds>
     <violations />
   </sourcecode>
 </stylecopresultscache>

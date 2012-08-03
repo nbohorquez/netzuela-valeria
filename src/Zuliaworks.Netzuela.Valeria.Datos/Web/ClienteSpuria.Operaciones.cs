@@ -4,17 +4,13 @@
     using System.Collections.Generic;
     using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
     using System.Data;                                  // DataTable
-    using System.IO;                                    // MemoryStream
     using System.Net;
     using System.Security;                              // SecureString
     using System.Threading;                             // Thread, SendOrPostCallback
-    using System.Web;
 
-    using ServiceStack.ServiceClient.Web;               // JsonServiceClient
+    using ServiceStack.ServiceModel.Serialization;
     using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
-    using Zuliaworks.Netzuela.Spuria.Tipos;
-    using ServiceStack.ServiceModel.Serialization;             // DataSetXml
-    
+    using Zuliaworks.Netzuela.Spuria.Tipos;             // DataSetXml
 
     /// <summary>
     /// 
@@ -422,7 +418,7 @@
             var peticion = new ListarTablas() { BaseDeDatos = baseDeDatos };
             var peticionWeb = (HttpWebRequest)HttpWebRequest.Create(this.uriServidorJsonSync + "ListarTablas");
             peticionWeb.Method = "POST";
-            peticionWeb.ContentType = "application/json"; 
+            peticionWeb.ContentType = "application/json";
             this.AgregarCookies(peticionWeb);
             JsonDataContractSerializer.Instance.SerializeToStream<ListarTablas>(peticion, peticionWeb.GetRequestStream());
             

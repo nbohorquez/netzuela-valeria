@@ -64,19 +64,19 @@
       <HintPath>..\..\lib\Logica.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\lib\log4net.dll</HintPath>
+      <HintPath>..\..\..\lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack">
-      <HintPath>..\..\lib\ServiceStack.dll</HintPath>
+      <HintPath>..\..\..\lib\ServiceStack.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface">
-      <HintPath>..\..\lib\ServiceStack.ServiceInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="BCrypt.Net">
-      <HintPath>..\..\lib\BCrypt.Net.dll</HintPath>
+      <HintPath>..\..\..\lib\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\..\lib\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\lib\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="BCrypt.Net">
+      <HintPath>..\..\..\lib\BCrypt.Net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

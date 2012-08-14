@@ -1,0 +1,24 @@
+﻿@model Zuliaworks.Netzuela.Spuria.ServidorOAuth.Models.AutorizacionModel
+
+@{
+    ViewBag.Title = "Autorizar";
+}
+
+<h2>Autorizar</h2>
+<p>
+    <b>Advertencia</b>: No otorgue sus credenciales (nombre y/o contraseña) a ningún otro sitio o aplicación.
+</p>
+<p>
+	La aplicación @Html.Encode(Model.AplicacionConsumidora) está pidiendo acceso a loa datos privados de su 
+    cuenta. ¿Está Ud. de acuerdo?
+</p>
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken();
+	@Html.HiddenFor(m => m.Aprobado);
+  
+	<div>
+		<input type="submit" value="Si" onclick="document.getElementsByName('IsApproved')[0].value = true; return true;" />
+		<input type="submit" value="No" onclick="document.getElementsByName('IsApproved')[0].value = false; return true;" />
+	</div>
+}

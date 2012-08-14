@@ -1,21 +1,21 @@
-src/Zuliaworks.Netzuela.Valeria.Comunes/bin/
-src/Zuliaworks.Netzuela.Valeria.Comunes/obj/
-src/Zuliaworks.Netzuela.Valeria.Comunes/StyleCop.Cache
+src/cliente/Zuliaworks.Netzuela.Valeria.Comunes/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.Comunes/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.Comunes/StyleCop.Cache
 
-src/Zuliaworks.Netzuela.Valeria.Datos/bin/
-src/Zuliaworks.Netzuela.Valeria.Datos/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.Datos/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.Datos/obj/
 
-src/Zuliaworks.Netzuela.Valeria.Logica/bin/
-src/Zuliaworks.Netzuela.Valeria.Logica/obj/
-src/Zuliaworks.Netzuela.Valeria.Logica/StyleCop.Cache
+src/cliente/Zuliaworks.Netzuela.Valeria.Logica/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.Logica/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.Logica/StyleCop.Cache
 
-src/Zuliaworks.Netzuela.Valeria.LogicaPresentacion/bin/
-src/Zuliaworks.Netzuela.Valeria.LogicaPresentacion/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.LogicaPresentacion/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.LogicaPresentacion/obj/
 
-src/Zuliaworks.Netzuela.Valeria.Preferencias/bin/
-src/Zuliaworks.Netzuela.Valeria.Preferencias/obj/
-src/Zuliaworks.Netzuela.Valeria.Preferencias/StyleCop.Cache
+src/cliente/Zuliaworks.Netzuela.Valeria.Preferencias/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.Preferencias/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.Preferencias/StyleCop.Cache
 
-src/Zuliaworks.Netzuela.Valeria.Presentacion/bin/
-src/Zuliaworks.Netzuela.Valeria.Presentacion/obj/
-src/Zuliaworks.Netzuela.Valeria.Presentacion/StyleCop.Cache
+src/cliente/Zuliaworks.Netzuela.Valeria.Presentacion/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.Presentacion/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.Presentacion/StyleCop.Cache

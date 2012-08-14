@@ -1,0 +1,1 @@
+<%@ Application Inherits="Zuliaworks.Netzuela.Spuria.Api.Global" %>

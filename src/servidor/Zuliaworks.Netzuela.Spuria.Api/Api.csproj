@@ -52,16 +52,16 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Comunes">
-      <HintPath>..\..\lib\Comunes.dll</HintPath>
+      <HintPath>..\..\cliente\Zuliaworks.Netzuela.Valeria.Comunes\bin\Debug\Comunes.dll</HintPath>
     </Reference>
     <Reference Include="Datos">
-      <HintPath>..\..\lib\Datos.dll</HintPath>
+      <HintPath>..\..\cliente\Zuliaworks.Netzuela.Valeria.Datos\bin\Debug\Datos.dll</HintPath>
     </Reference>
     <Reference Include="Preferencias">
-      <HintPath>..\..\lib\Preferencias.dll</HintPath>
+      <HintPath>..\..\cliente\Zuliaworks.Netzuela.Valeria.Preferencias\bin\Debug\Preferencias.dll</HintPath>
     </Reference>
     <Reference Include="Logica">
-      <HintPath>..\..\lib\Logica.dll</HintPath>
+      <HintPath>..\..\cliente\Zuliaworks.Netzuela.Valeria.Logica\bin\Debug\Logica.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\..\lib\log4net.dll</HintPath>

@@ -1,0 +1,37 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Zuliaworks.Netzuela.Spuria.Api/EscribirTablaServicio.cs">
+    <Files>
+      <File FileName="Zuliaworks.Netzuela.Spuria.Api/EscribirTablaServicio.cs" Line="49" Column="21" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Api" expanded="True">
+            <Node name="References" selected="True" />
+            <Node name="Global.asax" expanded="True" />
+          </Node>
+          <Node name="Tipos" expanded="True" />
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/home/nestor/netzuela/spuria/src/Zuliaworks.Netzuela.Spuria.Api/De302A401.cs" line="47" />
+      <Breakpoint file="/home/nestor/netzuela/spuria/src/Zuliaworks.Netzuela.Spuria.Api/De302A401.cs" line="52" />
+      <Breakpoint file="/home/nestor/netzuela/spuria/src/Zuliaworks.Netzuela.Spuria.Api/Inspector.cs" line="25" />
+      <Breakpoint file="/home/nestor/netzuela/spuria/src/Zuliaworks.Netzuela.Spuria.Api/Inspector.cs" line="39" />
+      <Breakpoint file="/home/nestor/netzuela/spuria/src/Zuliaworks.Netzuela.Spuria.Api/InspectorHttp.cs" line="34" />
+      <Breakpoint file="/home/nestor/netzuela/spuria/src/Zuliaworks.Netzuela.Spuria.Api/InspectorWcfParametros.cs" line="20" />
+      <Breakpoint file="/home/nestor/netzuela/spuria/src/Zuliaworks.Netzuela.Spuria.Api/InspectorWcfParametros.cs" line="25" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

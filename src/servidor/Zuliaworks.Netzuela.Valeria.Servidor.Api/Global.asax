@@ -1,0 +1,1 @@
+<%@ Application Inherits="Zuliaworks.Netzuela.Valeria.Servidor.Api.Global" %>

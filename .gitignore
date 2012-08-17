@@ -24,6 +24,6 @@ src/cliente/Zuliaworks.Netzuela.Valeria.Presentacion/bin/
 src/cliente/Zuliaworks.Netzuela.Valeria.Presentacion/obj/
 src/cliente/Zuliaworks.Netzuela.Valeria.Presentacion/StyleCop.Cache
 
-src/servidor/Zuliaworks.Netzuela.Spuria.Api/bin/
-src/servidor/Zuliaworks.Netzuela.Spuria.Tipos/bin/
-src/servidor/Zuliaworks.Netzuela.Spuria.Tipos/obj/
+src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/bin/
+src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Tipos/bin/
+src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Tipos/obj/

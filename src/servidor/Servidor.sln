@@ -1,9 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Zuliaworks.Netzuela.Spuria.Api\Api.csproj", "{8BF0C892-2D11-4DBD-9EFB-E8EA38A2E290}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comunes", "..\cliente\Zuliaworks.Netzuela.Valeria.Comunes\Comunes.csproj", "{9EFCF5AD-5A96-4726-8385-807552BA1497}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tipos", "Zuliaworks.Netzuela.Spuria.Tipos\Tipos.csproj", "{8DE4172C-BAE2-4320-A092-585077DBB33F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datos", "..\cliente\Zuliaworks.Netzuela.Valeria.Datos\Datos.csproj", "{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logica", "..\cliente\Zuliaworks.Netzuela.Valeria.Logica\Logica.csproj", "{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Preferencias", "..\cliente\Zuliaworks.Netzuela.Valeria.Preferencias\Preferencias.csproj", "{A60A5CA5-0C85-447F-B673-56EB97D4F056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Zuliaworks.Netzuela.Valeria.Servidor.Api\Api.csproj", "{8BF0C892-2D11-4DBD-9EFB-E8EA38A2E290}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tipos", "Zuliaworks.Netzuela.Valeria.Servidor.Tipos\Tipos.csproj", "{8DE4172C-BAE2-4320-A092-585077DBB33F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +19,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8BF0C892-2D11-4DBD-9EFB-E8EA38A2E290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8BF0C892-2D11-4DBD-9EFB-E8EA38A2E290}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BF0C892-2D11-4DBD-9EFB-E8EA38A2E290}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -19,9 +31,21 @@ Global
 		{8DE4172C-BAE2-4320-A092-585077DBB33F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DE4172C-BAE2-4320-A092-585077DBB33F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DE4172C-BAE2-4320-A092-585077DBB33F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EFCF5AD-5A96-4726-8385-807552BA1497}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EFCF5AD-5A96-4726-8385-807552BA1497}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EFCF5AD-5A96-4726-8385-807552BA1497}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EFCF5AD-5A96-4726-8385-807552BA1497}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A60A5CA5-0C85-447F-B673-56EB97D4F056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A60A5CA5-0C85-447F-B673-56EB97D4F056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A60A5CA5-0C85-447F-B673-56EB97D4F056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A60A5CA5-0C85-447F-B673-56EB97D4F056}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Zuliaworks.Netzuela.Spuria.Api\Api.csproj
+		StartupItem = Zuliaworks.Netzuela.Valeria.Servidor.Api\Api.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

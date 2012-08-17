@@ -1,4 +1,4 @@
-namespace Zuliaworks.Netzuela.Valeria.Servidor.Tipos
+namespace Zuliaworks.Netzuela.Valeria.Tipos
 {
 	using System;
 	using System.Runtime.Serialization;						// DataContract, DataMember

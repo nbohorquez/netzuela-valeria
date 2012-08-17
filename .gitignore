@@ -11,6 +11,9 @@ src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/bin/
 src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/obj/
 src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/StyleCop.Cache
 
+src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/bin/
+src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/obj/
+
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/bin/
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/obj/
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/StyleCop.Cache
@@ -23,5 +26,3 @@ src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/obj/
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/StyleCop.Cache
 
 src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/bin/
-src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Tipos/bin/
-src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Tipos/obj/

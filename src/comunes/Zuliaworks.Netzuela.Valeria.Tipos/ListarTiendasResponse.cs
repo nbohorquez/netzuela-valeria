@@ -1,4 +1,4 @@
-namespace Zuliaworks.Netzuela.Valeria.Servidor.Tipos
+namespace Zuliaworks.Netzuela.Valeria.Tipos
 {
 	using System;
 	using System.Runtime.Serialization;						// DataContract, DataMember
@@ -6,12 +6,11 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Tipos
 	using ServiceStack.ServiceInterface.ServiceModel;		// IHasResponseStatus
 	
 	[DataContract]
-	public class ListarTablasResponse : IHasResponseStatus
+	public class ListarTiendasResponse : IHasResponseStatus
 	{
 		[DataMember]
-		public string[] Tablas { get; set; }
+		public string[] Tiendas { get; set; }
 		[DataMember]
 		public ResponseStatus ResponseStatus { get; set; }
 	}
 }
-

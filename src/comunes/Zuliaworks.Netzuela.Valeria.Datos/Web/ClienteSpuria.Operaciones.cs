@@ -10,7 +10,7 @@
 
     using ServiceStack.ServiceModel.Serialization;
     using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
-    using Zuliaworks.Netzuela.Valeria.Servidor.Tipos;   // DataSetXml
+    using Zuliaworks.Netzuela.Valeria.Tipos;   			// DataSetXml
 
     /// <summary>
     /// 

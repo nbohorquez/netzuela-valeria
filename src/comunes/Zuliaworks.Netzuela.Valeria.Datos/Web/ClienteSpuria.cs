@@ -11,7 +11,7 @@
     using ServiceStack.Service;                         // IServiceClient
     using ServiceStack.ServiceClient.Web;               // JsonServiceClient
     using ServiceStack.ServiceModel.Serialization;      // JsonDataContractDeserializer
-    using Zuliaworks.Netzuela.Valeria.Servidor.Tipos;
+    using Zuliaworks.Netzuela.Valeria.Tipos;
     using Zuliaworks.Netzuela.Valeria.Comunes;
         
     /// <summary>

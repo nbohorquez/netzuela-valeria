@@ -8,7 +8,7 @@
     <ProjectGuid>{8DE4172C-BAE2-4320-A092-585077DBB33F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zuliaworks.Netzuela.Spuria.Tipos</RootNamespace>
+    <RootNamespace>Zuliaworks.Netzuela.Valeria.Tipos</RootNamespace>
     <AssemblyName>Tipos</AssemblyName>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

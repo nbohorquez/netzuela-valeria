@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,7 +8,7 @@
     <ProjectGuid>{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zuliaworks.Netzuela.Valeria.Cliente.Datos</RootNamespace>
+    <RootNamespace>Zuliaworks.Netzuela.Valeria.Datos</RootNamespace>
     <AssemblyName>Datos</AssemblyName>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -90,13 +90,13 @@
     <Compile Include="Web\ClienteSpuria.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\servidor\Zuliaworks.Netzuela.Valeria.Servidor.Tipos\Tipos.csproj">
-      <Project>{8DE4172C-BAE2-4320-A092-585077DBB33F}</Project>
-      <Name>Tipos</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Zuliaworks.Netzuela.Valeria.Comunes\Comunes.csproj">
       <Project>{9EFCF5AD-5A96-4726-8385-807552BA1497}</Project>
       <Name>Comunes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zuliaworks.Netzuela.Valeria.Tipos\Tipos.csproj">
+      <Project>{8DE4172C-BAE2-4320-A092-585077DBB33F}</Project>
+      <Name>Tipos</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

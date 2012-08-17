@@ -1,4 +1,4 @@
-namespace Zuliaworks.Netzuela.Valeria.Servidor.Tipos
+namespace Zuliaworks.Netzuela.Valeria.Tipos
 {
 	using System;
 	using System.Runtime.Serialization;						// DataContract, DataMember
@@ -8,13 +8,15 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Tipos
 	
 	[DataContract]
 	[Authenticate()]
-	[RestService("/escribirtabla")]
-	public class EscribirTabla
+	[RestService("/leertabla")]
+	public class LeerTabla
 	{
 		[DataMember]
 		public int TiendaId { get; set; }
 		[DataMember]
-		public DataTableXml TablaXml { get; set; }
-	}
+		public string BaseDeDatos { get; set; }
+		[DataMember]
+		public string Tabla { get; set; }
+	}	
 }
 

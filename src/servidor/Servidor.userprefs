@@ -5,10 +5,9 @@
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Api" expanded="True" />
-          <Node name="Comunes" expanded="True" selected="True" />
+          <Node name="Comunes" expanded="True" />
           <Node name="Datos" expanded="True" />
-          <Node name="Logica" expanded="True" />
-          <Node name="Preferencias" expanded="True" />
+          <Node name="Preferencias" expanded="True" selected="True" />
           <Node name="Tipos" expanded="True" />
         </State>
       </Pad>

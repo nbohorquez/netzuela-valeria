@@ -7,8 +7,8 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 	
 	using ServiceStack.ServiceInterface;
 	using ServiceStack.ServiceInterface.ServiceModel;		// ResponseStatus
-	using Zuliaworks.Netzuela.Valeria.Servidor.Tipos;
-	using Zuliaworks.Netzuela.Valeria.Logica;
+	using Zuliaworks.Netzuela.Valeria.Tipos;
+	using Zuliaworks.Netzuela.Valeria.Cliente.Logica;
 	
 	public class ListarBasesDeDatosServicio : ServiceBase<ListarBasesDeDatos>
 	{

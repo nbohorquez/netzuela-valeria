@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,7 +8,7 @@
     <ProjectGuid>{A60A5CA5-0C85-447F-B673-56EB97D4F056}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zuliaworks.Netzuela.Valeria.Cliente.Preferencias</RootNamespace>
+    <RootNamespace>Zuliaworks.Netzuela.Valeria.Preferencias</RootNamespace>
     <AssemblyName>Preferencias</AssemblyName>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

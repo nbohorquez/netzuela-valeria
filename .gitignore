@@ -1,28 +1,26 @@
 *.*~
 
-src/cliente/Cliente.userprefs
+src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/bin/
+src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/obj/
+src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/StyleCop.Cache
 
-src/cliente/Zuliaworks.Netzuela.Valeria.Comunes/bin/
-src/cliente/Zuliaworks.Netzuela.Valeria.Comunes/obj/
-src/cliente/Zuliaworks.Netzuela.Valeria.Comunes/StyleCop.Cache
+src/comunes/Zuliaworks.Netzuela.Valeria.Datos/bin/
+src/comunes/Zuliaworks.Netzuela.Valeria.Datos/obj/
 
-src/cliente/Zuliaworks.Netzuela.Valeria.Datos/bin/
-src/cliente/Zuliaworks.Netzuela.Valeria.Datos/obj/
+src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/bin/
+src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/obj/
+src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/StyleCop.Cache
 
-src/cliente/Zuliaworks.Netzuela.Valeria.Logica/bin/
-src/cliente/Zuliaworks.Netzuela.Valeria.Logica/obj/
-src/cliente/Zuliaworks.Netzuela.Valeria.Logica/StyleCop.Cache
+src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/StyleCop.Cache
 
-src/cliente/Zuliaworks.Netzuela.Valeria.LogicaPresentacion/bin/
-src/cliente/Zuliaworks.Netzuela.Valeria.LogicaPresentacion/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion/obj/
 
-src/cliente/Zuliaworks.Netzuela.Valeria.Preferencias/bin/
-src/cliente/Zuliaworks.Netzuela.Valeria.Preferencias/obj/
-src/cliente/Zuliaworks.Netzuela.Valeria.Preferencias/StyleCop.Cache
-
-src/cliente/Zuliaworks.Netzuela.Valeria.Presentacion/bin/
-src/cliente/Zuliaworks.Netzuela.Valeria.Presentacion/obj/
-src/cliente/Zuliaworks.Netzuela.Valeria.Presentacion/StyleCop.Cache
+src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/StyleCop.Cache
 
 src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/bin/
 src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Tipos/bin/

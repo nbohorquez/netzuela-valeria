@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.ExploradorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Local="clr-namespace:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion"
+             xmlns:ACB="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
+             xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels"             
+             mc:Ignorable="d">
+    
+    <UserControl.Resources>
+        <Local:SeleccionarTodaLaColumna x:Key="SeleccionarTodaLaColumna"/>
+
+        <Style x:Key="est_Tabla" TargetType="DataGrid">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="SelectionMode" Value="Extended"/>
+            <Setter Property="SelectionUnit" Value="Cell"/>
+        </Style>
+        
+        <Style x:Key="est_DivisorDeRejilla" TargetType="GridSplitter">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="0,12"/>
+            <Setter Property="Width" Value="3"/>
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Margin="0,2,0,2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Name="etq_Direccion" Grid.Column="0" Content="Dirección"/>
+            <TextBox Name="txt_Direccion" Grid.Column="1" IsReadOnly="True" Text="{Binding Path=RutaNodoActual, Mode=OneWay}"/>
+        </Grid>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <TreeView Name="trv_Arbol" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding Path=Nodos}">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type ViewModels:NodoViewModel}" ItemsSource="{Binding Path=Hijos}">
+                        <TreeViewItem Name="tvi_Item" MouseEnter="tvi_Item_MouseEncima" MouseLeave="tvi_Item_MouseAfuera" MouseLeftButtonUp="tvi_Item_ClicBotonIzqRaton"
+                                      ACB:CommandBehavior.Event="Expanded"
+                                      ACB:CommandBehavior.Command="{Binding Path=Explorador.ExpandirOrden}"
+                                      ACB:CommandBehavior.CommandParameter="{Binding Path=.}">
+                            <!-- 
+                            Para una explicacion acerca de la biblioteca empleada (Attached Command Behavior) ver 
+                            el documento: http://marlongrech.wordpress.com/2008/12/13/attachedcommandbehavior-v2-aka-acb 
+                            -->
+                            <TreeViewItem.Header>
+                                <TextBlock Text="{Binding Path=NombreParaMostrar}"/>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+
+            <GridSplitter Grid.Column="1" Style="{StaticResource est_DivisorDeRejilla}" HorizontalAlignment="Stretch" />
+
+            <DataGrid Name="dgr_Tabla" Grid.Column="2" Style="{StaticResource est_Tabla}" ItemsSource="{Binding Path=TablaActual.DefaultView, NotifyOnTargetUpdated=True}" 
+                      TargetUpdated="dgr_Tabla_DestinoActualizado"
+                      ACB:CommandBehavior.Event="MouseLeftButtonUp"
+                      ACB:CommandBehavior.Command="{Binding Path=EstablecerNodoActualOrden}"
+                      ACB:CommandBehavior.CommandParameter="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=CurrentCell.Column.Header}">
+                <DataGrid.CurrentColumn>
+                    <MultiBinding Converter="{StaticResource SeleccionarTodaLaColumna}">
+                        <Binding Path="NodoActual.Nombre"/>
+                        <Binding RelativeSource="{x:Static RelativeSource.Self}" />
+                    </MultiBinding>
+                </DataGrid.CurrentColumn>
+            </DataGrid>
+        </Grid>
+    </DockPanel>
+</UserControl>

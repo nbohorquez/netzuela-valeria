@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="ArbolVisual.cs" />
     <Compile Include="Configuracion.cs" />
-    <Compile Include="ManejadorDeExcepciones.cs" />
     <Compile Include="DosArgumentosAUno.cs" />
     <Compile Include="ManipuladorDeTablas.cs" />
     <Compile Include="Mensajeria.cs" />

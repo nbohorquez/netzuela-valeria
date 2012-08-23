@@ -3538,9 +3538,6 @@
       </violation>
     </violations>
   </sourcecode>
-  <project key="1741819018">
-    <configuration>DEBUG;TRACE</configuration>
-  </project>
   <sourcecode name="ClienteSpuria.cs" parser="StyleCop.CSharp.CsParser">
     <settings>
       <timestamp>07/06/2011 11:29:50</timestamp>
@@ -3786,8 +3783,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>08/17/2012 00:00:25</timestamp>
-    <milliseconds>156</milliseconds>
+    <timestamp>08/22/2012 19:56:07</timestamp>
+    <milliseconds>984</milliseconds>
     <violations>
       <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
         <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
@@ -4094,16 +4091,6 @@
         <line>136</line>
         <warning>False</warning>
       </violation>
-      <violation namespace="StyleCop.CSharp.ReadabilityRules" rule="PrefixLocalCallsWithThis" ruleCheckId="SA1101">
-        <context>The call to TareaCancelada must begin with the 'this.' prefix to indicate that the item is a member of the class.</context>
-        <line>141</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.ReadabilityRules" rule="PrefixLocalCallsWithThis" ruleCheckId="SA1101">
-        <context>The call to TareaCancelada must begin with the 'this.' prefix to indicate that the item is a member of the class.</context>
-        <line>188</line>
-        <warning>False</warning>
-      </violation>
       <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
         <context>The method must have a documentation header.</context>
         <line>191</line>
@@ -4261,4 +4248,7 @@
       </violation>
     </violations>
   </sourcecode>
+  <project key="1741819018">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
 </stylecopresultscache>

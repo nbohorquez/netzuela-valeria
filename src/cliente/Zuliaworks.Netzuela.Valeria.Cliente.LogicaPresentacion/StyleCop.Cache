@@ -4700,8 +4700,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>08/16/2012 23:16:41</timestamp>
-    <milliseconds>687</milliseconds>
+    <timestamp>08/22/2012 04:16:34</timestamp>
+    <milliseconds>921</milliseconds>
     <violations>
       <violation namespace="StyleCop.CSharp.DocumentationRules" rule="FileMustHaveHeader" ruleCheckId="SA1633">
         <context>The file has no header, the header Xml is invalid, or the header is not located at the top of the file.</context>
@@ -5773,62 +5773,8 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>08/17/2012 00:02:20</timestamp>
-    <milliseconds>515</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="AutentificacionView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>08/17/2012 00:02:20</timestamp>
-    <milliseconds>453</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="ConexionLocalView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>08/17/2012 00:02:20</timestamp>
-    <milliseconds>562</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="ConexionRemotaView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>08/17/2012 00:02:20</timestamp>
-    <milliseconds>562</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="SeleccionarTiendaView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>08/17/2012 00:02:20</timestamp>
-    <milliseconds>578</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="OpcionesView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>08/17/2012 00:02:20</timestamp>
-    <milliseconds>750</milliseconds>
-    <violations />
-  </sourcecode>
-  <sourcecode name="DetectarServidoresLocalesView.g.cs" parser="StyleCop.CSharp.CsParser">
-    <settings>
-      <timestamp>07/06/2011 11:29:50</timestamp>
-      <milliseconds>0</milliseconds>
-    </settings>
-    <timestamp>08/17/2012 00:02:20</timestamp>
-    <milliseconds>984</milliseconds>
+    <timestamp>08/23/2012 13:32:12</timestamp>
+    <milliseconds>734</milliseconds>
     <violations />
   </sourcecode>
   <sourcecode name="BarraDeEstadoView.g.cs" parser="StyleCop.CSharp.CsParser">
@@ -5836,8 +5782,53 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>08/17/2012 00:02:20</timestamp>
-    <milliseconds>546</milliseconds>
+    <timestamp>08/23/2012 13:32:12</timestamp>
+    <milliseconds>765</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ConexionLocalView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>08/23/2012 13:32:12</timestamp>
+    <milliseconds>859</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="AutentificacionView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>08/23/2012 13:32:12</timestamp>
+    <milliseconds>734</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ConexionRemotaView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>08/23/2012 13:32:12</timestamp>
+    <milliseconds>859</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="SeleccionarTiendaView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>08/23/2012 13:32:12</timestamp>
+    <milliseconds>890</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="DetectarServidoresLocalesView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>08/23/2012 13:32:13</timestamp>
+    <milliseconds>0</milliseconds>
     <violations />
   </sourcecode>
   <sourcecode name="ExploradorView.g.cs" parser="StyleCop.CSharp.CsParser">
@@ -5845,8 +5836,17 @@
       <timestamp>07/06/2011 11:29:50</timestamp>
       <milliseconds>0</milliseconds>
     </settings>
-    <timestamp>08/17/2012 00:02:21</timestamp>
-    <milliseconds>15</milliseconds>
+    <timestamp>08/23/2012 13:32:13</timestamp>
+    <milliseconds>93</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="OpcionesView.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>07/06/2011 11:29:50</timestamp>
+      <milliseconds>0</milliseconds>
+    </settings>
+    <timestamp>08/23/2012 13:32:12</timestamp>
+    <milliseconds>968</milliseconds>
     <violations />
   </sourcecode>
 </stylecopresultscache>

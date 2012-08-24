@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views
+﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.Presentacion.Views
 {
     using System;
     using System.Collections.Generic;
@@ -15,11 +15,11 @@
     using System.Windows.Shapes;
 
     /// <summary>
-    /// Lógica de interacción para BarraDeEstadoView.xaml
+    /// Lógica de interacción para OpcionesView.xaml
     /// </summary>
-    public partial class BarraDeEstadoView : UserControl
+    public partial class OpcionesView : UserControl
     {
-        public BarraDeEstadoView()
+        public OpcionesView()
         {
             InitializeComponent();
         }

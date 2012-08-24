@@ -60,14 +60,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArbolVisual.cs" />
     <Compile Include="Configuracion.cs" />
-    <Compile Include="DosArgumentosAUno.cs" />
     <Compile Include="ManipuladorDeTablas.cs" />
     <Compile Include="Mensajeria.cs" />
-    <Compile Include="PasswordBoxVinculable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeleccionarTodaLaColumna.cs" />
     <Compile Include="ViewModels\SeleccionarTiendaViewModel.cs" />
     <Compile Include="ViewModels\OpcionesViewModel.cs" />
     <Compile Include="ViewModels\ExploradorViewModel.Funciones.cs" />
@@ -81,30 +77,6 @@
     <Compile Include="ViewModels\NodoViewModel.cs" />
     <Compile Include="ViewModels\NodoViewModelExtensiones.cs" />
     <Compile Include="ViewModels\SincronizacionViewModel.cs" />
-    <Compile Include="Views\AutentificacionView.xaml.cs">
-      <DependentUpon>AutentificacionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\BarraDeEstadoView.xaml.cs">
-      <DependentUpon>BarraDeEstadoView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConexionLocalView.xaml.cs">
-      <DependentUpon>ConexionLocalView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConexionRemotaView.xaml.cs">
-      <DependentUpon>ConexionRemotaView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SeleccionarTiendaView.xaml.cs">
-      <DependentUpon>SeleccionarTiendaView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\OpcionesView.xaml.cs">
-      <DependentUpon>OpcionesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DetectarServidoresLocalesView.xaml.cs">
-      <DependentUpon>DetectarServidoresLocalesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ExploradorView.xaml.cs">
-      <DependentUpon>ExploradorView.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\comunes\Zuliaworks.Netzuela.Valeria.Comunes\Comunes.csproj">
@@ -123,40 +95,6 @@
       <Project>{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}</Project>
       <Name>Logica</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Views\AutentificacionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\BarraDeEstadoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ConexionLocalView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ConexionRemotaView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SeleccionarTiendaView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\OpcionesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DetectarServidoresLocalesView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ExploradorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.targets" />

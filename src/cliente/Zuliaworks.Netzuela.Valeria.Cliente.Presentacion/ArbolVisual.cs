@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion
+﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.Presentacion
 {
     using System;
     using System.Collections.Generic;
@@ -31,7 +31,7 @@
          * Solo se cambiaron los nombres de las variables       [X]
          * 
          */
-        
+
         public static DependencyObject BusquedaHaciaArriba<T>(DependencyObject Origen)
         {
             while (Origen != null && Origen.GetType() != typeof(T))

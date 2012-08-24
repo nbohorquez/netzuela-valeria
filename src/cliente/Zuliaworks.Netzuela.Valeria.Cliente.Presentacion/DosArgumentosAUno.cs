@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion
+﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.Presentacion
 {
     using System;
     using System.Collections.Generic;
@@ -24,4 +24,3 @@
         #endregion
     }
 }
-

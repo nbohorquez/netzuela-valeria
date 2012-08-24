@@ -4,19 +4,6 @@
         <name>LogicaPresentacion</name>
     </assembly>
     <members>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.ConexionLocalView">
-            <summary>
-            Lógica de interacción para ConexionLocalView.xaml
-            </summary>
-            <summary>
-            ConexionLocalView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.ConexionLocalView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.MainViewModel">
             <summary>
             
@@ -106,51 +93,11 @@
             sobre la fuente de datos subyacente.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.DetectarServidoresLocalesView">
-            <summary>
-            Lógica de interacción para DetectarServidoresLocalesView.xaml
-            </summary>
-            <summary>
-            DetectarServidoresLocalesView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.DetectarServidoresLocalesView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.TextoPorDefectoEnComboBox1">
-            <summary>
-            La siguiente clase se utiliza para mostrar contenido por defecto cuando no hay nada 
-            seleccionado en un ComboBox. El valor devuelto controla la propiedad "Visibility" de 
-            un TextBox.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.TextoPorDefectoEnComboBox2">
-            <summary>
-            La siguiente clase se utiliza para mostrar contenido por defecto cuando no hay nada 
-            seleccionado en un ComboBox. El valor devuelto controla la propiedad "Visibility" de 
-            un TextBox.
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.NodoViewModel">
             <summary>
             Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
             y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
             la consistencia de esta clase.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.AutentificacionView">
-            <summary>
-            Lógica de interacción para AutentificacionView.xaml
-            </summary>
-            <summary>
-            AutentificacionView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.AutentificacionView.InitializeComponent">
-            <summary>
-            InitializeComponent
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.SincronizacionViewModel">
@@ -175,12 +122,6 @@
             
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.PasswordBoxVinculable">
-            <summary>
-            Esta clase se emplea para crear la "dependency property" SecurePassword en PasswordBox 
-            y asi poder vincularse (to bind) a ella desde el ViewModel.
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.AutentificacionViewModel">
             <summary>
             Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
@@ -192,84 +133,9 @@
             convertirlo inmediatamente a SecureString en Usuario. No se puede leer
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.SeleccionarTodaLaColumna">
-            <summary>
-            Este convertidor sirve para seleccionar toda la columna especificada por NodoActual
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.BarraDeEstadoView">
-            <summary>
-            Lógica de interacción para BarraDeEstadoView.xaml
-            </summary>
-            <summary>
-            BarraDeEstadoView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.BarraDeEstadoView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.ExploradorView">
-            <summary>
-            Lógica de interacción para ExploradorView.xaml
-            </summary>
-            <summary>
-            ExploradorView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.ExploradorView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.DetectarServidoresLocalesViewModel">
             <summary>
             
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.OpcionesView">
-            <summary>
-            Lógica de interacción para ConfiguracionView.xaml
-            </summary>
-            <summary>
-            OpcionesView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.OpcionesView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ArbolVisual">
-            <summary>
-            Contiene funciones para los objetos de un arbol visual
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.SeleccionarTiendaView">
-            <summary>
-            Lógica de interacción para ListadoTiendasView.xaml
-            </summary>
-            <summary>
-            SeleccionarTiendaView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.SeleccionarTiendaView.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.ConexionRemotaView">
-            <summary>
-            Lógica de interacción para ConexionRemotaView.xaml
-            </summary>
-            <summary>
-            ConexionRemotaView
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.ConexionRemotaView.InitializeComponent">
-            <summary>
-            InitializeComponent
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.NodoViewModelExtensiones">
@@ -280,36 +146,6 @@
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.OpcionesViewModel">
             <summary>
             
-            </summary>
-        </member>
-        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
-            <summary>
-            GeneratedInternalTypeHelper
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
-            <summary>
-            CreateInstance
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
-            <summary>
-            GetPropertyValue
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
-            <summary>
-            SetPropertyValue
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
-            <summary>
-            CreateDelegate
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
-            <summary>
-            AddEventHandler
             </summary>
         </member>
     </members>

@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views
+﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.Presentacion.Views
 {
     using System;
     using System.Collections.Generic;
@@ -13,8 +13,6 @@
     using System.Windows.Media.Imaging;
     using System.Windows.Navigation;
     using System.Windows.Shapes;
-
-    using Zuliaworks.Netzuela.Valeria.Comunes;
 
     /// <summary>
     /// Lógica de interacción para ConexionLocalView.xaml

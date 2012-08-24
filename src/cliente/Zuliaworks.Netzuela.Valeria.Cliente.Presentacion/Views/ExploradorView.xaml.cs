@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views
+﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.Presentacion.Views
 {
     using System;
     using System.Collections.Generic;
@@ -18,8 +18,7 @@
     using System.Windows.Shapes;
 
     using MS.Internal.WindowsBase;
-    
-    using Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels;    // ExploradorViewModel
+    using Zuliaworks.Netzuela.Valeria.Cliente.Presentacion;
 
     /// <summary>
     /// Lógica de interacción para ExploradorView.xaml
@@ -71,7 +70,7 @@
 
             // Codigo tomado del proyecto publicado en 
             // http://social.msdn.microsoft.com/Forums/en/wpf/thread/a5767cf4-8d26-4f72-b1b1-feca26bb6b2e
-            
+
             FieldInfo selectionAnchorFieldInfo =
                 typeof(DataGrid).GetField("_selectionAnchor", BindingFlags.NonPublic | BindingFlags.Instance);
             Debug.Assert(selectionAnchorFieldInfo != null, "El campo _selectionAnchor no existe en DataGrid");
@@ -81,7 +80,7 @@
                 selectionAnchorFieldInfo.SetValue(Grilla, null);
             }
         }
-        
+
         #endregion
     }
 }

@@ -1,15 +1,15 @@
-﻿<UserControl x:Class="Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views.ExploradorView"
+﻿<UserControl x:Class="Zuliaworks.Netzuela.Valeria.Cliente.Presentacion.Views.ExploradorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Local="clr-namespace:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion"
+             xmlns:P="clr-namespace:Zuliaworks.Netzuela.Valeria.Cliente.Presentacion"
              xmlns:ACB="clr-namespace:AttachedCommandBehavior;assembly=AttachedCommandBehavior"
-             xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels"             
+             xmlns:ViewModels="clr-namespace:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels;assembly=LogicaPresentacion"
              mc:Ignorable="d">
-    
+
     <UserControl.Resources>
-        <Local:SeleccionarTodaLaColumna x:Key="SeleccionarTodaLaColumna"/>
+        <P:SeleccionarTodaLaColumna x:Key="SeleccionarTodaLaColumna"/>
 
         <Style x:Key="est_Tabla" TargetType="DataGrid">
             <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -17,7 +17,7 @@
             <Setter Property="SelectionMode" Value="Extended"/>
             <Setter Property="SelectionUnit" Value="Cell"/>
         </Style>
-        
+
         <Style x:Key="est_DivisorDeRejilla" TargetType="GridSplitter">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>

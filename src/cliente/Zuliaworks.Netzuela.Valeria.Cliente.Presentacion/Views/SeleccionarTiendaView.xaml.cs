@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.Views
+﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.Presentacion.Views
 {
     using System;
     using System.Collections.Generic;
@@ -15,11 +15,11 @@
     using System.Windows.Shapes;
 
     /// <summary>
-    /// Lógica de interacción para ConfiguracionView.xaml
+    /// Lógica de interacción para SeleccionarTiendaView.xaml
     /// </summary>
-    public partial class OpcionesView : UserControl
+    public partial class SeleccionarTiendaView : UserControl
     {
-        public OpcionesView()
+        public SeleccionarTiendaView()
         {
             InitializeComponent();
         }

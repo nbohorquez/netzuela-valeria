@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion
+﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.Presentacion
 {
     using System;
     using System.Collections.Generic;
@@ -8,8 +8,6 @@
     using System.Windows.Controls;                                      // DataGrid
     using System.Windows.Data;                                          // IMultiValueConverter
     
-    using Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels;    // NodoViewModel
-
     /// <summary>
     /// Este convertidor sirve para seleccionar toda la columna especificada por NodoActual
     /// </summary>
@@ -31,10 +29,10 @@
                     break;
                 }
             }
-            
+
             // Seleccionamos todas las celdas de esa columna
             if (Columna != -1)
-            {                
+            {
                 Grilla.SelectedCells.Clear();
                 for (int i = 0; i < Grilla.Items.Count; i++)
                 {
@@ -54,3 +52,4 @@
         #endregion
     }
 }
+

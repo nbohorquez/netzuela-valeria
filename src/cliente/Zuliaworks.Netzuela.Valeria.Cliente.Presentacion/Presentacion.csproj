@@ -102,6 +102,7 @@
     <Compile Include="DosArgumentosAUno.cs" />
     <Compile Include="PasswordBoxVinculable.cs" />
     <Compile Include="SeleccionarTodaLaColumna.cs" />
+    <Compile Include="TextoPorDefectoEnCombo.cs" />
     <Compile Include="Views\AutentificacionView.xaml.cs">
       <DependentUpon>AutentificacionView.xaml</DependentUpon>
     </Compile>

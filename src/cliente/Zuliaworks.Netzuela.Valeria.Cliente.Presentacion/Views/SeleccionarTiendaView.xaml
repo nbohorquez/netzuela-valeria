@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Views="clr-namespace:Zuliaworks.Netzuela.Valeria.Cliente.Presentacion.Views"
+             xmlns:P="clr-namespace:Zuliaworks.Netzuela.Valeria.Cliente.Presentacion"
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Views:TextoPorDefectoEnComboBox1 x:Key="TextoPorDefectoEnComboBox1"/>
+        <P:TextoPorDefectoEnComboBox1 x:Key="TextoPorDefectoEnComboBox1"/>
 
         <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Left"/>

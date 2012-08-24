@@ -25,7 +25,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 		
 		protected override object Run (ListarTablas request)
 		{
-			Sesion.Usuario = int.Parse(this.GetSession().FirstName);
+			//int usuario = int.Parse(this.GetSession().FirstName);
 			ListarTablasValidador validador = new ListarTablasValidador();
 			validador.ValidateAndThrow(request);
 			

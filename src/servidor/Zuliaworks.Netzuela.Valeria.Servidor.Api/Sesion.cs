@@ -12,18 +12,13 @@
     public static class Sesion
     {
 		//private static readonly ILog log;
-		//private static readonly ParametrosDeConexion parametros;
-        //private static readonly SecureString[] credenciales;
 		private static readonly Dictionary<string,object> propiedades;
 		
         static Sesion()
         {
 			try
 			{
-				propiedades = new Dictionary<string, object>() 
-                {
-					{ "usuario_id", -1 }
-                };
+				propiedades = new Dictionary<string, object>();
 				propiedades["parametros"] = CargarGuardar.CargarParametrosDeConexion("Local");
 				propiedades["credenciales"] = CargarGuardar.CargarCredenciales("Local");
 	            
@@ -47,18 +42,6 @@
         public static SecureString[] Credenciales
         {
             get { return (SecureString[])propiedades["credenciales"]; }
-		}
-		
-		public static int Usuario
-		{
-			get 
-			{ 
-				return (int)propiedades["usuario_id"]; 
-			}
-			set
-			{
-				propiedades["usuario_id"] = value;
-			}
 		}
     }
 }

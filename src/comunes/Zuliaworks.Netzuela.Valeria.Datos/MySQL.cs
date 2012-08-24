@@ -420,7 +420,7 @@
                 string columnas = this.DescribirTabla(nombreTabla);
 
                 MySqlDataAdapter adaptador = new MySqlDataAdapter("SELECT " + columnas + " FROM " + nombreTabla, this.conexion);
-                MySqlCommandBuilder creadorDeOrden = new MySqlCommandBuilder(adaptador);
+                //MySqlCommandBuilder creadorDeOrden = new MySqlCommandBuilder(adaptador);
                 
                 adaptador.FillSchema(settmp, SchemaType.Source);
                 adaptador.Fill(settmp);
@@ -440,7 +440,12 @@
                 adaptador.UpdateCommand.Parameters.Add(variableDeEntradaSql);
                 adaptador.DeleteCommand.Parameters.Add(variableDeEntradaSql);
 
-                // http://msdn.microsoft.com/es-es/library/wtk78t63%28v=vs.80%29.aspx
+                // Este paso es crucial. Por alguna razon no se pueden reforzar los "constraints"
+				// luego de hacer un "merge" con filas que han sido eliminadas (no hay problema 
+				// con las filas modificadas o agregadas)
+				// http://social.msdn.microsoft.com/Forums/en-US/Vsexpressvb/thread/27aec612-5ca4-41ba-80d6-0204893fdcd1/
+				settmp.EnforceConstraints = false;
+				// http://msdn.microsoft.com/es-es/library/wtk78t63%28v=vs.80%29.aspx
                 settmp.Merge(tabla, false, MissingSchemaAction.Error);
                 
                 MySqlRowUpdatingEventHandler actualizandoFila = (r, a) =>

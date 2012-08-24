@@ -30,7 +30,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 			return Permisos.EntidadesPermitidas.Keys.Contains(baseDeDatos);
 		}
 		
-		public static bool TiendaId(int tiendaId)
+		public static bool TiendaId(int tiendaId, int usuarioId)
 		{
 			bool resultado = false;
 			
@@ -42,7 +42,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
                 			+ "FROM tienda AS t "
                 			+ "JOIN cliente AS c ON t.cliente_p = c.rif "
 							+ "JOIN usuario AS u ON c.propietario = u.usuario_id "
-							+ "WHERE u.usuario_id = " + Sesion.Usuario.ToString();
+							+ "WHERE u.usuario_id = " + usuarioId.ToString();
                 DataTable t = conexion.Consultar(Constantes.BaseDeDatos, sql);				
 				resultado = t.Rows.Cast<DataRow>().Any(r => tiendaId == (int)r.ItemArray[0]);
             }

@@ -14,9 +14,9 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 	
 	public class LeerTablaValidador : AbstractValidator<LeerTabla>
 	{		
-		public LeerTablaValidador()
+		public LeerTablaValidador(int usuarioId)
 		{
-			RuleFor(x => x.TiendaId).NotNull().GreaterThan(0).Must(Validadores.TiendaId).WithMessage(Validadores.ERROR_TIENDA_ID);
+			RuleFor(x => x.TiendaId).NotNull().GreaterThan(0).Must((x, tiendaId) => Validadores.TiendaId(tiendaId, usuarioId)).WithMessage(Validadores.ERROR_TIENDA_ID);
 			RuleFor(x => x.BaseDeDatos).NotNull().NotEmpty().Must(Validadores.BaseDeDatos).WithMessage(Validadores.ERROR_BASE_DE_DATOS);
 			RuleFor(x => x.Tabla).NotNull().NotEmpty().Must((x, tabla) => Validadores.Tabla(x.BaseDeDatos, tabla)).WithMessage(Validadores.ERROR_TABLA);
 		}
@@ -38,8 +38,8 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
              * http://www.codeproject.com/Tips/171006/Convert-LINQ-to-Entity-Result-to-a-DataTable.aspx
              */
 			
-			Sesion.Usuario = int.Parse(this.GetSession().FirstName);
-			LeerTablaValidador validador = new LeerTablaValidador();
+			int usuario = int.Parse(this.GetSession().FirstName);
+			LeerTablaValidador validador = new LeerTablaValidador(usuario);
 			validador.ValidateAndThrow(request);
 						
             try

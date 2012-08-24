@@ -5,18 +5,21 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 	using System.Data;
 	using System.Linq;
 	using System.Runtime.Serialization;
+	using System.Text;
 	
+	using log4net;
 	using ServiceStack.FluentValidation;
 	using ServiceStack.ServiceInterface;
 	using ServiceStack.ServiceInterface.ServiceModel;		// ResponseStatus
+	using Zuliaworks.Netzuela.Valeria.Comunes;
 	using Zuliaworks.Netzuela.Valeria.Tipos;
 	using Zuliaworks.Netzuela.Valeria.Cliente.Logica;
 		
 	public class EscribirTablaValidador : AbstractValidator<EscribirTabla>
 	{		
-		public EscribirTablaValidador()
+		public EscribirTablaValidador(int usuarioId)
 		{
-			RuleFor(x => x.TiendaId).NotNull().GreaterThan(0).Must(Validadores.TiendaId).WithMessage(Validadores.ERROR_TIENDA_ID);
+			RuleFor(x => x.TiendaId).NotNull().GreaterThan(0).Must((x, tiendaId) => Validadores.TiendaId(tiendaId, usuarioId)).WithMessage(Validadores.ERROR_TIENDA_ID);
 			RuleFor(x => x.TablaXml).NotNull().SetValidator(new DataTableXmlValidador());
 		}
 	}
@@ -34,13 +37,14 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 
 	public class EscribirTablaServicio : ServiceBase<EscribirTabla>
 	{
+		private readonly ILog log = LogManager.GetLogger(typeof(EscribirTablaServicio));
 		protected override object Run (EscribirTabla request)
 		{
 			bool resultado = false;
 			
-			Sesion.Usuario = int.Parse(this.GetSession().FirstName);
-			EscribirTablaValidador validador = new EscribirTablaValidador();
-			validador.ValidateAndThrow(request);            
+			int usuario = int.Parse(this.GetSession().FirstName);
+			EscribirTablaValidador validador = new EscribirTablaValidador(usuario);
+			validador.ValidateAndThrow(request);
 
             try
             {
@@ -51,62 +55,68 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
                     Permisos.DescriptorDeTabla descriptor =
                         Permisos.EntidadesPermitidas[request.TablaXml.BaseDeDatos].First(e => string.Equals(e.Nombre, request.TablaXml.NombreTabla, StringComparison.OrdinalIgnoreCase));
 					
-                    DataTable tablaRecibida = request.TablaXml.XmlADataTable();					
-					DataTable tablaProcesada = tablaRecibida.Copy();
-					
-					// Si la tabla original poseia una columna tienda_id, debemos colocarsela de nuevo
-					if (descriptor.TiendaId != null)
-					{
-						List<DataRow> filasEliminadas = new List<DataRow>();
-	                    DataColumn col = new DataColumn(descriptor.TiendaId, request.TiendaId.GetType());
-	                    tablaProcesada.Columns.Add(col);
-						
-						for (int i = 0; i < tablaProcesada.Rows.Count; i++)
+                    using (DataTable tablaRecibida = request.TablaXml.XmlADataTable())
+					using (DataTable tablaProcesada = tablaRecibida.Copy())
+					{					
+						// Si la tabla original poseia una columna tienda_id, debemos colocarsela de nuevo
+						if (descriptor.TiendaId != null)
 						{
-							if (tablaProcesada.Rows[i].RowState == DataRowState.Deleted)
+							List<DataRow> filasEliminadas = new List<DataRow>();
+		                    DataColumn col = new DataColumn(descriptor.TiendaId, request.TiendaId.GetType());
+		                    tablaProcesada.Columns.Add(col);
+							
+							for (int i = 0; i < tablaProcesada.Rows.Count; i++)
 							{
-								tablaProcesada.Rows[i].RejectChanges();
-								tablaProcesada.Rows[i][col] = request.TiendaId;
-								filasEliminadas.Add(tablaProcesada.Rows[i]);
-								tablaProcesada.Rows[i].AcceptChanges();
+								if (tablaProcesada.Rows[i].RowState == DataRowState.Deleted)
+								{
+									// Hacemos que las columnas borradas "vuelvan a la vida"
+									// pero llevamos cuenta de cuales son para luego borrarlas nuevamente.
+									tablaProcesada.Rows[i].RejectChanges();
+									tablaProcesada.Rows[i][col] = request.TiendaId;
+									filasEliminadas.Add(tablaProcesada.Rows[i]);
+									tablaProcesada.Rows[i].AcceptChanges();
+								}
+								else
+								{
+									tablaProcesada.Rows[i][col] = request.TiendaId;
+								}
 							}
-							else
+							
+							// Agregamos tienda_id al conjunto de claves primarias
+							List<DataColumn> cp = new List<DataColumn>();
+							
+							foreach (string pk in descriptor.ClavePrimaria)
 							{
-								tablaProcesada.Rows[i][col] = request.TiendaId;
+								cp.Add(tablaProcesada.Columns[pk]);
 							}
+							
+							tablaProcesada.PrimaryKey = cp.ToArray();
+							filasEliminadas.ToList().ForEach(f => f.Delete());
 						}
+							
+						// Reordenamos las columnas
+		                for (int i = 0; i < descriptor.Columnas.Length; i++)
+		                {
+		                    tablaProcesada.Columns[descriptor.Columnas[i]].SetOrdinal(i);
+		                }
 						
-						// Agregamos tienda_id al conjunto de claves primarias
-						List<DataColumn> cp = new List<DataColumn>();
-						
-						foreach (string pk in descriptor.ClavePrimaria)
+						conexion.EscribirTabla(request.TablaXml.BaseDeDatos, request.TablaXml.NombreTabla, tablaProcesada);
+						DataTable nuevos = tablaProcesada.GetChanges(DataRowState.Added);
+						if (nuevos != null)
 						{
-							cp.Add(tablaProcesada.Columns[pk]);
+							// Ahora le ponemos tarea al "worker" que registra productos nuevos en la base de datos
+							Celery.RegistrarProducto(nuevos);
+							nuevos.Dispose();
+							nuevos = null;
 						}
-						
-						tablaProcesada.PrimaryKey = cp.ToArray();
-						filasEliminadas.ToList().ForEach(f => f.Delete());
 					}
-						
-					// Reordenamos las columnas
-                    for (int i = 0; i < descriptor.Columnas.Length; i++)
-                    {
-                        tablaProcesada.Columns[descriptor.Columnas[i]].SetOrdinal(i);
-                    }
-					
-                    conexion.EscribirTabla(request.TablaXml.BaseDeDatos, request.TablaXml.NombreTabla, tablaProcesada);
-					
-					tablaRecibida.Dispose();
-					tablaProcesada.Dispose();
-					tablaRecibida = null;
-					tablaProcesada = null;
 					
 					resultado = true;
                 }
             }
             catch (Exception ex)
             {
-				//log.Fatal("Usuario: " + this.Cliente + ". Error de escritura de tabla: " + ex.Message);
+				log.Fatal("Usuario: " + usuario.ToString() + ". Error de escritura de tabla: " + ex.MostrarPilaDeExcepciones());
                 throw new Exception("Error de escritura de tabla", ex);
             }
 

@@ -5,6 +5,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 	
 	using ServiceStack.CacheAccess;							// ICacheClient
 	using ServiceStack.CacheAccess.Providers;				// MemoryCacheClient
+	using ServiceStack.Redis;								// IRedisClientsManager, PooledRedisClientManager
 	using ServiceStack.ServiceInterface;					// AuthFeature
 	using ServiceStack.ServiceInterface.Auth;				// IAuthProvider
 	using ServiceStack.WebHost.Endpoints;					// AppHostBase
@@ -35,7 +36,8 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 					((HttpWebResponse)resp).Close();
 				}
 			});*/
-		    container.Register<ICacheClient>(new MemoryCacheClient());
+		    container.Register<IRedisClientsManager>(c => new PooledRedisClientManager(Constantes.ServidorRedis));
+			container.Register<ICacheClient>(c => (ICacheClient)c.Resolve<IRedisClientsManager>().GetCacheClient());
 		}
 
 		#endregion

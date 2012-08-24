@@ -11,22 +11,19 @@
         {
             List<string> Resultado = new List<string>();
 
-            Resultado.Add("==========================================================\n");
-            Resultado.Add("Pila de excepciones:\n\n");
+            Resultado.Add("Pila de excepciones:\n");
             for (int i = 0; true; ex = ex.InnerException, i++)
             {
-                Resultado.Add("EXCEPCION NIVEL " + i.ToString() + ": ");
+                Resultado.Add(" [excepcion_nivel" + i.ToString() + "] ");
                 Resultado.Add(ex.Source + ".dll: \"" + ex.Message + "\"" + "\n");
 
                 if (ex.InnerException == null)
                 {
-                    Resultado.Add("==========================================================\n");
                     break;
                 }
             }
 
-            Resultado.Add("\n\n" + ex.StackTrace);
-
+            Resultado.Add("Pila de llamadas: \n" + ex.StackTrace);
             return string.Concat(Resultado.ToArray());
         }
     }

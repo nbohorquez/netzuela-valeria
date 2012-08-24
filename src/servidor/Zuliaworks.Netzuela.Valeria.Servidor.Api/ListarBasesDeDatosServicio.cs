@@ -16,7 +16,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 		
 		protected override object Run (ListarBasesDeDatos request)
 		{
-			Sesion.Usuario = int.Parse(this.GetSession().FirstName);
+			int usuario = int.Parse(this.GetSession().FirstName);
 			List<string> resultado = new List<string>();
 
             try

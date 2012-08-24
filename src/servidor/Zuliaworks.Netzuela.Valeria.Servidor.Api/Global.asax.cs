@@ -15,6 +15,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 		{
 			var anfitrion = new Anfitrion();
 			anfitrion.Init();
+			//anfitrion.Start("http://serverhost:81"); //Starts HttpListener listening on 81
 		}
 
 		#endregion

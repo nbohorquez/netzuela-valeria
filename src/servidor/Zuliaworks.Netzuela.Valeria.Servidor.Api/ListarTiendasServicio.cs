@@ -16,7 +16,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 		
 		protected override object Run (ListarTiendas request)
 		{
-			Sesion.Usuario = int.Parse(this.GetSession().FirstName);
+			int usuario = int.Parse(this.GetSession().FirstName);
 			List<string> resultado = new List<string>();
 			
 			try
@@ -29,7 +29,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 								+ "FROM tienda AS t "
 								+ "JOIN cliente AS c ON t.cliente_p = c.rif "
 								+ "JOIN usuario AS u ON c.propietario = u.usuario_id "
-								+ "WHERE u.usuario_id = " + Sesion.Usuario.ToString();
+								+ "WHERE u.usuario_id = " + usuario.ToString();
 					DataTable t = conexion.Consultar(Constantes.BaseDeDatos, sql);
 					
 					foreach(DataRow r in t.Rows)

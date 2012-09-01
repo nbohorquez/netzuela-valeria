@@ -1,18 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Zuliaworks.Netzuela.Valeria.Servidor.Api/EscribirTablaServicio.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Zuliaworks.Netzuela.Valeria.Servidor.Api/Web.config">
     <Files>
-      <File FileName="Zuliaworks.Netzuela.Valeria.Servidor.Api/Anfitrion.cs" Line="39" Column="106" />
-      <File FileName="Zuliaworks.Netzuela.Valeria.Servidor.Api/EscribirTablaServicio.cs" Line="63" Column="35" />
-      <File FileName="Zuliaworks.Netzuela.Valeria.Servidor.Api/Constantes.cs" Line="11" Column="2" />
-      <File FileName="Zuliaworks.Netzuela.Valeria.Servidor.Api/TareaCelery.cs" Line="28" Column="14" />
+      <File FileName="Zuliaworks.Netzuela.Valeria.Servidor.Api/Web.config" Line="16" Column="22" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Api" expanded="True">
-            <Node name="EscribirTablaServicio.cs" selected="True" />
             <Node name="Global.asax" expanded="True" />
+            <Node name="Web.config" selected="True" />
           </Node>
           <Node name="Comunes" expanded="True" />
           <Node name="Datos" expanded="True" />

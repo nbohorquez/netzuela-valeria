@@ -8,7 +8,7 @@
     using System.Security;
     using System.Text;
 
-    using Dbisam;
+    using System.Data.Odbc;
     using Zuliaworks.Netzuela.Valeria.Comunes;      // ParametrosDeConexion
 
     public partial class DBISAM : EventosComunes, IBaseDeDatosLocal
@@ -16,7 +16,7 @@
         #region Variables y Constantes
 
         private const string ControladorOdbc = "DBISAM 4 ODBC Driver";
-        private DbisamConnection conexion;
+        private OdbcConnection conexion;
 
         #endregion
 
@@ -25,7 +25,7 @@
         public DBISAM(ParametrosDeConexion servidorBd)
         {
             this.DatosDeConexion = servidorBd;
-            this.conexion = new DbisamConnection();
+            this.conexion = new OdbcConnection();
             this.conexion.StateChange -= this.ManejarCambioDeEstado;
             this.conexion.StateChange += this.ManejarCambioDeEstado;
         }
@@ -68,7 +68,7 @@
                 throw new ArgumentNullException("sql");
             }
 
-            DbisamCommand orden = new DbisamCommand(sql, this.conexion);
+            OdbcCommand orden = new OdbcCommand(sql, this.conexion);
             orden.ExecuteNonQuery();
         }
 
@@ -79,9 +79,9 @@
                 throw new ArgumentNullException("sql");
             }
 
-            DbisamDataReader lector = null;
+            OdbcDataReader lector = null;
             List<string> resultado = new List<string>();
-            DbisamCommand orden = new DbisamCommand(sql, this.conexion);
+            OdbcCommand orden = new OdbcCommand(sql, this.conexion);
             lector = orden.ExecuteReader();
 
             while (lector.Read())
@@ -101,8 +101,8 @@
             }
 
             DataTable resultado = new DataTable();
-            DbisamDataAdapter adaptador = new DbisamDataAdapter(sql, this.conexion);
-            DbisamCommandBuilder creadorDeOrden = new DbisamCommandBuilder(adaptador);
+            OdbcDataAdapter adaptador = new OdbcDataAdapter(sql, this.conexion);
+            OdbcCommandBuilder creadorDeOrden = new OdbcCommandBuilder(adaptador);
             adaptador.FillSchema(resultado, SchemaType.Source);
             adaptador.Fill(resultado);
             
@@ -216,70 +216,7 @@
              * These string values are numbered as "TablePassword1", "TablePassword2", etc. and are used as passwords for opening encrypted tables.
              * 
              */
-
-            /*
-             * Usuario
-             * =======
-             * {"user"|"user id"}
-             * 
-             * Contraseña
-             * ==========
-             * {"pwd"|"password"}
-             * 
-             * Contraseña de encriptamiento
-             * =====================
-             * "encrypt password"
-             * 
-             * Encriptamiento
-             * ============
-             * {"encryption"|"is encrypted"}
-             * 
-             * Version del motor
-             * =================
-             * {"engine version"|"engine"}
-             * 
-             * Servidor
-             * ========
-             * {"host","data source","server"}
-             * 
-             * Base de datos
-             * =============
-             * {"database"|"initial catalog"}
-             * 
-             * Puerto
-             * ======
-             * "port"
-             * 
-             * Tiempo de vencimiento de conexion
-             * =================================
-             * {"connect timeout"|"connection timeout"}
-             * 
-             * Compresion
-             * ==========
-             * "compression"
-             * 
-             * Tamaño maximo del pool
-             * ======================
-             * "max pool size"
-             * 
-             * Tamaño minimo del pool
-             * ======================
-             * "min pool size"
-             * 
-             * Pooling
-             * =======
-             * "pooling"
-             * 
-             * Tiempo de vida de la conexion
-             * =============================
-             * "connection life time"
-             * 
-             * Intervalo del ping
-             * ==================
-             * "ping interval"
-             * 
-             */
-
+            
             if (seleccion == null)
             {
                 throw new ArgumentNullException("seleccion");
@@ -297,7 +234,6 @@
 
             SecureString rutaDeConexion = new SecureString();
 
-            /*
             // 1) Nombre del driver ODBC a emplear
             rutaDeConexion.AgregarString("DRIVER={" + DBISAM.ControladorOdbc + "};");
             
@@ -340,30 +276,6 @@
             // 4) Contraseña
             rutaDeConexion.AgregarString("PWD=" + contrasena.ConvertirAUnsecureString());
 
-            */
-            
-            rutaDeConexion.AgregarString("engine=4;");
-            
-            // 1) Informacion de conexion
-            switch (seleccion.MetodoDeConexion)
-            {
-                case MetodosDeConexion.TcpIp:
-                    rutaDeConexion.AgregarString("host=" + seleccion.Anfitrion + ";");
-                    rutaDeConexion.AgregarString("port=" + seleccion.ArgumentoDeConexion + ";");
-                    break;
-                default:
-                    break;
-            }
-
-            // 2) Base de datos
-            rutaDeConexion.AgregarString("database=prueba;");
-
-            // 3) Nombre de usuario
-            rutaDeConexion.AgregarString("user=" + usuario.ConvertirAUnsecureString() + ";");
-
-            // 4) Contraseña
-            rutaDeConexion.AgregarString("pwd=" + contrasena.ConvertirAUnsecureString());
-
             return rutaDeConexion;
         }
 
@@ -395,7 +307,7 @@
                 this.conexion.ConnectionString = this.CrearRutaDeAcceso(this.DatosDeConexion, usuario, contrasena).ConvertirAUnsecureString();
                 this.conexion.Open();
             }
-            catch (DbisamException ex)
+            catch (OdbcException ex)
             {
                 throw new Exception("Error en la conexión.", ex);
             }
@@ -410,7 +322,7 @@
                     this.conexion.Close();
                 }
             }
-            catch (DbisamException ex)
+            catch (OdbcException ex)
             {
                 throw new Exception("Error al cerrar la conexión con la base de datos.", ex);
             }
@@ -436,7 +348,7 @@
 
                 resultadoFinal = new List<string>() { "bd1", "bd2", "bd3" };
             }
-            catch (DbisamException ex)
+            catch (OdbcException ex)
             {
                 throw new Exception("Error al listar las bases de datos.", ex);
             }
@@ -469,7 +381,7 @@
                     resultado.Add(s);
                 }
             }
-            catch (DbisamException ex)
+            catch (OdbcException ex)
             {
                 throw new Exception("Error al listar las tablas.", ex);
             }
@@ -491,7 +403,7 @@
                 string columnas = this.DescribirTabla(tabla);
                 tablaLeida = this.LectorAvanzado("SELECT " + columnas + " FROM " + tabla);
             }
-            catch (DbisamException ex)
+            catch (OdbcException ex)
             {
                 throw new Exception("Error al leer la tabla.", ex);
             }
@@ -518,7 +430,7 @@
             {
                 resultado = this.LectorAvanzado(sql);
             }
-            catch (DbisamException ex)
+            catch (OdbcException ex)
             {
                 throw new Exception("No se pudo realizar la consulta.", ex);
             }

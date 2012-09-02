@@ -1,4 +1,11 @@
 *.*~
+*.pidb
+*.userprefs
+*.user
+*.suo
+*.bak
+*.[Cc]ache
+[Tt]humbs.db
 
 misc/
 
@@ -28,3 +35,4 @@ src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/obj/
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/StyleCop.Cache
 
 src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/bin/
+src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/obj/

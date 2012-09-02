@@ -55,9 +55,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="DbisamClient">
-      <HintPath>..\..\..\lib\DbisamClient.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\..\..\lib\MySql.Data.dll</HintPath>
     </Reference>

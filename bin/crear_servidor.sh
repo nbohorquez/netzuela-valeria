@@ -1,5 +1,7 @@
 #!/bin/bash
 
+owner="gustavo"
+
 mod_mono_load="echo LoadModule mono_module /usr/lib/apache2/modules/mod_mono.so >> /etc/apache2/mods-available/mod_mono.load"
 
 mod_mono_conf="cat > /etc/apache2/mods-available/mod_mono.conf << EOF
@@ -54,20 +56,20 @@ instalar_mono() {
 
 instalar_mod_mono() {
 	apt-get install libapache2-mod-mono mono-apache-server4 mono-xsp4
+}
 
-	if [ ! -f /etc/apache2/mods-enabled/mod_mono.load ]; then
-		if [ ! -f /etc/apache2/mods-available/mod_mono.load ]; then
-			sh -c "$mod_mono_load"
-		fi
-		ln -s /etc/apache2/mods-available/mod_mono.load /etc/apache2/mods-enabled/mod_mono.load
+crear_archivo_mod_mono_load() {
+	if [ ! -f /etc/apache2/mods-available/mod_mono.load ]; then
+		sh -c "$mod_mono_load"
 	fi
+	ln -s /etc/apache2/mods-available/mod_mono.load /etc/apache2/mods-enabled/mod_mono.load
+}
 
-	if [ ! -f /etc/apache2/mods-enabled/mod_mono.conf ]; then
-		if [ ! -f /etc/apache2/mods-available/mod_mono.conf ]; then
-			sh -c "$mod_mono_conf"
-		fi
-		ln -s /etc/apache2/mods-available/mod_mono.conf /etc/apache2/mods-enabled/mod_mono.conf
+crear_archivo_mod_mono_conf() {
+	if [ ! -f /etc/apache2/mods-available/mod_mono.conf ]; then
+		sh -c "$mod_mono_conf"
 	fi
+	ln -s /etc/apache2/mods-available/mod_mono.conf /etc/apache2/mods-enabled/mod_mono.conf
 }
 
 crear_archivo_apache() {
@@ -86,39 +88,74 @@ configurar_var_www() {
 	ln -s `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api /var/www/valeria
 }
 
+cargar_credenciales() {
+	xbuild `pwd`/../src/criptografia/Criptografia.sln
+	mono `pwd`/../src/criptografia/Criptografia/bin/Debug/Criptografia.exe chivo '#HK_@20MamA!pAPa13?#3864' `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/Web.config
+	chown -R "$owner":"$owner" `pwd`/../src/criptografia/Criptografia/bin/ `pwd`/../src/criptografia/Criptografia/obj
+}
+
+compilar_servidor() {
+	xbuild `pwd`/../src/servidor/Servidor.sln
+	chown -R "$owner":"$owner" `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/bin `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/obj
+	chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/obj
+	chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Datos/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Datos/obj
+	chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/obj
+	chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/obj
+}
+
 # Chequeamos root
 if [ "$USER" != "root" ]; then
         echo "Error: Debe correr este script como root"
-        exit 1
+        exit 1;
 fi
+echo "Ejecutando script como root"
 
 # Chequeamos mono
-[ "$(which mono)" ] || { instalar_mono; echo "mono instalado"; }
+[ "$(which mono)" ] || { echo "mono no esta instalado, instalando..."; instalar_mono; }
+echo "mono instalado"
 
 # Chequeamos mod_mono
 if [ ! -f /usr/lib/apache2/modules/mod_mono.so ]; then
+	echo "mod_mono no esta instalado, instalando..."
 	instalar_mod_mono
-	echo "mod_mono instalado"
 fi
+echo "mod_mono instalado"
+
+# Chequeamos mod_mono.load
+if [ ! -f /etc/apache2/mods-enabled/mod_mono.load ]; then
+	echo "mod_mono.load no existe, instalando..."
+	crear_archivo_mod_mono_load
+fi
+echo "mod_mono.load creado"
+
+# Chequeamos mod_mono.conf
+if [ ! -f /etc/apache2/mods-enabled/mod_mono.conf ]; then
+	echo "mod_mono.conf no existe, instalando..."
+	crear_archivo_mod_mono_conf
+fi
+echo "mod_mono.conf creado"
 
 # Chequeamos el archivo de configuracion de apache
 if [ ! -f /etc/apache2/sites-enabled/valeria ]; then
+	echo "El archivo de configuracion valeria no existe, creandolo..."
 	crear_archivo_apache
-	echo "Archivo de configuracion de apache creado"
 fi
+echo "valeria creado"
 
 # Chequeamos el directorio /var/www/
 if [ ! -L /var/www/valeria ]; then
+	echo "Directorio /var/www/ no configurado, trabajando..."
 	configurar_var_www
-	echo "Directorio /var/www/ configurado"
 fi
+echo "Directorio /var/www/ configurado"
 
 # Colocamos la contraseña de spuria en el web.config
-xbuild `pwd`/../src/criptografia/Criptografia.sln
-mono `pwd`/../src/criptografia/Criptografia/bin/Debug/Criptografia.exe chivo '#HK_@20MamA!pAPa13?#3864' `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/Web.config
+cargar_credenciales
+echo "Credenciales cargados"
 
 # Compilamos el proyecto
-xbuild `pwd`/../src/servidor/Servidor.sln
+compilar_servidor
+echo "Servidor compilado"
 
 # Reiniciamos apache para que los cambios tengan efecto
 sudo service apache2 restart

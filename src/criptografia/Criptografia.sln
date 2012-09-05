@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Criptografia", "Criptografia\Criptografia.csproj", "{1AE86F14-3520-496E-B4CD-D8BB40A96523}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comunes", "..\comunes\Zuliaworks.Netzuela.Valeria.Comunes\Comunes.csproj", "{9EFCF5AD-5A96-4726-8385-807552BA1497}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Preferencias", "..\comunes\Zuliaworks.Netzuela.Valeria.Preferencias\Preferencias.csproj", "{A60A5CA5-0C85-447F-B673-56EB97D4F056}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AE86F14-3520-496E-B4CD-D8BB40A96523}.Debug|x86.ActiveCfg = Debug|x86
+		{1AE86F14-3520-496E-B4CD-D8BB40A96523}.Debug|x86.Build.0 = Debug|x86
+		{1AE86F14-3520-496E-B4CD-D8BB40A96523}.Release|x86.ActiveCfg = Release|x86
+		{1AE86F14-3520-496E-B4CD-D8BB40A96523}.Release|x86.Build.0 = Release|x86
+		{9EFCF5AD-5A96-4726-8385-807552BA1497}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9EFCF5AD-5A96-4726-8385-807552BA1497}.Debug|x86.Build.0 = Debug|Any CPU
+		{9EFCF5AD-5A96-4726-8385-807552BA1497}.Release|x86.ActiveCfg = Release|Any CPU
+		{9EFCF5AD-5A96-4726-8385-807552BA1497}.Release|x86.Build.0 = Release|Any CPU
+		{A60A5CA5-0C85-447F-B673-56EB97D4F056}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A60A5CA5-0C85-447F-B673-56EB97D4F056}.Debug|x86.Build.0 = Debug|Any CPU
+		{A60A5CA5-0C85-447F-B673-56EB97D4F056}.Release|x86.ActiveCfg = Release|Any CPU
+		{A60A5CA5-0C85-447F-B673-56EB97D4F056}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Criptografia\Criptografia.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.StandardHeader = $2
+		$2.Text = 
+		$2.IncludeInNewFiles = True
+	EndGlobalSection
+EndGlobal

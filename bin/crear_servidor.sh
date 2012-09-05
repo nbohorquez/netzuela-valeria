@@ -55,19 +55,15 @@ instalar_mono() {
 instalar_mod_mono() {
 	apt-get install libapache2-mod-mono mono-apache-server4 mono-xsp4
 
-	if [ ! -f /etc/apache2/mods-enabled/mod_mono.load ]
-	then
-		if [ ! -f /etc/apache2/mods-available/mod_mono.load ]
-		then
+	if [ ! -f /etc/apache2/mods-enabled/mod_mono.load ]; then
+		if [ ! -f /etc/apache2/mods-available/mod_mono.load ]; then
 			sh -c "$mod_mono_load"
 		fi
 		ln -s /etc/apache2/mods-available/mod_mono.load /etc/apache2/mods-enabled/mod_mono.load
 	fi
 
-	if [ ! -f /etc/apache2/mods-enabled/mod_mono.conf ]
-	then
-		if [ ! -f /etc/apache2/mods-available/mod_mono.conf ]
-		then
+	if [ ! -f /etc/apache2/mods-enabled/mod_mono.conf ]; then
+		if [ ! -f /etc/apache2/mods-available/mod_mono.conf ]; then
 			sh -c "$mod_mono_conf"
 		fi
 		ln -s /etc/apache2/mods-available/mod_mono.conf /etc/apache2/mods-enabled/mod_mono.conf
@@ -75,47 +71,54 @@ instalar_mod_mono() {
 }
 
 crear_archivo_apache() {
-	if [ ! -f /etc/apache2/sites-available/valeria ]
-	then
+	if [ ! -f /etc/apache2/sites-available/valeria ]; then
 		sh -c "$apache_valeria"
 	fi
 	ln -s /etc/apache2/sites-available/valeria /etc/apache2/sites-enabled/valeria
 	
 	# Esta parte no deberia estar si estoy en Amazon
-	sh -c "$valeria_puerto"
+	if ! grep -Fxq "Listen 8080" /etc/apache2/ports.conf; then
+		sh -c "$valeria_puerto"
+	fi
 }
 
 configurar_var_www() {
 	ln -s `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api /var/www/valeria
 }
 
+# Chequeamos root
+if [ "$USER" != "root" ]; then
+        echo "Error: Debe correr este script como root"
+        exit 1
+fi
+
 # Chequeamos mono
 [ "$(which mono)" ] || { instalar_mono; echo "mono instalado"; }
 
 # Chequeamos mod_mono
-if [ ! -f /usr/lib/apache2/modules/mod_mono.so ]
-then
+if [ ! -f /usr/lib/apache2/modules/mod_mono.so ]; then
 	instalar_mod_mono
 	echo "mod_mono instalado"
 fi
 
 # Chequeamos el archivo de configuracion de apache
-if [ ! -f /etc/apache2/sites-enabled/valeria ]
-then
+if [ ! -f /etc/apache2/sites-enabled/valeria ]; then
 	crear_archivo_apache
 	echo "Archivo de configuracion de apache creado"
 fi
 
 # Chequeamos el directorio /var/www/
-if [ ! -L /var/www/valeria ]
-then
+if [ ! -L /var/www/valeria ]; then
 	configurar_var_www
 	echo "Directorio /var/www/ configurado"
 fi
 
-# Compilamos el proyecto
-#xbuild `pwd`/../src/servidor/Servidor.sln
-
 # Colocamos la contraseña de spuria en el web.config
+xbuild `pwd`/../src/criptografia/Criptografia.sln
+mono `pwd`/../src/criptografia/Criptografia/bin/Debug/Criptografia.exe chivo '#HK_@20MamA!pAPa13?#3864' `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/Web.config
+
+# Compilamos el proyecto
+xbuild `pwd`/../src/servidor/Servidor.sln
+
 # Reiniciamos apache para que los cambios tengan efecto
 sudo service apache2 restart

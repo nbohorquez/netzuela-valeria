@@ -51,36 +51,36 @@ EOF
 "
 
 instalar_mono() {
-	apt-get install mono-complete
+	apt-get install -y mono-complete
 }
 
 instalar_mod_mono() {
-	apt-get install libapache2-mod-mono mono-apache-server4 mono-xsp4
+	apt-get install -y libapache2-mod-mono mono-apache-server4 mono-xsp4
 }
 
 crear_archivo_mod_mono_load() {
 	if [ ! -f /etc/apache2/mods-available/mod_mono.load ]; then
-		sh -c "$mod_mono_load"
+		bash -c "$mod_mono_load"
 	fi
 	ln -s /etc/apache2/mods-available/mod_mono.load /etc/apache2/mods-enabled/mod_mono.load
 }
 
 crear_archivo_mod_mono_conf() {
 	if [ ! -f /etc/apache2/mods-available/mod_mono.conf ]; then
-		sh -c "$mod_mono_conf"
+		bash -c "$mod_mono_conf"
 	fi
 	ln -s /etc/apache2/mods-available/mod_mono.conf /etc/apache2/mods-enabled/mod_mono.conf
 }
 
 crear_archivo_apache() {
 	if [ ! -f /etc/apache2/sites-available/valeria ]; then
-		sh -c "$apache_valeria"
+		bash -c "$apache_valeria"
 	fi
 	ln -s /etc/apache2/sites-available/valeria /etc/apache2/sites-enabled/valeria
 	
 	# Esta parte no deberia estar si estoy en Amazon
 	if ! grep -Fxq "Listen 8080" /etc/apache2/ports.conf; then
-		sh -c "$valeria_puerto"
+		bash -c "$valeria_puerto"
 	fi
 }
 
@@ -111,7 +111,10 @@ fi
 echo "Ejecutando script como root"
 
 # Chequeamos mono
-[ "$(which mono)" ] || { echo "mono no esta instalado, instalando..."; instalar_mono; }
+[ "$(which mono)" ] || { 
+	echo "mono no esta instalado, instalando..."
+	instalar_mono
+}
 echo "mono instalado"
 
 # Chequeamos mod_mono

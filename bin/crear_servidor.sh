@@ -1,18 +1,18 @@
 #!/bin/bash
 
+configuracion="config.ini"
+parse_config $configuracion
+
 owner="gustavo"
-
 mod_mono_load="echo LoadModule mono_module /usr/lib/apache2/modules/mod_mono.so >> /etc/apache2/mods-available/mod_mono.load"
-
 mod_mono_conf="cat > /etc/apache2/mods-available/mod_mono.conf << EOF
 AddType application/x-asp-net .aspx .asmx .ashx .asax .ascx .soap .rem .axd .cs .config .dll .svc
 DirectoryIndex index.aspx
 Include /etc/mono-server4/mono-server4-hosts.conf
 EOF
 "
-
 apache_valeria="cat > /etc/apache2/sites-available/valeria << EOF
-<VirtualHost *:8080>
+<VirtualHost *:443>
 	ServerName api.netzuela.com
 	ServerAdmin tca7410nb@gmail.com
 
@@ -43,12 +43,30 @@ apache_valeria="cat > /etc/apache2/sites-available/valeria << EOF
 </VirtualHost>
 EOF
 "
-
 valeria_puerto="cat >> /etc/apache2/ports.conf << EOF
 NameVirtualHost *:8080
 Listen 8080
 EOF
 "
+
+parse_config() {
+	if [ ! -f "$1" ]; then
+		echo "$1 no existe"
+		return 
+	fi
+
+	# En este enlace hay muchas formas de leer un config file sin usar source:
+	# http://stackoverflow.com/questions/4434797/read-a-config-file-in-bash-without-using-source
+	while read linea; do
+	if [[ "$linea" =~ ^[^#]*= ]]; then
+		variable=`echo $linea | cut -d'=' -f 1 | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
+		#variable=`echo $linea | cut -d'=' -f 1 | tr -d ' '`
+		valor=`echo $linea | cut -d'=' -f 2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
+		#valor=`echo $linea | cut -d'=' -f 2- | tr -d ' '`
+		eval "$variable"="$valor"
+	fi
+	done < "$1"
+}
 
 instalar_mono() {
 	apt-get install -y mono-complete
@@ -79,9 +97,11 @@ crear_archivo_apache() {
 	ln -s /etc/apache2/sites-available/valeria /etc/apache2/sites-enabled/valeria
 	
 	# Esta parte no deberia estar si estoy en Amazon
+<<COM
 	if ! grep -Fxq "Listen 8080" /etc/apache2/ports.conf; then
 		bash -c "$valeria_puerto"
 	fi
+COM
 }
 
 configurar_var_www() {
@@ -90,17 +110,17 @@ configurar_var_www() {
 
 cargar_credenciales() {
 	xbuild `pwd`/../src/criptografia/Criptografia.sln
-	mono `pwd`/../src/criptografia/Criptografia/bin/Debug/Criptografia.exe chivo '#HK_@20MamA!pAPa13?#3864' `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/Web.config
-	chown -R "$owner":"$owner" `pwd`/../src/criptografia/Criptografia/bin/ `pwd`/../src/criptografia/Criptografia/obj
+	mono `pwd`/../src/criptografia/Criptografia/bin/Debug/Criptografia.exe chivo "'"$contrasena"'" `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/Web.config
+	#chown -R "$owner":"$owner" `pwd`/../src/criptografia/Criptografia/bin/ `pwd`/../src/criptografia/Criptografia/obj
 }
 
 compilar_servidor() {
 	xbuild `pwd`/../src/servidor/Servidor.sln
-	chown -R "$owner":"$owner" `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/bin `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/obj
-	chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/obj
-	chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Datos/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Datos/obj
-	chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/obj
-	chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/obj
+	#chown -R "$owner":"$owner" `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/bin `pwd`/../src/servidor/Zuliaworks.Netzuela.Valeria.Servidor.Api/obj
+	#chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/obj
+	#chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Datos/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Datos/obj
+	#chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/obj
+	#chown -R "$owner":"$owner" `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/bin `pwd`/../src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/obj
 }
 
 # Chequeamos root
@@ -111,7 +131,7 @@ fi
 echo "Ejecutando script como root"
 
 # Chequeamos mono
-[ "$(which mono)" ] || { 
+command -v mono >/dev/null 2>&1 || { 
 	echo "mono no esta instalado, instalando..."
 	instalar_mono
 }
@@ -153,7 +173,7 @@ fi
 echo "Directorio /var/www/ configurado"
 
 # Colocamos la contraseña de spuria en el web.config
-cargar_credenciales
+cargar_credenciales "$contrasena"
 echo "Credenciales cargados"
 
 # Compilamos el proyecto

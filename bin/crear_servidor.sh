@@ -12,7 +12,7 @@ Include /etc/mono-server4/mono-server4-hosts.conf
 EOF
 "
 apache_valeria="cat > /etc/apache2/sites-available/valeria << EOF
-<VirtualHost *:443>
+<VirtualHost *:80>
 	ServerName api.netzuela.com
 	ServerAdmin tca7410nb@gmail.com
 
@@ -55,7 +55,7 @@ parse_config() {
 		return 
 	fi
 
-	# En este enlace hay muchas formas de leer un config file sin usar source:
+	# Hay muchas formas de leer un config file sin usar source:
 	# http://stackoverflow.com/questions/4434797/read-a-config-file-in-bash-without-using-source
 	while read linea; do
 	if [[ "$linea" =~ ^[^#]*= ]]; then

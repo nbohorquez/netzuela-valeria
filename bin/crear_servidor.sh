@@ -1,26 +1,7 @@
 #!/bin/bash
 
-parse_config() {
-	if [ ! -f "$1" ]; then
-		echo "$1 no existe"
-		return 
-	fi
-
-	# Hay muchas formas de leer un config file sin usar source:
-	# http://stackoverflow.com/questions/4434797/read-a-config-file-in-bash-without-using-source
-	while read linea; do
-	if [[ "$linea" =~ ^[^#]*= ]]; then
-		variable=`echo $linea | cut -d'=' -f 1 | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
-		#variable=`echo $linea | cut -d'=' -f 1 | tr -d ' '`
-		valor=`echo $linea | cut -d'=' -f 2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
-		#valor=`echo $linea | cut -d'=' -f 2- | tr -d ' '`
-		eval "$variable"="$valor"
-	fi
-	done < "$1"
-}
-
-configuracion="config.ini"
-parse_config $configuracion
+source comunes.sh
+parse_config $archivo_config
 
 owner="gustavo"
 mod_mono_load="echo LoadModule mono_module /usr/lib/apache2/modules/mod_mono.so >> /etc/apache2/mods-available/mod_mono.load"

@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>sharethis.ico</ApplicationIcon>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>029667A7CE4258B0CDB3E13D454B9E83EAFC97A1</ManifestCertificateThumbprint>
@@ -222,16 +222,27 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="sharethis.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion\LogicaPresentacion.csproj">
       <Project>{39A2598C-EEE2-4C32-84E5-A7277586C9BD}</Project>
       <Name>LogicaPresentacion</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imagenes\Netzuela-.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imagenes\Netzuela-w-.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imagenes\borde_superior.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Imagenes\Netzuela-wb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Logo.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(ProgramFiles)\MSBuild\StyleCop\v4.7\StyleCop.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

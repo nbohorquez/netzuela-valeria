@@ -1,36 +1,13 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>obj/Debug/Comunes</name>
+        <name>Comunes</name>
     </assembly>
     <members>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.Desechable">
-            <summary>
-            Esta clase implementa un modelo de IDisposable.
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.MetodosDeConexion">
             <summary>
             Métodos de conexión
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.RDBMS">
-            <summary>
-            SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.IEnumerableExtensiones">
-            <summary>
-            Contiene funciones adicionales para los tipos IEnumerable
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.IEnumerableExtensiones.ConvertirAObservableCollection``1(System.Collections.Generic.IEnumerable{``0})">
-            <summary>
-            Convierte un tipo IEnumerable a ObservableCollection
-            </summary>
-            <typeparam name="T">Tipo de IEnumerable</typeparam>
-            <param name="enumerable">Coleccion de objetos</param>
-            <returns>ObservableColeccion de objetos tipo T</returns>
+            </summary>        
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.SecureStringExtensiones">
             <summary>
@@ -51,14 +28,37 @@
             <param name="stringNoSegura">Cadena de caracteres no seguros a convertir.</param>
             <returns>Cadena de caracteres convertida.</returns>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ServidorLocal">
+            <summary>
+            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
+            </summary>    
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ParametrosDeConexion">
             <summary>
             Esta clase se usa en todas partes.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.ServidorLocal">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.IEnumerableExtensiones">
             <summary>
-            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
+            Contiene funciones adicionales para los tipos IEnumerable
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Comunes.IEnumerableExtensiones.ConvertirAObservableCollection``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Convierte un tipo IEnumerable a ObservableCollection
+            </summary>
+            <typeparam name="T">Tipo de IEnumerable</typeparam>
+            <param name="enumerable">Coleccion de objetos</param>
+            <returns>ObservableColeccion de objetos tipo T</returns>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.RDBMS">
+            <summary>
+            SGBDR: Sistemas Gestores de Bases de Datos Relacionales (RDBMS en inglés)
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Comunes.Desechable">
+            <summary>
+            Esta clase implementa un modelo de IDisposable.
             </summary>
         </member>
     </members>

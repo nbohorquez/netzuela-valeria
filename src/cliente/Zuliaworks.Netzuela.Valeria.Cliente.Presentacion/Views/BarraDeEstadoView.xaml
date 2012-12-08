@@ -7,6 +7,10 @@
 
     <UserControl.Resources>
         <Style x:Key="est_BarraDeEstado" TargetType="StatusBar">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#525252"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Height" Value="Auto"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Center"/>

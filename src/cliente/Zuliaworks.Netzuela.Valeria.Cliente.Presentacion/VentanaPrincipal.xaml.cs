@@ -66,7 +66,8 @@
             this.iconoDeBandeja.BalloonTipText = "La aplicación ha sido minimizada. Haga clic en el ícono para restaurar la ventana";
             this.iconoDeBandeja.BalloonTipTitle = "Netzuela";
             this.iconoDeBandeja.Text = "Netzuela";
-            this.iconoDeBandeja.Icon = new Icon(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Zuliaworks.Netzuela.Valeria.Cliente.Presentacion.sharethis.ico"));
+            // Para hacer esto teneis que acordarte que Logo.png debe ser un "recurso incrustado"
+            this.iconoDeBandeja.Icon = new Icon(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Zuliaworks.Netzuela.Valeria.Cliente.Presentacion.Logo.ico"));
 
             this.iconoDeBandeja.Click += new EventHandler(this.ClicSobreIcono);
         }

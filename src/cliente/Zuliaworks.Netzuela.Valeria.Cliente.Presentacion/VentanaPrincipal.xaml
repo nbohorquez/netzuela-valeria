@@ -44,7 +44,7 @@
         
         <P:DosArgumentosAUno x:Key="DosArgumentosAUno" />
 
-        <Style x:Key="est_Grid" TargetType="Grid">
+        <Style x:Key="est_Grilla" TargetType="Grid">
             <Setter Property="Background" Value="#676767"/>
         </Style>
         
@@ -89,7 +89,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Style="{StaticResource est_Grid}">
+    <Grid Style="{StaticResource est_Grilla}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>

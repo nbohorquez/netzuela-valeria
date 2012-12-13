@@ -1,38 +1,38 @@
 *.*~
+*.pdb
 *.pidb
 *.userprefs
 *.user
 *.suo
 *.bak
 *.[Cc]ache
+*.msi
+*.wixobj
+*.wixpdb
 [Tt]humbs.db
 
 misc/
 
 src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/bin/
 src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/obj/
-src/comunes/Zuliaworks.Netzuela.Valeria.Comunes/StyleCop.Cache
 
 src/comunes/Zuliaworks.Netzuela.Valeria.Datos/bin/
 src/comunes/Zuliaworks.Netzuela.Valeria.Datos/obj/
 
 src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/bin/
 src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/obj/
-src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/StyleCop.Cache
 
 src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/bin/
 src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/obj/
 
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/bin/
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/obj/
-src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/StyleCop.Cache
 
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion/bin/
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion/obj/
 
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/bin/
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/obj/
-src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Presentacion/StyleCop.Cache
 
 src/criptografia/Criptografia/bin/
 src/criptografia/Criptografia/obj/

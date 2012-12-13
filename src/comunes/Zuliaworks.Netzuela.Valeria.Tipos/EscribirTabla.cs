@@ -6,8 +6,10 @@ namespace Zuliaworks.Netzuela.Valeria.Tipos
 	using ServiceStack.ServiceHost;							// RestService
 	using ServiceStack.ServiceInterface;					// Authenticate
 	
-	[DataContract]
+    #if (SERVIDOR)
 	[Authenticate()]
+    #endif
+    [DataContract]
 	[RestService("/escribirtabla")]
 	public class EscribirTabla
 	{

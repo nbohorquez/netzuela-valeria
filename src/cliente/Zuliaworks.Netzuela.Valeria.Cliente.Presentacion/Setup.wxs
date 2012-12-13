@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+	<Bundle UpgradeCode="3157BDA2-097B-4653-A0D4-97D410AA95D1" Version="1.0.0" Name="Netzuela" Manufacturer="Zuliaworks C.A.">
+		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense" />
+        <Chain>
+			<PackageGroupRef Id="NetFx40Redist" />
+			<RollbackBoundary />
+			<PackageGroupRef Id="Netzuela" />
+			<MsiPackage Id="Netzuela" SourceFile="Netzuela.msi" Vital="yes" DisplayInternalUI="yes" />
+		</Chain>
+	</Bundle>
+</Wix>

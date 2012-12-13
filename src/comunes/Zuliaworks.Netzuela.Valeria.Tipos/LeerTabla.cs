@@ -5,9 +5,11 @@ namespace Zuliaworks.Netzuela.Valeria.Tipos
 	
 	using ServiceStack.ServiceHost;							// RestService
 	using ServiceStack.ServiceInterface;					// Authenticate
-	
-	[DataContract]
+
+    #if (SERVIDOR)
 	[Authenticate()]
+    #endif
+    [DataContract]
 	[RestService("/leertabla")]
 	public class LeerTabla
 	{
@@ -17,6 +19,6 @@ namespace Zuliaworks.Netzuela.Valeria.Tipos
 		public string BaseDeDatos { get; set; }
 		[DataMember]
 		public string Tabla { get; set; }
-	}	
+	}
 }
 

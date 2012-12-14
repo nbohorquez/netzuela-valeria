@@ -19,46 +19,46 @@
         <!-- Step 2: Add files to your installer package -->
         <DirectoryRef Id="APPLICATIONFOLDER">
             <Component Id="Netzuela.exe" Guid="810F0818-57C5-4D4D-B41D-BD39FDD0509D">
-                <File Id="Netzuela.exe" Source="bin\Release\Netzuela.exe" KeyPath="yes" Checksum="yes" />
+                <File Id="Netzuela.exe" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\Netzuela.exe" KeyPath="yes" Checksum="yes" />
             </Component>
             <Component Id="AttachedCommandBehavior.dll" Guid="FAF42706-EE7C-4983-BFD9-A14BEEDC46AF">
-                <File Id="AttachedCommandBehavior.dll" Source="bin\Release\AttachedCommandBehavior.dll" KeyPath="yes" />
+                <File Id="AttachedCommandBehavior.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\AttachedCommandBehavior.dll" KeyPath="yes" />
             </Component>
 			<Component Id="Comunes.dll" Guid="83A2DAA8-FCA6-46CA-8694-DE8EF07AD348">
-                <File Id="Comunes.dll" Source="bin\Release\Comunes.dll" KeyPath="yes" />
+                <File Id="Comunes.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\Comunes.dll" KeyPath="yes" />
             </Component>
 			<Component Id="Datos.dll" Guid="CBE5F4B6-F5B2-4C85-B1E6-C01059776659">
-                <File Id="Datos.dll" Source="bin\Release\Datos.dll" KeyPath="yes" />
+                <File Id="Datos.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\Datos.dll" KeyPath="yes" />
             </Component>
 			<Component Id="Logica.dll" Guid="763BD151-6C78-495F-B3AC-1B89F0E9F4FA">
-                <File Id="Logica.dll" Source="bin\Release\Logica.dll" KeyPath="yes" />
+                <File Id="Logica.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\Logica.dll" KeyPath="yes" />
             </Component>
 			<Component Id="LogicaPresentacion.dll" Guid="A7900298-7E67-4B7F-8249-6D0E00F1AE8C">
-                <File Id="LogicaPresentacion.dll" Source="bin\Release\LogicaPresentacion.dll" KeyPath="yes" />
+                <File Id="LogicaPresentacion.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\LogicaPresentacion.dll" KeyPath="yes" />
             </Component>
 			<Component Id="MvvmFoundation.Wpf.dll" Guid="A31805FD-810B-4AD5-A5BE-51B22A5E0DED">
-                <File Id="MvvmFoundation.Wpf.dll" Source="bin\Release\MvvmFoundation.Wpf.dll" KeyPath="yes" />
+                <File Id="MvvmFoundation.Wpf.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\MvvmFoundation.Wpf.dll" KeyPath="yes" />
             </Component>
 			<Component Id="Preferencias.dll" Guid="BA6447EC-754F-4B55-965E-60A0C714254B">
-                <File Id="Preferencias.dll" Source="bin\Release\Preferencias.dll" KeyPath="yes" />
+                <File Id="Preferencias.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\Preferencias.dll" KeyPath="yes" />
             </Component>
 			<Component Id="ServiceStack.Common.dll" Guid="25CC7679-A74E-40BB-B1FA-E2E7F78FD921">
-                <File Id="ServiceStack.Common.dll" Source="bin\Release\ServiceStack.Common.dll" KeyPath="yes" />
+                <File Id="ServiceStack.Common.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\ServiceStack.Common.dll" KeyPath="yes" />
             </Component>
 			<Component Id="ServiceStack.Interfaces.dll" Guid="DB5C8776-A913-47EA-97CF-C094FEEA90A1">
-                <File Id="ServiceStack.Interfaces.dll" Source="bin\Release\ServiceStack.Interfaces.dll" KeyPath="yes" />
+                <File Id="ServiceStack.Interfaces.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\ServiceStack.Interfaces.dll" KeyPath="yes" />
             </Component>
 			<Component Id="ServiceStack.Text.dll" Guid="C04AE19E-FE7D-41E4-A64D-3E8F2D814E90">
-                <File Id="ServiceStack.Text.dll" Source="bin\Release\ServiceStack.Text.dll" KeyPath="yes" />
+                <File Id="ServiceStack.Text.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\ServiceStack.Text.dll" KeyPath="yes" />
             </Component>
 			<Component Id="Tipos.dll" Guid="73E50F9B-158C-4893-8D37-0745B337DE0B">
-                <File Id="Tipos.dll" Source="bin\Release\Tipos.dll" KeyPath="yes" />
+                <File Id="Tipos.dll" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\Tipos.dll" KeyPath="yes" />
             </Component>
 			<Component Id="Netzuela.exe.config" Guid="9BE67D77-46C3-4F43-877B-1764F7606FEA">
-                <File Id="Netzuela.exe.config" Source="bin\Release\Netzuela.exe.config" KeyPath="yes" />
+                <File Id="Netzuela.exe.config" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\Netzuela.exe.config" KeyPath="yes" />
             </Component>
 			<Component Id="Netzuela.exe.manifest" Guid="C2637FB2-B6AD-48D1-859B-9FF9B5DFD340">
-                <File Id="Netzuela.exe.manifest" Source="bin\Release\Netzuela.exe.manifest" KeyPath="yes" />
+                <File Id="Netzuela.exe.manifest" Source="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\bin\Release\Netzuela.exe.manifest" KeyPath="yes" />
             </Component>			
         </DirectoryRef>
 
@@ -107,7 +107,7 @@
 
 		<UIRef Id="WixUI_InstallDir" />
 		<UIRef Id="WixUI_ErrorProgressText" />
-		<Icon Id="Logo.ico" SourceFile="Logo.ico" />
+		<Icon Id="Logo.ico" SourceFile="..\src\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\Logo.ico" />
 		<Property Id="ARPPRODUCTICON" Value="Logo.ico" />
 		<Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />
 		<!--<Property Id="ApplicationFolderName" Value="Netzuela" />

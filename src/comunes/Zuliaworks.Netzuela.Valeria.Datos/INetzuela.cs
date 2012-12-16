@@ -8,7 +8,7 @@
 
     using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
 
-    public interface INetzuela : IBaseDeDatosComun
+    public interface INetzuela : IBaseDeDatos
     {
         #region Eventos
 

@@ -13,7 +13,7 @@
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos MySQL
     /// </summary>
-    public partial class MySQL : EventosComunes, IBaseDeDatosLocal
+    public partial class MySQL : ConectorGenerico<MySqlConnection, MySqlCommand, MySqlDataAdapter>
     {
         #region Variables y Constantes
 
@@ -29,19 +29,14 @@
             { Privilegios.Crear, "CREATE" },
             { Privilegios.Destruir, "DROP" }
         };
-
-        private MySqlConnection conexion;
-        
+                        
         #endregion
 
         #region Constructores
 
-        public MySQL(ParametrosDeConexion servidorBd)
+        public MySQL(ParametrosDeConexion servidorBd) 
+            : base(servidorBd)
         {
-            this.DatosDeConexion = servidorBd;
-            this.conexion = new MySqlConnection();
-            this.conexion.StateChange -= this.ManejarCambioDeEstado;
-            this.conexion.StateChange += this.ManejarCambioDeEstado;
         }
 
         ~MySQL()
@@ -52,80 +47,8 @@
         #endregion
 
         #region Funciones
-
-        protected void Dispose(bool borrarCodigoAdministrado)
-        {
-            this.DatosDeConexion = null;
-
-            if (borrarCodigoAdministrado)
-            {
-                if (this.conexion != null)
-                {
-                    this.conexion.Dispose();
-                    this.conexion = null;
-                }
-            }
-        }
-
-        private void CambiarBaseDeDatos(string baseDeDatos)
-        {
-            if (this.conexion.Database != baseDeDatos)
-            {
-                this.conexion.ChangeDatabase(baseDeDatos);
-            }
-        }
-
-        private void EjecutarOrden(string sql)
-        {
-            if (sql == null)
-            {
-                throw new ArgumentNullException("sql");
-            }
-            
-            MySqlCommand orden = new MySqlCommand(sql, this.conexion);
-            orden.ExecuteNonQuery();
-        }
-
-        private string[] LectorSimple(string sql)
-        {
-            if (sql == null)
-            {
-                throw new ArgumentNullException("sql");
-            }
-
-            MySqlDataReader lector = null;
-            List<string> resultado = new List<string>();
-            MySqlCommand orden = new MySqlCommand(sql, this.conexion);
-            lector = orden.ExecuteReader();
-
-            while (lector.Read())
-            {
-                resultado.Add(lector.GetString(0));
-            }
-
-            lector.Close();
-            return resultado.ToArray();
-        }
-
-        private DataTable LectorAvanzado(string sql)
-        {
-            if (sql == null)
-            {
-                throw new ArgumentNullException("sql");
-            }
-
-            DataTable resultado = new DataTable();
-
-            MySqlDataAdapter adaptador = new MySqlDataAdapter(sql, this.conexion);
-            MySqlCommandBuilder creadorDeOrden = new MySqlCommandBuilder(adaptador);
-
-            adaptador.FillSchema(resultado, SchemaType.Source);
-            adaptador.Fill(resultado);
-
-            return resultado;
-        }
-
-        private string DescribirTabla(string tabla)
+        
+        protected override string DescribirTabla(string tabla)
         {
             DataTable descripcion = this.LectorAvanzado("DESCRIBE " + tabla);
 
@@ -145,7 +68,7 @@
          * final que las convierto en SecureStrings) y no se si eso pueda suponer un "hueco" de seguridad.
          */
 
-        private SecureString CrearRutaDeAcceso(ParametrosDeConexion seleccion, SecureString usuario, SecureString contrasena)
+        protected override SecureString CrearRutaDeAcceso(ParametrosDeConexion seleccion, SecureString usuario, SecureString contrasena)
         {
             /*
              * La lista completa de las opciones de la ruta de conexion ("Connection String" en ingles) se detalla en:
@@ -277,22 +200,11 @@
 
         #region Implementaciones de interfaces
 
-        #region Propiedades
-
-        public ConnectionState Estado 
-        { 
-            get { return this.conexion.State; }
-        }
-
-        public ParametrosDeConexion DatosDeConexion { get; set; }
-
-        #endregion
-        
         #region Funciones
 
         #region Métodos sincrónicos
 
-        public void Conectar(SecureString usuario, SecureString contrasena)
+        public override void Conectar(SecureString usuario, SecureString contrasena)
         {
             try
             {
@@ -314,7 +226,7 @@
             }
         }
 
-        public void Desconectar()
+        public override void Desconectar()
         {
             try
             {
@@ -329,7 +241,7 @@
             }
         }
 
-        public string[] ListarBasesDeDatos()
+        public override string[] ListarBasesDeDatos()
         {
             List<string> resultadoFinal = null;
 
@@ -354,7 +266,7 @@
             return resultadoFinal.ToArray();
         }
 
-        public string[] ListarTablas(string baseDeDatos)
+        public override string[] ListarTablas(string baseDeDatos)
         {
             List<string> resultado = null;
 
@@ -377,7 +289,7 @@
             return resultado.ToArray();
         }
 
-        public DataTable LeerTabla(string baseDeDatos, string tabla)
+        public override DataTable LeerTabla(string baseDeDatos, string tabla)
         {
             DataTable tablaLeida = null;
 
@@ -399,7 +311,7 @@
             return tablaLeida;
         }
 
-        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
+        public override bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
             bool resultado = false;
 
@@ -532,7 +444,7 @@
             return resultado;
         }
 
-        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
+        public override bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
             bool resultado = false;
             string sql = string.Empty;
@@ -668,7 +580,7 @@
             return resultado;
         }
 
-        public DataTable Consultar(string baseDeDatos, string sql)
+        public override DataTable Consultar(string baseDeDatos, string sql)
         {
             DataTable resultado = null;
             this.CambiarBaseDeDatos(baseDeDatos);
@@ -683,55 +595,6 @@
             }
 
             return resultado;
-        }
-
-        #endregion
-
-        #region Métodos asincrónicos
-
-        public void ListarBasesDeDatosAsinc()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ListarTablasAsinc(string baseDeDatos)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LeerTablaAsinc(string baseDeDatos, string tabla)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ConsultarAsinc(string baseDeDatos, string sql)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region IDisposable
-
-        public void Dispose()
-        {
-            /*
-             * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
-             * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface
-             */
-
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         #endregion

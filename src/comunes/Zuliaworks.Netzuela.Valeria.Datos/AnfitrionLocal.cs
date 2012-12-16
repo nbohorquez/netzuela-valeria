@@ -19,7 +19,6 @@
             List<ServidorLocal> Servidores = new List<ServidorLocal>();
 
             Servidores.Add(SQLServer.DetectarServidor());
-            //Servidores.Add(Oracle.DetectarServidor());
             Servidores.Add(MySQL.DetectarServidor());
             Servidores.Add(DBISAM.DetectarServidor());
 

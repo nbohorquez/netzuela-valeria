@@ -4,9 +4,42 @@
         <name>LogicaPresentacion</name>
     </assembly>
     <members>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.NodoViewModelExtensiones">
+            <summary>
+            Esta clase lleva el repositorio de todos los Nodo's que tienen un NodoViewModel asociado
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.OpcionesViewModel">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.MainViewModel">
             <summary>
             
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.NodoViewModel">
+            <summary>
+            Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
+            y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
+            la consistencia de esta clase.
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.DetectarServidoresLocalesViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.AutentificacionViewModel">
+            <summary>
+            Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.AutentificacionViewModel.UsuarioString">
+            <summary>
+            Esta propiedad es una fachada. Solo sirve para tomar el string desde el View y 
+            convertirlo inmediatamente a SecureString en Usuario. No se puede leer
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.ExploradorViewModel">
@@ -93,13 +126,6 @@
             sobre la fuente de datos subyacente.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.NodoViewModel">
-            <summary>
-            Esta clase agrega dos nuevas propiedades a Nodo: Explorador (de tipo ExploradorViewModel)
-            y Expandido (de tipo bool). Ademas convierte Padre e Hijos a NodoViewModel para mantener
-            la consistencia de esta clase.
-            </summary>
-        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.SincronizacionViewModel">
             <summary>
             
@@ -118,32 +144,6 @@
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.ConexionLocalViewModel">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.AutentificacionViewModel">
-            <summary>
-            Este es el ViewModel asociado con AutentificacionView. Lleva el registro del nombre de usuario y contraseña.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.AutentificacionViewModel.UsuarioString">
-            <summary>
-            Esta propiedad es una fachada. Solo sirve para tomar el string desde el View y 
-            convertirlo inmediatamente a SecureString en Usuario. No se puede leer
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.DetectarServidoresLocalesViewModel">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.NodoViewModelExtensiones">
-            <summary>
-            Esta clase lleva el repositorio de todos los Nodo's que tienen un NodoViewModel asociado
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion.ViewModels.OpcionesViewModel">
             <summary>
             
             </summary>

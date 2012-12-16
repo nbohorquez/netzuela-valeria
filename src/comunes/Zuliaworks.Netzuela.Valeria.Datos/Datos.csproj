@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConectorGenerico.cs" />
     <Compile Include="DBISAM.cs" />
     <Compile Include="DBISAM.Detectar.cs" />
     <Compile Include="Eventos\EventoConsultarCompletadoArgs.cs" />
@@ -74,11 +75,10 @@
     <Compile Include="IBaseDeDatosLocal.cs" />
     <Compile Include="INetzuela.cs" />
     <Compile Include="Web\ClienteSpuria.Operaciones.cs" />
-    <Compile Include="IBaseDeDatosComun.cs" />
+    <Compile Include="IBaseDeDatos.cs" />
     <Compile Include="MySQL.cs" />
     <Compile Include="MySQL.Detectar.cs" />
     <Compile Include="Netzuela.cs" />
-    <Compile Include="Oracle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AnfitrionLocal.cs" />
     <Compile Include="ServidorPredeterminado.cs" />

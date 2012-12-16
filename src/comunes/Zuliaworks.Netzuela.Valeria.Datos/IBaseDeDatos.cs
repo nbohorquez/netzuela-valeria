@@ -14,7 +14,7 @@
     /// Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
     /// a las bases de datos.
     /// </summary>    
-    public interface IBaseDeDatosComun : IDisposable
+    public interface IBaseDeDatos : IDisposable
     {
         #region Eventos
 

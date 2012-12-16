@@ -22,8 +22,11 @@
                     break;
                 }
             }
-
+            
+            #if DEBUG
             Resultado.Add("Pila de llamadas: \n" + ex.StackTrace);
+            #endif
+
             return string.Concat(Resultado.ToArray());
         }
     }

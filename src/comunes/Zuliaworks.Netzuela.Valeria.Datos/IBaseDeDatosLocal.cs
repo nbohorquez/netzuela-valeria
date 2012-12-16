@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Text;
 
-    public interface IBaseDeDatosLocal : IBaseDeDatosComun
+    public interface IBaseDeDatosLocal : IBaseDeDatos
     {
         #region Prototipos de funciones
 

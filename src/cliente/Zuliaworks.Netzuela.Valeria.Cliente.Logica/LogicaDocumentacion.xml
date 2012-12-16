@@ -45,47 +45,6 @@
             Proveedor de datos creado a partir de las especificaciones de conexión.
             </summary>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.#ctor(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo})">
-            <summary>
-            
-            </summary>
-            <param name="tabla"></param>
-            <param name="columnas"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
-            <summary>
-            
-            </summary>
-            <param name="nodo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.AgregarMapa(Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas)">
-            <summary>
-            
-            </summary>
-            <param name="mapaDeColumna"></param>
-            <returns></returns>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.Sociedades">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.NodoTabla">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
             <summary>
             Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
@@ -184,6 +143,47 @@
             </summary>
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.ColumnaDestino">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.#ctor(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo})">
+            <summary>
+            
+            </summary>
+            <param name="tabla"></param>
+            <param name="columnas"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="nodo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.AgregarMapa(Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas)">
+            <summary>
+            
+            </summary>
+            <param name="mapaDeColumna"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.Sociedades">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.NodoTabla">
             <summary>
             
             </summary>

@@ -27,8 +27,10 @@
         private SendOrPostCallback delegadoDispararEscribirTablaCompletado;
         private SendOrPostCallback delegadoDispararCrearUsuarioCompletado;
         private SendOrPostCallback delegadoDispararConsultarCompletado;
+        /*
         private DelegadoComenzarOperacion carpintero;
         private delegate void DelegadoComenzarOperacion(AsyncOperation asincronico, string operacion, object[] parametros);
+         * */
 
         #endregion
 
@@ -112,7 +114,7 @@
                 this.ConsultarCompletado(this, e);
             }
         }
-
+        /*
         private AsyncOperation CrearOperacionAsincronica(object tareaId)
         {
             AsyncOperation asincronico = null;
@@ -260,7 +262,7 @@
                     break;
             }
         }
-
+        */
         private void AntesDeDispararCambioEnProgresoDeOperacion(object estado)
         {
             ProgressChangedEventArgs e = (ProgressChangedEventArgs)estado;
@@ -537,39 +539,82 @@
 
         public void ListarTiendasAsinc()
         {
-            this.ListarTiendasAsinc(this.aleatorio.Next());
+            this.CrearTareaAsincronica<EventoListarTiendasCompletadoArgs>(
+                this.aleatorio.Next(),
+                new Func<string[]>(this.ListarTiendas),
+                new SendOrPostCallback(AntesDeDispararListarTiendasCompletado),
+                null
+            );
+            //this.ListarTiendasAsinc(this.aleatorio.Next());
         }
 
         public void ListarBasesDeDatosAsinc()
         {
-            this.ListarBasesDeDatosAsinc(this.aleatorio.Next());
+            this.CrearTareaAsincronica<EventoListarBDsCompletadoArgs>(
+                this.aleatorio.Next(),
+                new Func<string[]>(this.ListarBasesDeDatos),
+                new SendOrPostCallback(AntesDeDispararListarBDsCompletado),
+                null
+            );
+
+            //this.ListarBasesDeDatosAsinc(this.aleatorio.Next());
         }
 
         public void ListarTablasAsinc(string baseDeDatos)
         {
-            this.ListarTablasAsinc(baseDeDatos, this.aleatorio.Next());
+            this.CrearTareaAsincronica<EventoListarTablasCompletadoArgs>(
+                this.aleatorio.Next(),
+                new Func<string, string[]>(this.ListarTablas),
+                new SendOrPostCallback(AntesDeDispararListarTablasCompletado),
+                baseDeDatos
+            );
+            //this.ListarTablasAsinc(baseDeDatos, this.aleatorio.Next());
         }
 
         public void LeerTablaAsinc(int tiendaId, string baseDeDatos, string tabla)
         {
-            this.LeerTablaAsinc(tiendaId, baseDeDatos, tabla, this.aleatorio.Next());
+            this.CrearTareaAsincronica<EventoLeerTablaCompletadoArgs>(
+                this.aleatorio.Next(),
+                new Func<int, string, string, DataTable>(this.LeerTabla),
+                new SendOrPostCallback(AntesDeDispararLeerTablaCompletado),
+                tiendaId, baseDeDatos, tabla
+            ); 
+            //this.LeerTablaAsinc(tiendaId, baseDeDatos, tabla, this.aleatorio.Next());
         }
 
         public void EscribirTablaAsinc(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
         {
-            this.EscribirTablaAsinc(tiendaId, baseDeDatos, nombreTabla, tabla, this.aleatorio.Next());
+            this.CrearTareaAsincronica<EventoEscribirTablaCompletadoArgs>(
+                this.aleatorio.Next(),
+                new Func<int, string, string, DataTable, bool>(this.EscribirTabla),
+                new SendOrPostCallback(AntesDeDispararEscribirTablaCompletado),
+                tiendaId, baseDeDatos, nombreTabla, tabla
+            ); 
+            //this.EscribirTablaAsinc(tiendaId, baseDeDatos, nombreTabla, tabla, this.aleatorio.Next());
         }
 
         public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
         {
-            this.CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios, this.aleatorio.Next());
+            this.CrearTareaAsincronica<EventoCrearUsuarioCompletadoArgs>(
+                this.aleatorio.Next(),
+                new Func<SecureString, SecureString, string[], int, bool>(this.CrearUsuario),
+                new SendOrPostCallback(AntesDeDispararCrearUsuarioCompletado),
+                usuario, contrasena, columnas, privilegios
+            );
+            //this.CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios, this.aleatorio.Next());
         }
 
-        public void ConsultarAsinc(string baseDeDatos, string Sql)
+        public void ConsultarAsinc(string baseDeDatos, string sql)
         {
-            this.ConsultarAsinc(baseDeDatos, Sql, this.aleatorio.Next());
+            this.CrearTareaAsincronica<EventoConsultarCompletadoArgs>(
+                this.aleatorio.Next(),
+                new Func<string, string, DataTable>(this.Consultar),
+                new SendOrPostCallback(AntesDeDispararConsultarCompletado),
+                baseDeDatos, sql
+            );
+            //this.ConsultarAsinc(baseDeDatos, sql, this.aleatorio.Next());
         }
-
+        /*
         public void ListarTiendasAsinc(object tareaId)
         {
             try
@@ -670,7 +715,7 @@
                 throw new Exception("Error al iniciar la operacion asincrónica \"ConsultarAsinc\"", ex);
             }
         }
-
+        */
         #endregion
 
         #endregion

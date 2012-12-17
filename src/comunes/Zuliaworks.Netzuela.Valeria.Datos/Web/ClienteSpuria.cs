@@ -12,12 +12,12 @@
     using ServiceStack.ServiceClient.Web;               // JsonServiceClient
     using ServiceStack.ServiceModel.Serialization;      // JsonDataContractDeserializer
     using Zuliaworks.Netzuela.Valeria.Tipos;
-    using Zuliaworks.Netzuela.Valeria.Comunes;
+    using Zuliaworks.Netzuela.Valeria.Comunes;          // Asincronico
         
     /// <summary>
     /// 
     /// </summary>
-    public partial class ClienteSpuria : Desechable
+    public partial class ClienteSpuria : Asincronico
     {
         /*
          * Referencia 1: http://msdn.microsoft.com/en-us/library/bz33kx67.aspx
@@ -38,7 +38,7 @@
 
         private IServiceClient cliente;
         private Random aleatorio;
-        private HybridDictionary hilos;
+        //private HybridDictionary hilos;
         private string uriBaseServidor;
         private string uriServidorJsonSync;
         private CookieCollection cookies;
@@ -51,7 +51,7 @@
         {
             this.InicializarDelegados();
             this.aleatorio = new Random();
-            this.hilos = new HybridDictionary();
+            //this.hilos = new HybridDictionary();
             this.cookies = new CookieCollection();
         }
 
@@ -130,7 +130,7 @@
                 throw new Exception("Error desconectando de servidor remoto", ex);
             }
         }
-
+        /*
         public void CancelarTarea(object tareaId)
         {
             try
@@ -155,7 +155,7 @@
         {
             return this.hilos[tareaId] == null;
         }
-
+        */
         private void AgregarCookies(HttpWebRequest peticion)
         {
             peticion.CookieContainer = new CookieContainer();
@@ -173,7 +173,7 @@
             return (T)JsonDataContractDeserializer.Instance.DeserializeFromString(respuestaJson, typeof(T));
         }
 
-        protected virtual void InicializarDelegados()
+        protected override void InicializarDelegados()
         {
             this.delegadoDispararCambioEnProgresoDeOperacion = new SendOrPostCallback(AntesDeDispararCambioEnProgresoDeOperacion);
             this.delegadoDispararListarTiendasCompletado = new SendOrPostCallback(AntesDeDispararListarTiendasCompletado);
@@ -183,7 +183,8 @@
             this.delegadoDispararEscribirTablaCompletado = new SendOrPostCallback(AntesDeDispararEscribirTablaCompletado);
             this.delegadoDispararCrearUsuarioCompletado = new SendOrPostCallback(AntesDeDispararCrearUsuarioCompletado);
             this.delegadoDispararConsultarCompletado = new SendOrPostCallback(AntesDeDispararConsultarCompletado);
-            this.carpintero = new DelegadoComenzarOperacion(ComenzarOperacion);
+            //this.carpintero = new DelegadoComenzarOperacion(ComenzarOperacion);
+            base.InicializarDelegados();
         }
 
         #endregion
@@ -193,7 +194,7 @@
         protected override void Dispose(bool borrarCodigoAdministrado)
         {
             this.UriBaseServicio = null;
-
+            /*
             if (borrarCodigoAdministrado)
             {
                 if (this.hilos != null)
@@ -207,6 +208,8 @@
                     this.hilos = null;
                 }
             }
+             */
+            base.Dispose(borrarCodigoAdministrado);
         }
                 
         #endregion

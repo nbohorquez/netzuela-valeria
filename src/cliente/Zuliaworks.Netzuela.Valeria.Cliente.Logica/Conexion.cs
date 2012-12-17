@@ -153,7 +153,7 @@
         /// <summary>
         /// Proveedor de datos creado a partir de las especificaciones de conexión.
         /// </summary>
-        public IBaseDeDatosComun BD { get; private set; }
+        public IBaseDeDatos BD { get; private set; }
 
         public ConnectionState Estado 
         { 
@@ -182,9 +182,6 @@
                 {
                     case RDBMS.SqlServer:
                         this.BD = new SQLServer(this.Parametros);
-                        break;
-                    case RDBMS.Oracle:
-                        this.BD = new Oracle(this.Parametros);
                         break;
                     case RDBMS.DbIsam:
                         this.BD = new DBISAM(this.Parametros);

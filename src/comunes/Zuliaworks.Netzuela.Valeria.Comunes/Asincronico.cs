@@ -6,37 +6,51 @@
     using System.ComponentModel;                        // ProgressChangedEventArgs, AsyncOperation
     using System.Linq;
     using System.Text;
+    using System.Threading;                             // SendOrPostCallback
 
-    public abstract class Asincrono : Desechable
+    public abstract class Asincronico : Desechable
     {
         #region Variables y Constantes
 
         private DelegadoComenzarOperacion carpintero;
-        private delegate void DelegadoComenzarOperacion(AsyncOperation asincronico, string operacion, object[] parametros);
         private Dictionary<string, Delegate> tareas;
+        private Dictionary<string, Type> eventos;
+        private Dictionary<string, SendOrPostCallback> retornos;
         private HybridDictionary hilos;
+        private delegate void DelegadoComenzarOperacion(AsyncOperation asincronico, string operacion, object[] parametros);
 
         #endregion
 
         #region Constructores
 
-        public Asincrono()
+        public Asincronico()
         {
             this.InicializarDelegados();
+            this.tareas = new Dictionary<string, Delegate>();
+            this.eventos = new Dictionary<string, Type>();
+            this.retornos = new Dictionary<string, SendOrPostCallback>();
+        }
+
+        ~Asincronico()
+        {
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Funciones
 
-        public void TareaAsincronica(object tareaId, Delegate tarea, params object[] parametros)
+        public void CrearTareaAsincronica<T>(object tareaId, Delegate tarea, SendOrPostCallback retorno, params object[] parametros) 
+            where T : EventArgs
         {
             string nombre = tarea.Method.Name;
             
             try
             {
-                AsyncOperation asincronico = this.CrearOperacionAsincronica(tareaId);
+                AsyncOperation asincronico = this.RegistarTareaAsincronica(tareaId);
                 this.tareas.Add(nombre, tarea);
+                this.eventos.Add(nombre, typeof(T));
+                this.retornos.Add(nombre, retorno);
                 this.carpintero.BeginInvoke(asincronico, nombre, parametros, null, null);
             }
             catch (Exception ex)
@@ -70,7 +84,7 @@
             return this.hilos[tareaId] == null;
         }
 
-        private AsyncOperation CrearOperacionAsincronica(object tareaId)
+        private AsyncOperation RegistarTareaAsincronica(object tareaId)
         {
             AsyncOperation asincronico = null;
 
@@ -120,67 +134,9 @@
                 }
             }
 
-            switch (operacion)
-            {
-                case "ListarTiendas":
-                    {
-                        EventoListarTiendasCompletadoArgs e =
-                            new EventoListarTiendasCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
-                        asincronico.PostOperationCompleted(this.delegadoDispararListarTiendasCompletado, e);
-                        break;
-                    }
-
-                case "ListarBasesDeDatos":
-                    {
-                        EventoListarBDsCompletadoArgs e =
-                            new EventoListarBDsCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
-                        asincronico.PostOperationCompleted(this.delegadoDispararListarBDsCompletado, e);
-                        break;
-                    }
-
-                case "ListarTablas":
-                    {
-                        EventoListarTablasCompletadoArgs e =
-                            new EventoListarTablasCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
-                        asincronico.PostOperationCompleted(this.delegadoDispararListarTablasCompletado, e);
-                        break;
-                    }
-
-                case "LeerTabla":
-                    {
-                        EventoLeerTablaCompletadoArgs e =
-                            new EventoLeerTablaCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
-                        asincronico.PostOperationCompleted(this.delegadoDispararLeerTablaCompletado, e);
-                        break;
-                    }
-
-                case "EscribirTabla":
-                    {
-                        EventoEscribirTablaCompletadoArgs e =
-                            new EventoEscribirTablaCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
-                        asincronico.PostOperationCompleted(this.delegadoDispararEscribirTablaCompletado, e);
-                        break;
-                    }
-
-                case "CrearUsuario":
-                    {
-                        EventoCrearUsuarioCompletadoArgs e =
-                            new EventoCrearUsuarioCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
-                        asincronico.PostOperationCompleted(this.delegadoDispararCrearUsuarioCompletado, e);
-                        break;
-                    }
-
-                case "Consultar":
-                    {
-                        EventoConsultarCompletadoArgs e =
-                            new EventoConsultarCompletadoArgs(resultados, cancelado, error, asincronico.UserSuppliedState);
-                        asincronico.PostOperationCompleted(this.delegadoDispararConsultarCompletado, e);
-                        break;
-                    }
-
-                default:
-                    break;
-            }
+            var parametros = new object[4] { resultados, cancelado, error, asincronico.UserSuppliedState };
+            var e = Activator.CreateInstance(this.eventos[operacion], parametros);
+            asincronico.PostOperationCompleted(this.retornos[operacion], e);
         }
 
         protected virtual void InicializarDelegados()
@@ -205,6 +161,21 @@
 
                     this.hilos.Clear();
                     this.hilos = null;
+                }
+
+                if (this.retornos != null)
+                {
+                    this.retornos.Clear();
+                }
+
+                if (this.tareas != null)
+                {
+                    this.tareas.Clear();
+                }
+
+                if (this.eventos != null)
+                {
+                    this.eventos.Clear();
                 }
             }
         }

@@ -52,7 +52,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Asincrono.cs" />
+    <Compile Include="Asincronico.cs" />
     <Compile Include="Desechable.cs" />
     <Compile Include="ManejadorDeExcepciones.cs" />
     <Compile Include="MetodosDeConexion.cs" />

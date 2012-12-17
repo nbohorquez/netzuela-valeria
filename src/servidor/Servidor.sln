@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Zuliaworks.Netzuela.Valeria.Servidor.Api\Api.csproj", "{8BF0C892-2D11-4DBD-9EFB-E8EA38A2E290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tipos", "..\comunes\Zuliaworks.Netzuela.Valeria.Tipos\Tipos.csproj", "{8DE4172C-BAE2-4320-A092-585077DBB33F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comunes", "..\comunes\Zuliaworks.Netzuela.Valeria.Comunes\Comunes.csproj", "{9EFCF5AD-5A96-4726-8385-807552BA1497}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datos", "..\comunes\Zuliaworks.Netzuela.Valeria.Datos\Datos.csproj", "{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Preferencias", "..\comunes\Zuliaworks.Netzuela.Valeria.Preferencias\Preferencias.csproj", "{A60A5CA5-0C85-447F-B673-56EB97D4F056}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logica", "..\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Logica\Logica.csproj", "{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiposServidor", "..\comunes\Zuliaworks.Netzuela.Valeria.Tipos\TiposServidor.csproj", "{8DE4172C-BAE2-4320-A092-585077DBB33F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatosServidor", "..\comunes\Zuliaworks.Netzuela.Valeria.Datos\DatosServidor.csproj", "{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +46,13 @@ Global
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Zuliaworks.Netzuela.Valeria.Servidor.Api\Api.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.StandardHeader = $2
+		$2.Text = 
+		$2.IncludeInNewFiles = True
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

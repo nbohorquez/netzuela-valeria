@@ -154,21 +154,21 @@
       <Project>{9EFCF5AD-5A96-4726-8385-807552BA1497}</Project>
       <Name>Comunes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\comunes\Zuliaworks.Netzuela.Valeria.Datos\Datos.csproj">
-      <Project>{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}</Project>
-      <Name>Datos</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\comunes\Zuliaworks.Netzuela.Valeria.Preferencias\Preferencias.csproj">
       <Project>{A60A5CA5-0C85-447F-B673-56EB97D4F056}</Project>
       <Name>Preferencias</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\comunes\Zuliaworks.Netzuela.Valeria.Tipos\Tipos.csproj">
-      <Project>{8DE4172C-BAE2-4320-A092-585077DBB33F}</Project>
-      <Name>Tipos</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\cliente\Zuliaworks.Netzuela.Valeria.Cliente.Logica\Logica.csproj">
       <Project>{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}</Project>
       <Name>Logica</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\comunes\Zuliaworks.Netzuela.Valeria.Tipos\TiposServidor.csproj">
+      <Project>{8DE4172C-BAE2-4320-A092-585077DBB33F}</Project>
+      <Name>TiposServidor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\comunes\Zuliaworks.Netzuela.Valeria.Datos\DatosServidor.csproj">
+      <Project>{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}</Project>
+      <Name>DatosServidor</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

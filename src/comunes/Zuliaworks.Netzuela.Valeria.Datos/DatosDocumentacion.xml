@@ -1,44 +1,20 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Datos</name>
+        <name>obj/Debug/Datos</name>
     </assembly>
     <members>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Web.ClienteSpuria">
             <summary>
-            Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
-            a las bases de datos.
-            </summary>    
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.AnfitrionLocal">
-            <summary>
-            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
-            </summary>    
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
-            <summary>
-            Implementa las funciones de acceso a las bases de datos SQLServer
             </summary>
             <summary>
-            
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ConectorGenerico`3">
-            <summary>
-            Implementa las funciones genericas de acceso a las bases de datos
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Netzuela">
-            <summary>
-            Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.MySQL">
             <summary>
-            
+            Implementa las funciones de acceso a las bases de datos MySQL
             </summary>
             <summary>
-            Implementa las funciones de acceso a las bases de datos MySQL
             </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Datos.MySQL.DetectarServidor">
@@ -47,12 +23,14 @@
             </summary>
             <returns>Instancias MySQL detectadas.</returns>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Web.ClienteSpuria">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Netzuela">
             <summary>
-            
+            Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
             </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.AnfitrionLocal">
             <summary>
-            
+            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorPredeterminado">
@@ -60,9 +38,27 @@
             Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
+            <summary>
+            Implementa las funciones de acceso a las bases de datos SQLServer
+            </summary>
+            <summary>
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ConectorGenerico`3">
+            <summary>
+            Implementa las funciones genericas de acceso a las bases de datos
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos">
+            <summary>
+            Provee una interfaz unica para comunicarse con todos los implementadores de acceso
+            a las bases de datos.
+            </summary>
+        </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Conexion">
             <summary>
-            Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
+            Esta clase permite establecer una conexión con cualquier fuente de datos compatible
             de forma transparente para el programador.
             </summary>
         </member>
@@ -76,20 +72,8 @@
             Crea una conexión con el servidor especificado.
             </summary>
             <param name="parametros">Datos de configuración de la conexión con el servidor.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="parametros"/> es una referencia 
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="parametros" /> es una referencia
             nula.</exception>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
-            <summary>
-            
-            </summary>
-            <param name="usuario"></param>
-            <param name="contrasena"></param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.Conexion.Desconectar">
-            <summary>
-            Cierra la conexión con el servidor.
-            </summary>
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.Datos.Conexion.Parametros">
             <summary>
@@ -99,6 +83,19 @@
         <member name="P:Zuliaworks.Netzuela.Valeria.Datos.Conexion.BD">
             <summary>
             Proveedor de datos creado a partir de las especificaciones de conexión.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
+            <summary>
+            </summary>
+            <param name="usuario">
+            </param>
+            <param name="contrasena">
+            </param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.Conexion.Desconectar">
+            <summary>
+            Cierra la conexión con el servidor.
             </summary>
         </member>
     </members>

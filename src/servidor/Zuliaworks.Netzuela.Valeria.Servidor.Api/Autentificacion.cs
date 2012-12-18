@@ -19,7 +19,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 	using ServiceStack.ServiceInterface;			// IServiceBase
 	using ServiceStack.ServiceInterface.Auth;		// CredentialsAuthProvider
 	using Zuliaworks.Netzuela.Valeria.Comunes;
-	using Zuliaworks.Netzuela.Valeria.Logica;
+	using Zuliaworks.Netzuela.Valeria.Datos;
 		
 	/// <summary>
     /// Administra los credenciales enviados por el cliente.

@@ -7,9 +7,9 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 	
 	using ServiceStack.ServiceInterface;
 	using ServiceStack.ServiceInterface.ServiceModel;		// ResponseStatus
+	using Zuliaworks.Netzuela.Valeria.Datos;
 	using Zuliaworks.Netzuela.Valeria.Tipos;
-	using Zuliaworks.Netzuela.Valeria.Logica;
-		
+	
 	public class ListarTiendasServicio : ServiceBase<ListarTiendas>
 	{
 		#region Implementacion de interfaces

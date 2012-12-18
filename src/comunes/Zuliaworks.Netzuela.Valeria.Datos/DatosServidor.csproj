@@ -85,6 +85,7 @@
     <Compile Include="ConectorGenerico.cs" />
     <Compile Include="IBaseDeDatos.cs" />
     <Compile Include="IBaseDeDatosRemota.cs" />
+    <Compile Include="Conexion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zuliaworks.Netzuela.Valeria.Comunes\Comunes.csproj">

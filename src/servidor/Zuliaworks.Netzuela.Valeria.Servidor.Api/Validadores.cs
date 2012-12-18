@@ -6,7 +6,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 	using System.Linq;
 	
 	using ServiceStack.FluentValidation.Validators;
-	using Zuliaworks.Netzuela.Valeria.Logica;
+	using Zuliaworks.Netzuela.Valeria.Datos;
 
 	public static class Validadores
 	{

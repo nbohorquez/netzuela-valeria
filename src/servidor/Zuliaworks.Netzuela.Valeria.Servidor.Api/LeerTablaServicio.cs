@@ -9,8 +9,8 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 	using ServiceStack.FluentValidation;
 	using ServiceStack.ServiceInterface;
 	using ServiceStack.ServiceInterface.ServiceModel;		// ResponseStatus
+	using Zuliaworks.Netzuela.Valeria.Datos;
 	using Zuliaworks.Netzuela.Valeria.Tipos;
-	using Zuliaworks.Netzuela.Valeria.Logica;
 	
 	public class LeerTablaValidador : AbstractValidator<LeerTabla>
 	{		

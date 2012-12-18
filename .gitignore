@@ -25,8 +25,8 @@ src/comunes/Zuliaworks.Netzuela.Valeria.Preferencias/obj/
 src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/bin/
 src/comunes/Zuliaworks.Netzuela.Valeria.Tipos/obj/
 
-src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/bin/
-src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.Logica/obj/
+src/cliente/Zuliaworks.Netzuela.Valeria.Logica/bin/
+src/cliente/Zuliaworks.Netzuela.Valeria.Logica/obj/
 
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion/bin/
 src/cliente/Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion/obj/

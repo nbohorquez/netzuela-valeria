@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Cliente.Logica
+﻿namespace Zuliaworks.Netzuela.Valeria.Logica
 {
     using System;
     using System.Collections.Generic;

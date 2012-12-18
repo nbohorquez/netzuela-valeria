@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>obj/Debug/Logica</name>
+        <name>Logica</name>
     </assembly>
     <members>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Conexion">
             <summary>
-            Esta clase permite establecer una conexión con cualquier fuente de datos compatible
+            Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
             de forma transparente para el programador.
             </summary>
         </member>
@@ -20,8 +20,20 @@
             Crea una conexión con el servidor especificado.
             </summary>
             <param name="parametros">Datos de configuración de la conexión con el servidor.</param>
-            <exception cref="T:System.ArgumentNullException">Si <paramref name="parametros" /> es una referencia
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="parametros"/> es una referencia 
             nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
+            <summary>
+            
+            </summary>
+            <param name="usuario"></param>
+            <param name="contrasena"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Conexion.Desconectar">
+            <summary>
+            Cierra la conexión con el servidor.
+            </summary>
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Conexion.Parametros">
             <summary>
@@ -33,131 +45,36 @@
             Proveedor de datos creado a partir de las especificaciones de conexión.
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
             <summary>
+            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
             </summary>
-            <param name="usuario">
-            </param>
-            <param name="contrasena">
-            </param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Conexion.Desconectar">
-            <summary>
-            Cierra la conexión con el servidor.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas">
-            <summary>
-            Se emplea para mapear (sic), esto es, para crear una transformación o mediación
-            de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es
-            empleada por <see cref="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones" /> como unidad básica de mapeo.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.#ctor">
-            <summary>
-            Crea un mapeo de columnas vacío.
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
-            <summary>
-            Crea un mapeo de columnas especificando sólo la columna destino.
-            </summary>
-            <param name="columnaDestino">Nodo que representa la columna destino.</param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo,Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
-            <summary>
-            Crea un mapeo de columnas especificando la columna de orígen y la de destino.
-            </summary>
-            <param name="columnaOrigen">Nodo que representa la columna destino.</param>
-            <param name="columnaDestino">Nodo que representa la columna orígen.</param>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.TablaPadre">
-            <summary>
-            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones" /> asociada a esta clase.
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.ColumnaOrigen">
-            <summary>
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.ColumnaDestino">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.FijarOrigen(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
-            <summary>
-            </summary>
-            <param name="columnaOrigen">
-            </param>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.QuitarOrigen">
-            <summary>
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.#ctor">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.#ctor(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo})">
-            <summary>
-            </summary>
-            <param name="tabla">
-            </param>
-            <param name="columnas">
-            </param>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.Sociedades">
-            <summary>
-            </summary>
-        </member>
-        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.NodoTabla">
-            <summary>
-            </summary>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
-            <summary>
-            </summary>
-            <param name="nodo">
-            </param>
-            <returns>
-            </returns>
-        </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.AgregarMapa(Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas)">
-            <summary>
-            </summary>
-            <param name="mapaDeColumna">
-            </param>
-            <returns>
-            </returns>
+            <returns></returns>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo">
             <summary>
-            Implementación de la unidad básica de información de una estructura de datos
-            en forma de árbol. Se usa para representar la organizacion interna de las
+            Implementación de la unidad básica de información de una estructura de datos 
+            en forma de árbol. Se usa para representar la organizacion interna de las 
             bases de datos.
             </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo.#ctor">
             <summary>
+            
             </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo.#ctor(System.String)">
             <summary>
+            
             </summary>
-            <param name="nombre">
-            </param>
+            <param name="nombre"></param>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo.#ctor(System.String,System.Int32)">
             <summary>
+            
             </summary>
-            <param name="nombre">
-            </param>
-            <param name="nivel">
-            </param>
+            <param name="nombre"></param>
+            <param name="nivel"></param>
         </member>
         <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo.Nombre">
             <summary>
@@ -179,12 +96,97 @@
             Tabla de sociedades asociada este nodo.
             </summary>
         </member>
-        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.ExponerAnfitrionLocal.DetectarServidoresLocales">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas">
             <summary>
-            Obtiene los detalles de conexión de todos los servidores detectados en el equipo local.
+            Se emplea para mapear (sic), esto es, para crear una transformación o mediación 
+            de datos entre dos repositorios (columnas en este caso) distintos. Esta clase es 
+            empleada por <see cref="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones"/> como unidad básica de mapeo.
             </summary>
-            <returns>
-            </returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.#ctor">
+            <summary>
+            Crea un mapeo de columnas vacío.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
+            <summary>
+            Crea un mapeo de columnas especificando sólo la columna destino.
+            </summary>
+            <param name="columnaDestino">Nodo que representa la columna destino.</param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.#ctor(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo,Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
+            <summary>
+            Crea un mapeo de columnas especificando la columna de orígen y la de destino.
+            </summary>
+            <param name="columnaOrigen">Nodo que representa la columna destino.</param>
+            <param name="columnaDestino">Nodo que representa la columna orígen.</param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.FijarOrigen(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="columnaOrigen"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.QuitarOrigen">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.TablaPadre">
+            <summary>
+            Instancia de <see cref="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones"/> asociada a esta clase.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.ColumnaOrigen">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas.ColumnaDestino">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.#ctor(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo,System.Collections.Generic.List{Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo})">
+            <summary>
+            
+            </summary>
+            <param name="tabla"></param>
+            <param name="columnas"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.NodoEsLegal(Zuliaworks.Netzuela.Valeria.Cliente.Logica.Nodo)">
+            <summary>
+            
+            </summary>
+            <param name="nodo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.AgregarMapa(Zuliaworks.Netzuela.Valeria.Cliente.Logica.AsociacionDeColumnas)">
+            <summary>
+            
+            </summary>
+            <param name="mapaDeColumna"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.Sociedades">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Cliente.Logica.TablaDeAsociaciones.NodoTabla">
+            <summary>
+            
+            </summary>
         </member>
     </members>
 </doc>

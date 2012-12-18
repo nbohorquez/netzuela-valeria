@@ -1,20 +1,44 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>obj/Debug/Datos</name>
+        <name>Datos</name>
     </assembly>
     <members>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Web.ClienteSpuria">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos">
             <summary>
+            Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
+            a las bases de datos.
+            </summary>    
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.AnfitrionLocal">
+            <summary>
+            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
+            </summary>    
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
+            <summary>
+            Implementa las funciones de acceso a las bases de datos SQLServer
             </summary>
             <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ConectorGenerico`3">
+            <summary>
+            Implementa las funciones genericas de acceso a las bases de datos
+            </summary>
+        </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Netzuela">
+            <summary>
+            Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.MySQL">
             <summary>
-            Implementa las funciones de acceso a las bases de datos MySQL
+            
             </summary>
             <summary>
+            Implementa las funciones de acceso a las bases de datos MySQL
             </summary>
         </member>
         <member name="M:Zuliaworks.Netzuela.Valeria.Datos.MySQL.DetectarServidor">
@@ -23,37 +47,17 @@
             </summary>
             <returns>Instancias MySQL detectadas.</returns>
         </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Netzuela">
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Web.ClienteSpuria">
             <summary>
-            Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
+            
             </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.AnfitrionLocal">
             <summary>
-            Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
+            
             </summary>
         </member>
         <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ServidorPredeterminado">
             <summary>
             Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.SQLServer">
-            <summary>
-            Implementa las funciones de acceso a las bases de datos SQLServer
-            </summary>
-            <summary>
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.ConectorGenerico`3">
-            <summary>
-            Implementa las funciones genericas de acceso a las bases de datos
-            </summary>
-        </member>
-        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.IBaseDeDatos">
-            <summary>
-            Provee una interfaz unica para comunicarse con todos los implementadores de acceso
-            a las bases de datos.
             </summary>
         </member>
     </members>

@@ -83,9 +83,9 @@
       <Project>{9EFCF5AD-5A96-4726-8385-807552BA1497}</Project>
       <Name>Comunes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\comunes\Zuliaworks.Netzuela.Valeria.Datos\Datos.csproj">
+    <ProjectReference Include="..\..\comunes\Zuliaworks.Netzuela.Valeria.Datos\DatosCliente.csproj">
       <Project>{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}</Project>
-      <Name>Datos</Name>
+      <Name>DatosCliente</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\comunes\Zuliaworks.Netzuela.Valeria.Preferencias\Preferencias.csproj">
       <Project>{A60A5CA5-0C85-447F-B673-56EB97D4F056}</Project>

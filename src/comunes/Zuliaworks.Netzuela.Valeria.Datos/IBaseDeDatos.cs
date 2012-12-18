@@ -43,17 +43,13 @@
         void Desconectar();
         string[] ListarBasesDeDatos();
         string[] ListarTablas(string baseDeDatos);
-        bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios);
-        DataTable Consultar(string baseDeDatos, string sql);
-
+        
         #endregion // Métodos sincrónicos
 
         #region Métodos asincrónicos
 
         void ListarBasesDeDatosAsinc();
         void ListarTablasAsinc(string baseDeDatos);
-        void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios);
-        void ConsultarAsinc(string baseDeDatos, string sql);
 
         #endregion // Métodos asincrónicos
 

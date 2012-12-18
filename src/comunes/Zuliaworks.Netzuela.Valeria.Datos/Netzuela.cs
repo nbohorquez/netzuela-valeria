@@ -11,7 +11,7 @@
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos de Netzuela en Internet
     /// </summary>
-    public class Netzuela : EventosComunes, INetzuela
+    public class Netzuela : EventosComunes, IBaseDeDatosRemota
     {
         #region Variables
 
@@ -246,16 +246,6 @@
             return resultado;
         }
 
-        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataTable Consultar(string baseDeDatos, string sql)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         #region Métodos asincrónicos
@@ -319,16 +309,6 @@
                 string Error = "Error al escribir la tabla " + nombreTabla + " en la base de datos " + baseDeDatos;
                 throw new Exception(Error, ex);
             }
-        }
-
-        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ConsultarAsinc(string baseDeDatos, string sql)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

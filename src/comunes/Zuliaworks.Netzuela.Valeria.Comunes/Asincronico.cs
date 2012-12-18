@@ -28,6 +28,7 @@
             this.InicializarDelegados();
             this.tareas = new Dictionary<string, Delegate>();
             this.eventos = new Dictionary<string, Type>();
+            this.hilos = new HybridDictionary();
             this.retornos = new Dictionary<string, SendOrPostCallback>();
         }
 
@@ -48,9 +49,9 @@
             try
             {
                 AsyncOperation asincronico = this.RegistarTareaAsincronica(tareaId);
-                this.tareas.Add(nombre, tarea);
-                this.eventos.Add(nombre, typeof(T));
-                this.retornos.Add(nombre, retorno);
+                this.tareas[nombre] = tarea;
+                this.eventos[nombre] = typeof(T);
+                this.retornos[nombre] = retorno;
                 this.carpintero.BeginInvoke(asincronico, nombre, parametros, null, null);
             }
             catch (Exception ex)

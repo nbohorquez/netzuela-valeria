@@ -84,7 +84,7 @@
                 var tipo = this.BD.GetType();
                 if (tipo.GetEvent("ListarTiendasCompletado") != null)
                 {
-                    ((INetzuela)this.BD).ListarTiendasCompletado += value;
+                    ((IBaseDeDatosRemota)this.BD).ListarTiendasCompletado += value;
                 }
                 else
                 {
@@ -96,7 +96,7 @@
                 var tipo = this.BD.GetType();
                 if (tipo.GetEvent("ListarTiendasCompletado") != null)
                 {
-                    ((INetzuela)this.BD).ListarTiendasCompletado -= value;
+                    ((IBaseDeDatosRemota)this.BD).ListarTiendasCompletado -= value;
                 }
                 else
                 {
@@ -242,7 +242,7 @@
                 var tipo = this.BD.GetType();
                 if (tipo.GetMethod("ListarTiendas") != null)
                 {
-                    resultado = ((INetzuela)this.BD).ListarTiendas();
+                    resultado = ((IBaseDeDatosRemota)this.BD).ListarTiendas();
                 }
                 else
                 {
@@ -322,7 +322,7 @@
                 var tipo = this.BD.GetType();
                 if (tipo.GetMethod("LeerTabla") != null)
                 {
-                    resultado = ((INetzuela)this.BD).LeerTabla(tiendaId, baseDeDatos, tabla);
+                    resultado = ((IBaseDeDatosRemota)this.BD).LeerTabla(tiendaId, baseDeDatos, tabla);
                 }
                 else
                 {
@@ -370,7 +370,7 @@
                 var tipo = this.BD.GetType();
                 if (tipo.GetMethod("EscribirTabla") != null)
                 {
-                    resultado = ((INetzuela)this.BD).EscribirTabla(tiendaId, baseDeDatos, nombreTabla, tabla);
+                    resultado = ((IBaseDeDatosRemota)this.BD).EscribirTabla(tiendaId, baseDeDatos, nombreTabla, tabla);
                 }
                 else
                 {
@@ -391,7 +391,7 @@
 
             try
             {
-                resultado = this.BD.CrearUsuario(usuario, contrasena, columnasAutorizadas, Privilegios.Seleccionar);
+                resultado = ((IBaseDeDatosLocal)this.BD).CrearUsuario(usuario, contrasena, columnasAutorizadas, Privilegios.Seleccionar);
             }
             catch (Exception ex)
             {
@@ -407,7 +407,7 @@
 
             try
             {
-                resultado = this.BD.Consultar(baseDeDatos, sql);
+                resultado = ((IBaseDeDatosLocal)this.BD).Consultar(baseDeDatos, sql);
             }
             catch (Exception ex)
             {
@@ -428,7 +428,7 @@
                 var tipo = this.BD.GetType();
                 if (tipo.GetMethod("ListarTiendasAsinc") != null)
                 {
-                    ((INetzuela)this.BD).ListarTiendasAsinc();
+                    ((IBaseDeDatosRemota)this.BD).ListarTiendasAsinc();
                 }
                 else
                 {
@@ -492,7 +492,7 @@
                 var tipo = this.BD.GetType();
                 if (tipo.GetMethod("LeerTablaAsinc") != null)
                 {
-                    ((INetzuela)this.BD).LeerTablaAsinc(tiendaId, baseDeDatos, tabla);
+                    ((IBaseDeDatosRemota)this.BD).LeerTablaAsinc(tiendaId, baseDeDatos, tabla);
                 }
                 else
                 {
@@ -532,7 +532,7 @@
                 var tipo = this.BD.GetType();
                 if (tipo.GetMethod("EscribirTablaAsinc") != null)
                 {
-                    ((INetzuela)this.BD).EscribirTablaAsinc(tiendaId, baseDeDatos, nombreTabla, tabla);
+                    ((IBaseDeDatosRemota)this.BD).EscribirTablaAsinc(tiendaId, baseDeDatos, nombreTabla, tabla);
                 }
                 else
                 {
@@ -549,7 +549,15 @@
         {
             try
             {
-                this.BD.CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios);
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("CrearUsuarioAsinc") != null)
+                {
+                    ((IBaseDeDatosLocal)this.BD).CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
             }
             catch (Exception ex)
             {
@@ -561,7 +569,16 @@
         {
             try
             {
-                this.BD.ConsultarAsinc(baseDeDatos, sql);
+                var tipo = this.BD.GetType();
+                if (tipo.GetMethod("ConsultarAsinc") != null)
+                {
+                    ((IBaseDeDatosLocal)this.BD).ConsultarAsinc(baseDeDatos, sql);
+                }
+                else
+                {
+                    throw new MissingMethodException();
+                }
+                
             }
             catch (Exception ex)
             {

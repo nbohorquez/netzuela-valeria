@@ -73,7 +73,7 @@
     <Compile Include="Eventos\EventoOperacionAsincCompletadaArgs.cs" />
     <Compile Include="EventosComunes.cs" />
     <Compile Include="IBaseDeDatosLocal.cs" />
-    <Compile Include="INetzuela.cs" />
+    <Compile Include="IBaseDeDatosRemota.cs" />
     <Compile Include="Web\ClienteSpuria.Operaciones.cs" />
     <Compile Include="IBaseDeDatos.cs" />
     <Compile Include="MySQL.cs" />
@@ -91,9 +91,9 @@
       <Project>{9EFCF5AD-5A96-4726-8385-807552BA1497}</Project>
       <Name>Comunes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zuliaworks.Netzuela.Valeria.Tipos\Tipos.csproj">
+    <ProjectReference Include="..\Zuliaworks.Netzuela.Valeria.Tipos\TiposCliente.csproj">
       <Project>{8DE4172C-BAE2-4320-A092-585077DBB33F}</Project>
-      <Name>Tipos</Name>
+      <Name>TiposCliente</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comunes", "..\comunes\Zulia
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Preferencias", "..\comunes\Zuliaworks.Netzuela.Valeria.Preferencias\Preferencias.csproj", "{A60A5CA5-0C85-447F-B673-56EB97D4F056}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datos", "..\comunes\Zuliaworks.Netzuela.Valeria.Datos\Datos.csproj", "{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatosCliente", "..\comunes\Zuliaworks.Netzuela.Valeria.Datos\DatosCliente.csproj", "{9FE87017-7FC8-488D-9442-5CD6C89FAFCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tipos", "..\comunes\Zuliaworks.Netzuela.Valeria.Tipos\Tipos.csproj", "{8DE4172C-BAE2-4320-A092-585077DBB33F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiposCliente", "..\comunes\Zuliaworks.Netzuela.Valeria.Tipos\TiposCliente.csproj", "{8DE4172C-BAE2-4320-A092-585077DBB33F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

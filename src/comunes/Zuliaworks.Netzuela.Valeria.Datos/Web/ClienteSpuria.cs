@@ -38,7 +38,6 @@
 
         private IServiceClient cliente;
         private Random aleatorio;
-        //private HybridDictionary hilos;
         private string uriBaseServidor;
         private string uriServidorJsonSync;
         private CookieCollection cookies;
@@ -51,7 +50,6 @@
         {
             this.InicializarDelegados();
             this.aleatorio = new Random();
-            //this.hilos = new HybridDictionary();
             this.cookies = new CookieCollection();
         }
 
@@ -130,32 +128,7 @@
                 throw new Exception("Error desconectando de servidor remoto", ex);
             }
         }
-        /*
-        public void CancelarTarea(object tareaId)
-        {
-            try
-            {
-                AsyncOperation asincronico = (AsyncOperation)this.hilos[tareaId];
 
-                if (asincronico != null)
-                {
-                    lock (this.hilos.SyncRoot)
-                    {
-                        this.hilos.Remove(tareaId);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error cancelando la tarea " + tareaId.ToString(), ex);
-            }
-        }
-
-        private bool TareaCancelada(object tareaId)
-        {
-            return this.hilos[tareaId] == null;
-        }
-        */
         private void AgregarCookies(HttpWebRequest peticion)
         {
             peticion.CookieContainer = new CookieContainer();
@@ -183,7 +156,6 @@
             this.delegadoDispararEscribirTablaCompletado = new SendOrPostCallback(AntesDeDispararEscribirTablaCompletado);
             this.delegadoDispararCrearUsuarioCompletado = new SendOrPostCallback(AntesDeDispararCrearUsuarioCompletado);
             this.delegadoDispararConsultarCompletado = new SendOrPostCallback(AntesDeDispararConsultarCompletado);
-            //this.carpintero = new DelegadoComenzarOperacion(ComenzarOperacion);
             base.InicializarDelegados();
         }
 
@@ -194,21 +166,6 @@
         protected override void Dispose(bool borrarCodigoAdministrado)
         {
             this.UriBaseServicio = null;
-            /*
-            if (borrarCodigoAdministrado)
-            {
-                if (this.hilos != null)
-                {
-                    foreach (var entrada in this.hilos.Keys)
-                    {
-                        this.CancelarTarea(entrada);
-                    }
-
-                    this.hilos.Clear();
-                    this.hilos = null;
-                }
-            }
-             */
             base.Dispose(borrarCodigoAdministrado);
         }
                 

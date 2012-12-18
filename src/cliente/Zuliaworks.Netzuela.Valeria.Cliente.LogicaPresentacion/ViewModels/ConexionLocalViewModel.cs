@@ -11,7 +11,7 @@
 
     using MvvmFoundation.Wpf;                                   // RelayCommand, ObservableObject
     using Zuliaworks.Netzuela.Valeria.Comunes;                  // DatosDeConexion, PasswordGenerator
-    using Zuliaworks.Netzuela.Valeria.Cliente.Logica;           // Conexion
+    using Zuliaworks.Netzuela.Valeria.Datos;                    // Conexion
 
     /// <summary>
     /// 

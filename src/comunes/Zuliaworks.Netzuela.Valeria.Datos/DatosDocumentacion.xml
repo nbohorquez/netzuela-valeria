@@ -60,5 +60,46 @@
             Esta clase se carga cuando no se ha podido conectar con otro proveedor de acceso.
             </summary>
         </member>
+        <member name="T:Zuliaworks.Netzuela.Valeria.Datos.Conexion">
+            <summary>
+            Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
+            de forma transparente para el programador.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.Conexion.#ctor">
+            <summary>
+            Crea una conexión vacía.
+            </summary>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.Conexion.#ctor(Zuliaworks.Netzuela.Valeria.Comunes.ParametrosDeConexion)">
+            <summary>
+            Crea una conexión con el servidor especificado.
+            </summary>
+            <param name="parametros">Datos de configuración de la conexión con el servidor.</param>
+            <exception cref="T:System.ArgumentNullException">Si <paramref name="parametros"/> es una referencia 
+            nula.</exception>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.Conexion.Conectar(System.Security.SecureString,System.Security.SecureString)">
+            <summary>
+            
+            </summary>
+            <param name="usuario"></param>
+            <param name="contrasena"></param>
+        </member>
+        <member name="M:Zuliaworks.Netzuela.Valeria.Datos.Conexion.Desconectar">
+            <summary>
+            Cierra la conexión con el servidor.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Datos.Conexion.Parametros">
+            <summary>
+            Parámetros de la conexión con el servidor actual.
+            </summary>
+        </member>
+        <member name="P:Zuliaworks.Netzuela.Valeria.Datos.Conexion.BD">
+            <summary>
+            Proveedor de datos creado a partir de las especificaciones de conexión.
+            </summary>
+        </member>
     </members>
 </doc>

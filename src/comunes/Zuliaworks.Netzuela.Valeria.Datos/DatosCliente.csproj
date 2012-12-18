@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConectorGenerico.cs" />
+    <Compile Include="Conexion.cs" />
     <Compile Include="DBISAM.cs" />
     <Compile Include="DBISAM.Detectar.cs" />
     <Compile Include="Eventos\EventoConsultarCompletadoArgs.cs" />

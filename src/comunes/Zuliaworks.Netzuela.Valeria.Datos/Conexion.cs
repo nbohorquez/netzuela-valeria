@@ -1,4 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Logica
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,6 @@
     using System.Text;
 
     using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
-    using Zuliaworks.Netzuela.Valeria.Datos;            // SQLServer, MySQL, Oracle y Netzuela
     using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
 
     /// <summary>

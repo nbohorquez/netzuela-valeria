@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventoCambioEnColumnasArgs.cs" />
-    <Compile Include="Conexion.cs" />
     <Compile Include="AsociacionDeColumnas.cs" />
     <Compile Include="TablaDeAsociaciones.cs" />
     <Compile Include="Nodo.cs" />

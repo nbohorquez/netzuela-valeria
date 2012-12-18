@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logica", "Zuliaworks.Netzuela.Valeria.Cliente.Logica\Logica.csproj", "{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicaPresentacion", "Zuliaworks.Netzuela.Valeria.Cliente.LogicaPresentacion\LogicaPresentacion.csproj", "{39A2598C-EEE2-4C32-84E5-A7277586C9BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentacion", "Zuliaworks.Netzuela.Valeria.Cliente.Presentacion\Presentacion.csproj", "{E2C9719C-AFE8-4A2D-8609-C34FC3C91978}"
@@ -15,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatosCliente", "..\comunes\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiposCliente", "..\comunes\Zuliaworks.Netzuela.Valeria.Tipos\TiposCliente.csproj", "{8DE4172C-BAE2-4320-A092-585077DBB33F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logica", "Zuliaworks.Netzuela.Valeria.Cliente.Logica\Logica.csproj", "{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,16 +25,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|x86.ActiveCfg = Release|Any CPU
 		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39A2598C-EEE2-4C32-84E5-A7277586C9BD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -95,6 +85,16 @@ Global
 		{8DE4172C-BAE2-4320-A092-585077DBB33F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8DE4172C-BAE2-4320-A092-585077DBB33F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8DE4172C-BAE2-4320-A092-585077DBB33F}.Release|x86.ActiveCfg = Release|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5C6CAF54-A40C-4B31-9936-D6B51D009F4C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

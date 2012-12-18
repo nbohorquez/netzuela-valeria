@@ -10,9 +10,9 @@
 
     using MvvmFoundation.Wpf;                           // ObservableObject    
     using Zuliaworks.Netzuela.Valeria.Comunes;          // DatosDeConexion
+    using Zuliaworks.Netzuela.Valeria.Datos;            // Conexion
     using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
-    using Zuliaworks.Netzuela.Valeria.Cliente.Logica;   // Conexion
-
+    
     /// <summary>
     /// 
     /// </summary>

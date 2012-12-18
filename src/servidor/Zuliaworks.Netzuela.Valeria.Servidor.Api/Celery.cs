@@ -60,8 +60,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 					IBasicProperties propiedades = modelo.CreateBasicProperties();
 					propiedades.ContentType = "application/json";
 					propiedades.DeliveryMode = 2;					
-					modelo.BasicPublish(Exchange, RoutingKey, 
-					                    propiedades, Encoding.UTF8.GetBytes(mensaje));
+					modelo.BasicPublish(Exchange, RoutingKey, propiedades, Encoding.UTF8.GetBytes(mensaje));
 				}
             }
 		}

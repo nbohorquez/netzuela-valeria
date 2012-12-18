@@ -51,11 +51,6 @@ apache_valeria="cat > $valeria_avaiable << EOF
 </VirtualHost>
 EOF
 "
-valeria_puerto="cat >> /etc/apache2/ports.conf << EOF
-NameVirtualHost *:8080
-Listen 8080
-EOF
-"
 
 instalar_mono() {
         apt-get install -y mono-complete
@@ -84,13 +79,6 @@ crear_archivo_apache() {
                 bash -c "$apache_valeria"
         fi
         ln -s "$valeria_avaliable" "$valeria_enabled" 
-        
-        # Esta parte no deberia estar si estoy en Amazon
-<<COM
-        if ! grep -Fxq "Listen 8080" /etc/apache2/ports.conf; then
-                bash -c "$valeria_puerto"
-        fi
-COM
 }
 
 configurar_var_www() {

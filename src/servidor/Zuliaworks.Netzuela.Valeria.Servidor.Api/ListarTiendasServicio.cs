@@ -27,8 +27,8 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 					
 					string sql = "SELECT t.tienda_id, c.nombre_legal "
 								+ "FROM tienda AS t "
-								+ "JOIN cliente AS c ON t.cliente_p = c.rif "
-								+ "JOIN usuario AS u ON c.propietario = u.usuario_id "
+								+ "JOIN cliente AS c ON c.rif = t.cliente_p "
+								+ "JOIN usuario AS u ON u.usuario_id = c.propietario_id "
 								+ "WHERE u.usuario_id = " + usuario.ToString();
 					DataTable t = conexion.Consultar(Constantes.BaseDeDatos, sql);
 					

@@ -19,7 +19,7 @@ DirectoryIndex index.aspx
 Include /etc/mono-server4/mono-server4-hosts.conf
 EOF
 "
-apache_valeria="cat > $valeria_avaiable << EOF
+apache_valeria="cat > $valeria_available << EOF
 <VirtualHost *:80>
         ServerName api.netzuela.com
         ServerAdmin tca7410nb@gmail.com
@@ -78,7 +78,7 @@ crear_archivo_apache() {
         if [ ! -f "$valeria_available" ]; then
                 bash -c "$apache_valeria"
         fi
-        ln -s "$valeria_avaliable" "$valeria_enabled" 
+        ln -s "$valeria_available" "$valeria_enabled" 
 }
 
 configurar_var_www() {

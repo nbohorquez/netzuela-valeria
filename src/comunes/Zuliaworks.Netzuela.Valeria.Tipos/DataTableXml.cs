@@ -8,7 +8,7 @@
     using System.ServiceModel;
     using System.ServiceModel.Web;
     using System.Text;
-		
+
     [DataContract(Namespace = Constantes.Namespace)]
     public class DataTableXml
     {
@@ -25,7 +25,7 @@
             this.EsquemaXml = esquemaXml;
             this.Xml = xml;
         }
-		
+        
         #endregion
 
         #region Propiedades

@@ -21,7 +21,7 @@
 
             try
             {
-				tabla.ReadXmlSchema(new MemoryStream(Encoding.UTF8.GetBytes(tablaXml.EsquemaXml)));
+                tabla.ReadXmlSchema(new MemoryStream(Encoding.UTF8.GetBytes(tablaXml.EsquemaXml)));
                 tabla.ReadXml(new MemoryStream(Encoding.UTF8.GetBytes(tablaXml.Xml)));
             }
             catch (Exception ex)
@@ -38,20 +38,20 @@
 
             try
             {
-				Stream xml = new MemoryStream();
-				Stream esquemaXml = new MemoryStream();
-				
-				tabla.TableName = nombreTabla;
-				tabla.WriteXml(xml, XmlWriteMode.DiffGram);
-				tabla.WriteXmlSchema(esquemaXml);
-				
-				// Como hubo escritura en el intermedio, es necesario reiniciar la posicion del lector.
-				xml.Position = 0;
-				esquemaXml.Position = 0;
-				
-				StreamReader lectorXml = new StreamReader(xml, Encoding.UTF8);
-				StreamReader lectorEsquemaXml = new StreamReader(esquemaXml, Encoding.UTF8);				
-				
+                Stream xml = new MemoryStream();
+                Stream esquemaXml = new MemoryStream();
+                
+                tabla.TableName = nombreTabla;
+                tabla.WriteXml(xml, XmlWriteMode.DiffGram);
+                tabla.WriteXmlSchema(esquemaXml);
+                
+                // Como hubo escritura en el intermedio, es necesario reiniciar la posicion del lector.
+                xml.Position = 0;
+                esquemaXml.Position = 0;
+                
+                StreamReader lectorXml = new StreamReader(xml, Encoding.UTF8);
+                StreamReader lectorEsquemaXml = new StreamReader(esquemaXml, Encoding.UTF8);                
+                
                 datosAEnviar = new DataTableXml(baseDeDatos, nombreTabla, lectorEsquemaXml.ReadToEnd(), lectorXml.ReadToEnd());
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@
 
             return datosAEnviar;
         }
-		
+        
         #endregion
     }
 }

@@ -68,10 +68,12 @@
                 throw new ArgumentNullException("sql");
             }
 
-            U orden = new U();
-            orden.CommandText = sql;
-            orden.Connection = this.conexion;
-            orden.ExecuteNonQuery();
+            using (U orden = new U())
+            {
+                orden.CommandText = sql;
+                orden.Connection = this.conexion;
+                orden.ExecuteNonQuery();
+            }
         }
 
         protected virtual string[] LectorSimple(string sql)
@@ -82,17 +84,19 @@
             }
 
             List<string> resultado = new List<string>();
-            U orden = new U();
-            orden.CommandText = sql;
-            orden.Connection = this.conexion;
-            var lector = orden.ExecuteReader();
-
-            while (lector.Read())
+            using (U orden = new U())
             {
-                resultado.Add(lector.GetString(0));
+                orden.CommandText = sql;
+                orden.Connection = this.conexion;
+                using (var lector = orden.ExecuteReader())
+                {
+                    while (lector.Read())
+                    {
+                        resultado.Add(lector.GetString(0));
+                    }
+                }
             }
 
-            lector.Close();
             return resultado.ToArray();
         }
 
@@ -103,18 +107,19 @@
                 throw new ArgumentNullException("sql");
             }
 
-            DataTable resultado = new DataTable();
+            DataSet resultado = new DataSet();
 
             // Para pasar argumentos al constructor de un tipo dinamico:
             // http://www.dalun.com/blogs/05.27.2007.htm
 
             var ctorV = typeof(V).GetConstructor(new System.Type[] { typeof(string), typeof(T) });
-            V adaptador = (V) ctorV.Invoke(new object[] { sql, this.conexion });
+            using (V adaptador = (V) ctorV.Invoke(new object[] { sql, this.conexion }))
+            {
+                adaptador.FillSchema(resultado, SchemaType.Source);
+                adaptador.Fill(resultado);
+            }
 
-            adaptador.FillSchema(resultado, SchemaType.Source);
-            adaptador.Fill(resultado);
-
-            return resultado;
+            return resultado.Tables[0];
         }
 
         protected abstract string DescribirTabla(string tabla);

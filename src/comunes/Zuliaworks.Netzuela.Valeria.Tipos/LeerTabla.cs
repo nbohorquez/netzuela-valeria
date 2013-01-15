@@ -1,24 +1,23 @@
 namespace Zuliaworks.Netzuela.Valeria.Tipos
 {
-	using System;
-	using System.Runtime.Serialization;						// DataContract, DataMember
-	
-	using ServiceStack.ServiceHost;							// RestService
-	using ServiceStack.ServiceInterface;					// Authenticate
+    using System;
+    using System.Runtime.Serialization;     // DataContract, DataMember
+    
+    using ServiceStack.ServiceHost;         // RestService
+    using ServiceStack.ServiceInterface;    // Authenticate
 
     #if (SERVIDOR)
-	[Authenticate()]
+    [Authenticate()]
     #endif
     [DataContract]
-	[RestService("/leertabla")]
-	public class LeerTabla
-	{
-		[DataMember]
-		public int TiendaId { get; set; }
-		[DataMember]
-		public string BaseDeDatos { get; set; }
-		[DataMember]
-		public string Tabla { get; set; }
-	}
+    [RestService("/leertabla")]
+    public class LeerTabla
+    {
+        [DataMember]
+        public int TiendaId { get; set; }
+        [DataMember]
+        public string BaseDeDatos { get; set; }
+        [DataMember]
+        public string Tabla { get; set; }
+    }
 }
-

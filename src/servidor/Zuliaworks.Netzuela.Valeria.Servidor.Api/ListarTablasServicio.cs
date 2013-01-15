@@ -1,37 +1,37 @@
 namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Runtime.Serialization;
-	
-	using ServiceStack.FluentValidation;
-	using ServiceStack.ServiceInterface;
-	using ServiceStack.ServiceInterface.ServiceModel;		// ResponseStatus
-	using Zuliaworks.Netzuela.Valeria.Datos;
-	using Zuliaworks.Netzuela.Valeria.Tipos;
-	
-	public class ListarTablasValidador : AbstractValidator<ListarTablas> 
-	{		
-		public ListarTablasValidador()
-		{
-			RuleFor(x => x.BaseDeDatos).NotNull().NotEmpty().Must(Validadores.BaseDeDatos).WithMessage(Validadores.ERROR_BASE_DE_DATOS);
-		}
-	}
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    
+    using ServiceStack.FluentValidation;
+    using ServiceStack.ServiceInterface;
+    using ServiceStack.ServiceInterface.ServiceModel;        // ResponseStatus
+    using Zuliaworks.Netzuela.Valeria.Datos;
+    using Zuliaworks.Netzuela.Valeria.Tipos;
+    
+    public class ListarTablasValidador : AbstractValidator<ListarTablas> 
+    {        
+        public ListarTablasValidador()
+        {
+            RuleFor(x => x.BaseDeDatos).NotNull().NotEmpty().Must(Validadores.BaseDeDatos).WithMessage(Validadores.ERROR_BASE_DE_DATOS);
+        }
+    }
 
-	public class ListarTablasServicio : ServiceBase<ListarTablas>
-	{
-		#region Funciones
-		
-		protected override object Run (ListarTablas request)
-		{
-			//int usuario = int.Parse(this.GetSession().FirstName);
-			ListarTablasValidador validador = new ListarTablasValidador();
-			validador.ValidateAndThrow(request);
-			
-			List<string> resultado = new List<string>();
+    public class ListarTablasServicio : ServiceBase<ListarTablas>
+    {
+        #region Funciones
+        
+        protected override object Run (ListarTablas request)
+        {
+            //int usuario = int.Parse(this.GetSession().FirstName);
+            ListarTablasValidador validador = new ListarTablasValidador();
+            validador.ValidateAndThrow(request);
+            
+            List<string> resultado = new List<string>();
 
-			try
+            try
             {
                 using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion))
                 {
@@ -47,13 +47,13 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
             }
             catch (Exception ex)
             {
-				//log.Fatal("Usuario: " + this.Cliente + ". Error de listado de base de tablas: " + ex.Message);
+                //log.Fatal("Usuario: " + this.Cliente + ". Error de listado de base de tablas: " + ex.Message);
                 throw new Exception("Error de listado de tablas", ex);
             }
 
             return new ListarTablasResponse { Tablas = resultado.ToArray(), ResponseStatus = new ResponseStatus() };
-		}
-		
-		#endregion
-	}
+        }
+        
+        #endregion
+    }
 }

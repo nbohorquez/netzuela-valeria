@@ -1,34 +1,34 @@
 namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Data;
-	using System.Linq;
-	using System.Runtime.Serialization;
-	
-	using ServiceStack.FluentValidation;
-	using ServiceStack.ServiceInterface;
-	using ServiceStack.ServiceInterface.ServiceModel;		// ResponseStatus
-	using Zuliaworks.Netzuela.Valeria.Datos;
-	using Zuliaworks.Netzuela.Valeria.Tipos;
-	
-	public class LeerTablaValidador : AbstractValidator<LeerTabla>
-	{		
-		public LeerTablaValidador(int usuarioId)
-		{
-			RuleFor(x => x.TiendaId).NotNull().GreaterThan(0).Must((x, tiendaId) => Validadores.TiendaId(tiendaId, usuarioId)).WithMessage(Validadores.ERROR_TIENDA_ID);
-			RuleFor(x => x.BaseDeDatos).NotNull().NotEmpty().Must(Validadores.BaseDeDatos).WithMessage(Validadores.ERROR_BASE_DE_DATOS);
-			RuleFor(x => x.Tabla).NotNull().NotEmpty().Must((x, tabla) => Validadores.Tabla(x.BaseDeDatos, tabla)).WithMessage(Validadores.ERROR_TABLA);
-		}
-	}
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    
+    using ServiceStack.FluentValidation;
+    using ServiceStack.ServiceInterface;
+    using ServiceStack.ServiceInterface.ServiceModel;        // ResponseStatus
+    using Zuliaworks.Netzuela.Valeria.Datos;
+    using Zuliaworks.Netzuela.Valeria.Tipos;
+    
+    public class LeerTablaValidador : AbstractValidator<LeerTabla>
+    {        
+        public LeerTablaValidador(int usuarioId)
+        {
+            RuleFor(x => x.TiendaId).NotNull().GreaterThan(0).Must((x, tiendaId) => Validadores.TiendaId(tiendaId, usuarioId)).WithMessage(Validadores.ERROR_TIENDA_ID);
+            RuleFor(x => x.BaseDeDatos).NotNull().NotEmpty().Must(Validadores.BaseDeDatos).WithMessage(Validadores.ERROR_BASE_DE_DATOS);
+            RuleFor(x => x.Tabla).NotNull().NotEmpty().Must((x, tabla) => Validadores.Tabla(x.BaseDeDatos, tabla)).WithMessage(Validadores.ERROR_TABLA);
+        }
+    }
 
-	public class LeerTablaServicio : ServiceBase<LeerTabla>
-	{
-		#region Funciones
-		
-		protected override object Run (LeerTabla request)
-		{
-			DataTableXml datosAEnviar = null;
+    public class LeerTablaServicio : ServiceBase<LeerTabla>
+    {
+        #region Funciones
+        
+        protected override object Run (LeerTabla request)
+        {
+            DataTableXml datosAEnviar = null;
 
             /*
              * Para convertir un LINQ en DataTable:
@@ -37,11 +37,11 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
              * Para sacar un DataTable de un EF:
              * http://www.codeproject.com/Tips/171006/Convert-LINQ-to-Entity-Result-to-a-DataTable.aspx
              */
-			
-			int usuario = int.Parse(this.GetSession().FirstName);
-			LeerTablaValidador validador = new LeerTablaValidador(usuario);
-			validador.ValidateAndThrow(request);
-						
+            
+            int usuario = int.Parse(this.GetSession().FirstName);
+            LeerTablaValidador validador = new LeerTablaValidador(usuario);
+            validador.ValidateAndThrow(request);
+                        
             try
             {
                 using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion))
@@ -58,6 +58,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
                         {
                             sql += descriptor.Columnas[i];
 
+                            // Si no es la ultima iteracion, entonces agrego una coma
                             if ((i + 1) < descriptor.Columnas.Length)
                             {
                                 sql += ", ";
@@ -69,12 +70,12 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 
                     DataTable t = conexion.Consultar(Constantes.BaseDeDatos, sql);
                     List<DataColumn> cp = new List<DataColumn>();
-					
-					/* 
-					 * Seleccionamos todas las columnas que sean clave primaria y que no sean iguales a 
-					 * descriptor.TiendaID (esta columna no va a ser enviada al cliente). Hay que hacer 
-					 * esto para que toda tabla enviada siempre tenga una clave primaria.
-					 */
+                    
+                    /* 
+                     * Seleccionamos todas las columnas que sean clave primaria y que no sean iguales a 
+                     * descriptor.TiendaID (esta columna no va a ser enviada al cliente). Hay que hacer 
+                     * esto para que toda tabla enviada siempre tenga una clave primaria.
+                     */
                     foreach (string columna in descriptor.ClavePrimaria)
                     {
                         if (!string.Equals(columna, descriptor.TiendaId, StringComparison.OrdinalIgnoreCase))
@@ -85,18 +86,18 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 
                     t.PrimaryKey = cp.ToArray();
                     datosAEnviar = t.DataTableAXml(request.BaseDeDatos, request.Tabla);
-	            }
+                }
             }
             catch (Exception ex)
             {
-				//log.Fatal("Usuario: " + this.Cliente + ". Error de lectura de tabla: " + ex.Message);
+                //log.Fatal("Usuario: " + this.Cliente + ". Error de lectura de tabla: " + ex.Message);
                 throw new Exception("Error de lectura de tabla", ex);
             }
 
             return new LeerTablaResponse { Tabla = datosAEnviar, ResponseStatus = new ResponseStatus() };
-		}
-		
-		#endregion
-		
-	}
+        }
+        
+        #endregion
+        
+    }
 }

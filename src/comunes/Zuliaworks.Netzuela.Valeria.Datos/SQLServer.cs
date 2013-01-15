@@ -395,25 +395,27 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
 
         public override bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
         {
+            /*
+             * Es necesario hacer toda esta parafernalia porque MySQL no puede editar una vista (VIEW)
+             * directamente.
+             *
+             * Mas informacion sobre la "updatability" de una vista (VIEW):
+             * http://dev.mysql.com/doc/refman/5.1/en/view-updatability.html
+             */
+
+            /*
+             * Para pasar una cantidad variable de parametros a un procedimiento en SQL Server:
+             * http://www.sommarskog.se/dyn-search-2008.html
+             * http://vyaskn.tripod.com/passing_arrays_to_stored_procedures.htm
+             * http://www.sommarskog.se/share_data.html#tableparam <-- LEER ESTE
+             * http://lennilobel.wordpress.com/2009/07/29/sql-server-2008-table-valued-parameters-and-c-custom-iterators-a-match-made-in-heaven/
+             */
+            /*
             bool resultado = false;
 
             try
             {
-                /*
-                 * Es necesario hacer toda esta parafernalia porque MySQL no puede editar una vista (VIEW) 
-                 * directamente. 
-                 * 
-                 * Mas informacion sobre la "updatability" de una vista (VIEW): 
-                 * http://dev.mysql.com/doc/refman/5.1/en/view-updatability.html
-                 */
 
-                /*
-                 * Para pasar una cantidad variable de parametros a un procedimiento en SQL Server:
-                 * http://www.sommarskog.se/dyn-search-2008.html
-                 * http://vyaskn.tripod.com/passing_arrays_to_stored_procedures.htm
-                 * http://www.sommarskog.se/share_data.html#tableparam <-- LEER ESTE
-                 * http://lennilobel.wordpress.com/2009/07/29/sql-server-2008-table-valued-parameters-and-c-custom-iterators-a-match-made-in-heaven/
-                 */
 
                 DataSet settmp = new DataSet();
                 this.CambiarBaseDeDatos(baseDeDatos);
@@ -523,6 +525,9 @@ namespace Zuliaworks.Netzuela.Valeria.Datos
             }
 
             return resultado;
+            */
+
+            throw new NotImplementedException();
         }
 
         public override bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)

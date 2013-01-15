@@ -170,7 +170,7 @@
              * (the default), then the connection will not be encrypted. If it is "True", then the RemoteEncryptionPassword keyword (see below) 
              * will specify the password to use.
              * 
-             * RemoteEncryptionPassword	
+             * RemoteEncryptionPassword
              * ========================
              * This string value specifies the password to use for encrypting all requests and responses to and from a remote DBISAM database 
              * server when the connection is encrypted (see RemoteEncryption keyword above). The default value is "elevatesoft".

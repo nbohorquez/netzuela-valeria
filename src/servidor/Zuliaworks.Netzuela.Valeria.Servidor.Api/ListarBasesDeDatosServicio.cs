@@ -1,23 +1,23 @@
 namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Runtime.Serialization;
-	
-	using ServiceStack.ServiceInterface;
-	using ServiceStack.ServiceInterface.ServiceModel;		// ResponseStatus
-	using Zuliaworks.Netzuela.Valeria.Datos;
-	using Zuliaworks.Netzuela.Valeria.Tipos;
-	
-	public class ListarBasesDeDatosServicio : ServiceBase<ListarBasesDeDatos>
-	{
-		#region Funciones
-		
-		protected override object Run (ListarBasesDeDatos request)
-		{
-			int usuario = int.Parse(this.GetSession().FirstName);
-			List<string> resultado = new List<string>();
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    
+    using ServiceStack.ServiceInterface;
+    using ServiceStack.ServiceInterface.ServiceModel;        // ResponseStatus
+    using Zuliaworks.Netzuela.Valeria.Datos;
+    using Zuliaworks.Netzuela.Valeria.Tipos;
+    
+    public class ListarBasesDeDatosServicio : ServiceBase<ListarBasesDeDatos>
+    {
+        #region Funciones
+        
+        protected override object Run (ListarBasesDeDatos request)
+        {
+            int usuario = int.Parse(this.GetSession().FirstName);
+            List<string> resultado = new List<string>();
 
             try
             {
@@ -35,13 +35,13 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
             }
             catch (Exception ex)
             {
-            	//log.Fatal("Usuario: " + this.Cliente + ". Error de listado de base de datos: " + ex.Message);
+                //log.Fatal("Usuario: " + this.Cliente + ". Error de listado de base de datos: " + ex.Message);
                 throw new Exception("Error de listado de base de datos", ex);
             }
-			
+            
             return new ListarBasesDeDatosResponse { BasesDeDatos = resultado.ToArray(), ResponseStatus = new ResponseStatus() };
-		}
-		
-		#endregion
-	}
+        }
+        
+        #endregion
+    }
 }

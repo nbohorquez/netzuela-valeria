@@ -1,5 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Datos
-{
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;               // ObservableCollection
@@ -16,17 +15,14 @@
     /// Esta clase permite establecer una conexión con cualquier fuente de datos compatible 
     /// de forma transparente para el programador.
     /// </summary>
-    public class Conexion : Desechable
-    {
+    public class Conexion : Desechable {
         #region Constructores
 
         /// <summary>
         /// Crea una conexión vacía.
         /// </summary>
-        public Conexion()
-        {
-            this.Parametros = new ParametrosDeConexion()
-            {
+        public Conexion() {
+            this.Parametros = new ParametrosDeConexion() {
                 Anfitrion = string.Empty,
                 Servidor = string.Empty,
                 Instancia = string.Empty,
@@ -34,8 +30,7 @@
                 MetodoDeConexion = string.Empty
             };
 
-            this.BD = new ServidorPredeterminado(new ParametrosDeConexion()
-            {
+            this.BD = new ServidorPredeterminado(new ParametrosDeConexion() {
                 Anfitrion = string.Empty,
                 Servidor = string.Empty,
                 Instancia = string.Empty,
@@ -50,10 +45,8 @@
         /// <param name="parametros">Datos de configuración de la conexión con el servidor.</param>
         /// <exception cref="ArgumentNullException">Si <paramref name="parametros"/> es una referencia 
         /// nula.</exception>
-        public Conexion(ParametrosDeConexion parametros)
-        {
-            if (parametros == null)
-            {
+        public Conexion(ParametrosDeConexion parametros) {
+            if (parametros == null) {
                 throw new ArgumentNullException("parametros");
             }
 
@@ -61,8 +54,7 @@
             this.ResolverDatosDeConexion();
         }
 
-        ~Conexion()
-        {
+        ~Conexion() {
             this.Dispose(false);
         }
 
@@ -70,72 +62,55 @@
 
         #region Eventos
 
-        public event StateChangeEventHandler CambioDeEstado
-        {
+        public event StateChangeEventHandler CambioDeEstado {
             add { this.BD.CambioDeEstado += value; }
             remove { this.BD.CambioDeEstado -= value; }
         }
 
-        public event EventHandler<EventoListarTiendasCompletadoArgs> ListarTiendasCompletado
-        {
-            add 
-            { 
+        public event EventHandler<EventoListarTiendasCompletadoArgs> ListarTiendasCompletado {
+            add {
                 var tipo = this.BD.GetType();
-                if (tipo.GetEvent("ListarTiendasCompletado") != null)
-                {
+                if (tipo.GetEvent("ListarTiendasCompletado") != null) {
                     ((IBaseDeDatosRemota)this.BD).ListarTiendasCompletado += value;
-                }
-                else
-                {
+                } else {
                     throw new MissingMemberException();
                 }
-            }
-            remove 
-            {
+            } remove {
                 var tipo = this.BD.GetType();
-                if (tipo.GetEvent("ListarTiendasCompletado") != null)
-                {
+                if (tipo.GetEvent("ListarTiendasCompletado") != null) {
                     ((IBaseDeDatosRemota)this.BD).ListarTiendasCompletado -= value;
-                }
-                else
-                {
+                } else {
                     throw new MissingMemberException();
                 }
             }
         }
 
-        public event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado
-        {
+        public event EventHandler<EventoListarBDsCompletadoArgs> ListarBasesDeDatosCompletado {
             add { this.BD.ListarBasesDeDatosCompletado += value; }
             remove { this.BD.ListarBasesDeDatosCompletado -= value; }
         }
 
-        public event EventHandler<EventoListarTablasCompletadoArgs> ListarTablasCompletado
-        {
+        public event EventHandler<EventoListarTablasCompletadoArgs> ListarTablasCompletado {
             add { this.BD.ListarTablasCompletado += value; }
             remove { this.BD.ListarTablasCompletado -= value; }
         }
 
-        public event EventHandler<EventoLeerTablaCompletadoArgs> LeerTablaCompletado
-        {
+        public event EventHandler<EventoLeerTablaCompletadoArgs> LeerTablaCompletado {
             add { this.BD.LeerTablaCompletado += value; }
             remove { this.BD.LeerTablaCompletado -= value; }
         }
 
-        public event EventHandler<EventoEscribirTablaCompletadoArgs> EscribirTablaCompletado
-        {
+        public event EventHandler<EventoEscribirTablaCompletadoArgs> EscribirTablaCompletado {
             add { this.BD.EscribirTablaCompletado += value; }
             remove { this.BD.EscribirTablaCompletado -= value; }
         }
 
-        public event EventHandler<EventoCrearUsuarioCompletadoArgs> CrearUsuarioCompletado
-        {
+        public event EventHandler<EventoCrearUsuarioCompletadoArgs> CrearUsuarioCompletado {
             add { this.BD.CrearUsuarioCompletado += value; }
             remove { this.BD.CrearUsuarioCompletado -= value; }
         }
 
-        public event EventHandler<EventoConsultarCompletadoArgs> ConsultarCompletado
-        {
+        public event EventHandler<EventoConsultarCompletadoArgs> ConsultarCompletado {
             add { this.BD.ConsultarCompletado += value; }
             remove { this.BD.ConsultarCompletado -= value; }
         }
@@ -154,8 +129,7 @@
         /// </summary>
         public IBaseDeDatos BD { get; private set; }
 
-        public ConnectionState Estado 
-        { 
+        public ConnectionState Estado {
             get { return this.BD.Estado; }
         }
 
@@ -163,22 +137,16 @@
 
         #region Funciones
 
-        public void ResolverDatosDeConexion()
-        {
-            if (this.BD != null && this.BD.DatosDeConexion.Servidor == this.Parametros.Servidor)
-            {
+        public void ResolverDatosDeConexion() {
+            if (this.BD != null && this.BD.DatosDeConexion.Servidor == this.Parametros.Servidor) {
                 this.BD.DatosDeConexion = this.Parametros;
-            }
-            else
-            {
-                if (this.BD != null)
-                {
+            } else {
+                if (this.BD != null) {
                     this.BD.Dispose();
                     this.BD = null;
                 }
 
-                switch (this.Parametros.Servidor)
-                {
+                switch (this.Parametros.Servidor) {
                     case RDBMS.SqlServer:
                         this.BD = new SQLServer(this.Parametros);
                         break;
@@ -205,14 +173,10 @@
         /// </summary>
         /// <param name="usuario"></param>
         /// <param name="contrasena"></param>
-        public void Conectar(SecureString usuario, SecureString contrasena)
-        {
-            try
-            {
+        public void Conectar(SecureString usuario, SecureString contrasena) {
+            try {
                 this.BD.Conectar(usuario, contrasena);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error conectando con la base de datos", ex);
             }
         }
@@ -220,196 +184,142 @@
         /// <summary>
         /// Cierra la conexión con el servidor.
         /// </summary>
-        public void Desconectar()
-        {
-            try
-            {
+        public void Desconectar() {
+            try {
                 this.BD.Desconectar();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al desconectarse de la base de datos", ex);
             }
         }
 
-        public string[] ListarTiendas()
-        {
+        public string[] ListarTiendas() {
             string[] resultado = null;
 
-            try
-            {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("ListarTiendas") != null)
-                {
+                if (tipo.GetMethod("ListarTiendas") != null) {
                     resultado = ((IBaseDeDatosRemota)this.BD).ListarTiendas();
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al listar las tiendas", ex);
             }
 
             return resultado;
         }
 
-        public string[] ListarBasesDeDatos()
-        {
+        public string[] ListarBasesDeDatos() {
             string[] resultado = null;
 
-            try
-            {
+            try {
                 resultado = this.BD.ListarBasesDeDatos();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al listar las bases de datos", ex);
             }
 
             return resultado;
         }
 
-        public string[] ListarTablas(string baseDeDatos)
-        {
+        public string[] ListarTablas(string baseDeDatos) {
             string[] resultado = null;
 
-            try
-            {
+            try {
                 resultado = this.BD.ListarTablas(baseDeDatos);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al listar las tablas de la base de datos \"" + baseDeDatos + "\"", ex);
             }
 
             return resultado;
         }
 
-        public DataTable LeerTabla(string baseDeDatos, string tabla)
-        {
+        public DataTable LeerTabla(string baseDeDatos, string tabla) {
             DataTable resultado = null;
 
-            try
-            {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("LeerTabla") != null)
-                {
+                if (tipo.GetMethod("LeerTabla") != null) {
                     resultado = ((IBaseDeDatosLocal)this.BD).LeerTabla(baseDeDatos, tabla);
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 throw new Exception("Error al leer la tabla \"" + tabla + "\" de la base de datos \"" + baseDeDatos + "\"", ex);
             }
 
             return resultado;
         }
 
-        public DataTable LeerTabla(int tiendaId, string baseDeDatos, string tabla)
-        {
+        public DataTable LeerTabla(int tiendaId, string baseDeDatos, string tabla) {
             DataTable resultado = null;
 
-            try
-            {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("LeerTabla") != null)
-                {
+                if (tipo.GetMethod("LeerTabla") != null) {
                     resultado = ((IBaseDeDatosRemota)this.BD).LeerTabla(tiendaId, baseDeDatos, tabla);
-                }
-                else
-                {
+                } else  {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al leer la tabla \"" + tabla + "\" de la base de datos \"" + baseDeDatos + "\"", ex);
             }
 
             return resultado;
         }
 
-        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
-        {
+        public bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla) {
             bool resultado = false;
 
-            try
-            {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("EscribirTabla") != null)
-                {
+                if (tipo.GetMethod("EscribirTabla") != null) {
                     resultado = ((IBaseDeDatosLocal)this.BD).EscribirTabla(baseDeDatos, nombreTabla, tabla);
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al escribir la tabla \"" + tabla + "\" en la base de datos \"" + baseDeDatos + "\"", ex);
             }
 
             return resultado;
         }
 
-        public bool EscribirTabla(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
-        {
+        public bool EscribirTabla(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla) {
             bool resultado = false;
 
-            try
-            {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("EscribirTabla") != null)
-                {
+                if (tipo.GetMethod("EscribirTabla") != null) {
                     resultado = ((IBaseDeDatosRemota)this.BD).EscribirTabla(tiendaId, baseDeDatos, nombreTabla, tabla);
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al escribir la tabla \"" + tabla + "\" en la base de datos \"" + baseDeDatos + "\"", ex);
             }
 
             return resultado;
         }
 
-        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnasAutorizadas, int privilegios)
-        {
+        public bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnasAutorizadas, int privilegios) {
             bool resultado = false;
 
-            try
-            {
+            try {
                 resultado = ((IBaseDeDatosLocal)this.BD).CrearUsuario(usuario, contrasena, columnasAutorizadas, Privilegios.Seleccionar);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error creando el usuario en la base de datos", ex);
             }
 
             return resultado;
         }
 
-        public DataTable Consultar(string baseDeDatos, string sql)
-        {
+        public DataTable Consultar(string baseDeDatos, string sql) {
             DataTable resultado = null;
 
-            try
-            {
+            try {
                 resultado = ((IBaseDeDatosLocal)this.BD).Consultar(baseDeDatos, sql);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al consultar la base de datos", ex);
             }
 
@@ -420,179 +330,119 @@
 
         #region Métodos asincrónicos
 
-        public void ListarTiendasAsinc()
-        {
-            try
-            {
+        public void ListarTiendasAsinc() {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("ListarTiendasAsinc") != null)
-                {
+                if (tipo.GetMethod("ListarTiendasAsinc") != null) {
                     ((IBaseDeDatosRemota)this.BD).ListarTiendasAsinc();
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al listar las tiendas", ex);
             }
         }
 
-        public void ListarBasesDeDatosAsinc()
-        {
-            try
-            {
+        public void ListarBasesDeDatosAsinc() {
+            try {
                 this.BD.ListarBasesDeDatosAsinc();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al listar las bases de datos", ex);
             }
         }
 
-        public void ListarTablasAsinc(string baseDeDatos)
-        {
-            try
-            {
+        public void ListarTablasAsinc(string baseDeDatos) {
+            try {
                 this.BD.ListarTablasAsinc(baseDeDatos);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al listar las tablas de la base de datos \"" + baseDeDatos + "\"", ex);
             }
         }
 
-        public void LeerTablaAsinc(string baseDeDatos, string tabla)
-        {
-            try
-            {
+        public void LeerTablaAsinc(string baseDeDatos, string tabla) {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("LeerTablaAsinc") != null)
-                {
+                if (tipo.GetMethod("LeerTablaAsinc") != null) {
                     ((IBaseDeDatosLocal)this.BD).LeerTablaAsinc(baseDeDatos, tabla);
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al leer la tabla \"" + tabla + "\" de la base de datos \"" + baseDeDatos + "\"", ex);
             }
         }
 
-        public void LeerTablaAsinc(int tiendaId, string baseDeDatos, string tabla)
-        {
-            try
-            {
+        public void LeerTablaAsinc(int tiendaId, string baseDeDatos, string tabla) {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("LeerTablaAsinc") != null)
-                {
+                if (tipo.GetMethod("LeerTablaAsinc") != null) {
                     ((IBaseDeDatosRemota)this.BD).LeerTablaAsinc(tiendaId, baseDeDatos, tabla);
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al leer la tabla \"" + tabla + "\" de la base de datos \"" + baseDeDatos + "\"", ex);
             }
         }
 
-        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
-        {
-            try
-            {
+        public void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla) {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("EscribirTablaAsinc") != null)
-                {
+                if (tipo.GetMethod("EscribirTablaAsinc") != null) {
                     ((IBaseDeDatosLocal)this.BD).EscribirTablaAsinc(baseDeDatos, nombreTabla, tabla);
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al escribir la tabla \"" + tabla + "\" en la base de datos \"" + baseDeDatos + "\"", ex);
             }
         }
 
-        public void EscribirTablaAsinc(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla)
-        {
-            try
-            {
+        public void EscribirTablaAsinc(int tiendaId, string baseDeDatos, string nombreTabla, DataTable tabla) {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("EscribirTablaAsinc") != null)
-                {
+                if (tipo.GetMethod("EscribirTablaAsinc") != null) {
                     ((IBaseDeDatosRemota)this.BD).EscribirTablaAsinc(tiendaId, baseDeDatos, nombreTabla, tabla);
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al escribir la tabla \"" + tabla + "\" en la base de datos \"" + baseDeDatos + "\"", ex);
             }
         }
 
-        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
-        {
-            try
-            {
+        public void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios) {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("CrearUsuarioAsinc") != null)
-                {
+                if (tipo.GetMethod("CrearUsuarioAsinc") != null) {
                     ((IBaseDeDatosLocal)this.BD).CrearUsuarioAsinc(usuario, contrasena, columnas, privilegios);
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error creando el usuario en la base de datos", ex);
             }
         }
 
-        public void ConsultarAsinc(string baseDeDatos, string sql)
-        {
-            try
-            {
+        public void ConsultarAsinc(string baseDeDatos, string sql) {
+            try {
                 var tipo = this.BD.GetType();
-                if (tipo.GetMethod("ConsultarAsinc") != null)
-                {
+                if (tipo.GetMethod("ConsultarAsinc") != null) {
                     ((IBaseDeDatosLocal)this.BD).ConsultarAsinc(baseDeDatos, sql);
-                }
-                else
-                {
+                } else {
                     throw new MissingMethodException();
                 }
-                
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new Exception("Error al consultar la base de datos", ex);
             }
         }
 
         #endregion
         
-        protected override void Dispose(bool borrarCodigoAdministrado)
-        {
+        protected override void Dispose(bool borrarCodigoAdministrado) {
             this.Parametros = null;
 
-            if (borrarCodigoAdministrado)
-            {
+            if (borrarCodigoAdministrado) {
                 this.BD.Dispose();
             }
         }

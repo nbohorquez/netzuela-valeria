@@ -1,5 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Datos
-{
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos {
     using System;
     using System.Collections.Generic;
     using System.Data;                              // ConnectionState, DataTable
@@ -17,8 +16,7 @@
     public abstract class ConectorGenerico<T, U, V> : EventosComunes, IBaseDeDatosLocal
         where T : DbConnection, new()
         where U : DbCommand, new()
-        where V : DbDataAdapter
-    {
+        where V : DbDataAdapter {
         #region Variables y Constantes
 
         protected T conexion;
@@ -27,8 +25,7 @@
         
         #region Constructores
 
-        public ConectorGenerico(ParametrosDeConexion servidorBd)
-        {
+        public ConectorGenerico(ParametrosDeConexion servidorBd) {
             this.DatosDeConexion = servidorBd;
             this.conexion = new T();
             this.conexion.StateChange -= this.ManejarCambioDeEstado;
@@ -39,59 +36,46 @@
 
         #region Funciones
 
-        protected virtual void Dispose(bool borrarCodigoAdministrado)
-        {
+        protected virtual void Dispose(bool borrarCodigoAdministrado) {
             this.DatosDeConexion = null;
 
-            if (borrarCodigoAdministrado)
-            {
-                if (this.conexion != null)
-                {
+            if (borrarCodigoAdministrado) {
+                if (this.conexion != null) {
                     this.conexion.Dispose();
                     this.conexion = null;
                 }
             }
         }
 
-        protected virtual void CambiarBaseDeDatos(string baseDeDatos)
-        {
-            if (this.conexion.Database != baseDeDatos)
-            {
+        protected virtual void CambiarBaseDeDatos(string baseDeDatos) {
+            if (this.conexion.Database != baseDeDatos) {
                 this.conexion.ChangeDatabase(baseDeDatos);
             }
         }
 
-        protected virtual void EjecutarOrden(string sql)
-        {
-            if (sql == null)
-            {
+        protected virtual void EjecutarOrden(string sql) {
+            if (sql == null) {
                 throw new ArgumentNullException("sql");
             }
 
-            using (U orden = new U())
-            {
+            using (U orden = new U()) {
                 orden.CommandText = sql;
                 orden.Connection = this.conexion;
                 orden.ExecuteNonQuery();
             }
         }
 
-        protected virtual string[] LectorSimple(string sql)
-        {
-            if (sql == null)
-            {
+        protected virtual string[] LectorSimple(string sql) {
+            if (sql == null) {
                 throw new ArgumentNullException("sql");
             }
 
             List<string> resultado = new List<string>();
-            using (U orden = new U())
-            {
+            using (U orden = new U()) {
                 orden.CommandText = sql;
                 orden.Connection = this.conexion;
-                using (var lector = orden.ExecuteReader())
-                {
-                    while (lector.Read())
-                    {
+                using (var lector = orden.ExecuteReader()) {
+                    while (lector.Read()) {
                         resultado.Add(lector.GetString(0));
                     }
                 }
@@ -102,8 +86,7 @@
 
         protected virtual DataTable LectorAvanzado(string sql)
         {
-            if (sql == null)
-            {
+            if (sql == null) {
                 throw new ArgumentNullException("sql");
             }
 
@@ -113,8 +96,7 @@
             // http://www.dalun.com/blogs/05.27.2007.htm
 
             var ctorV = typeof(V).GetConstructor(new System.Type[] { typeof(string), typeof(T) });
-            using (V adaptador = (V) ctorV.Invoke(new object[] { sql, this.conexion }))
-            {
+            using (V adaptador = (V) ctorV.Invoke(new object[] { sql, this.conexion })) {
                 adaptador.FillSchema(resultado, SchemaType.Source);
                 adaptador.Fill(resultado);
             }
@@ -131,8 +113,7 @@
 
         #region Propiedades
 
-        public ConnectionState Estado
-        {
+        public ConnectionState Estado {
             get { return this.conexion.State; }
         }
 
@@ -157,33 +138,27 @@
 
         #region Métodos asincrónicos
 
-        public virtual void ListarBasesDeDatosAsinc()
-        {
+        public virtual void ListarBasesDeDatosAsinc() {
             throw new NotImplementedException();
         }
 
-        public virtual void ListarTablasAsinc(string baseDeDatos)
-        {
+        public virtual void ListarTablasAsinc(string baseDeDatos) {
             throw new NotImplementedException();
         }
 
-        public virtual void LeerTablaAsinc(string baseDeDatos, string tabla)
-        {
+        public virtual void LeerTablaAsinc(string baseDeDatos, string tabla) {
             throw new NotImplementedException();
         }
 
-        public virtual void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla)
-        {
+        public virtual void EscribirTablaAsinc(string baseDeDatos, string nombreTabla, DataTable tabla) {
             throw new NotImplementedException();
         }
 
-        public virtual void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
-        {
+        public virtual void CrearUsuarioAsinc(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios) {
             throw new NotImplementedException();
         }
 
-        public virtual void ConsultarAsinc(string baseDeDatos, string sql)
-        {
+        public virtual void ConsultarAsinc(string baseDeDatos, string sql) {
             throw new NotImplementedException();
         }
 
@@ -191,8 +166,7 @@
 
         #region IDisposable
 
-        public virtual void Dispose()
-        {
+        public virtual void Dispose() {
             /*
              * En este enlace esta la mejor explicacion acerca de como implementar IDisposable
              * http://stackoverflow.com/questions/538060/proper-use-of-the-idisposable-interface

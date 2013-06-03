@@ -1,5 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Datos
-{
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos {
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -7,8 +6,7 @@
     using System.Security;                  // SecureString
     using System.Text;
 
-    public interface IBaseDeDatosLocal : IBaseDeDatos
-    {
+    public interface IBaseDeDatosLocal : IBaseDeDatos {
         #region Prototipos de funciones
 
         #region Métodos sincrónicos

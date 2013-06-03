@@ -1,5 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Datos
-{
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos {
     using System;
     using System.Collections.Generic;
     using System.Data;                              // ConnectionState, DataTable
@@ -13,12 +12,10 @@
     /// <summary>
     /// Implementa las funciones de acceso a las bases de datos MySQL
     /// </summary>
-    public partial class MySQL : ConectorGenerico<MySqlConnection, MySqlCommand, MySqlDataAdapter>
-    {
+    public partial class MySQL : ConectorGenerico<MySqlConnection, MySqlCommand, MySqlDataAdapter> {
         #region Variables y Constantes
 
-        private static readonly Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>() 
-        {
+        private static readonly Dictionary<int, string> PrivilegiosAOrdenes = new Dictionary<int, string>()  {
             { Privilegios.NoValido, string.Empty },
             { Privilegios.Seleccionar, "SELECT" },
             { Privilegios.InsertarFilas, "INSERT" },
@@ -35,12 +32,10 @@
         #region Constructores
 
         public MySQL(ParametrosDeConexion servidorBd) 
-            : base(servidorBd)
-        {
+            : base(servidorBd)  {
         }
 
-        ~MySQL()
-        {
+        ~MySQL() {
             this.Dispose(false);
         }
 
@@ -48,8 +43,7 @@
 
         #region Funciones
         
-        protected override string DescribirTabla(string tabla)
-        {
+        protected override string DescribirTabla(string tabla) {
             DataTable descripcion = this.LectorAvanzado("DESCRIBE " + tabla);
 
             var columnasPermitidas = from D in descripcion.AsEnumerable()
@@ -68,8 +62,7 @@
          * final que las convierto en SecureStrings) y no se si eso pueda suponer un "hueco" de seguridad.
          */
 
-        protected override SecureString CrearRutaDeAcceso(ParametrosDeConexion seleccion, SecureString usuario, SecureString contrasena)
-        {
+        protected override SecureString CrearRutaDeAcceso(ParametrosDeConexion seleccion, SecureString usuario, SecureString contrasena) {
             /*
              * La lista completa de las opciones de la ruta de conexion ("Connection String" en ingles) se detalla en:
              * http://dev.mysql.com/doc/refman/5.5/en/connector-net-connection-options.html
@@ -137,18 +130,11 @@
              * Contraseña asociada al usuario.
              */
 
-            if (seleccion == null)
-            {
+            if (seleccion == null) {
                 throw new ArgumentNullException("seleccion");
-            }
-
-            if (usuario == null)
-            {
+            } if (usuario == null) {
                 throw new ArgumentNullException("usuario");
-            }
-
-            if (contrasena == null)
-            {
+            } if (contrasena == null) {
                 throw new ArgumentNullException("contrasena");
             }
 
@@ -158,8 +144,7 @@
             rutaDeConexion.AgregarString("Host=" + seleccion.Anfitrion + ";");
 
             // 2) Metodo de conexion
-            switch (seleccion.MetodoDeConexion)
-            {
+            switch (seleccion.MetodoDeConexion) {
                 case MetodosDeConexion.TcpIp:
                     rutaDeConexion.AgregarString("Protocol=\"tcp\";");
                     rutaDeConexion.AgregarString("Port=" + seleccion.ArgumentoDeConexion + ";");
@@ -204,18 +189,13 @@
 
         #region Métodos sincrónicos
 
-        public override void Conectar(SecureString usuario, SecureString contrasena)
-        {
-            try
-            {
+        public override void Conectar(SecureString usuario, SecureString contrasena) {
+            try {
                 this.Desconectar();
                 this.conexion.ConnectionString = this.CrearRutaDeAcceso(this.DatosDeConexion, usuario, contrasena).ConvertirAUnsecureString();
                 this.conexion.Open();
-            }
-            catch (MySqlException ex)
-            {
-                switch (ex.Number)
-                {
+            } catch (MySqlException ex) {
+                switch (ex.Number) {
                     case 0:
                         throw new Exception("No se puede conectar al servidor. Contacte al administrador", ex);
                     case 1045:
@@ -226,75 +206,57 @@
             }
         }
 
-        public override void Desconectar()
-        {
-            try
-            {
-                if (this.conexion != null)
-                {
+        public override void Desconectar() {
+            try {
+                if (this.conexion != null) {
                     this.conexion.Close();
                 }
-            }
-            catch (MySqlException ex)
-            {
+            } catch (MySqlException ex) {
                 throw new Exception("Error al cerrar la conexión con la base de datos. Error MySQL No. " + ex.Number.ToString(), ex);
             }
         }
 
-        public override string[] ListarBasesDeDatos()
-        {
+        public override string[] ListarBasesDeDatos() {
             List<string> resultadoFinal = null;
 
-            try
-            {
+            try {
                 string[] resultadoBruto = this.LectorSimple("SHOW DATABASES");
                 resultadoFinal = new List<string>();
 
-                foreach (string r in resultadoBruto)
-                {
-                    if (r != "information_schema" && r != "mysql" && r != "performance_schema")
-                    {
+                foreach (string r in resultadoBruto) {
+                    if (r != "information_schema" && r != "mysql" && r != "performance_schema") {
                         resultadoFinal.Add(r);
                     }
                 }
-            }
-            catch (MySqlException ex)
-            {
+            } catch (MySqlException ex) {
                 throw new Exception("Error al listar las bases de datos. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
             return resultadoFinal.ToArray();
         }
 
-        public override string[] ListarTablas(string baseDeDatos)
-        {
+        public override string[] ListarTablas(string baseDeDatos) {
             List<string> resultado = null;
 
-            try
-            {
+            try {
                 this.CambiarBaseDeDatos(baseDeDatos);
                 string[] resultadoBruto = this.LectorSimple("SHOW TABLES");
                 resultado = new List<string>();
 
-                foreach (string s in resultadoBruto)
-                {
+                foreach (string s in resultadoBruto) {
                     resultado.Add(s);
                 }
-            }
-            catch (MySqlException ex)
-            {
+            } catch (MySqlException ex) {
                 throw new Exception("Error al listar las tablas. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
             return resultado.ToArray();
         }
 
-        public override DataTable LeerTabla(string baseDeDatos, string tabla)
-        {
+        public override DataTable LeerTabla(string baseDeDatos, string tabla) {
             DataTable tablaLeida = null;
 
-            try
-            {
+            try {
                 this.CambiarBaseDeDatos(baseDeDatos);
                 /*
                  * Tenemos que ver primero cuales son las columnas a las que tenemos acceso. Un "SELECT * 
@@ -302,22 +264,18 @@
                  */
                 string columnas = this.DescribirTabla(tabla);
                 tablaLeida = this.LectorAvanzado("SELECT " + columnas + " FROM " + tabla);
-            }
-            catch (MySqlException ex)
-            {
+            } catch (MySqlException ex) {
                 throw new Exception("Error al leer la tabla. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
             return tablaLeida;
         }
 
-        public override bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla)
-        {
+        public override bool EscribirTabla(string baseDeDatos, string nombreTabla, DataTable tabla) {
             throw new NotImplementedException();
         }
 
-        public override bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios)
-        {
+        public override bool CrearUsuario(SecureString usuario, SecureString contrasena, string[] columnas, int privilegios) {
             bool resultado = false;
             string sql = string.Empty;
 
@@ -375,10 +333,8 @@
             // 1) Determinamos los privilegios otorgados al nuevo usuario
             List<string> privilegiosLista = new List<string>();
 
-            for (int i = 0; i < MySQL.PrivilegiosAOrdenes.Count; i++)
-            {
-                if ((privilegios & (1 << i)) == 1)
-                {
+            for (int i = 0; i < MySQL.PrivilegiosAOrdenes.Count; i++) {
+                if ((privilegios & (1 << i)) == 1) {
                     privilegiosLista.Add(MySQL.PrivilegiosAOrdenes[(1 << i)]);
                 }
             }
@@ -386,33 +342,26 @@
             // 2) Identificamos las columnas a las cuales se aplican estos privilegios
             Dictionary<string, string> columnasDiccionario = new Dictionary<string, string>();
 
-            foreach (string s in columnas)
-            {
+            foreach (string s in columnas) {
                 string[] columna = s.Split('\\');
-
                 string tabla = columna[1] + "." + columna[2];
 
-                if (columnasDiccionario.ContainsKey(tabla))
-                {
+                if (columnasDiccionario.ContainsKey(tabla)) {
                     columnasDiccionario[tabla] += ", " + columna[3];
-                }
-                else
-                {
+                } else {
                     columnasDiccionario.Add(tabla, columna[3]);
                 }
             }
 
             List<KeyValuePair<string, string>> columnasLista = columnasDiccionario.ToList();
 
-            try
-            {
+            try {
                 // 3) Chequeamos a ver si ya existe el usuario en el sistema
                 sql = "SELECT user FROM mysql.user WHERE user = '" + usuario.ConvertirAUnsecureString() + "' AND host = 'localhost'";
                 List<string> usuariosExistentes = this.LectorSimple(sql).ToList();
                 
                 // 4) Si es asi, se elimina
-                if (usuariosExistentes.Contains(usuario.ConvertirAUnsecureString()))
-                {
+                if (usuariosExistentes.Contains(usuario.ConvertirAUnsecureString())) {
                     sql = "DROP USER '" + usuario.ConvertirAUnsecureString() + "'@'localhost'";
                     this.EjecutarOrden(sql);
                 }
@@ -423,15 +372,12 @@
                 this.EjecutarOrden(sql);
 
                 // 6) Otorgamos los privilegios de columnas
-                foreach (KeyValuePair<string, string> par in columnasLista)
-                {
+                foreach (KeyValuePair<string, string> par in columnasLista) {
                     sql = "GRANT ";
 
-                    for (int i = 0; i < privilegiosLista.Count; i++)
-                    {
+                    for (int i = 0; i < privilegiosLista.Count; i++) {
                         sql += privilegiosLista[i] + " (" + par.Value + ")";
-                        if ((i + 1) < privilegiosLista.Count)
-                        {
+                        if ((i + 1) < privilegiosLista.Count) {
                             sql += ", ";
                         }
                     }
@@ -443,26 +389,20 @@
                 // 7) Actualizamos la cache de privilegios del servidor
                 this.EjecutarOrden("FLUSH PRIVILEGES");
                 resultado = true;
-            }
-            catch (MySqlException ex)
-            {
+            } catch (MySqlException ex) {
                 throw new Exception("No se pudo crear el usuario especificado. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 
             return resultado;
         }
 
-        public override DataTable Consultar(string baseDeDatos, string sql)
-        {
+        public override DataTable Consultar(string baseDeDatos, string sql) {
             DataTable resultado = null;
             this.CambiarBaseDeDatos(baseDeDatos);
 
-            try
-            {
+            try {
                 resultado = this.LectorAvanzado(sql);
-            }
-            catch (MySqlException ex)
-            {
+            } catch (MySqlException ex) {
                 throw new Exception("No se pudo realizar la consulta. Error MySQL No. " + ex.Number.ToString(), ex);
             }
 

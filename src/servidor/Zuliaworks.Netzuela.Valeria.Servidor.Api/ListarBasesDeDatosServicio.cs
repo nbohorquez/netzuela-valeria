@@ -1,5 +1,4 @@
-namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
-{
+namespace Zuliaworks.Netzuela.Valeria.Servidor.Api {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,19 +9,15 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
     using Zuliaworks.Netzuela.Valeria.Datos;
     using Zuliaworks.Netzuela.Valeria.Tipos;
     
-    public class ListarBasesDeDatosServicio : ServiceBase<ListarBasesDeDatos>
-    {
+    public class ListarBasesDeDatosServicio : ServiceBase<ListarBasesDeDatos> {
         #region Funciones
         
-        protected override object Run (ListarBasesDeDatos request)
-        {
+        protected override object Run (ListarBasesDeDatos request) {
             int usuario = int.Parse(this.GetSession().FirstName);
             List<string> resultado = new List<string>();
 
-            try
-            {
-                using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion))
-                {
+            try {
+                using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion)) {
                     conexion.Conectar(Sesion.Credenciales[0], Sesion.Credenciales[1]);
                     string[] basesDeDatos = conexion.ListarBasesDeDatos();
 
@@ -32,9 +27,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
 
                     resultado = basesDeDatosAMostrar;
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 //log.Fatal("Usuario: " + this.Cliente + ". Error de listado de base de datos: " + ex.Message);
                 throw new Exception("Error de listado de base de datos", ex);
             }

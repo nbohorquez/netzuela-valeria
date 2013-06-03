@@ -1,5 +1,4 @@
-namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
-{
+namespace Zuliaworks.Netzuela.Valeria.Servidor.Api {
     using System;
     using System.Net;
     
@@ -10,21 +9,18 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
     using ServiceStack.ServiceInterface.Auth;       // IAuthProvider
     using ServiceStack.WebHost.Endpoints;           // AppHostBase
     
-    public class Anfitrion : AppHostBase
-    {
+    public class Anfitrion : AppHostBase {
         #region Constructores
         
         public Anfitrion()
-            : base("API de Netzuela", typeof(ListarTiendasServicio).Assembly) 
-        {
+            : base("API de Netzuela", typeof(ListarTiendasServicio).Assembly) {
         }
         
         #endregion
         
         #region Funciones
 
-        public override void Configure(Funq.Container container) 
-        { 
+        public override void Configure(Funq.Container container) { 
             this.Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] {
                 new Autentificacion()
             }));/*

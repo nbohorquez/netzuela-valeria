@@ -1,5 +1,4 @@
-namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
-{
+namespace Zuliaworks.Netzuela.Valeria.Servidor.Api {
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -10,21 +9,16 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
     using Zuliaworks.Netzuela.Valeria.Datos;
     using Zuliaworks.Netzuela.Valeria.Tipos;
     
-    public class ListarTiendasServicio : ServiceBase<ListarTiendas>
-    {
+    public class ListarTiendasServicio : ServiceBase<ListarTiendas> {
         #region Implementacion de interfaces
         
-        protected override object Run (ListarTiendas request)
-        {
+        protected override object Run (ListarTiendas request) {
             int usuario = int.Parse(this.GetSession().FirstName);
             List<string> resultado = new List<string>();
             
-            try
-            {
-                using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion))
-                {
+            try {
+                using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion)) {
                     conexion.Conectar(Sesion.Credenciales[0], Sesion.Credenciales[1]);
-                    
                     string sql = "SELECT t.tienda_id, c.nombre_legal "
                                 + "FROM tienda AS t "
                                 + "JOIN cliente AS c ON c.rif = t.cliente_p "
@@ -32,14 +26,11 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
                                 + "WHERE u.usuario_id = " + usuario.ToString();
                     DataTable t = conexion.Consultar(Constantes.BaseDeDatos, sql);
                     
-                    foreach(DataRow r in t.Rows)
-                    {
+                    foreach(DataRow r in t.Rows) {
                         resultado.Add(r[0].ToString() + ":" + r[1].ToString());
                     }
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 //log.Fatal("Usuario: " + sesion.UserName + ". Error de listado de base de datos: " + ex.Message);
                 throw new Exception("Error de listado de base de datos", ex);
             }

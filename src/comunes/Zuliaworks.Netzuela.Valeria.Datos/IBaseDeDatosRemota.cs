@@ -1,5 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Datos
-{
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos {
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -8,8 +7,7 @@
 
     using Zuliaworks.Netzuela.Valeria.Datos.Eventos;
 
-    public interface IBaseDeDatosRemota : IBaseDeDatos
-    {
+    public interface IBaseDeDatosRemota : IBaseDeDatos {
         #region Eventos
 
         event EventHandler<EventoListarTiendasCompletadoArgs> ListarTiendasCompletado;

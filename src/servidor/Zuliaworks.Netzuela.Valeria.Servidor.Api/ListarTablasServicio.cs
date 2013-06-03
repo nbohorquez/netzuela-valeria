@@ -1,5 +1,4 @@
-namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
-{
+namespace Zuliaworks.Netzuela.Valeria.Servidor.Api {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -11,30 +10,24 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
     using Zuliaworks.Netzuela.Valeria.Datos;
     using Zuliaworks.Netzuela.Valeria.Tipos;
     
-    public class ListarTablasValidador : AbstractValidator<ListarTablas> 
-    {        
-        public ListarTablasValidador()
-        {
+    public class ListarTablasValidador : AbstractValidator<ListarTablas>  {        
+        public ListarTablasValidador() {
             RuleFor(x => x.BaseDeDatos).NotNull().NotEmpty().Must(Validadores.BaseDeDatos).WithMessage(Validadores.ERROR_BASE_DE_DATOS);
         }
     }
 
-    public class ListarTablasServicio : ServiceBase<ListarTablas>
-    {
+    public class ListarTablasServicio : ServiceBase<ListarTablas> {
         #region Funciones
         
-        protected override object Run (ListarTablas request)
-        {
+        protected override object Run (ListarTablas request) {
             //int usuario = int.Parse(this.GetSession().FirstName);
             ListarTablasValidador validador = new ListarTablasValidador();
             validador.ValidateAndThrow(request);
             
             List<string> resultado = new List<string>();
 
-            try
-            {
-                using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion))
-                {
+            try {
+                using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion)) {
                     conexion.Conectar(Sesion.Credenciales[0], Sesion.Credenciales[1]);
                     string[] tablas = conexion.ListarTablas(request.BaseDeDatos);
 
@@ -45,8 +38,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
                     resultado = tablasAMostrar;
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 //log.Fatal("Usuario: " + this.Cliente + ". Error de listado de base de tablas: " + ex.Message);
                 throw new Exception("Error de listado de tablas", ex);
             }

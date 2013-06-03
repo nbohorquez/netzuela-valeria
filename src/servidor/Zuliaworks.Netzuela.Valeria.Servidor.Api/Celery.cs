@@ -1,5 +1,4 @@
-namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
-{
+namespace Zuliaworks.Netzuela.Valeria.Servidor.Api {
     using System;
     using System.Collections.Generic;            // List, Dictionary
     using System.Data;
@@ -9,8 +8,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
     using RabbitMQ.Client;
     using ServiceStack.ServiceModel.Serialization;
     
-    public static class Celery
-    {
+    public static class Celery {
         #region Constantes
         
         private const string Uri = "amqp://guest@localhost:5672//";
@@ -24,8 +22,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
         
         #region Constructores
         
-        static Celery()
-        {
+        static Celery() {
             cf = new ConnectionFactory();
             cf.Uri = Uri;
         }
@@ -34,19 +31,15 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
         
         #region Funciones
 
-        public static void RegistrarProducto(DataTable filasNuevas)
-        {
+        public static void RegistrarProducto(DataTable filasNuevas) {
             using (IConnection conexion = cf.CreateConnection())
-            using (IModel modelo = conexion.CreateModel())
-            {
+            using (IModel modelo = conexion.CreateModel()) {
                 modelo.ExchangeDeclare(Exchange, ExchangeType, true);
                 /*modelo.QueueDeclare(Constantes.CeleryCola, false, false, false, null);
                 modelo.QueueBind(Constantes.CeleryCola, Constantes.CeleryExchange, Constantes.CeleryRoutingKey);*/
                                 
-                foreach (DataRow fila in filasNuevas.Rows)
-                {
-                    var tarea = new TareaCelery
-                    {
+                foreach (DataRow fila in filasNuevas.Rows) {
+                    var tarea = new TareaCelery {
                         task = "tareas.registrar_producto",
                         id = Guid.NewGuid().ToString(),
                         args = new List<object> { fila["codigo"] },
@@ -69,8 +62,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
         
         #region Tipos anidados
         
-        private class TareaCelery
-        {
+        private class TareaCelery {
             #region Constructores
             
             public TareaCelery () { }

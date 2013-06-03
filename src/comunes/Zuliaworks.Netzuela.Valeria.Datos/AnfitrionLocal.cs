@@ -10,12 +10,10 @@
     /// <summary>
     /// Contiene el esqueleto de los parámetros de conexión con los servidores de bases de datos.
     /// </summary>    
-    public static class AnfitrionLocal
-    {
+    public static class AnfitrionLocal {
         #region Funciones
 
-        public static List<ServidorLocal> DetectarTodosLosServidores()
-        {
+        public static List<ServidorLocal> DetectarTodosLosServidores() {
             List<ServidorLocal> Servidores = new List<ServidorLocal>();
 
             Servidores.Add(SQLServer.DetectarServidor());

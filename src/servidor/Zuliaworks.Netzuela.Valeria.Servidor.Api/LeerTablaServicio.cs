@@ -1,5 +1,4 @@
-namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
-{
+namespace Zuliaworks.Netzuela.Valeria.Servidor.Api {
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -12,22 +11,18 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
     using Zuliaworks.Netzuela.Valeria.Datos;
     using Zuliaworks.Netzuela.Valeria.Tipos;
     
-    public class LeerTablaValidador : AbstractValidator<LeerTabla>
-    {        
-        public LeerTablaValidador(int usuarioId)
-        {
+    public class LeerTablaValidador : AbstractValidator<LeerTabla> {        
+        public LeerTablaValidador(int usuarioId) {
             RuleFor(x => x.TiendaId).NotNull().GreaterThan(0).Must((x, tiendaId) => Validadores.TiendaId(tiendaId, usuarioId)).WithMessage(Validadores.ERROR_TIENDA_ID);
             RuleFor(x => x.BaseDeDatos).NotNull().NotEmpty().Must(Validadores.BaseDeDatos).WithMessage(Validadores.ERROR_BASE_DE_DATOS);
             RuleFor(x => x.Tabla).NotNull().NotEmpty().Must((x, tabla) => Validadores.Tabla(x.BaseDeDatos, tabla)).WithMessage(Validadores.ERROR_TABLA);
         }
     }
 
-    public class LeerTablaServicio : ServiceBase<LeerTabla>
-    {
+    public class LeerTablaServicio : ServiceBase<LeerTabla> {
         #region Funciones
         
-        protected override object Run (LeerTabla request)
-        {
+        protected override object Run (LeerTabla request) {
             DataTableXml datosAEnviar = null;
 
             /*
@@ -42,25 +37,19 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
             LeerTablaValidador validador = new LeerTablaValidador(usuario);
             validador.ValidateAndThrow(request);
                         
-            try
-            {
-                using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion))
-                {
+            try {
+                using (Conexion conexion = new Conexion(Sesion.CadenaDeConexion)) {
                     conexion.Conectar(Sesion.Credenciales[0], Sesion.Credenciales[1]);
-
                     string sql = "SELECT ";
                     Permisos.DescriptorDeTabla descriptor =
                         Permisos.EntidadesPermitidas[request.BaseDeDatos].First(e => string.Equals(e.Nombre, request.Tabla, StringComparison.OrdinalIgnoreCase));
 
-                    for (int i = 0; i < descriptor.Columnas.Length; i++)
-                    {
-                        if (!string.Equals(descriptor.TiendaId, descriptor.Columnas[i], StringComparison.OrdinalIgnoreCase))
-                        {
+                    for (int i = 0; i < descriptor.Columnas.Length; i++) {
+                        if (!string.Equals(descriptor.TiendaId, descriptor.Columnas[i], StringComparison.OrdinalIgnoreCase)) {
                             sql += descriptor.Columnas[i];
 
                             // Si no es la ultima iteracion, entonces agrego una coma
-                            if ((i + 1) < descriptor.Columnas.Length)
-                            {
+                            if ((i + 1) < descriptor.Columnas.Length) {
                                 sql += ", ";
                             }
                         }
@@ -76,10 +65,8 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
                      * descriptor.TiendaID (esta columna no va a ser enviada al cliente). Hay que hacer 
                      * esto para que toda tabla enviada siempre tenga una clave primaria.
                      */
-                    foreach (string columna in descriptor.ClavePrimaria)
-                    {
-                        if (!string.Equals(columna, descriptor.TiendaId, StringComparison.OrdinalIgnoreCase))
-                        {
+                    foreach (string columna in descriptor.ClavePrimaria) {
+                        if (!string.Equals(columna, descriptor.TiendaId, StringComparison.OrdinalIgnoreCase)) {
                             cp.Add(t.Columns[columna]);
                         }
                     }
@@ -87,9 +74,7 @@ namespace Zuliaworks.Netzuela.Valeria.Servidor.Api
                     t.PrimaryKey = cp.ToArray();
                     datosAEnviar = t.DataTableAXml(request.BaseDeDatos, request.Tabla);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 //log.Fatal("Usuario: " + this.Cliente + ". Error de lectura de tabla: " + ex.Message);
                 throw new Exception("Error de lectura de tabla", ex);
             }

@@ -1,5 +1,4 @@
-﻿namespace Zuliaworks.Netzuela.Valeria.Datos
-{
+﻿namespace Zuliaworks.Netzuela.Valeria.Datos {
     using System;
     using System.Collections.Generic;
     using System.Data;              // DataTable, ConnectionState
@@ -14,8 +13,7 @@
     /// Provee una interfaz unica para comunicarse con todos los implementadores de acceso 
     /// a las bases de datos.
     /// </summary>    
-    public interface IBaseDeDatos : IDisposable
-    {
+    public interface IBaseDeDatos : IDisposable {
         #region Eventos
 
         event StateChangeEventHandler CambioDeEstado;
